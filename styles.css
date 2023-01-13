@@ -16,7 +16,7 @@
 
 .py-5 {
 	background-color: rgb(36, 40, 81);
-	height: 2760px;
+	height: 2810px;
 	background-repeat-x: no-repeat;
 	background-repeat-y: no-repeat;
 	background-position-x: 50%;
@@ -30,7 +30,7 @@
 	border-top-right-radius: 4px;
 	border-bottom-right-radius: 4px;
 	border-bottom-left-radius: 4px;
-	height: 2670px;
+	height: 2730px;
 	opacity: 1;
 }
 
@@ -39,7 +39,7 @@
 }
 
 .content-layout {
-	height: 2590px;
+	height: 2650px;
 	position: relative;
 	background-color: rgb(28, 32, 76);
 	border-top-left-radius: 6px;
@@ -295,12 +295,12 @@
 }
 
 .rarity-icon-5 {
-	height: 12px;
+	height: 10px;
 	margin-top: 0px;
 	margin-right: 0px;
 	margin-bottom: 0px;
 	margin-left: -1px;
-	width: 12px;
+	width: 10px;
 }
 
 .col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.sub-container {
@@ -475,7 +475,7 @@
 	border-bottom-right-radius: 6px;
 	border-bottom-left-radius: 6px;
 	position: relative;
-	top: 75px;
+	top: 45px;
 	margin-top: 0px;
 	margin-right: 0px;
 	margin-bottom: -25px;
@@ -487,18 +487,18 @@
 }
 
 .col-xl-3.col-lg-3.col-md-3.col-sm-3.col-12.py-3.character-icon-team {
-	background-color: rgb(28, 44, 88);
-	height: 170px;
+	background-color: rgb(30, 35, 87);
+	height: 150px;
 	border-top-left-radius: 8px;
 	border-top-right-radius: 8px;
 	border-bottom-right-radius: 8px;
 	border-bottom-left-radius: 8px;
 	width: 140px;
+	left: 70px;
 	margin-top: 0px;
 	margin-right: 25px;
 	margin-bottom: 0px;
 	margin-left: 0px;
-	left: 48px;
 }
 
 .team-icon-character {
@@ -508,36 +508,35 @@
 	border-top-right-radius: 100px;
 	border-bottom-right-radius: 100px;
 	border-bottom-left-radius: 100px;
+	width: 72px;
 	margin-top: 0px;
 	margin-right: 0px;
 	margin-bottom: 0px;
-	margin-left: 2px;
-	width: 72px;
-	box-shadow: rgb(26, 26, 26) 0px 0px 10px 0px;
+	margin-left: 0px;
 }
 
 .team-name {
 	font-family: "DM Sans";
-	font-size: 15px;
+	font-size: 13px;
 	font-weight: 600;
 	color: rgb(255, 255, 255);
 	text-align: center;
-	width: 150px;
+	width: 140px;
 	position: absolute;
 	right: 0px;
-	top: 120px;
+	top: 108px;
 }
 
 .rarity-icon.team-rarity {
-	width: 150px;
-	top: 95px;
+	width: 140px;
+	top: 86px;
+	text-align: center;
 }
 
 .element-icon-meta.element-icon-team {
 	top: 15px;
-	height: 23px;
-	left: 102px;
-	box-shadow: rgb(26, 26, 26) 0px 0px 10px 0px;
+	height: 21px;
+	left: 88px;
 	border-top-left-radius: 200px;
 	border-top-right-radius: 200px;
 	border-bottom-right-radius: 200px;
@@ -561,10 +560,9 @@
 }
 
 .element-icon-meta.team-weapon-icon {
-	left: 24px;
+	left: 30px;
 	top: 15px;
-	height: 23px;
-	box-shadow: rgb(26, 26, 26) 0px 0px 10px 0px;
+	height: 21px;
 }
 
 .me-3 {
@@ -1115,7 +1113,7 @@
 }
 
 .py-5.bg-light.simple-footer {
-	height: 150px;
+	height: 160px;
 	background-color: rgb(28, 32, 76);
 	background-image: linear-gradient(to right, rgb(28, 32, 76) 1%, rgb(28, 32, 76) 1%);
 	background-repeat-x: repeat;
@@ -1167,6 +1165,53 @@
 .nav-link.PC {
 	font-family: "DM Sans";
 	font-size: 15px;
+}
+
+.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.banner {
+	width: 865px;
+	height: 90px;
+	top: 2px;
+}
+
+.advertisment {
+	font-family: "DM Sans";
+	font-size: 14px;
+	color: rgb(180, 180, 180);
+	text-align: center;
+	position: relative;
+	top: 18px;
+}
+
+#ilzznz {
+	color: rgb(255, 255, 255);
+	font-family: "DM Sans";
+	font-size: 18px;
+	text-align: center;
+	position: absolute;
+	width: 946px;
+	top: 250px;
+	font-weight: 700;
+}
+
+.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.banner.\32 {
+	top: 58px;
+}
+
+.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.banner.\33 {
+	top: 70px;
+}
+
+.container.text-center {
+	position: relative;
+	bottom: 15px;
+}
+
+.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.banner.\33 {
+	margin-top: 0px;
+	margin-right: 25px;
+	margin-bottom: 35px;
+	margin-left: 0px;
+	top: 75px;
 }
 
 @media (max-width: 992px) {
@@ -1266,7 +1311,7 @@
 	}
 
 	.content-layout {
-		height: 2740px;
+		height: 2500px;
 		box-shadow: black 0px 0px 0px 0px;
 	}
 
@@ -1277,7 +1322,7 @@
 	.col-xl-3.col-lg-3.col-md-3.col-sm-3.col-12.py-3.character-icon-team {
 		width: 115px;
 		left: 15px;
-		height: 158px;
+		height: 150px;
 		margin-top: 0px;
 		margin-right: 15px;
 		margin-bottom: 0px;
@@ -1290,8 +1335,8 @@
 	}
 
 	.element-icon-meta.element-icon-team {
-		height: 26px;
-		left: 82px;
+		height: 21px;
+		left: 78px;
 	}
 
 	.rarity-icon.team-rarity {
@@ -1301,7 +1346,7 @@
 
 	.team-name {
 		width: 115px;
-		font-size: 14px;
+		font-size: 11px;
 		top: 115px;
 		font-family: "DM Sans";
 		font-weight: 700;
@@ -1313,13 +1358,13 @@
 	}
 
 	.element-icon-meta.team-weapon-icon {
-		left: 12px;
+		left: 16px;
 	}
 
 	.container.py-5 {
 		width: 1200px;
 		max-width: 760px;
-		height: 2820px;
+		height: 2570px;
 	}
 
 	.artifact-icon {
@@ -1331,14 +1376,14 @@
 	}
 
 	.row.team-row {
-		padding-top: 20px;
-		padding-right: 0px;
-		padding-bottom: 20px;
-		padding-left: 0px;
 		margin-top: 0px;
 		margin-right: 20px;
 		margin-bottom: 15px;
 		margin-left: 20px;
+		padding-top: 0px;
+		padding-right: 0px;
+		padding-bottom: 0px;
+		padding-left: 0px;
 	}
 
 	.rarity-icon.rarity-banner {
@@ -1425,20 +1470,61 @@
 	}
 
 	.py-5 {
-		height: 2900px;
+		height: 2650px;
+	}
+
+	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.banner {
+		left: 30px;
+		width: 650px;
+	}
+
+	.advertisment {
+		font-size: 12px;
+	}
+
+	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.banner.\33 {
+		top: 60px;
+	}
+
+	#ilzznz {
+		width: 707px;
+		top: 225px;
+		font-size: 15px;
+	}
+
+	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.banner.\33 {
+		margin-top: 0px;
+		margin-right: 25px;
+		margin-bottom: 45px;
+		margin-left: 0px;
+	}
+
+	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.banner.\33 .\34 {
+		margin-top: 0px;
+		margin-right: 25px;
+		margin-bottom: 35px;
+		margin-left: 0px;
+		top: 52px;
 	}
 }
 
 @media (max-width: 480px) {
 	.content-layout {
-		width: 316px;
-		height: 1220px;
-		right: 15px;
+		width: 360px;
+		height: 1650px;
 		margin-top: -10px;
 		margin-right: 0px;
 		margin-bottom: 0px;
-		margin-left: 25px;
+		margin-left: 5px;
 		box-shadow: black 0px 0px 0px 0px;
+		background-image: linear-gradient(to right, rgb(28, 32, 76) 1%, rgb(28, 32, 76) 1%);
+		background-repeat-x: repeat;
+		background-repeat-y: repeat;
+		background-position-x: 0%;
+		background-position-y: 0%;
+		background-attachment: scroll;
+		background-size: auto;
+		left: -10px;
 	}
 
 	.weapon-icon-meta {
@@ -1455,7 +1541,7 @@
 
 	.character-meta {
 		font-size: 13px;
-		bottom: 32px;
+		bottom: 48px;
 	}
 
 	.rarity-icon-banner.\35 -star.\34 -star {
@@ -1464,7 +1550,7 @@
 	}
 
 	.col-xl-12.col-lg-12.col-md-12.col-sm-4.col-12.py-3.banner-background-img {
-		height: 50px;
+		height: 80px;
 		background-attachment: scroll;
 		background-size: cover;
 		max-height: 120px;
@@ -1552,8 +1638,8 @@
 	}
 
 	.rarity-icon-5 {
-		height: 7px;
-		width: 7px;
+		height: 6px;
+		width: 6px;
 		text-align: center;
 		margin-top: 0px;
 		margin-right: 0px;
@@ -1662,17 +1748,15 @@
 	}
 
 	.col-xl-3.col-lg-3.col-md-3.col-sm-3.col-12.py-3.character-icon-team {
-		height: 90px;
+		height: 85px;
 		width: 58px;
 		left: 10px;
 		border-top-left-radius: 4px;
 		border-top-right-radius: 4px;
 		border-bottom-right-radius: 4px;
 		border-bottom-left-radius: 4px;
-		margin-top: 0px;
-		margin-right: 5px;
-		margin-bottom: 0px;
-		margin-left: 0px;
+		background-color: rgb(30, 35, 87);
+		margin: 0 8px 0 0;
 	}
 
 	.team-icon-character {
@@ -1686,7 +1770,7 @@
 
 	.element-icon-meta.element-icon-team {
 		left: 40px;
-		height: 15px;
+		height: 14px;
 		top: 9px;
 	}
 
@@ -1705,7 +1789,7 @@
 
 	.team-name {
 		width: 58px;
-		top: 66px;
+		top: 65px;
 		font-size: 7px;
 		font-weight: 700;
 	}
@@ -1725,7 +1809,7 @@
 		padding-right: 0px;
 		padding-bottom: 10px;
 		padding-left: 0px;
-		width: 316px;
+		width: 350px;
 		margin-top: 0px;
 		margin-right: 0px;
 		margin-bottom: -10px;
@@ -1733,7 +1817,14 @@
 	}
 
 	.py-5 {
-		height: 1520px;
+		height: 1820px;
+		background-image: linear-gradient(to right, rgb(36, 40, 81) 1%, rgb(36, 40, 81) 1%);
+		background-repeat-x: repeat;
+		background-repeat-y: repeat;
+		background-position-x: 0%;
+		background-position-y: 0%;
+		background-attachment: scroll;
+		background-size: auto;
 	}
 
 	.col-xl-3.col-lg-3.col-md-3.col-sm-3.col-12.py-3.ascenion-mats {
@@ -1860,7 +1951,7 @@
 
 	.container.py-5 {
 		max-width: 360px;
-		height: 1430px;
+		height: 1730px;
 		background-color: rgb(16, 32, 74);
 		width: 1200px;
 		margin-top: 0px;
@@ -1964,7 +2055,9 @@
 	}
 
 	.lead {
-		font-size: 8px;
+		font-size: 6px;
+		position: relative;
+		top: 50px;
 	}
 
 	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.sub-weapon {
@@ -1976,6 +2069,36 @@
 	}
 
 	.py-5.bg-light.simple-footer {
-		height: 1520px;
+		height: 110px;
+	}
+
+	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.banner.\32 {
+		width: 316px;
+		height: 100px;
+	}
+
+	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.banner {
+		width: 340px;
+		left: 50px;
+	}
+
+	.container.text-center {
+		position: absolute;
+		top: 1750px;
+	}
+
+	#ilzznz {
+		width: 316px;
+		top: 218px;
+		font-size: 11px;
+	}
+
+	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.banner.\33 {
+		left: 10px;
+	}
+
+	#i7ctce {
+		position: relative;
+		top: 55px;
 	}
 }
