@@ -1339,7 +1339,10 @@
 		width: 130px;
 		left: 50px;
 		height: 140px;
-		margin: -10px 15px 10px 0;
+		margin-top: -10px;
+		margin-right: 15px;
+		margin-bottom: 10px;
+		margin-left: 0px;
 	}
 
 	.team-icon-character {
@@ -1395,7 +1398,10 @@
 		padding-right: 0px;
 		padding-bottom: 0px;
 		padding-left: 0px;
-		margin: 0 20px 25px 20px;
+		margin-top: 0px;
+		margin-right: 20px;
+		margin-bottom: 25px;
+		margin-left: 20px;
 	}
 
 	.rarity-icon.rarity-banner {
@@ -1466,7 +1472,10 @@
 
 	.col-xl-3.col-lg-3.col-md-3.col-sm-3.col-12.py-3.character-icon-team.artifact-stat-div {
 		left: 125px;
-		margin: -10px 15px 20px 0;
+		margin-top: -10px;
+		margin-right: 15px;
+		margin-bottom: 20px;
+		margin-left: 0px;
 	}
 
 	.lead {
@@ -1507,15 +1516,18 @@
 	}
 
 	.team-icon-character.artifact-stat-img {
-		padding: 2px 2px 2px 2px;
+		padding-top: 2px;
+		padding-right: 2px;
+		padding-bottom: 2px;
+		padding-left: 2px;
 	}
 }
 
 @media (max-width: 480px) {
 	.content-layout {
 		width: 340px;
-		height: 5540px;
-		right: 25px;
+		height: 5550px;
+		right: 30px;
 		margin-top: -10px;
 		margin-right: 0px;
 		margin-bottom: 0px;
@@ -1578,7 +1590,7 @@
 	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3 {
 		width: 316px;
 		height: 350px;
-		left: 65px;
+		left: 58px;
 		margin-top: 0px;
 		margin-right: 0px;
 		margin-bottom: 15px;
@@ -1806,6 +1818,8 @@
 		margin-right: 0px;
 		margin-bottom: 10px;
 		margin-left: 0px;
+		position: relative;
+		left: 13px;
 	}
 
 	.py-5 {
@@ -1862,6 +1876,7 @@
 		margin-right: 0px;
 		margin-bottom: 15px;
 		margin-left: -47px;
+		left: 58px;
 	}
 
 	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.talent-container.skill-2 {
@@ -1871,6 +1886,7 @@
 		margin-right: 0px;
 		margin-bottom: 15px;
 		margin-left: -47px;
+		left: 58px;
 	}
 
 	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.talent-container.skill-3 {
@@ -1880,6 +1896,7 @@
 		margin-bottom: 15px;
 		margin-left: -47px;
 		width: 316px;
+		left: 58px;
 	}
 
 	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.artifact-container.best-artifact {
@@ -2081,7 +2098,7 @@
 		margin-bottom: 15px;
 		margin-left: -33px;
 		height: 80px;
-		left: 48px;
+		left: 46px;
 	}
 
 	.container.text-center {
@@ -2089,5 +2106,10 @@
 		margin-right: 0px;
 		margin-bottom: 0px;
 		margin-left: 0px;
+	}
+
+	.row.team-row.artifact-stats {
+		position: relative;
+		left: 12px;
 	}
 }
