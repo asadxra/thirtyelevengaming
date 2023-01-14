@@ -16,7 +16,7 @@
 
 .py-5 {
 	background-color: rgb(36, 40, 81);
-	height: 4100px;
+	height: 3800px;
 	background-repeat-x: no-repeat;
 	background-repeat-y: no-repeat;
 	background-position-x: 50%;
@@ -30,7 +30,7 @@
 	border-top-right-radius: 4px;
 	border-bottom-right-radius: 4px;
 	border-bottom-left-radius: 4px;
-	height: 4020px;
+	height: 3630px;
 	opacity: 1;
 }
 
@@ -39,7 +39,7 @@
 }
 
 .content-layout {
-	height: 3950px;
+	height: 3560px;
 	position: relative;
 	background-color: rgb(28, 32, 76);
 	border-top-left-radius: 6px;
@@ -126,7 +126,7 @@
 	margin-right: 0px;
 	margin-bottom: 0px;
 	margin-left: 425px;
-	background-image: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1672689929/GENSHIN/Characters%20Breakdown/Fg9DE3eaEAAk7_o_fmnh82.png");
+	background-image: url(https://res.cloudinary.com/djqzskg3z/image/upload/v1673355379/GENSHIN/Namecards/Shikanoin%20Heizou/Namecard_Background_Shikanoin_Heizou_Temari_wba1av.webp);
 	background-repeat-x: repeat;
 	background-repeat-y: repeat;
 	background-position-x: 0%;
@@ -196,7 +196,7 @@
 
 .col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3 {
 	background-color: rgb(48, 55, 109);
-	height: 310px;
+	height: 210px;
 	width: 432px;
 	position: relative;
 	border-top-left-radius: 4px;
@@ -339,7 +339,7 @@
 }
 
 .weapon-description.talent-description {
-	top: 130px;
+	top: 140px;
 	margin-top: 12px;
 	margin-right: 0px;
 	margin-bottom: 0px;
@@ -597,7 +597,7 @@
 	color: rgb(255, 255, 255);
 	font-weight: 600;
 	text-align: center;
-	right: 0px;
+	right: -16px;
 	margin-top: 0px;
 	margin-right: 25px;
 	margin-bottom: 0px;
@@ -754,7 +754,7 @@
 }
 
 .col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.sub-weapon {
-	height: 210px;
+	height: 205px;
 	background-color: rgb(48, 55, 109);
 	margin-top: 0px;
 	margin-right: 25px;
@@ -1030,7 +1030,7 @@
 
 .col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.talent-container.skill-1 {
 	background-color: rgb(48, 55, 109);
-	height: 470px;
+	height: 585px;
 	margin-top: 0px;
 	margin-right: 25px;
 	margin-bottom: 25px;
@@ -1040,7 +1040,7 @@
 
 .col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.talent-container.skill-2 {
 	background-color: rgb(48, 55, 109);
-	height: 470px;
+	height: 585px;
 	margin-top: 0px;
 	margin-right: 25px;
 	margin-bottom: 25px;
@@ -1050,7 +1050,7 @@
 
 .col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.talent-container.skill-3 {
 	background-color: rgb(48, 55, 109);
-	height: 470px;
+	height: 585px;
 	margin-top: 0px;
 	margin-right: 25px;
 	margin-bottom: 25px;
@@ -1301,6 +1301,18 @@
 	height: 5px;
 }
 
+.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.sub-weapon.third-weapon-row {
+	height: 175px;
+}
+
+.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.sub-weapon.\33 -star.third-weapon-row {
+	height: 180px;
+}
+
+.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.sub-weapon.second-weapon-row {
+	height: 190px;
+}
+
 @media (max-width: 992px) {
 	.character-meta {
 		font-size: 16px;
@@ -1342,7 +1354,7 @@
 
 	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3 {
 		width: 550px;
-		height: 280px;
+		height: 200px;
 		left: 90px;
 	}
 
@@ -1398,7 +1410,7 @@
 	}
 
 	.content-layout {
-		height: 5425px;
+		height: 4540px;
 	}
 
 	.weapon-description {
@@ -1452,7 +1464,7 @@
 	.container.py-5 {
 		width: 1200px;
 		max-width: 760px;
-		height: 5495px;
+		height: 4620px;
 	}
 
 	.artifact-icon {
@@ -1559,17 +1571,17 @@
 	}
 
 	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.talent-container.skill-3 {
-		height: 560px;
+		height: 625px;
 		left: 21px;
 	}
 
 	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.talent-container.skill-2 {
-		height: 560px;
+		height: 625px;
 		left: 21px;
 	}
 
 	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.talent-container.skill-1 {
-		height: 560px;
+		height: 625px;
 		left: 21px;
 	}
 
@@ -1587,7 +1599,7 @@
 	}
 
 	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.artifact-container.best-artifact {
-		height: 290px;
+		height: 200px;
 	}
 
 	.team-icon-character.artifact-stat-img {
@@ -1600,12 +1612,20 @@
 	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.artifact-container.best-artifact.\32 -set {
 		height: 325px;
 	}
+
+	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.sub-weapon.second-weapon-row {
+		height: 175px;
+	}
+
+	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.sub-weapon.third-weapon-row {
+		height: 160px;
+	}
 }
 
 @media (max-width: 480px) {
 	.content-layout {
 		width: 340px;
-		height: 5540px;
+		height: 4635px;
 		right: 27px;
 		margin-top: -10px;
 		margin-right: 0px;
@@ -1668,7 +1688,7 @@
 
 	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3 {
 		width: 316px;
-		height: 350px;
+		height: 200px;
 		left: 59px;
 		margin-top: 0px;
 		margin-right: 0px;
@@ -1902,7 +1922,7 @@
 	}
 
 	.py-5 {
-		height: 5700px;
+		height: 4800px;
 	}
 
 	.col-xl-3.col-lg-3.col-md-3.col-sm-3.col-12.py-3.ascenion-mats {
@@ -1949,7 +1969,7 @@
 	}
 
 	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.talent-container.skill-1 {
-		height: 420px;
+		height: 460px;
 		width: 316px;
 		margin-top: 0px;
 		margin-right: 0px;
@@ -1959,7 +1979,7 @@
 	}
 
 	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.talent-container.skill-2 {
-		height: 410px;
+		height: 370px;
 		width: 316px;
 		margin-top: 0px;
 		margin-right: 0px;
@@ -1969,7 +1989,7 @@
 	}
 
 	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.talent-container.skill-3 {
-		height: 240px;
+		height: 410px;
 		margin-top: 0px;
 		margin-right: 0px;
 		margin-bottom: 15px;
@@ -1979,7 +1999,7 @@
 	}
 
 	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.artifact-container.best-artifact {
-		height: 295px;
+		height: 185px;
 		width: 316px;
 		margin-top: 0px;
 		margin-right: 0px;
@@ -2032,7 +2052,7 @@
 
 	.container.py-5 {
 		max-width: 360px;
-		height: 5620px;
+		height: 4710px;
 		background-color: rgb(36, 40, 81);
 		width: 1200px;
 		margin-top: 0px;
@@ -2043,7 +2063,7 @@
 
 	.navbar-brand {
 		font-family: "DM Sans";
-		font-size: 12px;
+		font-size: 10px;
 	}
 
 	.col-xl-3.col-lg-3.col-md-3.col-sm-3.col-12.py-3.ascenion-mats.\31 {
@@ -2237,5 +2257,9 @@
 		height: 12px;
 		position: absolute;
 		max-height: 5px;
+	}
+
+	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.sub-weapon.third-weapon-row {
+		height: 165px;
 	}
 }
