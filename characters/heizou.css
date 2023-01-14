@@ -1297,6 +1297,10 @@
 	height: 320px;
 }
 
+.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.space-separator {
+	height: 5px;
+}
+
 @media (max-width: 992px) {
 	.character-meta {
 		font-size: 16px;
@@ -2084,7 +2088,7 @@
 	.col-xl-3.col-lg-3.col-md-3.col-sm-3.col-12.py-3.character-icon-team.artifact-stat-div {
 		width: 78px;
 		height: 65px;
-		left: 28px;
+		left: 26px;
 		margin-top: 0px;
 		margin-right: 18px;
 		margin-bottom: 0px;
@@ -2226,5 +2230,12 @@
 
 	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.artifact-container.best-artifact.\32 -set.pc.mobile {
 		left: 25px;
+	}
+
+	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.seperator.\31 .mobile {
+		min-height: 5px;
+		height: 12px;
+		position: absolute;
+		max-height: 5px;
 	}
 }
