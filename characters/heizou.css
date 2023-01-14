@@ -30,7 +30,7 @@
 	border-top-right-radius: 4px;
 	border-bottom-right-radius: 4px;
 	border-bottom-left-radius: 4px;
-	height: 4000px;
+	height: 4020px;
 	opacity: 1;
 }
 
@@ -39,7 +39,7 @@
 }
 
 .content-layout {
-	height: 3910px;
+	height: 3950px;
 	position: relative;
 	background-color: rgb(28, 32, 76);
 	border-top-left-radius: 6px;
@@ -117,7 +117,11 @@
 	border-bottom-right-radius: 6px;
 	border-bottom-left-radius: 6px;
 	top: 30px;
-	box-shadow: black 0px 0px 10px 0px;
+	box-shadow: rgba(0, 0, 0, 0.23) 0px 3px 6px, rgba(0, 0, 0, 0.16) 0px 3px 6px;
+	transition-duration: 0.3s;
+	transition-timing-function: ease;
+	transition-delay: 0s;
+	transition-property: box-shadow;
 	margin-top: 0px;
 	margin-right: 0px;
 	margin-bottom: 0px;
@@ -144,14 +148,14 @@
 }
 
 .element-icon-meta {
-	height: 28px;
+	height: 27px;
 	position: absolute;
 	border-top-left-radius: 200px;
 	border-top-right-radius: 200px;
 	border-bottom-right-radius: 200px;
 	border-bottom-left-radius: 200px;
-	top: 18px;
-	left: 510px;
+	top: 20px;
+	left: 512px;
 	background-color: rgb(29, 53, 87);
 }
 
@@ -161,7 +165,7 @@
 	border-top-right-radius: 200px;
 	border-bottom-right-radius: 200px;
 	border-bottom-left-radius: 200px;
-	height: 32px;
+	height: 30px;
 	position: absolute;
 	top: 18px;
 	left: 409px;
@@ -199,7 +203,7 @@
 	border-top-right-radius: 4px;
 	border-bottom-right-radius: 4px;
 	border-bottom-left-radius: 4px;
-	left: 42px;
+	left: 40px;
 	align-self: center;
 	margin-top: 0px;
 	margin-right: 25px;
@@ -402,6 +406,7 @@
 	margin-right: 0px;
 	margin-bottom: 0px;
 	margin-left: 175px;
+	position: relative;
 }
 
 .artifact-description {
@@ -414,7 +419,6 @@
 	margin-left: 0px;
 	position: absolute;
 	top: 125px;
-	max-width: 94%;
 	text-align: center;
 	padding-top: 10px;
 	padding-right: 5px;
@@ -426,6 +430,7 @@
 	border-bottom-left-radius: 4px;
 	letter-spacing: 0.2px;
 	line-height: 18px;
+	width: 409px;
 }
 
 .artifact-title {
@@ -522,7 +527,7 @@
 	cursor: pointer;
 }
 
-.team-icon-character:hover{
+.team-icon-character:hover {
 	transform: scale(1.02) perspective(0px);
 	box-shadow: rgba(0, 0, 0, 0.23) 0px 6px 12px, rgba(0, 0, 0, 0.16) 0px 6px 12px;
 }
@@ -591,8 +596,8 @@
 	font-family: "DM Sans";
 	color: rgb(255, 255, 255);
 	font-weight: 600;
-	text-align: left;
-	right: 150px;
+	text-align: center;
+	right: 0px;
 	margin-top: 0px;
 	margin-right: 25px;
 	margin-bottom: 0px;
@@ -755,6 +760,7 @@
 	margin-right: 25px;
 	margin-bottom: 25px;
 	margin-left: 0px;
+	left: 40px;
 }
 
 .talent-focus {
@@ -1015,6 +1021,7 @@
 	margin-bottom: 25px;
 	margin-left: 0px;
 	height: 320px;
+	text-align: left;
 }
 
 .col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.artifact-container.second-best-artifact {
@@ -1028,6 +1035,7 @@
 	margin-right: 25px;
 	margin-bottom: 25px;
 	margin-left: 0px;
+	left: 28px;
 }
 
 .col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.talent-container.skill-2 {
@@ -1037,6 +1045,7 @@
 	margin-right: 25px;
 	margin-bottom: 25px;
 	margin-left: 0px;
+	left: 28px;
 }
 
 .col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.talent-container.skill-3 {
@@ -1046,6 +1055,7 @@
 	margin-right: 25px;
 	margin-bottom: 25px;
 	margin-left: 0px;
+	left: 28px;
 }
 
 .col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.\32 {
@@ -1231,6 +1241,62 @@
 	background-color: rgb(220, 106, 255);
 }
 
+.row.artifact-row {
+	text-align: left;
+}
+
+.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.artifact-container.best-artifact.\32 -set {
+	height: 150px;
+	position: relative;
+	margin-top: 0px;
+	margin-right: 25px;
+	margin-bottom: 25px;
+	margin-left: 0px;
+}
+
+.artifact-description.\32 -set-description {
+	width: 410px;
+}
+
+.artifact-icon.\32 -set-icon {
+	position: relative;
+	top: 110px;
+}
+
+.artifact-title.\32 -set-title {
+	top: 267px;
+}
+
+.artifact-sub-title.\32 -set-sub-title {
+	top: 290px;
+}
+
+.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.seperator {
+	height: 10px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	border-top-left-radius: 0px;
+	border-top-right-radius: 0px;
+	border-bottom-right-radius: 0px;
+	border-bottom-left-radius: 0px;
+	max-height: 5px;
+}
+
+.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.seperator.\31 {
+	height: 15px;
+	max-height: 10px;
+	position: absolute;
+	left: 0px;
+	top: 145px;
+	background-color: rgb(28, 32, 76);
+}
+
+.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.artifact-container.best-artifact.\32 -set.pc {
+	height: 320px;
+}
+
 @media (max-width: 992px) {
 	.character-meta {
 		font-size: 16px;
@@ -1328,7 +1394,7 @@
 	}
 
 	.content-layout {
-		height: 5140px;
+		height: 5425px;
 	}
 
 	.weapon-description {
@@ -1339,9 +1405,9 @@
 		width: 130px;
 		left: 50px;
 		height: 140px;
-		margin-top: 0px;
+		margin-top: -10px;
 		margin-right: 15px;
-		margin-bottom: 0px;
+		margin-bottom: 10px;
 		margin-left: 0px;
 	}
 
@@ -1350,8 +1416,12 @@
 	}
 
 	.element-icon-meta.element-icon-team {
-		height: 18px;
-		left: 90px;
+		height: 22px;
+		left: 88px;
+		padding-top: 1px;
+		padding-right: 1px;
+		padding-bottom: 1px;
+		padding-left: 1px;
 	}
 
 	.rarity-icon.team-rarity {
@@ -1362,7 +1432,7 @@
 	.team-name {
 		width: 130px;
 		font-size: 14px;
-		top: 98px;
+		top: 100px;
 	}
 
 	.rarity-icon-5 {
@@ -1372,12 +1442,13 @@
 
 	.element-icon-meta.team-weapon-icon {
 		left: 24px;
+		height: 22px;
 	}
 
 	.container.py-5 {
 		width: 1200px;
 		max-width: 760px;
-		height: 5220px;
+		height: 5495px;
 	}
 
 	.artifact-icon {
@@ -1391,11 +1462,11 @@
 	.row.team-row {
 		padding-top: 20px;
 		padding-right: 0px;
-		padding-bottom: 20px;
+		padding-bottom: 0px;
 		padding-left: 0px;
 		margin-top: 0px;
 		margin-right: 20px;
-		margin-bottom: 15px;
+		margin-bottom: 25px;
 		margin-left: 20px;
 	}
 
@@ -1431,6 +1502,7 @@
 
 	.artifact-description {
 		max-width: 96%;
+		width: 530px;
 	}
 
 	.artifact-title.\32 -piece-set {
@@ -1466,7 +1538,8 @@
 	}
 
 	.col-xl-3.col-lg-3.col-md-3.col-sm-3.col-12.py-3.character-icon-team.artifact-stat-div {
-		left: 125px;
+		left: 115px;
+		margin: -10px 25px 20px 0;
 	}
 
 	.lead {
@@ -1475,22 +1548,27 @@
 
 	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.sub-weapon {
 		height: 190px;
+		left: 90px;
 	}
 
 	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.talent-container.skill-3 {
 		height: 560px;
+		left: 21px;
 	}
 
 	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.talent-container.skill-2 {
 		height: 560px;
+		left: 21px;
 	}
 
 	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.talent-container.skill-1 {
 		height: 560px;
+		left: 21px;
 	}
 
 	.introduction-info {
 		max-width: 662px;
+		font-family: "DM Sans";
 	}
 
 	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.banner {
@@ -1500,13 +1578,28 @@
 	.advertisment {
 		width: 645px;
 	}
+
+	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.artifact-container.best-artifact {
+		height: 290px;
+	}
+
+	.team-icon-character.artifact-stat-img {
+		padding-top: 2px;
+		padding-right: 2px;
+		padding-bottom: 2px;
+		padding-left: 2px;
+	}
+
+	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.artifact-container.best-artifact.\32 -set {
+		height: 325px;
+	}
 }
 
 @media (max-width: 480px) {
 	.content-layout {
-		width: 316px;
-		height: 5050px;
-		right: 15px;
+		width: 340px;
+		height: 5540px;
+		right: 25px;
 		margin-top: -10px;
 		margin-right: 0px;
 		margin-bottom: 0px;
@@ -1514,14 +1607,14 @@
 	}
 
 	.weapon-icon-meta {
-		left: 115px;
-		top: 2px;
+		left: 128px;
+		top: 4px;
 		height: 20px;
 	}
 
 	.element-icon-meta {
-		left: 180px;
-		top: 3px;
+		left: 193px;
+		top: 4px;
 		height: 19px;
 	}
 
@@ -1553,7 +1646,7 @@
 		margin-top: 0px;
 		margin-right: 0px;
 		margin-bottom: 0px;
-		margin-left: 124px;
+		margin-left: 137px;
 	}
 
 	.rarity-icon-banner.\35 -star.\34 -star {
@@ -1569,7 +1662,7 @@
 	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3 {
 		width: 316px;
 		height: 350px;
-		left: 47px;
+		left: 60px;
 		margin-top: 0px;
 		margin-right: 0px;
 		margin-bottom: 15px;
@@ -1730,17 +1823,14 @@
 	}
 
 	.col-xl-3.col-lg-3.col-md-3.col-sm-3.col-12.py-3.character-icon-team {
-		height: 90px;
+		height: 75px;
 		width: 60px;
-		left: 10px;
+		left: 12px;
 		border-top-left-radius: 4px;
 		border-top-right-radius: 4px;
 		border-bottom-right-radius: 4px;
 		border-bottom-left-radius: 4px;
-		margin-top: 0px;
-		margin-right: 18px;
-		margin-bottom: 0px;
-		margin-left: 0px;
+		margin: -5px 18px 0 0;
 	}
 
 	.team-icon-character {
@@ -1758,8 +1848,8 @@
 	}
 
 	.element-icon-meta.team-weapon-icon {
-		height: 15px;
-		left: 5px;
+		height: 13px;
+		left: 6px;
 		top: 9px;
 	}
 
@@ -1782,8 +1872,8 @@
 	}
 
 	.rarity-icon.rarity-banner {
-		width: 315px;
-		top: 72px;
+		width: 340px;
+		top: 73px;
 		left: 0px;
 	}
 
@@ -1797,6 +1887,8 @@
 		margin-right: 0px;
 		margin-bottom: 10px;
 		margin-left: 0px;
+		position: relative;
+		left: 13px;
 	}
 
 	.py-5 {
@@ -1853,6 +1945,7 @@
 		margin-right: 0px;
 		margin-bottom: 15px;
 		margin-left: -47px;
+		left: 60px;
 	}
 
 	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.talent-container.skill-2 {
@@ -1862,6 +1955,7 @@
 		margin-right: 0px;
 		margin-bottom: 15px;
 		margin-left: -47px;
+		left: 60px;
 	}
 
 	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.talent-container.skill-3 {
@@ -1871,6 +1965,7 @@
 		margin-bottom: 15px;
 		margin-left: -47px;
 		width: 316px;
+		left: 60px;
 	}
 
 	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.artifact-container.best-artifact {
@@ -1927,8 +2022,8 @@
 
 	.container.py-5 {
 		max-width: 360px;
-		height: 5590px;
-		background-color: rgb(16, 32, 74);
+		height: 5620px;
+		background-color: rgb(36, 40, 81);
 		width: 1200px;
 		margin-top: 0px;
 		margin-right: 0px;
@@ -1984,6 +2079,10 @@
 		width: 78px;
 		height: 65px;
 		left: 35px;
+		margin-top: 0px;
+		margin-right: 18px;
+		margin-bottom: 0px;
+		margin-left: 0px;
 	}
 
 	.team-icon-character.artifact-stat-img {
@@ -1995,7 +2094,7 @@
 	}
 
 	.artifact-stat-meta {
-		top: 38px;
+		top: 40px;
 		font-size: 7px;
 	}
 
@@ -2040,6 +2139,7 @@
 		margin-right: 0px;
 		margin-bottom: 15px;
 		margin-left: -35px;
+		left: 60px;
 	}
 
 	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.sub-weapon.\33 -star {
@@ -2047,7 +2147,7 @@
 	}
 
 	.py-5.bg-light.simple-footer {
-		height: 5540px;
+		height: 150px;
 	}
 
 	.introduction-info.build-title {
@@ -2057,6 +2157,7 @@
 	.introduction-info {
 		font-size: 11px;
 		font-family: "DM Sans";
+		max-width: 300px;
 	}
 
 	.advertisment {
@@ -2071,5 +2172,53 @@
 		margin-bottom: 15px;
 		margin-left: -33px;
 		height: 80px;
+		left: 45px;
+	}
+
+	.container.text-center {
+		margin-top: -30px;
+		margin-right: 0px;
+		margin-bottom: 0px;
+		margin-left: 0px;
+	}
+
+	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.artifact-container.best-artifact.\32 -set.pc {
+		left: 30px;
+	}
+
+	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.artifact-container.best-artifact.\32 -set.mobile {
+		left: 30px;
+		height: 275px;
+	}
+
+	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.seperator.\31 {
+		top: 120px;
+		height: 15px;
+		max-height: 15px;
+	}
+
+	.artifact-icon.\32 -set-icon {
+		top: 102px;
+	}
+
+	.artifact-title.\32 -set-title {
+		top: 228px;
+	}
+
+	.artifact-sub-title.\32 -set-sub-title {
+		top: 245px;
+	}
+
+	.row.team-row.artifact-stats {
+		position: relative;
+		left: 13px;
+	}
+
+	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.sub-weapon.\33 -star {
+		left: 60px;
+	}
+
+	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.artifact-container.best-artifact.\32 -set.pc.mobile {
+		left: 25px;
 	}
 }
