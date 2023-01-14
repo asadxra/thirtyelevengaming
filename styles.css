@@ -513,6 +513,8 @@
 	margin-right: 0px;
 	margin-bottom: 0px;
 	margin-left: 0px;
+	box-shadow: 0 3px 6px rgb(0 0 0 / 23%), 0 3px 6px rgb(0 0 0 / 16%);
+    transition: box-shadow .3s;
 }
 
 .team-name {
