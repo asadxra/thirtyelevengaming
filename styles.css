@@ -513,8 +513,11 @@
 	margin-right: 0px;
 	margin-bottom: 0px;
 	margin-left: 0px;
-	box-shadow: 0 3px 6px rgb(0 0 0 / 23%), 0 3px 6px rgb(0 0 0 / 16%);
-    transition: box-shadow .3s;
+	box-shadow: rgba(0, 0, 0, 0.23) 0px 3px 6px, rgba(0, 0, 0, 0.16) 0px 3px 6px;
+	transition-duration: 0.3s;
+	transition-timing-function: ease;
+	transition-delay: 0s;
+	transition-property: box-shadow;
 }
 
 .team-name {
@@ -526,12 +529,12 @@
 	width: 140px;
 	position: absolute;
 	right: 0px;
-	top: 108px;
+	top: 111px;
 }
 
 .rarity-icon.team-rarity {
 	width: 140px;
-	top: 86px;
+	top: 87px;
 	text-align: center;
 }
 
