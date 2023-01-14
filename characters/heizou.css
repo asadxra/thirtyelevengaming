@@ -1539,7 +1539,10 @@
 
 	.col-xl-3.col-lg-3.col-md-3.col-sm-3.col-12.py-3.character-icon-team.artifact-stat-div {
 		left: 115px;
-		margin: -10px 25px 20px 0;
+		margin-top: -10px;
+		margin-right: 25px;
+		margin-bottom: 20px;
+		margin-left: 0px;
 	}
 
 	.lead {
@@ -1599,7 +1602,7 @@
 	.content-layout {
 		width: 340px;
 		height: 5540px;
-		right: 25px;
+		right: 27px;
 		margin-top: -10px;
 		margin-right: 0px;
 		margin-bottom: 0px;
@@ -1662,7 +1665,7 @@
 	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3 {
 		width: 316px;
 		height: 350px;
-		left: 60px;
+		left: 59px;
 		margin-top: 0px;
 		margin-right: 0px;
 		margin-bottom: 15px;
@@ -1830,7 +1833,10 @@
 		border-top-right-radius: 4px;
 		border-bottom-right-radius: 4px;
 		border-bottom-left-radius: 4px;
-		margin: -5px 18px 0 0;
+		margin-top: -5px;
+		margin-right: 18px;
+		margin-bottom: 0px;
+		margin-left: 0px;
 	}
 
 	.team-icon-character {
@@ -1945,7 +1951,7 @@
 		margin-right: 0px;
 		margin-bottom: 15px;
 		margin-left: -47px;
-		left: 60px;
+		left: 59px;
 	}
 
 	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.talent-container.skill-2 {
@@ -1955,7 +1961,7 @@
 		margin-right: 0px;
 		margin-bottom: 15px;
 		margin-left: -47px;
-		left: 60px;
+		left: 59px;
 	}
 
 	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.talent-container.skill-3 {
@@ -1965,7 +1971,7 @@
 		margin-bottom: 15px;
 		margin-left: -47px;
 		width: 316px;
-		left: 60px;
+		left: 59px;
 	}
 
 	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.artifact-container.best-artifact {
@@ -2078,7 +2084,7 @@
 	.col-xl-3.col-lg-3.col-md-3.col-sm-3.col-12.py-3.character-icon-team.artifact-stat-div {
 		width: 78px;
 		height: 65px;
-		left: 35px;
+		left: 28px;
 		margin-top: 0px;
 		margin-right: 18px;
 		margin-bottom: 0px;
@@ -2139,7 +2145,7 @@
 		margin-right: 0px;
 		margin-bottom: 15px;
 		margin-left: -35px;
-		left: 60px;
+		left: 59px;
 	}
 
 	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.sub-weapon.\33 -star {
@@ -2172,7 +2178,7 @@
 		margin-bottom: 15px;
 		margin-left: -33px;
 		height: 80px;
-		left: 45px;
+		left: 44px;
 	}
 
 	.container.text-center {
