@@ -41,7 +41,7 @@
 .content-layout {
 	height: 2650px;
 	position: relative;
-	background-color: #036666;
+	background-color: rgb(3, 102, 102);
 	border-top-left-radius: 6px;
 	border-top-right-radius: 6px;
 	border-bottom-right-radius: 6px;
@@ -53,8 +53,8 @@
 	background-image: linear-gradient(to right, rgb(3, 66, 66) 1%, rgb(3, 66, 66) 1%);
 	background-repeat-x: repeat;
 	background-repeat-y: repeat;
-	background-position-x: 0%;
-	background-position-y: 0%;
+	background-position-x: left;
+	background-position-y: top;
 	background-attachment: scroll;
 	background-size: auto;
 }
@@ -483,6 +483,11 @@
 	padding-right: 0px;
 	padding-bottom: 25px;
 	padding-left: 0px;
+	background-repeat-x: repeat;
+	background-repeat-y: repeat;
+	background-position-x: 0%;
+	background-position-y: 0%;
+	background-color: #036666;
 	background-image: linear-gradient(to right, rgb(3, 66, 66) 1%, rgb(3, 66, 66) 1%);
 	background-repeat: repeat;
 	background-position: left top;
@@ -491,7 +496,7 @@
 }
 
 .col-xl-3.col-lg-3.col-md-3.col-sm-3.col-12.py-3.character-icon-team {
-	background-color: #023535;
+	background-color: #135151;
 	height: 150px;
 	border-top-left-radius: 8px;
 	border-top-right-radius: 8px;
@@ -506,7 +511,7 @@
 }
 
 .team-icon-character {
-	background-color: #30a3a3;
+	background-color: #247171;
 	height: 72px;
 	border-top-left-radius: 100px;
 	border-top-right-radius: 100px;
@@ -1180,7 +1185,7 @@
 	width: 865px;
 	height: 90px;
 	top: 2px;
-	background-color: #036666;
+	background-color: rgb(3, 102, 102);
 }
 
 .advertisment {
@@ -1247,7 +1252,7 @@
 }
 
 #i5vmc8 {
-	color: #e4e4e4;
+	color: rgb(228, 228, 228);
 	font-family: "DM Sans";
 	text-align: center;
 	font-size: 13px;
@@ -1799,7 +1804,7 @@
 		border-top-right-radius: 4px;
 		border-bottom-right-radius: 4px;
 		border-bottom-left-radius: 4px;
-		background-color: #023535;
+		background-color: rgb(2, 53, 53);
 		margin-top: 0px;
 		margin-right: 10px;
 		margin-bottom: 0px;
