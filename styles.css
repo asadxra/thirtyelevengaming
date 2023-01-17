@@ -15,7 +15,7 @@
 }
 
 .py-5 {
-	background-color: #544d9a;
+	background-color: rgb(84, 77, 154);
 	height: 2810px;
 	background-repeat-x: no-repeat;
 	background-repeat-y: no-repeat;
@@ -24,7 +24,7 @@
 }
 
 .container.py-5 {
-	background-color: #544d9a;
+	background-color: rgb(84, 77, 154);
 	width: 1000px;
 	border-top-left-radius: 4px;
 	border-top-right-radius: 4px;
@@ -41,7 +41,7 @@
 .content-layout {
 	height: 2650px;
 	position: relative;
-	background-color: #757bc8;
+	background-color: rgb(117, 123, 200);
 	border-top-left-radius: 6px;
 	border-top-right-radius: 6px;
 	border-bottom-right-radius: 6px;
@@ -487,14 +487,14 @@
 	background-image: linear-gradient(to right, rgb(49, 26, 91) 1%, rgb(49, 26, 91) 1%);
 	background-repeat-x: repeat;
 	background-repeat-y: repeat;
-	background-position-x: left;
-	background-position-y: top;
+	background-position-x: 0%;
+	background-position-y: 0%;
 	background-attachment: scroll;
 	background-size: auto;
 }
 
 .col-xl-3.col-lg-3.col-md-3.col-sm-3.col-12.py-3.character-icon-team {
-	background-color: #49278a;
+	background-color: rgb(73, 39, 138);
 	height: 150px;
 	border-top-left-radius: 8px;
 	border-top-right-radius: 8px;
@@ -509,7 +509,7 @@
 }
 
 .team-icon-character {
-	background-color: #6c2ee3;
+	background-color: rgb(108, 46, 227);
 	height: 72px;
 	border-top-left-radius: 100px;
 	border-top-right-radius: 100px;
@@ -1183,7 +1183,7 @@
 	width: 865px;
 	height: 90px;
 	top: 2px;
-	background-color: #49278a;
+	background-color: rgb(73, 39, 138);
 }
 
 .advertisment {
@@ -1802,7 +1802,7 @@
 		border-top-right-radius: 4px;
 		border-bottom-right-radius: 4px;
 		border-bottom-left-radius: 4px;
-		background-color: rgb(2, 53, 53);
+		background-color: #49278a;
 		margin-top: 0px;
 		margin-right: 10px;
 		margin-bottom: 0px;
@@ -1868,7 +1868,7 @@
 
 	.py-5 {
 		height: 1820px;
-		background-image: linear-gradient(to right, rgb(31, 95, 95) 1%, rgb(31, 95, 95) 1%);
+		background-image: linear-gradient(to right, rgb(84, 77, 154) 1%, rgb(84, 77, 154) 1%);
 		background-repeat-x: repeat;
 		background-repeat-y: repeat;
 		background-position-x: 0%;
@@ -2002,13 +2002,13 @@
 	.container.py-5 {
 		max-width: 360px;
 		height: 1730px;
-		background-color: rgb(31, 95, 95);
+		background-color: #544d9a;
 		width: 1200px;
 		margin-top: 0px;
 		margin-right: 0px;
 		margin-bottom: 0px;
 		margin-left: 15px;
-		background-image: linear-gradient(to right, rgb(31, 95, 95) 1%, rgb(31, 95, 95) 1%);
+		background-image: linear-gradient(to right, rgb(84, 77, 154) 1%, rgb(84, 77, 154) 1%);
 	}
 
 	.navbar-brand {
