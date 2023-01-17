@@ -53,8 +53,8 @@
 	background-image: linear-gradient(to right, rgb(30, 70, 59) 1%, rgb(30, 70, 59) 1%);
 	background-repeat-x: repeat;
 	background-repeat-y: repeat;
-	background-position-x: left;
-	background-position-y: top;
+	background-position-x: 0%;
+	background-position-y: 0%;
 	background-attachment: scroll;
 	background-size: auto;
 }
@@ -554,7 +554,7 @@
 	padding-right: 1px;
 	padding-bottom: 1px;
 	padding-left: 1px;
-	background-color: #1e463b;
+	background-color: rgb(30, 70, 59);
 }
 
 .rarity-icon.rarity-banner {
@@ -573,7 +573,7 @@
 	left: 30px;
 	top: 15px;
 	height: 21px;
-	background-color: #1e463b;
+	background-color: rgb(30, 70, 59);
 }
 
 .me-3 {
@@ -1226,41 +1226,48 @@
 	top: 75px;
 }
 
-#i2quc7 {
-	color: rgb(255, 255, 255);
-	font-family: "DM Sans";
-	text-align: center;
-	font-size: 13px;
-	font-weight: 600;
-	position: absolute;
-	width: 865px;
-	top: 32px;
-}
-
-#i5vmc8 {
-	color: rgb(228, 228, 228);
-	font-family: "DM Sans";
-	text-align: center;
-	font-size: 13px;
-	font-weight: 600;
-	position: absolute;
-	width: 865px;
-	top: 32px;
-}
-
 .ad-title-name {
-	color: #bdbdbd;
+	color: rgb(189, 189, 189);
 }
 
-#im7dei {
-	color: rgb(228, 228, 228);
-	font-family: "DM Sans";
-	text-align: center;
-	font-size: 13px;
-	font-weight: 600;
+#ic3gpi {
+	font-family: DM Sans;
 	position: absolute;
+	font-size: 13px;
 	width: 865px;
-	top: 32px;
+	top: 33px;
+	color: #bdbdbd;
+	text-align: center;
+	font-weight: 600;
+}
+
+.ad-supported {
+	color: #b6b6b6;
+	font-weight: 600;
+	text-align: center;
+	top: 35px;
+}
+
+#imi9nu {
+	font-family: DM Sans;
+	position: absolute;
+	font-size: 13px;
+	width: 865px;
+	top: 33px;
+	color: #bdbdbd;
+	text-align: center;
+	font-weight: 600;
+}
+
+#i85y0n {
+	font-family: DM Sans;
+	position: absolute;
+	font-size: 13px;
+	width: 865px;
+	top: 33px;
+	color: #bdbdbd;
+	text-align: center;
+	font-weight: 600;
 }
 
 @media (max-width: 992px) {
@@ -1556,11 +1563,19 @@
 		top: 52px;
 	}
 
-	#i5vmc8 {
+	.ad-title-banner {
+		width: 6px;
+	}
+
+	#i85y0n {
 		width: 650px;
 	}
 
-	#im7dei {
+	#imi9nu {
+		width: 650px;
+	}
+
+	#ic3gpi {
 		width: 650px;
 	}
 }
@@ -2163,21 +2178,26 @@
 		top: 60px;
 	}
 
-	#i5vmc8 {
-		width: 335px;
-		font-size: 11px;
-	}
-
-	#im7dei {
-		width: 335px;
-		font-size: 11px;
-	}
-
 	.ad-title-name {
 		width: 335px;
 		max-width: 335px;
 		font-size: 11px;
-		font-family: DM Sans;
-		color: #666565;
+		font-family: "DM Sans";
+		color: rgb(102, 101, 101);
+	}
+
+	#ic3gpi {
+		width: 335px;
+		font-size: 11px;
+	}
+
+	#imi9nu {
+		font-size: 11px;
+		width: 335px;
+	}
+
+	#i85y0n {
+		font-size: 11px;
+		width: 335px;
 	}
 }
