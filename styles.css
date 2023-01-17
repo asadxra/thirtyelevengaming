@@ -41,7 +41,7 @@
 .content-layout {
 	height: 2650px;
 	position: relative;
-	background-color: rgb(28, 32, 76);
+	background-color: #036666;
 	border-top-left-radius: 6px;
 	border-top-right-radius: 6px;
 	border-bottom-right-radius: 6px;
@@ -50,7 +50,7 @@
 	margin-right: 15px;
 	margin-bottom: 0px;
 	margin-left: 15px;
-	background-image: linear-gradient(to right, rgb(2, 53, 53) 1%, rgb(2, 53, 53) 1%);
+	background-image: linear-gradient(to right, rgb(3, 66, 66) 1%, rgb(3, 66, 66) 1%);
 	background-repeat-x: repeat;
 	background-repeat-y: repeat;
 	background-position-x: 0%;
@@ -467,7 +467,6 @@
 }
 
 .row.team-row {
-	background-color: rgb(2, 53, 53);
 	text-align: center;
 	display: flex;
 	border-top-left-radius: 6px;
@@ -484,10 +483,15 @@
 	padding-right: 0px;
 	padding-bottom: 25px;
 	padding-left: 0px;
+	background-image: linear-gradient(to right, rgb(3, 66, 66) 1%, rgb(3, 66, 66) 1%);
+	background-repeat: repeat;
+	background-position: left top;
+	background-attachment: scroll;
+	background-size: auto;
 }
 
 .col-xl-3.col-lg-3.col-md-3.col-sm-3.col-12.py-3.character-icon-team {
-	background-color: rgb(5, 35, 35);
+	background-color: #023535;
 	height: 150px;
 	border-top-left-radius: 8px;
 	border-top-right-radius: 8px;
@@ -502,7 +506,7 @@
 }
 
 .team-icon-character {
-	background-color: rgb(0, 111, 111);
+	background-color: #30a3a3;
 	height: 72px;
 	border-top-left-radius: 100px;
 	border-top-right-radius: 100px;
@@ -612,7 +616,7 @@
 
 .navbar.navbar-expand-lg.fixed-top.navbar-dark.bg-dark {
 	background-color: rgb(2, 53, 53);
-	background-image: linear-gradient(to right, rgb(2, 53, 53) 1%, rgb(2, 53, 53) 1%);
+	background-image: linear-gradient(to right, rgb(3, 66, 66) 1%, rgb(3, 66, 66) 1%);
 	background-repeat-x: repeat;
 	background-repeat-y: repeat;
 	background-position-x: 0%;
@@ -1120,7 +1124,7 @@
 .py-5.bg-light.simple-footer {
 	height: 160px;
 	background-color: rgb(28, 32, 76);
-	background-image: linear-gradient(to right, rgb(2, 53, 53) 1%, rgb(2, 53, 53) 1%);
+	background-image: linear-gradient(to right, rgb(3, 66, 66) 1%, rgb(3, 66, 66) 1%);
 	background-repeat-x: repeat;
 	background-repeat-y: repeat;
 	background-position-x: 0%;
@@ -1176,7 +1180,7 @@
 	width: 865px;
 	height: 90px;
 	top: 2px;
-	background-color: rgb(5, 35, 35);
+	background-color: #036666;
 }
 
 .advertisment {
@@ -1243,7 +1247,7 @@
 }
 
 #i5vmc8 {
-	color: rgb(125, 125, 125);
+	color: #e4e4e4;
 	font-family: "DM Sans";
 	text-align: center;
 	font-size: 13px;
@@ -1561,10 +1565,8 @@
 		margin-left: 5px;
 		box-shadow: black 0px 0px 0px 0px;
 		left: -15px;
-		background-repeat-x: repeat, repeat;
-		background-repeat-y: repeat, repeat;
-		background-position-x: left, left;
-		background-position-y: top, top;
+		background-position-x: 0%, 0%;
+		background-position-y: 0%, 0%;
 		background-attachment: scroll, scroll;
 		background-size: auto, auto;
 	}
@@ -1797,7 +1799,7 @@
 		border-top-right-radius: 4px;
 		border-bottom-right-radius: 4px;
 		border-bottom-left-radius: 4px;
-		background-color: rgb(5, 35, 35);
+		background-color: #023535;
 		margin-top: 0px;
 		margin-right: 10px;
 		margin-bottom: 0px;
