@@ -49,14 +49,12 @@
 	margin-right: 15px;
 	margin-bottom: 0px;
 	margin-left: 15px;
+	background-color: rgb(30, 57, 127);
+	background-image: linear-gradient(to right, rgb(30, 70, 59) 1%, rgb(30, 70, 59) 1%);
 	background-repeat-x: repeat;
 	background-repeat-y: repeat;
-	background-position-x: 0%;
-	background-position-y: 0%;
-	background-color: #1e397f;
-	background-image: linear-gradient(to right, rgb(30, 70, 59) 1%, rgb(30, 70, 59) 1%);
-	background-repeat: repeat;
-	background-position: left top;
+	background-position-x: left;
+	background-position-y: top;
 	background-attachment: scroll;
 	background-size: auto;
 }
@@ -556,6 +554,7 @@
 	padding-right: 1px;
 	padding-bottom: 1px;
 	padding-left: 1px;
+	background-color: #1e463b;
 }
 
 .rarity-icon.rarity-banner {
@@ -574,6 +573,7 @@
 	left: 30px;
 	top: 15px;
 	height: 21px;
+	background-color: #1e463b;
 }
 
 .me-3 {
@@ -1227,18 +1227,7 @@
 }
 
 #i2quc7 {
-	color: #ffffff;
-	font-family: "DM Sans";
-	text-align: center;
-	font-size: 13px;
-	font-weight: 600;
-	position: absolute;
-	width: 865px;
-	top: 32px;
-}
-
-#ijxvgc {
-	color: rgb(125, 125, 125);
+	color: rgb(255, 255, 255);
 	font-family: "DM Sans";
 	text-align: center;
 	font-size: 13px;
@@ -1249,6 +1238,21 @@
 }
 
 #i5vmc8 {
+	color: rgb(228, 228, 228);
+	font-family: "DM Sans";
+	text-align: center;
+	font-size: 13px;
+	font-weight: 600;
+	position: absolute;
+	width: 865px;
+	top: 32px;
+}
+
+.ad-title-name {
+	color: #bdbdbd;
+}
+
+#im7dei {
 	color: rgb(228, 228, 228);
 	font-family: "DM Sans";
 	text-align: center;
@@ -1553,6 +1557,10 @@
 	}
 
 	#i5vmc8 {
+		width: 650px;
+	}
+
+	#im7dei {
 		width: 650px;
 	}
 }
@@ -2158,5 +2166,18 @@
 	#i5vmc8 {
 		width: 335px;
 		font-size: 11px;
+	}
+
+	#im7dei {
+		width: 335px;
+		font-size: 11px;
+	}
+
+	.ad-title-name {
+		width: 335px;
+		max-width: 335px;
+		font-size: 11px;
+		font-family: DM Sans;
+		color: #666565;
 	}
 }
