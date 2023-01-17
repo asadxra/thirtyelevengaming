@@ -53,8 +53,8 @@
 	background-image: linear-gradient(to right, rgb(2, 53, 53) 1%, rgb(2, 53, 53) 1%);
 	background-repeat-x: repeat;
 	background-repeat-y: repeat;
-	background-position-x: left;
-	background-position-y: top;
+	background-position-x: 0%;
+	background-position-y: 0%;
 	background-attachment: scroll;
 	background-size: auto;
 }
@@ -615,8 +615,8 @@
 	background-image: linear-gradient(to right, rgb(2, 53, 53) 1%, rgb(2, 53, 53) 1%);
 	background-repeat-x: repeat;
 	background-repeat-y: repeat;
-	background-position-x: left;
-	background-position-y: top;
+	background-position-x: 0%;
+	background-position-y: 0%;
 	background-attachment: scroll;
 	background-size: auto;
 }
@@ -1123,8 +1123,8 @@
 	background-image: linear-gradient(to right, rgb(2, 53, 53) 1%, rgb(2, 53, 53) 1%);
 	background-repeat-x: repeat;
 	background-repeat-y: repeat;
-	background-position-x: left;
-	background-position-y: top;
+	background-position-x: 0%;
+	background-position-y: 0%;
 	background-attachment: scroll;
 	background-size: auto;
 }
@@ -1221,8 +1221,8 @@
 }
 
 #i2quc7 {
-	color: #7d7d7d;
-	font-family: DM Sans;
+	color: rgb(125, 125, 125);
+	font-family: "DM Sans";
 	text-align: center;
 	font-size: 13px;
 	font-weight: 600;
@@ -1232,8 +1232,8 @@
 }
 
 #ijxvgc {
-	color: #7d7d7d;
-	font-family: DM Sans;
+	color: rgb(125, 125, 125);
+	font-family: "DM Sans";
 	text-align: center;
 	font-size: 13px;
 	font-weight: 600;
@@ -1243,8 +1243,8 @@
 }
 
 #i5vmc8 {
-	color: #7d7d7d;
-	font-family: DM Sans;
+	color: rgb(125, 125, 125);
+	font-family: "DM Sans";
 	text-align: center;
 	font-size: 13px;
 	font-weight: 600;
@@ -1556,14 +1556,16 @@
 		margin-bottom: 0px;
 		margin-left: 5px;
 		box-shadow: black 0px 0px 0px 0px;
-		background-image: linear-gradient(to right, rgb(28, 32, 76) 1%, rgb(28, 32, 76) 1%);
 		background-repeat-x: repeat;
 		background-repeat-y: repeat;
 		background-position-x: 0%;
 		background-position-y: 0%;
-		background-attachment: scroll;
-		background-size: auto;
 		left: -15px;
+		background-image: rgb(2, 53, 53) 1%, rgb(2, 53, 53) 1%);
+		background-repeat: repeat, repeat;
+		background-position: left top, left top;
+		background-attachment: scroll, scroll;
+		background-size: auto, auto;
 	}
 
 	.weapon-icon-meta {
@@ -1794,7 +1796,7 @@
 		border-top-right-radius: 4px;
 		border-bottom-right-radius: 4px;
 		border-bottom-left-radius: 4px;
-		background-color: rgb(30, 35, 87);
+		background-color: #052323;
 		margin-top: 0px;
 		margin-right: 10px;
 		margin-bottom: 0px;
@@ -1860,7 +1862,7 @@
 
 	.py-5 {
 		height: 1820px;
-		background-image: linear-gradient(to right, rgb(36, 40, 81) 1%, rgb(36, 40, 81) 1%);
+		background-image: linear-gradient(to right, rgb(31, 95, 95) 1%, rgb(31, 95, 95) 1%);
 		background-repeat-x: repeat;
 		background-repeat-y: repeat;
 		background-position-x: 0%;
@@ -1994,12 +1996,13 @@
 	.container.py-5 {
 		max-width: 360px;
 		height: 1730px;
-		background-color: rgb(16, 32, 74);
+		background-color: #1f5f5f;
 		width: 1200px;
 		margin-top: 0px;
 		margin-right: 0px;
 		margin-bottom: 0px;
 		margin-left: 15px;
+		background-image: linear-gradient(to right, rgb(31, 95, 95) 1%, rgb(31, 95, 95) 1%);
 	}
 
 	.navbar-brand {
