@@ -15,7 +15,7 @@
 }
 
 .py-5 {
-	background-color: #1f5f5f;
+	background-color: rgb(31, 95, 95);
 	height: 2810px;
 	background-repeat-x: no-repeat;
 	background-repeat-y: no-repeat;
@@ -24,7 +24,7 @@
 }
 
 .container.py-5 {
-	background-color: #1f5f5f;
+	background-color: rgb(31, 95, 95);
 	width: 1000px;
 	border-top-left-radius: 4px;
 	border-top-right-radius: 4px;
@@ -50,13 +50,11 @@
 	margin-right: 15px;
 	margin-bottom: 0px;
 	margin-left: 15px;
+	background-image: linear-gradient(to right, rgb(2, 53, 53) 1%, rgb(2, 53, 53) 1%);
 	background-repeat-x: repeat;
 	background-repeat-y: repeat;
-	background-position-x: 0%;
-	background-position-y: 0%;
-	background-image: linear-gradient(to right, rgb(2, 53, 53) 1%, rgb(2, 53, 53) 1%);
-	background-repeat: repeat;
-	background-position: left top;
+	background-position-x: left;
+	background-position-y: top;
 	background-attachment: scroll;
 	background-size: auto;
 }
@@ -469,7 +467,7 @@
 }
 
 .row.team-row {
-	background-color: #023535;
+	background-color: rgb(2, 53, 53);
 	text-align: center;
 	display: flex;
 	border-top-left-radius: 6px;
@@ -489,7 +487,7 @@
 }
 
 .col-xl-3.col-lg-3.col-md-3.col-sm-3.col-12.py-3.character-icon-team {
-	background-color: #052323;
+	background-color: rgb(5, 35, 35);
 	height: 150px;
 	border-top-left-radius: 8px;
 	border-top-right-radius: 8px;
@@ -504,7 +502,7 @@
 }
 
 .team-icon-character {
-	background-color: #006f6f;
+	background-color: rgb(0, 111, 111);
 	height: 72px;
 	border-top-left-radius: 100px;
 	border-top-right-radius: 100px;
@@ -613,14 +611,12 @@
 }
 
 .navbar.navbar-expand-lg.fixed-top.navbar-dark.bg-dark {
-	background-color: #023535;
+	background-color: rgb(2, 53, 53);
+	background-image: linear-gradient(to right, rgb(2, 53, 53) 1%, rgb(2, 53, 53) 1%);
 	background-repeat-x: repeat;
 	background-repeat-y: repeat;
-	background-position-x: 0%;
-	background-position-y: 0%;
-	background-image: linear-gradient(to right, rgb(2, 53, 53) 1%, rgb(2, 53, 53) 1%);
-	background-repeat: repeat;
-	background-position: left top;
+	background-position-x: left;
+	background-position-y: top;
 	background-attachment: scroll;
 	background-size: auto;
 }
@@ -1124,13 +1120,11 @@
 .py-5.bg-light.simple-footer {
 	height: 160px;
 	background-color: rgb(28, 32, 76);
+	background-image: linear-gradient(to right, rgb(2, 53, 53) 1%, rgb(2, 53, 53) 1%);
 	background-repeat-x: repeat;
 	background-repeat-y: repeat;
-	background-position-x: 0%;
-	background-position-y: 0%;
-	background-image: linear-gradient(to right, rgb(2, 53, 53) 1%, rgb(2, 53, 53) 1%);
-	background-repeat: repeat;
-	background-position: left top;
+	background-position-x: left;
+	background-position-y: top;
 	background-attachment: scroll;
 	background-size: auto;
 }
@@ -1182,7 +1176,7 @@
 	width: 865px;
 	height: 90px;
 	top: 2px;
-	background-color: #052323;
+	background-color: rgb(5, 35, 35);
 }
 
 .advertisment {
@@ -1224,6 +1218,39 @@
 	margin-bottom: 35px;
 	margin-left: 0px;
 	top: 75px;
+}
+
+#i2quc7 {
+	color: #7d7d7d;
+	font-family: DM Sans;
+	text-align: center;
+	font-size: 13px;
+	font-weight: 600;
+	position: absolute;
+	width: 865px;
+	top: 32px;
+}
+
+#ijxvgc {
+	color: #7d7d7d;
+	font-family: DM Sans;
+	text-align: center;
+	font-size: 13px;
+	font-weight: 600;
+	position: absolute;
+	width: 865px;
+	top: 32px;
+}
+
+#i5vmc8 {
+	color: #7d7d7d;
+	font-family: DM Sans;
+	text-align: center;
+	font-size: 13px;
+	font-weight: 600;
+	position: absolute;
+	width: 865px;
+	top: 32px;
 }
 
 @media (max-width: 992px) {
