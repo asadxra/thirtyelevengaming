@@ -378,12 +378,9 @@
 	font-size: 13px;
 	line-height: 18px;
 	font-weight: 400;
-	max-width: 91%;
-	padding-top: 0px;
-	padding-right: 5px;
-	padding-bottom: 10px;
-	padding-left: 5px;
 	font-family: "DM Sans";
+	width: 280px;
+	padding: 0 12px 0 12px;
 }
 
 .talent-icon {
@@ -585,7 +582,10 @@
 	left: 102px;
 	box-shadow: rgba(0, 0, 0, 0.23) 0px 3px 6px, rgba(0, 0, 0, 0.16) 0px 3px 6px;
 	background-color: rgb(30, 70, 59);
-	padding: 1px 1px 1px 1px;
+	padding-top: 1px;
+	padding-right: 1px;
+	padding-bottom: 1px;
+	padding-left: 1px;
 }
 
 .rarity-icon.rarity-banner {
@@ -606,7 +606,10 @@
 	height: 25px;
 	box-shadow: rgba(0, 0, 0, 0.23) 0px 3px 6px, rgba(0, 0, 0, 0.16) 0px 3px 6px;
 	background-color: rgb(30, 70, 59);
-	padding: 1px 1px 1px 1px;
+	padding-top: 1px;
+	padding-right: 1px;
+	padding-bottom: 1px;
+	padding-left: 1px;
 }
 
 .me-3 {
@@ -1609,6 +1612,14 @@
 	background-color: rgba(0, 44, 30, 0.53);
 }
 
+.weapon-icon-meta.character-namecard-weapon {
+	top: 14px;
+}
+
+.element-icon-meta.character-namecard-vision {
+	top: 14px;
+}
+
 @media (max-width: 992px) {
 	.character-meta {
 		font-size: 16px;
@@ -1707,13 +1718,13 @@
 	}
 
 	.weapon-description.talent-description {
-		max-width: 89%;
 		font-size: 12px;
 		top: 110px;
+		width: 205px;
 	}
 
 	.content-layout {
-		height: 4540px;
+		height: 5620px;
 	}
 
 	.weapon-description {
@@ -1771,7 +1782,7 @@
 	.container.py-5 {
 		width: 1200px;
 		max-width: 760px;
-		height: 4600px;
+		height: 5685px;
 	}
 
 	.artifact-icon {
@@ -1929,7 +1940,7 @@
 	}
 
 	.py-5 {
-		height: 6000px;
+		height: 5860px;
 	}
 
 	.artifact-title.\32 -piece-set-title {
@@ -2025,7 +2036,7 @@
 @media (max-width: 480px) {
 	.content-layout {
 		width: 340px;
-		height: 4635px;
+		height: 5680px;
 		right: 27px;
 		margin-top: -10px;
 		margin-right: 0px;
@@ -2168,23 +2179,19 @@
 	}
 
 	.weapon-description.talent-description {
-		max-width: 96%;
 		margin-top: 6px;
 		margin-right: 0px;
 		margin-bottom: 0px;
 		margin-left: 0px;
 		font-weight: 400;
 		font-size: 12px;
-		padding-top: 10px;
-		padding-right: 5px;
-		padding-bottom: 10px;
-		padding-left: 5px;
 		border-top-left-radius: 4px;
 		border-top-right-radius: 4px;
 		border-bottom-right-radius: 4px;
 		border-bottom-left-radius: 4px;
 		top: 100px;
-		left: 6px;
+		width: 316px;
+		padding: 10px 12px 10px 12px;
 	}
 
 	.talent-icon {
@@ -2321,7 +2328,7 @@
 	}
 
 	.py-5 {
-		height: 4800px;
+		height: 5890px;
 	}
 
 	.col-xl-3.col-lg-3.col-md-3.col-sm-3.col-12.py-3.ascenion-mats {
@@ -2451,7 +2458,7 @@
 
 	.container.py-5 {
 		max-width: 360px;
-		height: 4710px;
+		height: 5750px;
 		background-color: rgba(26, 70, 51, 0);
 		width: 1200px;
 		margin-top: 0px;
