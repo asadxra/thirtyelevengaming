@@ -16,7 +16,7 @@
 
 .py-5 {
 	background-color: rgba(26, 70, 51, 0.81);
-	height: 5600px;
+	height: 6190px;
 	background-repeat-x: no-repeat;
 	background-repeat-y: no-repeat;
 	background-position-x: 50%;
@@ -29,7 +29,7 @@
 	border-top-right-radius: 4px;
 	border-bottom-right-radius: 4px;
 	border-bottom-left-radius: 4px;
-	height: 5420px;
+	height: 6050px;
 	opacity: 1;
 	background-color: rgba(26, 70, 51, 0);
 }
@@ -39,7 +39,7 @@
 }
 
 .content-layout {
-	height: 5340px;
+	height: 5980px;
 	position: relative;
 	background-color: rgba(30, 70, 59, 0.69);
 	border-top-left-radius: 6px;
@@ -379,8 +379,11 @@
 	line-height: 18px;
 	font-weight: 400;
 	font-family: "DM Sans";
-	width: 280px;
-	padding: 0 12px 0 12px;
+	width: 700px;
+	padding-top: 0px;
+	padding-right: 12px;
+	padding-bottom: 0px;
+	padding-left: 12px;
 }
 
 .talent-icon {
@@ -389,7 +392,7 @@
 	margin-top: 10px;
 	margin-right: 0px;
 	margin-bottom: 0px;
-	margin-left: 100px;
+	margin-left: 312px;
 }
 
 .talent-title {
@@ -399,7 +402,7 @@
 	text-align: center;
 	top: 90px;
 	position: absolute;
-	width: 280px;
+	width: 700px;
 	right: 0px;
 	font-weight: 600;
 }
@@ -410,7 +413,7 @@
 	font-size: 13px;
 	position: absolute;
 	top: 112px;
-	width: 280px;
+	width: 700px;
 	right: 0px;
 	text-align: center;
 	font-weight: 800;
@@ -799,7 +802,7 @@
 .talent-focus {
 	font-family: "DM Sans";
 	font-size: 13px;
-	color: rgb(255, 255, 255);
+	color: rgb(0, 0, 0);
 	position: absolute;
 	left: 0px;
 	top: 0px;
@@ -811,7 +814,7 @@
 	border-top-right-radius: 0px;
 	border-bottom-right-radius: 0px;
 	border-bottom-left-radius: 0px;
-	background-color: rgba(37, 223, 123, 0.58);
+	background-color: rgb(141, 253, 165);
 	font-weight: 800;
 }
 
@@ -1064,12 +1067,13 @@
 
 .col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.talent-container.skill-1 {
 	background-color: rgba(73, 115, 103, 0.38);
-	height: 585px;
+	height: 400px;
+	left: 126px;
+	width: 700px;
 	margin-top: 0px;
 	margin-right: 25px;
 	margin-bottom: 25px;
 	margin-left: 0px;
-	left: 28px;
 }
 
 .col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.talent-container.skill-2 {
@@ -1570,7 +1574,7 @@
 
 .col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.best-weapon-row {
 	left: 138px;
-	height: 280px;
+	height: 240px;
 }
 
 .weapon-description.best-weapon-description {
@@ -1618,6 +1622,10 @@
 
 .element-icon-meta.character-namecard-vision {
 	top: 14px;
+}
+
+.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.best-weapon-row.best-weapon-row-2 {
+	height: 240px;
 }
 
 @media (max-width: 992px) {
@@ -1694,13 +1702,13 @@
 	}
 
 	.talent-title {
-		width: 205px;
+		width: 610px;
 		font-size: 16px;
 		top: 65px;
 	}
 
 	.talent-sub-title {
-		width: 205px;
+		width: 610px;
 		font-size: 12px;
 		top: 88px;
 		padding-top: 0px;
@@ -1714,17 +1722,17 @@
 		margin-top: 0px;
 		margin-right: 0px;
 		margin-bottom: 0px;
-		margin-left: 70px;
+		margin-left: 274px;
 	}
 
 	.weapon-description.talent-description {
 		font-size: 12px;
 		top: 110px;
-		width: 205px;
+		width: 610px;
 	}
 
 	.content-layout {
-		height: 5620px;
+		height: 6110px;
 	}
 
 	.weapon-description {
@@ -1782,7 +1790,7 @@
 	.container.py-5 {
 		width: 1200px;
 		max-width: 760px;
-		height: 5685px;
+		height: 6180px;
 	}
 
 	.artifact-icon {
@@ -1899,8 +1907,9 @@
 	}
 
 	.col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.talent-container.skill-1 {
-		height: 625px;
-		left: 21px;
+		height: 360px;
+		left: 48px;
+		width: 610px;
 	}
 
 	.introduction-info {
@@ -1940,7 +1949,7 @@
 	}
 
 	.py-5 {
-		height: 5860px;
+		height: 6300px;
 	}
 
 	.artifact-title.\32 -piece-set-title {
@@ -2036,7 +2045,7 @@
 @media (max-width: 480px) {
 	.content-layout {
 		width: 340px;
-		height: 5680px;
+		height: 5795px;
 		right: 27px;
 		margin-top: -10px;
 		margin-right: 0px;
@@ -2191,7 +2200,10 @@
 		border-bottom-left-radius: 4px;
 		top: 100px;
 		width: 316px;
-		padding: 10px 12px 10px 12px;
+		padding-top: 10px;
+		padding-right: 12px;
+		padding-bottom: 10px;
+		padding-left: 12px;
 	}
 
 	.talent-icon {
@@ -2328,7 +2340,7 @@
 	}
 
 	.py-5 {
-		height: 5890px;
+		height: 5980px;
 	}
 
 	.col-xl-3.col-lg-3.col-md-3.col-sm-3.col-12.py-3.ascenion-mats {
@@ -2458,7 +2470,7 @@
 
 	.container.py-5 {
 		max-width: 360px;
-		height: 5750px;
+		height: 5860px;
 		background-color: rgba(26, 70, 51, 0);
 		width: 1200px;
 		margin-top: 0px;
