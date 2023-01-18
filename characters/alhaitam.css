@@ -1455,6 +1455,8 @@
 	border-bottom-right-radius: 6px;
 	border-bottom-left-radius: 6px;
 	left: 61px;
+    box-shadow: rgba(0, 0, 0, 0.23) 0px 3px 6px, rgba(0, 0, 0, 0.16) 0px 3px 6px;
+	transition-duration: 0.3s;
 }
 
 .character-meta-description {
@@ -1618,10 +1620,14 @@
 
 .weapon-icon-meta.character-namecard-weapon {
 	top: 14px;
+    box-shadow: rgba(0, 0, 0, 0.23) 0px 3px 6px, rgba(0, 0, 0, 0.16) 0px 3px 6px;
+	transition-duration: 0.3s;
 }
 
 .element-icon-meta.character-namecard-vision {
 	top: 14px;
+    box-shadow: rgba(0, 0, 0, 0.23) 0px 3px 6px, rgba(0, 0, 0, 0.16) 0px 3px 6px;
+	transition-duration: 0.3s;
 }
 
 .col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12.py-3.best-weapon-row.best-weapon-row-2 {
