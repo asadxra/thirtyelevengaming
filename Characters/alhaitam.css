@@ -1,0 +1,535 @@
+.body {
+  background: rgba(41, 65, 58, 0.92);
+}
+
+.nav-bar {
+  background: linear-gradient(rgb(33,56,49), rgb(33,56,49)), rgb(33,56,49);
+}
+
+.game-title {
+  margin-left: 10px;
+}
+
+.favicon {
+  width: 42px;
+}
+
+.weapon-container {
+  background: rgba(61,94,84,0.38);
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  padding-top: 15px;
+  font-family: 'DM Sans', sans-serif;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 10px;
+}
+
+.ads-container {
+  background: rgba(61,94,84,0.38);
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  padding-top: 15px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.banner-container {
+  background: rgba(61,94,84,0.38);
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  padding-top: 15px;
+  font-family: 'DM Sans', sans-serif;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  height: 90px;
+}
+
+.team-container {
+  border-radius: 6px;
+  padding-top: 15px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.stat-container {
+  border-radius: 6px;
+  font-family: 'DM Sans', sans-serif;
+  padding-top: 0px;
+}
+
+.artifact-container {
+  margin-right: auto;
+  margin-left: auto;
+  background: rgba(61,94,84,0.38);
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  padding-top: 15px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.introduction-container {
+  margin-right: auto;
+  margin-left: auto;
+  background: rgba(61,94,84,0.38);
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  padding-top: 15px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.weapon-column {
+}
+
+.best-weapon {
+  height: 100px;
+  background: rgb(33,56,49);
+  border-radius: 6px;
+  margin-bottom: 15px;
+}
+
+.box-title {
+  color: rgb(141, 253, 165);
+  font-size: 16px;
+  width: 100%;
+  margin-top: -5px;
+}
+
+.team-title {
+  color: rgb(255,255,255);
+  font-size: 14px;
+  width: 100%;
+}
+
+.stat-title {
+  color: rgb(255,255,255);
+  font-size: 12px;
+  width: 100%;
+  margin-top: -15px;
+  min-width: 100px;
+}
+
+.weapon-stat {
+  font-size: 14px;
+  color: rgb(255,255,255);
+  width: 100%;
+  margin-top: -6px;
+}
+
+.ads {
+  font-size: 14px;
+  color: rgb(197,197,197);
+  width: 100%;
+  margin-top: 17px;
+}
+
+.talent-stat {
+  font-size: 14px;
+  color: rgb(255,255,255);
+  width: 100%;
+  margin-top: -4px;
+  color: rgb(157,148,255);
+}
+
+.weapon-meta {
+  color: rgb(255,255,255);
+  border-radius: 6px;
+  font-size: 14px;
+  padding-top: 5px;
+}
+
+.talent-meta {
+  color: rgb(255,255,255);
+  border-radius: 6px;
+  font-size: 13px;
+  padding-top: 10px;
+}
+
+.weapon-card {
+  font-family: 'DM Sans', sans-serif;
+}
+
+.weapon-icon {
+  position: relative;
+  top: 0px;
+  width: 65px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  background: rgba(33,56,49,0.98);
+  border-radius: 6px;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.talent-icon {
+  position: relative;
+  top: 0px;
+  width: 55px;
+  background: rgba(40,64,56,0);
+  border-radius: 6px;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.artifact-icon {
+  position: relative;
+  top: 0px;
+  width: 65px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  background: rgba(40,64,56,0.98);
+  border-radius: 6px;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.artifact-icon {
+  position: relative;
+  top: 0px;
+  width: 65px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  background: rgba(33,56,49,0.98);
+  border-radius: 6px;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.team-icon {
+  position: relative;
+  top: 0px;
+  width: 80px;
+  box-shadow: rgb(0 0 0 / 25%) 0px 0px 8px;
+  background: rgba(65,135,113,0.98);
+  border-radius: 50px;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.stat-icon {
+  position: relative;
+  top: 0px;
+  width: 45px;
+  border-radius: 6px;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+  background: rgba(33,56,49,0.98);
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  padding-top: 5px;
+  padding-right: 5px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+}
+
+@media (max-width: 360px) {
+  .weapon-meta {
+    font-size: 12px;
+  }
+}
+
+.weapon-meta-icon {
+  height: 50px;
+  position: relative;
+  top: 70px;
+}
+
+.weapon-title-div {
+  height: 20px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.title {
+  color: rgb(255,255,255);
+  font-size: 18px;
+  margin-top: 25px;
+  margin-bottom: 15px;
+}
+
+.name-title {
+  color: rgb(255,255,255);
+  font-size: 18px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
+
+.meta-icon-div {
+  color: rgb(255,255,255);
+  font-size: 18px;
+  margin-top: -16px;
+  margin-bottom: 15px;
+}
+
+.description {
+  color: rgb(255,255,255);
+  font-size: 14px;
+  padding-right: 25px;
+  padding-left: 25px;
+}
+
+.rarity-icon-div {
+  position: relative;
+  width: 100%;
+  margin-top: -53px;
+  height: 40px;
+}
+
+.rarity-icon {
+  display: block;
+  width: 14px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.footer {
+  margin-top: 25px;
+  background: linear-gradient(rgb(33,56,49), rgb(33,56,49) 100%), rgb(33,56,49);
+}
+
+.character-bg {
+}
+
+.bg {
+  height: 400px;
+  margin-right: auto;
+  margin-left: auto;
+  border-radius: 6px;
+  width: 100%;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(33,56,49,6.90) 100%), url("https://res.cloudinary.com/djqzskg3z/image/upload/v1674235604/GENSHIN/Namecards/Al%20Haitam/Character_Alhaitham_Wish_tvkahy.webp") top / cover no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1674042934/GENSHIN/Namecards/Al%20Haitam/Namecard_Background_Alhaitham_Enlightenment_yfxkdo.webp") center / cover;
+}
+
+.meta-card {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.character-meta {
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  align-items: center;
+  width: 75px;
+  background: #35915a;
+}
+
+.meta-bg {
+  height: 50px;
+  width: 500px;
+}
+
+.weapon-container-row {
+}
+
+.introduction {
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  text-align: center;
+  font-family: 'DM Sans', sans-serif;
+  color: rgb(255,255,255);
+  margin-top: 20px;
+  padding-right: 50px;
+  padding-left: 50px;
+  font-size: 14px;
+  background: rgba(61,94,84,0.38);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+}
+
+.background-container {
+  width: 100%;
+  background: rgb(33,56,49);
+  padding-bottom: 25px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1000px;
+  border-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border-bottom-left-radius: 6px;
+  margin-top: 40px;
+}
+
+.container-row {
+  margin-top: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.artifact-row-2 {
+  margin-top: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+  background: rgba(61,94,84,0.38);
+  border-radius: 6px;
+  width: 100%;
+}
+
+.ads-row {
+  margin-top: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.banner-icon {
+  margin-top: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.team-row {
+  background-color: rgba(61,94,84,0.38);
+  margin-top: 0px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 15px;
+  border-radius: 6px;
+  width: 97%;
+  margin-bottom: 15px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+}
+
+.artifact-stat-row {
+  background-color: rgba(61,94,84,0.38);
+  margin-top: 0px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 15px;
+  border-radius: 6px;
+  width: 97%;
+  margin-bottom: 15px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+}
+
+.talent-row {
+  margin-top: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.introduction-row {
+}
+
+.bg-content {
+  width: 100%;
+  padding-right: 0px;
+  padding-left: 0px;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+
+.rarity-icon-row {
+  width: 100%;
+  margin-top: -5px;
+  position: relative;
+}
+
+.rarity-row {
+  width: 100%;
+  position: relative;
+  margin-top: -38px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.rarity-star {
+  width: 14px;
+  margin-left: -2px;
+}
+
+@media (max-width: 360px) {
+  .weapon-icon {
+    width: 58px;
+    margin-top: -15px;
+  }
+}
+
+@media (max-width: 360px) {
+  .rarity-star {
+    width: 11px;
+  }
+}
+
+@media (max-width: 360px) {
+  .box-title {
+    font-size: 13px;
+    margin-top: -15px;
+  }
+}
+
+@media (max-width: 360px) {
+  .weapon-stat {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 360px) {
+  .artifact-icon {
+    width: 55px;
+    margin-top: -10px;
+  }
+}
+
+@media (max-width: 460px) {
+  .team-icon {
+    width: 60px;
+    margin-top: -32px;
+  }
+}
+
+@media (max-width: 460px) {
+  .team-title {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 460px) {
+  .team-row {
+    padding-bottom: 10px;
+  }
+}
+
+.vision-icon {
+  width: 20px;
+  border-radius: 50px;
+}
+
+.vision-box {
+  position: relative;
+  margin-top: -18px;
+}
+
+@media (max-width: 460px) {
+  .vision-icon {
+    width: 17px;
+  }
+}
+
+@media (max-width: 460px) {
+  .vision-box {
+    margin-top: -42px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .bg {
+    background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(33,56,49,6.90) 100%), url("https://res.cloudinary.com/djqzskg3z/image/upload/v1674235604/GENSHIN/Namecards/Al%20Haitam/Character_Alhaitham_Wish_tvkahy.webp") bottom -500px left -500px / auto no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1674042934/GENSHIN/Namecards/Al%20Haitam/Namecard_Background_Alhaitham_Enlightenment_yfxkdo.webp") center / cover;
+  }
+}
+
+@media (min-width: 992px) {
+  .bg {
+    background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(33,56,49,6.90) 100%), url("https://res.cloudinary.com/djqzskg3z/image/upload/v1674235604/GENSHIN/Namecards/Al%20Haitam/Character_Alhaitham_Wish_tvkahy.webp") bottom -500px left -500px / auto no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1674042934/GENSHIN/Namecards/Al%20Haitam/Namecard_Background_Alhaitham_Enlightenment_yfxkdo.webp") center / cover;
+  }
+}
+
+.meta-icon {
+  width: 30px;
+  border-radius: 100px;
+}
