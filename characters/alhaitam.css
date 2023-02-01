@@ -479,6 +479,7 @@
   .team-icon {
     width: 50px;
     margin-top: -20px;
+    height: 50px;
   }
 }
 
@@ -508,7 +509,7 @@
 @media (max-width: 460px) {
   .vision-icon {
     width: 17px;
-    margin-top: 15px;
+    margin-top: 20px;
   }
 }
 
