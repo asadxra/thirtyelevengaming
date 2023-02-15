@@ -1,0 +1,24 @@
+.fit-cover {
+  object-fit: cover;
+}
+
+.card-title-blog {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+h4 {
+}
+
+.card-title-description {
+  font-size: 14px;
+}
+
+.button-title {
+  font-family: 'DM Sans', sans-serif;
+  background: rgba(61,94,84);
+  border-style: none;
+  font-size: 15px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+}
+
