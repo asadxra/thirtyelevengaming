@@ -49,7 +49,7 @@
   border-radius: 6px;
   padding-top: 15px;
   font-family: 'DM Sans', sans-serif;
-  background: rgba(41, 65, 58, 0.92);
+  background: rgba(61,94,84,0.38);
   box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
 }
 
@@ -255,9 +255,9 @@
 
 .name-title {
   color: rgb(255,255,255);
-  font-size: 26px;
+  font-size: 32px;
   margin-bottom: 15px;
-  padding-top: 45px;
+  padding-top: 55px;
 }
 
 .meta-icon-div {
@@ -297,14 +297,14 @@
 }
 
 .bg {
-  height: 220px;
+  height: 350px;
   margin-right: auto;
   margin-left: auto;
   border-radius: 6px;
   width: 100%;
   border-bottom-right-radius: 6px;
   border-bottom-left-radius: 6px;
-  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(30,30,30,6.90) 100%), url("https://res.cloudinary.com/djqzskg3z/image/upload/v1675100224/GENSHIN/Namecards/Dehya/dehya_079_gacha_splash_eqvxhg.webp") bottom -670px left -240px / auto no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1675101502/GENSHIN/Namecard_Background_Sumeru_Shimmering_Woods_spfilx.webp") center / cover;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(33,56,49,6.90) 100%), url("https://res.cloudinary.com/djqzskg3z/image/upload/v1674235604/GENSHIN/Namecards/Al%20Haitam/Character_Alhaitham_Wish_tvkahy.webp") top / cover no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1674042934/GENSHIN/Namecards/Al%20Haitam/Namecard_Background_Alhaitham_Enlightenment_yfxkdo.webp") center / cover;
 }
 
 .meta-card {
@@ -387,7 +387,7 @@
 }
 
 .team-row {
-  margin-top: 0px;
+  margin-top: 15px;
   margin-left: auto;
   margin-right: auto;
   padding-bottom: 15px;
@@ -481,9 +481,9 @@
 
 @media (max-width: 460px) {
   .team-icon {
-    width: 50px;
+    width: 55px;
     margin-top: -2px;
-    height: 50px;
+    height: 55px;
   }
 }
 
@@ -504,7 +504,7 @@
   position: relative;
   width: 20px;
   border-radius: 50px;
-  margin-top: 2px;
+  margin-top: 6px;
 }
 
 .vision-box {
@@ -545,5 +545,42 @@
     width: 11px;
     margin-top: -10px;
   }
+}
+
+.simple-slider {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 15px;
+}
+
+.title-heading {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 20px;
+  color: rgb(255,255,255);
+  margin-top: 25px;
+  padding-top: 25px;
+}
+
+@media (min-width: 768px) {
+  .bg {
+    background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(33,56,49,6.90) 100%), url("https://res.cloudinary.com/djqzskg3z/image/upload/v1674842954/GENSHIN/Namecards/Hu%20Tao/Character_Hu_Tao_Wish_m9ueia.png") bottom -530px left -600px / auto no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1673961463/GENSHIN/Namecards/Hu%20Tao/Namecard_Background_Hu_Tao_Spirit_Soother_glbo5g.png") center / cover;
+  }
+}
+
+@media (max-width: 460px) {
+  .name-title {
+    font-size: 25px;
+    padding-top: 110px;
+  }
+}
+
+.home-button {
+  background: rgba(61,94,84,0.38);
+  border-style: none;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 17px;
+  font-weight: bold;
 }
 
