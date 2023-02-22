@@ -1,19 +1,3 @@
-.body {
-  background: rgba(41, 65, 58, 0.92);
-}
-
-.nav-bar {
-  background: linear-gradient(rgb(33,56,49), rgb(33,56,49)), rgb(33,56,49);
-}
-
-.game-title {
-  margin-left: 10px;
-}
-
-.favicon {
-  width: 42px;
-}
-
 .weapon-container {
   background: rgba(61,94,84,0.38);
   border-radius: 6px;
@@ -23,14 +7,6 @@
   margin-left: auto;
   margin-right: auto;
   padding-bottom: 10px;
-}
-
-.ads-container {
-  background: rgba(61,94,84,0.38);
-  border-radius: 6px;
-  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
-  padding-top: 15px;
-  font-family: 'DM Sans', sans-serif;
 }
 
 .banner-container {
@@ -55,36 +31,6 @@
   border-radius: 6px;
   font-family: 'DM Sans', sans-serif;
   padding-top: 0px;
-}
-
-.artifact-container {
-  margin-right: auto;
-  margin-left: auto;
-  background: rgba(61,94,84,0.38);
-  border-radius: 6px;
-  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
-  padding-top: 15px;
-  font-family: 'DM Sans', sans-serif;
-}
-
-.introduction-container {
-  margin-right: auto;
-  margin-left: auto;
-  background: rgba(61,94,84,0.38);
-  border-radius: 6px;
-  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
-  padding-top: 15px;
-  font-family: 'DM Sans', sans-serif;
-}
-
-.weapon-column {
-}
-
-.best-weapon {
-  height: 100px;
-  background: rgb(33,56,49);
-  border-radius: 6px;
-  margin-bottom: 15px;
 }
 
 .box-title {
@@ -145,16 +91,12 @@
   padding-top: 10px;
 }
 
-.weapon-card {
-  font-family: 'DM Sans', sans-serif;
-}
-
 .weapon-icon {
   position: relative;
   top: 0px;
   width: 65px;
   box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
-  background: rgba(33,56,49,0.98);
+  background: rgba(65,135,113,0.98);
   border-radius: 6px;
   align-items: center;
   margin-left: auto;
@@ -189,7 +131,7 @@
   top: 0px;
   width: 65px;
   box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
-  background: rgba(33,56,49,0.98);
+  background: rgba(65,135,113,0.98);
   border-radius: 6px;
   align-items: center;
   margin-left: auto;
@@ -199,10 +141,10 @@
 .team-icon {
   position: relative;
   top: 0px;
-  width: 80px;
+  width: 70px;
   box-shadow: rgb(0 0 0 / 25%) 0px 0px 8px;
   background: rgba(65,135,113,0.98);
-  border-radius: 50px;
+  border-radius: 6px;
   align-items: center;
   margin-left: auto;
   margin-right: auto;
@@ -217,7 +159,7 @@
   align-items: center;
   margin-left: auto;
   margin-right: auto;
-  background: rgba(33,56,49,0.98);
+  background: rgba(65,135,113,0.98);
   box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
   padding-top: 5px;
   padding-right: 5px;
@@ -229,17 +171,6 @@
   .weapon-meta {
     font-size: 12px;
   }
-}
-
-.weapon-meta-icon {
-  height: 50px;
-  position: relative;
-  top: 70px;
-}
-
-.weapon-title-div {
-  height: 20px;
-  font-family: 'DM Sans', sans-serif;
 }
 
 .title {
@@ -256,40 +187,11 @@
   margin-bottom: 15px;
 }
 
-.meta-icon-div {
-  color: rgb(255,255,255);
-  font-size: 18px;
-  margin-top: -16px;
-  margin-bottom: 15px;
-}
-
 .description {
   color: rgb(255,255,255);
   font-size: 14px;
   padding-right: 25px;
   padding-left: 25px;
-}
-
-.rarity-icon-div {
-  position: relative;
-  width: 100%;
-  margin-top: -53px;
-  height: 40px;
-}
-
-.rarity-icon {
-  display: block;
-  width: 14px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.footer {
-  margin-top: 25px;
-  background: linear-gradient(rgb(33,56,49), rgb(33,56,49) 100%), rgb(33,56,49);
-}
-
-.character-bg {
 }
 
 .bg {
@@ -303,49 +205,9 @@
   background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(33,56,49,6.90) 100%), url("https://res.cloudinary.com/djqzskg3z/image/upload/v1674235604/GENSHIN/Namecards/Al%20Haitam/Character_Alhaitham_Wish_tvkahy.webp") top / cover no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1674042934/GENSHIN/Namecards/Al%20Haitam/Namecard_Background_Alhaitham_Enlightenment_yfxkdo.webp") center / cover;
 }
 
-.meta-card {
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.character-meta {
-  margin-left: auto;
-  margin-right: auto;
-  position: relative;
-  align-items: center;
-  width: 75px;
-  background: #35915a;
-}
-
-.meta-bg {
-  height: 50px;
-  width: 500px;
-}
-
-.weapon-container-row {
-}
-
-.introduction {
-  margin-left: auto;
-  margin-right: auto;
-  width: 50%;
-  text-align: center;
-  font-family: 'DM Sans', sans-serif;
-  color: rgb(255,255,255);
-  margin-top: 20px;
-  padding-right: 50px;
-  padding-left: 50px;
-  font-size: 14px;
-  background: rgba(61,94,84,0.38);
-  padding-top: 20px;
-  padding-bottom: 20px;
-  border-radius: 6px;
-  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
-}
-
 .background-container {
   width: 100%;
-  background: rgb(33,56,49);
+  background: #212529;
   padding-bottom: 25px;
   margin-left: auto;
   margin-right: auto;
@@ -369,12 +231,6 @@
   background: rgba(61,94,84,0.38);
   border-radius: 6px;
   width: 100%;
-}
-
-.ads-row {
-  margin-top: 0px;
-  margin-left: 0px;
-  margin-right: 0px;
 }
 
 .banner-icon {
@@ -413,9 +269,6 @@
   margin-right: 0px;
 }
 
-.introduction-row {
-}
-
 .bg-content {
   width: 100%;
   padding-right: 0px;
@@ -424,12 +277,6 @@
   border-top-right-radius: 6px;
   border-bottom-right-radius: 0px;
   border-bottom-left-radius: 0px;
-}
-
-.rarity-icon-row {
-  width: 100%;
-  margin-top: -5px;
-  position: relative;
 }
 
 .rarity-row {
@@ -527,13 +374,8 @@
 
 @media (min-width: 992px) {
   .bg {
-    background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(33,56,49,6.90) 100%), url("https://res.cloudinary.com/djqzskg3z/image/upload/v1674235604/GENSHIN/Namecards/Al%20Haitam/Character_Alhaitham_Wish_tvkahy.webp") bottom -500px left -500px / auto no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1674042934/GENSHIN/Namecards/Al%20Haitam/Namecard_Background_Alhaitham_Enlightenment_yfxkdo.webp") center / cover;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 0%, #212529 100%), url("https://res.cloudinary.com/djqzskg3z/image/upload/v1674235604/GENSHIN/Namecards/Al%20Haitam/Character_Alhaitham_Wish_tvkahy.webp") bottom -500px left -500px / auto no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1674042934/GENSHIN/Namecards/Al%20Haitam/Namecard_Background_Alhaitham_Enlightenment_yfxkdo.webp") center / cover;
   }
-}
-
-.meta-icon {
-  width: 30px;
-  border-radius: 100px;
 }
 
 @media (max-width: 460px) {
@@ -596,7 +438,7 @@
 }
 
 .sidebar .nav-link:hover, .sidebar .nav-link.active {
-  background-color: rgba(87,77,197,0.98);
+  background-color: rgba(61,94,84,0.38);
   opacity: 1;
 }
 
@@ -717,6 +559,4 @@
   margin-top: 25px;
   background: linear-gradient(#212529, #212529 100%), #212529;
 }
-
-
 
