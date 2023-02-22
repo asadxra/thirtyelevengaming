@@ -589,3 +589,567 @@
 </body>
 
 </html>
+
+<style>.weapon-container {
+  background: rgba(61,94,84,0.38);
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  padding-top: 15px;
+  font-family: 'DM Sans', sans-serif;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 10px;
+}
+
+.banner-container {
+  background: rgba(61,94,84,0.38);
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  padding-top: 15px;
+  font-family: 'DM Sans', sans-serif;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  height: 90px;
+}
+
+.team-container {
+  border-radius: 6px;
+  padding-top: 15px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.stat-container {
+  border-radius: 6px;
+  font-family: 'DM Sans', sans-serif;
+  padding-top: 0px;
+}
+
+.box-title {
+  color: rgb(141, 253, 165);
+  font-size: 16px;
+  width: 100%;
+  margin-top: -10px;
+}
+
+.team-title {
+  color: rgb(255,255,255);
+  font-size: 14px;
+  width: 100%;
+  margin-top: -4px;
+}
+
+.stat-title {
+  color: rgb(255,255,255);
+  font-size: 12px;
+  width: 100%;
+  margin-top: -5px;
+  min-width: 100px;
+}
+
+.weapon-stat {
+  font-size: 14px;
+  color: rgb(255,255,255);
+  width: 100%;
+  margin-top: -6px;
+}
+
+.ads {
+  font-size: 14px;
+  color: rgb(197,197,197);
+  width: 100%;
+  margin-top: 17px;
+}
+
+.talent-stat {
+  font-size: 14px;
+  color: rgb(255,255,255);
+  width: 100%;
+  margin-top: -4px;
+  color: rgb(157,148,255);
+}
+
+.weapon-meta {
+  color: rgb(255,255,255);
+  border-radius: 6px;
+  font-size: 14px;
+  padding-top: 5px;
+}
+
+.talent-meta {
+  color: rgb(255,255,255);
+  border-radius: 6px;
+  font-size: 13px;
+  padding-top: 10px;
+}
+
+.weapon-icon {
+  position: relative;
+  top: 0px;
+  width: 65px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  background: rgba(65,135,113,0.98);
+  border-radius: 6px;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.talent-icon {
+  position: relative;
+  top: 0px;
+  width: 50px;
+  background: rgba(40,64,56,0);
+  border-radius: 6px;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.artifact-icon {
+  position: relative;
+  top: 0px;
+  width: 65px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  background: rgba(40,64,56,0.98);
+  border-radius: 6px;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.artifact-icon {
+  position: relative;
+  top: 0px;
+  width: 65px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  background: rgba(65,135,113,0.98);
+  border-radius: 6px;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.team-icon {
+  position: relative;
+  top: 0px;
+  width: 70px;
+  box-shadow: rgb(0 0 0 / 25%) 0px 0px 8px;
+  background: rgba(65,135,113,0.98);
+  border-radius: 6px;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: -10px;
+}
+
+.stat-icon {
+  position: relative;
+  top: 0px;
+  width: 45px;
+  border-radius: 6px;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+  background: rgba(65,135,113,0.98);
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  padding-top: 5px;
+  padding-right: 5px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+}
+
+@media (max-width: 460px) {
+  .weapon-meta {
+    font-size: 12px;
+  }
+}
+
+.title {
+  color: rgb(255,255,255);
+  font-size: 18px;
+  margin-top: 25px;
+  margin-bottom: 15px;
+}
+
+.name-title {
+  color: rgb(255,255,255);
+  font-size: 18px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
+
+.description {
+  color: rgb(255,255,255);
+  font-size: 14px;
+  padding-right: 25px;
+  padding-left: 25px;
+}
+
+.bg {
+  height: 400px;
+  margin-right: auto;
+  margin-left: auto;
+  border-radius: 6px;
+  width: 100%;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(33,56,49,6.90) 100%), url("https://res.cloudinary.com/djqzskg3z/image/upload/v1674235604/GENSHIN/Namecards/Al%20Haitam/Character_Alhaitham_Wish_tvkahy.webp") top / cover no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1674042934/GENSHIN/Namecards/Al%20Haitam/Namecard_Background_Alhaitham_Enlightenment_yfxkdo.webp") center / cover;
+}
+
+.background-container {
+  width: 100%;
+  background: #212529;
+  padding-bottom: 25px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1000px;
+  border-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border-bottom-left-radius: 6px;
+  margin-top: 40px;
+}
+
+.container-row {
+  margin-top: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.artifact-row-2 {
+  margin-top: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+  background: rgba(61,94,84,0.38);
+  border-radius: 6px;
+  width: 100%;
+}
+
+.banner-icon {
+  margin-top: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.team-row {
+  background-color: rgba(61,94,84,0.38);
+  margin-top: 0px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 15px;
+  border-radius: 6px;
+  width: 97%;
+  margin-bottom: 15px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+}
+
+.artifact-stat-row {
+  background-color: rgba(61,94,84,0.38);
+  margin-top: 0px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 15px;
+  border-radius: 6px;
+  width: 97%;
+  margin-bottom: 15px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+}
+
+.talent-row {
+  margin-top: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.bg-content {
+  width: 100%;
+  padding-right: 0px;
+  padding-left: 0px;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+
+.rarity-row {
+  width: 100%;
+  position: relative;
+  margin-top: -38px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.rarity-star {
+  width: 14px;
+  margin-left: -2px;
+}
+
+@media (max-width: 460px) {
+  .weapon-icon {
+    width: 58px;
+  }
+}
+
+@media (max-width: 460px) {
+  .rarity-star {
+    width: 11px;
+  }
+}
+
+@media (max-width: 460px) {
+  .box-title {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 460px) {
+  .weapon-stat {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 460px) {
+  .artifact-icon {
+    width: 45px;
+  }
+}
+
+@media (max-width: 460px) {
+  .team-icon {
+    width: 50px;
+    margin-top: -20px;
+    height: 50px;
+  }
+}
+
+@media (max-width: 460px) {
+  .team-title {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 460px) {
+  .team-row {
+    padding-bottom: 10px;
+  }
+}
+
+.vision-icon {
+  width: 20px;
+  border-radius: 50px;
+  margin-top: -7px;
+}
+
+.vision-box {
+  position: relative;
+  margin-top: -18px;
+}
+
+@media (max-width: 460px) {
+  .vision-icon {
+    width: 17px;
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 460px) {
+  .vision-box {
+    margin-top: -42px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .bg {
+    background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(33,56,49,6.90) 100%), url("https://res.cloudinary.com/djqzskg3z/image/upload/v1674235604/GENSHIN/Namecards/Al%20Haitam/Character_Alhaitham_Wish_tvkahy.webp") bottom -500px left -500px / auto no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1674042934/GENSHIN/Namecards/Al%20Haitam/Namecard_Background_Alhaitham_Enlightenment_yfxkdo.webp") center / cover;
+  }
+}
+
+@media (min-width: 992px) {
+  .bg {
+    background: linear-gradient(180deg, rgba(0,0,0,0) 0%, #212529 100%), url("https://res.cloudinary.com/djqzskg3z/image/upload/v1674235604/GENSHIN/Namecards/Al%20Haitam/Character_Alhaitham_Wish_tvkahy.webp") bottom -500px left -500px / auto no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1674042934/GENSHIN/Namecards/Al%20Haitam/Namecard_Background_Alhaitham_Enlightenment_yfxkdo.webp") center / cover;
+  }
+}
+
+@media (max-width: 460px) {
+  .stat-icon {
+    width: 35px;
+  }
+}
+
+@media (max-width: 460px) {
+  .stat-title {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 460px) {
+  .ads {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 460px) {
+  .title {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 460px) {
+  .talent-meta {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 460px) {
+  .talent-stat {
+    font-size: 13px;
+  }
+}
+
+/* Body Styles */
+
+.sidebar.mobile-hid {
+}
+
+/* Sidebar Styles */
+
+.sidebar {
+  max-width: 14rem !important;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #212529;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.sidebar .logo {
+  font-size: 1.6rem;
+}
+
+.sidebar .nav-link:hover, .sidebar .nav-link.active {
+  background-color: rgba(61,94,84,0.38);
+  opacity: 1;
+}
+
+.sidebar .nav-link span {
+  font-size: 1rem;
+}
+
+.sidebar .dropdown-toggle:after {
+  display: none;
+}
+
+.sidebar .dropdown-menu {
+  position: relative !important;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  overflow: hidden;
+  transform: unset !important;
+  top: unset !important;
+  left: unset !important;
+  min-width: unset !important;
+  background-color: #3a51b5;
+  border-radius: 0 !important;
+}
+
+.sidebar .dropdown-item {
+  padding: 0.8rem 0 0.8rem 1.5rem;
+  margin: 0;
+}
+
+.sidebar .dropdown-item:hover, .sidebar .dropdown-item:active, .dropdown-item:focus {
+  background-color: #6177d9;
+  color: #ffffff;
+}
+
+.sidebar .nav-link {
+  padding-top: 1rem !important;
+  padding-bottom: 1rem !important;
+  font-size: 1rem;
+  position: relative;
+  opacity: 0.9;
+}
+
+.sidebar .fas.fa-caret-down.float-none.float-lg-right.fa-sm {
+  position: absolute;
+  top: 50%;
+  right: 5%;
+  transform: translate(-50%, -50%);
+}
+
+.sidebar.collapsed .nav-item:not(.logo-holder) {
+  display: none !important;
+}
+
+@media (max-width: 991px) {
+  .sidebar.mobile-hid .nav-item {
+    display: none !important;
+  }
+}
+
+.sidebar.collapsed #sidebarToggleHolder {
+  position: absolute !important;
+  color: #858791 !important;
+  left: 0;
+  top: 0;
+  padding: 10px;
+  z-index: 999;
+}
+
+@media (max-width: 991px) {
+  .sidebar.mobile-hid #sidebarToggleHolder {
+    position: absolute !important;
+    color: #858791 !important;
+    left: 0;
+    top: 0;
+    margin: 10px;
+    z-index: 999;
+  }
+}
+
+.sidebar.collapsed .logo #title {
+  display: none;
+}
+
+@media (max-width: 991px) {
+  .sidebar.mobile-hid .logo #title {
+    display: none;
+  }
+}
+
+.sidebar.collapsed #sidebarToggleHolder {
+  float: none !important;
+}
+
+@media (max-width: 991px) {
+  .sidebar.mobile-hid #sidebarToggleHolder {
+    float: none !important;
+  }
+}
+
+.sidebar.collapsed {
+  width: 0 !important;
+}
+
+@media (max-width: 991px) {
+  .sidebar.mobile-hid {
+    width: 0 !important;
+  }
+}
+
+.sidebar #sidebarToggleHolder {
+  font-size: 20px !important;
+  margin: 7px 5px;
+  color: rgb(174,174,174);
+}
+
+.footer {
+  margin-top: 25px;
+  background: linear-gradient(#212529, #212529 100%), #212529;
+}
+
+</style>
