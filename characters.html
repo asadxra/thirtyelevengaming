@@ -10,12 +10,24 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=DM+Sans:400i,500,500i,700,700i&amp;subset=latin-ext&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=DM+Sans:400,400i,500,500i,700,700i&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora&amp;display=swap">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5760469533189657"
-     crossorigin="anonymous"></script>
+    crossorigin="anonymous"></script>
 </head>
 
 <body style="background: #2f3337;">
+    <ul class="nav flex-column shadow d-flex sidebar mobile-hid" data-bs-smooth-scroll="true" style="font-family: 'DM Sans', sans-serif;">
+        <li class="nav-item logo-holder">
+            <div class="text-center text-white logo py-4 mx-4"><a id="title" class="text-decoration-none" href="#" style="font-size: 18.6px;color: rgb(255,255,255);"><strong>Navigation</strong></a><a class="float-end" id="sidebarToggleHolder" href="#"><i class="fas fa-bars" id="sidebarToggle"></i></a></div>
+        </li>
+        <li class="nav-item"><a class="nav-link active text-start py-1 px-0" href="https://thirtyelevengaming.io/" style="color: rgb(255,255,255);"><i class="fas fa-home mx-3"></i><span class="text-nowrap mx-2">Home</span></a></li>
+        <li class="nav-item"><a class="nav-link text-start py-1 px-0" href="https://thirtyelevengaming.io/characters" style="color: #ffffff;"><i class="fas fa-user mx-3" style="color: #ffffff;"></i><span class="text-nowrap mx-2" style="color: #ffffff;">Character Guides</span></a></li>
+        <li class="nav-item" style="color: #ffffff;"><a class="nav-link text-start py-1 px-0" href="https://thirtyelevengaming.io/farming-guide" style="color: #ffffff;"><i class="fas fa-lightbulb mx-3" style="color: #ffffff;"></i><span class="text-nowrap mx-2" style="color: #ffffff;">Farming Guides</span></a></li>
+        <li class="nav-item" style="color: #ffffff;"></li>
+        <li class="nav-item" style="color: #ffffff;"></li>
+        <li class="nav-item" style="color: #ffffff;"></li>
+    </ul>
     <div class="container background-container">
         <div class="row">
             <div class="col-auto col-md-12 bg-content">
@@ -1027,94 +1039,92 @@
     <script src="assets/js/bs-init.js"></script>
     <script src="assets/js/sidebar.js"></script>
     <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
-<script>
-  kofiWidgetOverlay.draw('thirtyelevengaming', {
-    'type': 'floating-chat',
-    'floating-chat.donateButton.text': 'Support Us',
-    'floating-chat.donateButton.background-color': '#00bfa5',
-    'floating-chat.donateButton.text-color': '#fff'
-  });
-</script>
-<script>
-    if (window.innerWidth < 768) {
-        [].slice.call(document.querySelectorAll('[data-bss-disabled-mobile]')).forEach(function (elem) {
-            elem.classList.remove('animated');
-            elem.removeAttribute('data-bss-hover-animate');
-            elem.removeAttribute('data-aos');
-            elem.removeAttribute('data-bss-parallax-bg');
-            elem.removeAttribute('data-bss-scroll-zoom');
-        });
-    }
-    
-    document.addEventListener('DOMContentLoaded', function() {
-    
-        var hoverAnimationTriggerList = [].slice.call(document.querySelectorAll('[data-bss-hover-animate]'));
-        var hoverAnimationList = hoverAnimationTriggerList.forEach(function (hoverAnimationEl) {
-            hoverAnimationEl.addEventListener('mouseenter', function(e){ e.target.classList.add('animated', e.target.dataset.bssHoverAnimate) });
-            hoverAnimationEl.addEventListener('mouseleave', function(e){ e.target.classList.remove('animated', e.target.dataset.bssHoverAnimate) });
-        });
-    }, false);</script>
-
-    <script>(function($) {
-    
-        let win = $(window);
-        let w = win.width();
-        
-        let body = $('body');
-        let btn = $('#sidebarToggle');
-        let sidebar = $('.sidebar');
-        
-        // Collapse on load
-        
-        if (win.width() < 992) {
-            sidebar.addClass('collapsed');
+    <script>
+      kofiWidgetOverlay.draw('thirtyelevengaming', {
+        'type': 'floating-chat',
+        'floating-chat.donateButton.text': 'Support Us',
+        'floating-chat.donateButton.background-color': '#00bfa5',
+        'floating-chat.donateButton.text-color': '#fff'
+      });
+    </script>
+    <script>
+        if (window.innerWidth < 768) {
+            [].slice.call(document.querySelectorAll('[data-bss-disabled-mobile]')).forEach(function (elem) {
+                elem.classList.remove('animated');
+                elem.removeAttribute('data-bss-hover-animate');
+                elem.removeAttribute('data-aos');
+                elem.removeAttribute('data-bss-parallax-bg');
+                elem.removeAttribute('data-bss-scroll-zoom');
+            });
         }
         
-        sidebar.removeClass('mobile-hid');
+        document.addEventListener('DOMContentLoaded', function() {
         
-        // Events
-        
-        btn.click(toggleSidebar);
-        
-        win.resize(function() {
+            var hoverAnimationTriggerList = [].slice.call(document.querySelectorAll('[data-bss-hover-animate]'));
+            var hoverAnimationList = hoverAnimationTriggerList.forEach(function (hoverAnimationEl) {
+                hoverAnimationEl.addEventListener('mouseenter', function(e){ e.target.classList.add('animated', e.target.dataset.bssHoverAnimate) });
+                hoverAnimationEl.addEventListener('mouseleave', function(e){ e.target.classList.remove('animated', e.target.dataset.bssHoverAnimate) });
+            });
+        }, false);</script>
+        <script>(function($) {
+    
+            let win = $(window);
+            let w = win.width();
             
-            if (w==win.width()) {
-                return;
-            }
+            let body = $('body');
+            let btn = $('#sidebarToggle');
+            let sidebar = $('.sidebar');
             
-            w = win.width();
+            // Collapse on load
             
-            if (w < 992 && !sidebar.hasClass('collapsed')) {
-                toggleSidebar();
-            } else if (w > 992 && sidebar.hasClass('collapsed')) {
-                toggleSidebar();
-            }
-        });
-        
-        function toggleSidebar() { 
-            
-            if (win.width() < 992 || !sidebar.hasClass('collapsed')) {
-                body.animate({'padding-left':'0'},100);
-            }
-            else if (win.width() > 992 && sidebar.hasClass('collapsed')) {
-                body.animate({'padding-left':'14rem'},100);
+            if (win.width() < 992) {
+                sidebar.addClass('collapsed');
             }
             
-            if (!sidebar.hasClass('collapsed')) {
-                sidebar.fadeOut(100,function(){
-                    btn.hide();
-                    sidebar.addClass('collapsed');
-                    btn.fadeIn(100);
-                });
+            sidebar.removeClass('mobile-hid');
+            
+            // Events
+            
+            btn.click(toggleSidebar);
+            
+            win.resize(function() {
+                
+                if (w==win.width()) {
+                    return;
+                }
+                
+                w = win.width();
+                
+                if (w < 992 && !sidebar.hasClass('collapsed')) {
+                    toggleSidebar();
+                } else if (w > 992 && sidebar.hasClass('collapsed')) {
+                    toggleSidebar();
+                }
+            });
+            
+            function toggleSidebar() { 
+                
+                if (win.width() < 992 || !sidebar.hasClass('collapsed')) {
+                    body.animate({'padding-left':'0'},100);
+                }
+                else if (win.width() > 992 && sidebar.hasClass('collapsed')) {
+                    body.animate({'padding-left':'14rem'},100);
+                }
+                
+                if (!sidebar.hasClass('collapsed')) {
+                    sidebar.fadeOut(100,function(){
+                        btn.hide();
+                        sidebar.addClass('collapsed');
+                        btn.fadeIn(100);
+                    });
+                }
+                else {
+                    sidebar.removeClass('collapsed');
+                    sidebar.fadeIn(100);
+                }
+               
             }
-            else {
-                sidebar.removeClass('collapsed');
-                sidebar.fadeIn(100);
-            }
-           
-        }
-    })(jQuery)</script>
-
+        })(jQuery)</script>
 </body>
 
 </html>
@@ -1295,6 +1305,7 @@
       margin-top: -10px;
     }
   }
+  
   /* Body Styles */
   
   .sidebar.mobile-hid {
@@ -1440,6 +1451,5 @@
     margin-top: 25px;
     background: linear-gradient(#212529, #212529 100%), #212529;
   }
-  
   
   </style>
