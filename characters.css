@@ -144,3 +144,180 @@
   background: linear-gradient(#212529, #212529 100%), #212529;
 }
 
+.banner-container {
+  background: rgba(61,94,84,0.38);
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  padding-top: 15px;
+  font-family: 'DM Sans', sans-serif;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  height: 90px;
+}
+
+.team-container {
+  border-radius: 6px;
+  padding-top: 15px;
+  font-family: 'DM Sans', sans-serif;
+  background-color: rgba(61,94,84,0.38);
+  box-shadow: rgb(0 0 0 / 25%) 0px 0px 8px;
+}
+
+.team-title {
+  color: rgb(255,255,255);
+  font-size: 14px;
+  width: 100%;
+  margin-top: 0px;
+  margin-bottom: 10px;
+}
+
+.ads {
+  font-size: 14px;
+  color: rgb(197,197,197);
+  width: 100%;
+  margin-top: 17px;
+}
+
+.team-icon {
+  position: relative;
+  top: 0px;
+  width: 65px;
+  box-shadow: rgb(0 0 0 / 25%) 0px 0px 8px;
+  background: rgba(65, 135, 113, 0.98);
+  border-radius: 6px;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0px;
+  height: 65px;
+}
+
+.name-title {
+  color: rgb(255,255,255);
+  font-size: 26px;
+  margin-bottom: 15px;
+  padding-top: 45px;
+}
+
+.bg {
+  height: 220px;
+  margin-right: auto;
+  margin-left: auto;
+  border-radius: 6px;
+  width: 100%;
+  border-bottom-right-radius: 6px;
+  border-bottom-left-radius: 6px;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(30,30,30,6.90) 100%), url("https://res.cloudinary.com/djqzskg3z/image/upload/v1675100224/GENSHIN/Namecards/Dehya/dehya_079_gacha_splash_eqvxhg.webp") bottom -670px left -260px / auto no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1674234225/GENSHIN/Namecards/Dehya/i_n210152_profile_mfpgel.webp") center / cover;
+}
+
+.background-container {
+  width: 100%;
+  padding-bottom: 25px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1000px;
+  border-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border-bottom-left-radius: 6px;
+  margin-top: 40px;
+  background-color: #212529;
+}
+
+.banner-icon {
+  margin-top: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.team-row {
+  margin-top: 0px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 15px;
+  border-radius: 6px;
+  width: 97%;
+}
+
+.bg-content {
+  width: 100%;
+  padding-right: 0px;
+  padding-left: 0px;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+
+.rarity-row {
+  left: 3px;
+  width: 100%;
+  position: relative;
+  margin-top: -10px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 460px) {
+  .team-icon {
+    width: 50px;
+    margin-top: -2px;
+    height: 50px;
+  }
+}
+
+@media (max-width: 460px) {
+  .team-title {
+    font-size: 10px;
+    margin-top: -6px;
+  }
+}
+
+@media (max-width: 460px) {
+  .team-row {
+    padding-bottom: 10px;
+  }
+}
+
+.vision-icon {
+  position: relative;
+  width: 20px;
+  border-radius: 50px;
+  margin-top: 2px;
+}
+
+.vision-box {
+  position: relative;
+  margin-top: -30px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (max-width: 460px) {
+  .vision-icon {
+    width: 17px;
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 460px) {
+  .vision-box {
+    margin-top: -42px;
+  }
+}
+
+.rarity-div {
+}
+
+.rarity {
+  width: 14px;
+  margin-left: -4px;
+}
+
+@media (max-width: 460px) {
+  .rarity {
+    width: 11px;
+    margin-top: -10px;
+  }
+}
+
