@@ -103,7 +103,7 @@ div {
 }
 
 .sidebar .nav-link:hover, .sidebar .nav-link.active {
-  background-color: rgba(87,77,197,0.98);
+  background-color: rgba(61,94,84,0.38);
   opacity: 1;
 }
 
