@@ -584,3 +584,26 @@
   font-weight: bold;
 }
 
+.fit-cover {
+  object-fit: cover;
+}
+
+.card-title-blog {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+h4 {
+}
+
+.card-title-description {
+  font-size: 14px;
+}
+
+.button-title {
+  font-family: 'DM Sans', sans-serif;
+  background: rgba(61,94,84);
+  border-style: none;
+  font-size: 14px;
+}
+
