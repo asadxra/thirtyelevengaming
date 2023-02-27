@@ -79,6 +79,43 @@ div {
   margin-bottom: 5px;
 }
 
+.character-icon {
+  width: 45px;
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 25%) 0px 0px 8px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  background: rgba(65,135,113,0.98);
+}
+
+.material-icon {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.table-title {
+  color: rgb(255,255,255);
+  font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.table-description {
+  font-size: 14px;
+  color: rgb(255,255,255);
+}
+
+.table-row-3 {
+  font-family: 'DM Sans', sans-serif;
+  height: 79px;
+  min-width: 220px;
+}
+
+.table-size {
+  height: 79px;
+  min-width: 180px;
+}
+
 /* Body Styles */
 
 .sidebar.mobile-hid {
