@@ -1,5 +1,26 @@
-.weapon-container {
+.weapon-container-2 {
   background: rgba(61,94,84,0.38);
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  padding-top: 15px;
+  font-family: 'DM Sans', sans-serif;
+  padding-bottom: 10px;
+}
+
+.weapon-container-flex {
+  background: rgba(61,94,84,0.38);
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  padding-top: 15px;
+  font-family: 'DM Sans', sans-serif;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 10px;
+  height: 188px;
+}
+
+.weapon-container {
+  background: #2a2e32;
   border-radius: 6px;
   box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
   padding-top: 15px;
@@ -9,8 +30,20 @@
   padding-bottom: 10px;
 }
 
+.artes-stat-container {
+  background: #2a2e32;
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  padding-top: 15px;
+  font-family: 'DM Sans', sans-serif;
+  width: 99%;
+  margin-left: auto;
+  margin-right: auto;
+  height: 50px;
+}
+
 .banner-container {
-  background: rgba(61,94,84,0.38);
+  background: #2a2e32;
   border-radius: 6px;
   box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
   padding-top: 15px;
@@ -33,13 +66,6 @@
   padding-top: 0px;
 }
 
-.box-title {
-  color: rgb(141, 253, 165);
-  font-size: 16px;
-  width: 100%;
-  margin-top: -10px;
-}
-
 .team-title {
   color: rgb(255,255,255);
   font-size: 14px;
@@ -55,6 +81,14 @@
   min-width: 100px;
 }
 
+.weapon-stat-2 {
+  font-size: 14px;
+  color: rgb(255,255,255);
+  width: 60%;
+  left: 96px;
+  top: -45px;
+}
+
 .weapon-stat {
   font-size: 14px;
   color: rgb(255,255,255);
@@ -62,19 +96,34 @@
   margin-top: -6px;
 }
 
+.desired-substat {
+  font-size: 13px;
+  color: rgb(255,255,255);
+  width: 100%;
+}
+
 .ads {
   font-size: 14px;
-  color: rgb(197,197,197);
+  color: rgb(167,167,167);
   width: 100%;
   margin-top: 17px;
 }
 
 .talent-stat {
   font-size: 14px;
-  color: rgb(255,255,255);
   width: 100%;
   margin-top: -4px;
-  color: rgb(157,148,255);
+  color: rgb(255,255,255);
+}
+
+.weapon-meta-2 {
+  color: rgb(255,255,255);
+  border-radius: 6px;
+  font-size: 14px;
+  padding-top: 5px;
+  margin-top: -32px;
+  padding-left: 3px;
+  width: 100%;
 }
 
 .weapon-meta {
@@ -82,6 +131,7 @@
   border-radius: 6px;
   font-size: 14px;
   padding-top: 5px;
+  padding-left: 3px;
 }
 
 .talent-meta {
@@ -96,7 +146,7 @@
   top: 0px;
   width: 65px;
   box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
-  background: rgba(65,135,113,0.98);
+  background: rgba(87,77,197,0.98);
   border-radius: 6px;
   align-items: center;
   margin-left: auto;
@@ -114,15 +164,15 @@
   margin-right: auto;
 }
 
-.artifact-icon {
+.artifact-icon-2 {
   position: relative;
   top: 0px;
   width: 65px;
   box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
-  background: rgba(40,64,56,0.98);
+  background: rgba(87,77,197,0.98);
   border-radius: 6px;
   align-items: center;
-  margin-left: auto;
+  margin-left: 15px;
   margin-right: auto;
 }
 
@@ -131,10 +181,10 @@
   top: 0px;
   width: 65px;
   box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
-  background: rgba(65,135,113,0.98);
+  background: rgba(87,77,197,0.98);
   border-radius: 6px;
   align-items: center;
-  margin-left: auto;
+  margin-left: 15px;
   margin-right: auto;
 }
 
@@ -143,7 +193,7 @@
   top: 0px;
   width: 70px;
   box-shadow: rgb(0 0 0 / 25%) 0px 0px 8px;
-  background: rgba(65,135,113,0.98);
+  background: rgba(87,77,197,0.98);
   border-radius: 6px;
   align-items: center;
   margin-left: auto;
@@ -168,8 +218,16 @@
 }
 
 @media (max-width: 460px) {
+  .weapon-meta-2 {
+    font-size: 12px;
+    padding-top: 10px;
+  }
+}
+
+@media (max-width: 460px) {
   .weapon-meta {
     font-size: 12px;
+    padding-top: 10px;
   }
 }
 
@@ -183,15 +241,8 @@
 .name-title {
   color: rgb(255,255,255);
   font-size: 18px;
-  margin-top: 5px;
+  margin-top: 25px;
   margin-bottom: 15px;
-}
-
-.description {
-  color: rgb(255,255,255);
-  font-size: 14px;
-  padding-right: 25px;
-  padding-left: 25px;
 }
 
 .bg {
@@ -202,34 +253,27 @@
   width: 100%;
   border-bottom-right-radius: 0px;
   border-bottom-left-radius: 0px;
-  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, #212529 100%), url("https://res.cloudinary.com/djqzskg3z/image/upload/v1674235604/GENSHIN/Namecards/Al%20Haitam/Character_Alhaitham_Wish_tvkahy.webp") top / cover no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1674042934/GENSHIN/Namecards/Al%20Haitam/Namecard_Background_Alhaitham_Enlightenment_yfxkdo.webp") center / cover;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 50%, #212529 100%), url("https://res.cloudinary.com/djqzskg3z/image/upload/v1674235604/GENSHIN/Namecards/Al%20Haitam/Character_Alhaitham_Wish_tvkahy.webp") top / cover no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1674042934/GENSHIN/Namecards/Al%20Haitam/Namecard_Background_Alhaitham_Enlightenment_yfxkdo.webp") center / cover;
 }
 
 .background-container {
   width: 100%;
-  background: #212529;
+  background: rgba(27,31,35,0.49);
   padding-bottom: 25px;
   margin-left: auto;
   margin-right: auto;
-  max-width: 1000px;
+  max-width: 1100px;
   border-radius: 6px;
   border-bottom-right-radius: 6px;
   border-bottom-left-radius: 6px;
+  margin-top: 40px;
+  margin-bottom: 25px;
 }
 
 .container-row {
   margin-top: 0px;
   margin-left: 0px;
   margin-right: 0px;
-}
-
-.artifact-row-2 {
-  margin-top: 0px;
-  margin-left: 0px;
-  margin-right: 0px;
-  background: rgba(61,94,84,0.38);
-  border-radius: 6px;
-  width: 100%;
 }
 
 .banner-icon {
@@ -239,13 +283,13 @@
 }
 
 .team-row {
-  background-color: rgba(61,94,84,0.38);
+  background-color: #2a2e32;
   margin-top: 0px;
   margin-left: auto;
   margin-right: auto;
   padding-bottom: 15px;
   border-radius: 6px;
-  width: 97%;
+  width: 96%;
   margin-bottom: 15px;
   box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
 }
@@ -310,8 +354,18 @@
 }
 
 @media (max-width: 460px) {
+  .weapon-stat-2 {
+    font-size: 10px;
+    left: 76px;
+    top: -32px;
+  }
+}
+
+@media (max-width: 460px) {
   .weapon-stat {
     font-size: 10px;
+    left: 76px;
+    top: -32px;
   }
 }
 
@@ -365,9 +419,15 @@
   }
 }
 
+@media (min-width: 1200px) {
+  .bg {
+    background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(33,56,49,6.90) 100%), url("https://res.cloudinary.com/djqzskg3z/image/upload/v1674235604/GENSHIN/Namecards/Al%20Haitam/Character_Alhaitham_Wish_tvkahy.webp") bottom -500px left -500px / auto no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1674042934/GENSHIN/Namecards/Al%20Haitam/Namecard_Background_Alhaitham_Enlightenment_yfxkdo.webp") center / cover;
+  }
+}
+
 @media (min-width: 992px) {
   .bg {
-    background: linear-gradient(180deg, rgba(0,0,0,0) 0%, #212529 100%), url("https://res.cloudinary.com/djqzskg3z/image/upload/v1674235604/GENSHIN/Namecards/Al%20Haitam/Character_Alhaitham_Wish_tvkahy.webp") bottom -630px left -500px / auto no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1674042934/GENSHIN/Namecards/Al%20Haitam/Namecard_Background_Alhaitham_Enlightenment_yfxkdo.webp") center / cover;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 40%, #212529 100%), url("https://res.cloudinary.com/djqzskg3z/image/upload/v1674235604/GENSHIN/Namecards/Al%20Haitam/Character_Alhaitham_Wish_tvkahy.webp") bottom -630px left -450px / auto no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1674042934/GENSHIN/Namecards/Al%20Haitam/Namecard_Background_Alhaitham_Enlightenment_yfxkdo.webp") center / cover;
   }
 }
 
@@ -407,149 +467,266 @@
   }
 }
 
-/* Body Styles */
-
-.sidebar.mobile-hid {
+@media (min-width: 1400px) {
+  .weapon-column {
+    width: 49%;
+  }
 }
 
-/* Sidebar Styles */
-
-.sidebar {
-  max-width: 14rem !important;
-  width: 100%;
-  min-height: 100vh;
-  background-color: #212529;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 1;
+@media (max-width: 412px) {
+  .desired-substat {
+    margin-top: -5px;
+  }
 }
 
-.sidebar .logo {
-  font-size: 1.6rem;
-}
-
-.sidebar .nav-link:hover, .sidebar .nav-link.active {
-  background-color: rgba(61,94,84,0.38);
-  opacity: 1;
-}
-
-.sidebar .nav-link span {
-  font-size: 1rem;
-}
-
-.sidebar .dropdown-toggle:after {
-  display: none;
-}
-
-.sidebar .dropdown-menu {
-  position: relative !important;
-  padding: 0;
-  margin: 0;
-  width: 100%;
-  overflow: hidden;
-  transform: unset !important;
-  top: unset !important;
-  left: unset !important;
-  min-width: unset !important;
-  background-color: #3a51b5;
-  border-radius: 0 !important;
-}
-
-.sidebar .dropdown-item {
-  padding: 0.8rem 0 0.8rem 1.5rem;
-  margin: 0;
-}
-
-.sidebar .dropdown-item:hover, .sidebar .dropdown-item:active, .dropdown-item:focus {
-  background-color: #6177d9;
-  color: #ffffff;
-}
-
-.sidebar .nav-link {
-  padding-top: 1rem !important;
-  padding-bottom: 1rem !important;
-  font-size: 1rem;
+.material-icon {
+  width: 65px;
+  height: 65px;
+  margin-right: 10px;
+  border-radius: 6px;
+  background: rgba(87,77,197,0.98);
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
   position: relative;
-  opacity: 0.9;
+  left: 4px;
+  margin-top: 15px;
+  padding: 5px;
+  margin-bottom: 5px;
 }
 
-.sidebar .fas.fa-caret-down.float-none.float-lg-right.fa-sm {
-  position: absolute;
-  top: 50%;
-  right: 5%;
-  transform: translate(-50%, -50%);
-}
-
-.sidebar.collapsed .nav-item:not(.logo-holder) {
-  display: none !important;
-}
-
-@media (max-width: 991px) {
-  .sidebar.mobile-hid .nav-item {
-    display: none !important;
+@media (max-width: 576px) {
+  .material-icon {
+    width: 35px;
+    height: 35px;
   }
 }
 
-.sidebar.collapsed #sidebarToggleHolder {
-  position: absolute !important;
-  color: #858791 !important;
-  left: 0;
-  top: 0;
-  padding: 10px;
-  z-index: 999;
-}
-
-@media (max-width: 991px) {
-  .sidebar.mobile-hid #sidebarToggleHolder {
-    position: absolute !important;
-    color: #858791 !important;
-    left: 0;
-    top: 0;
-    margin: 10px;
-    z-index: 999;
+@media (max-width: 576px) {
+  .table-size {
+    font-size: 10px;
   }
 }
 
-.sidebar.collapsed .logo #title {
-  display: none;
+.table-size {
+  min-width: 100px;
+  width: 120px;
+  font-size: 11px;
 }
 
-@media (max-width: 991px) {
-  .sidebar.mobile-hid .logo #title {
-    display: none;
+@media (max-width: 412px) {
+  .weapon-container-flex {
+    height: 140px;
   }
 }
 
-.sidebar.collapsed #sidebarToggleHolder {
-  float: none !important;
-}
-
-@media (max-width: 991px) {
-  .sidebar.mobile-hid #sidebarToggleHolder {
-    float: none !important;
+@media (max-width: 576px) {
+  .desired-substat {
+    font-size: 10px;
   }
 }
 
-.sidebar.collapsed {
-  width: 0 !important;
+.navi-title {
+  color: rgb(255,255,255);
+  font-size: 16px;
+  width: 100%;
 }
 
-@media (max-width: 991px) {
-  .sidebar.mobile-hid {
-    width: 0 !important;
+.box-title {
+  color: rgba(160,181,255,0.98);
+  font-size: 16px;
+  width: 100%;
+  margin-top: -10px;
+}
+
+.table-title {
+  color: rgb(255,255,255);
+  font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.table-description {
+  font-size: 14px;
+  color: rgb(255,255,255);
+}
+
+@media (max-width: 460px) {
+  .artifact-icon {
+    width: 45px;
   }
 }
 
-.sidebar #sidebarToggleHolder {
-  font-size: 20px !important;
-  margin: 7px 5px;
-  color: rgb(174,174,174);
+@media (max-width: 460px) {
+  .box-title {
+    font-size: 13px;
+  }
 }
 
-.footer {
-  margin-top: 25px;
-  background: linear-gradient(#212529, #212529 100%), #212529;
+.container-row-flex {
+  margin-top: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+@media (max-width: 460px) {
+  .weapon-meta {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 460px) {
+  .weapon-stat {
+    font-size: 10px;
+  }
+}
+
+.stat-container {
+  border-radius: 6px;
+  font-family: 'DM Sans', sans-serif;
+  padding-top: 0px;
+}
+
+.stat-title {
+  color: rgb(255,255,255);
+  font-size: 12px;
+  width: 100%;
+  margin-top: -5px;
+  min-width: 100px;
+}
+
+.stat-icon {
+  position: relative;
+  top: 0px;
+  width: 45px;
+  border-radius: 6px;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+  background: rgba(87,77,197,0.98);
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  padding-top: 5px;
+  padding-right: 5px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+}
+
+.artifact-stat-row {
+  background-color: #2a2e32;
+  margin-top: 0px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 15px;
+  border-radius: 6px;
+  width: 97%;
+  margin-bottom: 15px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+}
+
+@media (max-width: 460px) {
+  .stat-icon {
+    width: 35px;
+  }
+}
+
+@media (max-width: 460px) {
+  .stat-title {
+    font-size: 11px;
+  }
+}
+
+.weapon-container-flex {
+  width: 100%;
+}
+
+.nav-bar {
+  background: linear-gradient(#212529, #212529), #212529;
+}
+
+.game-title {
+  margin-left: 10px;
+}
+
+.favicon {
+  width: 42px;
+}
+
+.container-nav {
+  color: #ffffff;
+  font-size: 16px;
+  border-radius: 6px;
+  background: rgba(61,94,84,0.38);
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.container-nav-option:hover {
+  background-color: rgba(87,77,197,0.98);
+}
+
+.nav-bar-links:hover {
+  background: rgba(87,77,197,0.98);
+}
+
+.nav-bar-links {
+  border-radius: 6px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.team-icon:hover {
+  background-color: rgba(111,100,237,0.98);
+}
+
+.flex-wrap-container {
+  background-color: #9d94ff;
+}
+
+.flex-wrapper {
+  background: #1b1f23;
+  padding-bottom: 25px;
+  margin-left: 5px;
+  margin-right: 5px;
+  padding-left: 6px;
+  padding-right: 6px;
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  margin-top: 0px;
+  padding-top: 1px;
+}
+
+.material-icon:hover {
+  background-color: rgba(74,64,184,0.98);
+}
+
+@media (max-width: 768px) {
+  .flex-wrapper {
+    margin-right: -5px;
+    margin-left: -5px;
+  }
+}
+
+.table-title {
+  color: rgb(255,255,255);
+  font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.table-description {
+  font-size: 14px;
+  color: rgb(255,255,255);
+}
+
+.table-size {
+  min-width: 100px;
+  width: 120px;
+}
+
+.container-nav-option {
+  color: rgb(255,255,255);
+  font-size: 15px;
+  text-align: center;
+  letter-spacing: 0.2px;
+  background: #2a2e32;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
 }
 
