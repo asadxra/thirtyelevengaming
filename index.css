@@ -157,7 +157,7 @@
 }
 
 .nav-bar-links:hover {
-  background: rgba(61,94,84,0.38);
+  background: rgba(111,100,237,0.98);
 }
 
 .nav-bar-links {
@@ -172,12 +172,29 @@
   margin-top: -4px;
 }
 
+.title {
+  color: rgb(255,255,255);
+  font-size: 18px;
+  margin-top: 25px;
+  margin-bottom: 15px;
+}
+
+@media (max-width: 460px) {
+  .title {
+    font-size: 16px;
+  }
+}
+
+.container-nav-option:hover {
+  background-color: rgba(111,100,237,0.98);
+}
+
 .container-nav-option {
   color: rgb(255,255,255);
   font-size: 15px;
   text-align: center;
   letter-spacing: 0.2px;
-  background: rgba(61,94,84,0.38);
+  background: #2a2e32;
   padding-top: 15px;
   padding-bottom: 15px;
   border-radius: 6px;
@@ -195,43 +212,10 @@
   .title {
     font-size: 16px;
   }
-}
-
-.container-nav-option:hover {
-  background-color: rgba(91,145,128,0.98);
-}
-
-.container-nav-option {
-  color: rgb(255,255,255);
-  font-size: 15px;
-  text-align: center;
-  letter-spacing: 0.2px;
-  background: rgba(61,94,84,0.38);
-  padding-top: 15px;
-  padding-bottom: 15px;
-  border-radius: 6px;
-  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
-}
-
-.title {
-  color: rgb(255,255,255);
-  font-size: 18px;
-  margin-top: 25px;
-  margin-bottom: 15px;
-}
-
-@media (max-width: 460px) {
-  .title {
-    font-size: 16px;
-  }
-}
-
-.container-nav-option:hover {
-  background-color: rgba(65,135,113,0.98);
 }
 
 .filter-container {
-  background: rgba(61,94,84,0.38);
+  background: #2a2e32;
   border-radius: 6px;
   box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
   padding-top: 15px;
@@ -243,7 +227,7 @@
 }
 
 .banner-container {
-  background: rgba(61,94,84,0.38);
+  background: #2a2e32;
   border-radius: 6px;
   box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
   padding-top: 15px;
@@ -258,7 +242,7 @@
   border-radius: 6px;
   padding-top: 15px;
   font-family: 'DM Sans', sans-serif;
-  background-color: rgba(61,94,84,0.38);
+  background-color: #2a2e32;
   box-shadow: rgb(0 0 0 / 25%) 0px 0px 8px;
 }
 
@@ -282,7 +266,7 @@
   top: 0px;
   width: 65px;
   box-shadow: rgb(0 0 0 / 25%) 0px 0px 8px;
-  background: rgba(65,135,113,0.98);
+  background: rgba(87,77,197,0.98);
   border-radius: 6px;
   align-items: center;
   margin-left: auto;
@@ -319,7 +303,7 @@
   border-bottom-right-radius: 6px;
   border-bottom-left-radius: 6px;
   margin-top: 40px;
-  background-color: #212529;
+  background-color: rgba(27,31,35,0.49);
 }
 
 .banner-icon {
@@ -426,6 +410,6 @@
 }
 
 .team-icon:hover {
-  background: rgba(91,145,128,0.98);
+  background: rgba(111,100,237,0.98);
 }
 
