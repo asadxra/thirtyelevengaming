@@ -82,6 +82,18 @@ div {
 }
 
 .character-icon {
+  height: 55px;
+  width: 55px;
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 25%) 0px 0px 8px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  background: rgba(87,77,197,0.98);
+  margin-top: 5px;
+}
+
+.team-icon {
+  height: 45px;
   width: 45px;
   border-radius: 6px;
   box-shadow: rgb(0 0 0 / 25%) 0px 0px 8px;
@@ -91,8 +103,8 @@ div {
 }
 
 .material-icon {
-  width: 50px;
-  height: 50px;
+  width: 65px;
+  height: 65px;
   margin-right: 10px;
 }
 
@@ -158,5 +170,55 @@ div {
     margin-top: 0px;
     padding-top: 15px;
   }
+}
+
+.container-nav-option:hover {
+  background-color: rgba(87,77,197,0.98);
+}
+
+.container-nav-option {
+  color: rgb(255,255,255);
+  font-size: 15px;
+  text-align: center;
+  letter-spacing: 0.2px;
+  background: #2a2e32;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+}
+
+.tooltip .tooltip-inner {
+  font-size: 14px;
+  background-color: rgba(87,77,197,0.98);
+}
+
+.tooltip.bs-tooltip-top .tooltip-arrow::before {
+  border-top-color: rgba(87,77,197,0.98);
+}
+
+.tooltip.bs-tooltip-bottom .tooltip-arrow::before {
+  border-bottom-color: rgba(87,77,197,0.98);
+}
+
+.tooltip.bs-tooltip-start .tooltip-arrow::before {
+  border-left-color: rgba(87,77,197,0.98);
+}
+
+.tooltip.bs-tooltip-end .tooltip-arrow::before {
+  border-right-color: rgba(87,77,197,0.98);
+}
+
+.tooltip .tooltip-inner {
+  background-color: #000000;
+}
+
+.tooltip-arrow {
+  display: none !important;
+}
+
+.tooltip .tooltip-inner {
+  background-color: rgba(87,77,197,0.98);
+  font-weight: 500;
 }
 
