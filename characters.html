@@ -64,6 +64,34 @@
         <div class="row gx-4 gy-4 row-cols-3 row-cols-sm-4 row-cols-md-5 row-cols-lg-5 row-cols-xl-5 row-cols-xxl-5 justify-content-center align-items-center team-row">
             <div class="col" data-bss-hover-animate="pulse">
                 <div class="d-flex flex-column align-items-center align-items-xl-center team-container">
+                    <div class="bs-icon-lg bs-icon-rounded bs-icon-primary d-flex flex-shrink-0 justify-content-center align-items-center d-inline-block mb-3 bs-icon"><a href="https://thirtyelevengaming.io/characters/baizhu" target="_blank" rel="noopener"><img data-bss-hover-animate="pulse" class="team-icon" src="https://res.cloudinary.com/djqzskg3z/image/upload/v1682660299/GENSHIN/Characters/Baizhu_j9rzsh.png" width="70" height="70"></a></div>
+                    <div class="vision-box">
+                        <h4 class="team-title"><img class="vision-icon" src="https://res.cloudinary.com/djqzskg3z/image/upload/v1675090750/GENSHIN/Vision/img_5f78d297464f0_aea8wj.png" alt="geo"></h4>
+                    </div>
+                    <div class="row rarity-div">
+                        <div class="col rarity-row"><img class="rarity" src="https://res.cloudinary.com/djqzskg3z/image/upload/v1674050940/GENSHIN/icons8-hand-drawn-star-96_lhcqzr.png"><img class="rarity" src="https://res.cloudinary.com/djqzskg3z/image/upload/v1674050940/GENSHIN/icons8-hand-drawn-star-96_lhcqzr.png"><img class="rarity" src="https://res.cloudinary.com/djqzskg3z/image/upload/v1674050940/GENSHIN/icons8-hand-drawn-star-96_lhcqzr.png"><img class="rarity" src="https://res.cloudinary.com/djqzskg3z/image/upload/v1674050940/GENSHIN/icons8-hand-drawn-star-96_lhcqzr.png"><img class="rarity" src="https://res.cloudinary.com/djqzskg3z/image/upload/v1674050940/GENSHIN/icons8-hand-drawn-star-96_lhcqzr.png"></div>
+                    </div>
+                    <div class="px-3">
+                        <h4 class="team-title">Albedo</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col" data-bss-hover-animate="pulse">
+                <div class="d-flex flex-column align-items-center align-items-xl-center team-container">
+                    <div class="bs-icon-lg bs-icon-rounded bs-icon-primary d-flex flex-shrink-0 justify-content-center align-items-center d-inline-block mb-3 bs-icon"><a href="https://thirtyelevengaming.io/characters/kaveh" target="_blank" rel="noopener"><img data-bss-hover-animate="pulse" class="team-icon" src="https://res.cloudinary.com/djqzskg3z/image/upload/v1682660299/GENSHIN/Characters/Kaveh_buqijf.png" width="70" height="70"></a></div>
+                    <div class="vision-box">
+                        <h4 class="team-title"><img class="vision-icon" src="https://res.cloudinary.com/djqzskg3z/image/upload/v1675090750/GENSHIN/Vision/img_5f78d297464f0_aea8wj.png" alt="geo"></h4>
+                    </div>
+                    <div class="row rarity-div">
+                        <div class="col rarity-row"><img class="rarity" src="https://res.cloudinary.com/djqzskg3z/image/upload/v1674050940/GENSHIN/icons8-hand-drawn-star-96_lhcqzr.png"><img class="rarity" src="https://res.cloudinary.com/djqzskg3z/image/upload/v1674050940/GENSHIN/icons8-hand-drawn-star-96_lhcqzr.png"><img class="rarity" src="https://res.cloudinary.com/djqzskg3z/image/upload/v1674050940/GENSHIN/icons8-hand-drawn-star-96_lhcqzr.png"><img class="rarity" src="https://res.cloudinary.com/djqzskg3z/image/upload/v1674050940/GENSHIN/icons8-hand-drawn-star-96_lhcqzr.png"></div>
+                    </div>
+                    <div class="px-3">
+                        <h4 class="team-title">Kaveh</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col" data-bss-hover-animate="pulse">
+                <div class="d-flex flex-column align-items-center align-items-xl-center team-container">
                     <div class="bs-icon-lg bs-icon-rounded bs-icon-primary d-flex flex-shrink-0 justify-content-center align-items-center d-inline-block mb-3 bs-icon"><a href="https://thirtyelevengaming.io/characters/albedo" target="_blank" rel="noopener"><img data-bss-hover-animate="pulse" class="team-icon" src="https://res.cloudinary.com/djqzskg3z/image/upload/v1672771426/GENSHIN/Characters/Albedo_extb5r.png" width="70" height="70"></a></div>
                     <div class="vision-box">
                         <h4 class="team-title"><img class="vision-icon" src="https://res.cloudinary.com/djqzskg3z/image/upload/v1675090750/GENSHIN/Vision/img_5f78d297c847b_d6sklc.png" alt="geo"></h4>
@@ -1056,28 +1084,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
 
-    <script>
-        if (window.innerWidth < 768) {
-            [].slice.call(document.querySelectorAll('[data-bss-disabled-mobile]')).forEach(function (elem) {
-                elem.classList.remove('animated');
-                elem.removeAttribute('data-bss-hover-animate');
-                elem.removeAttribute('data-aos');
-                elem.removeAttribute('data-bss-parallax-bg');
-                elem.removeAttribute('data-bss-scroll-zoom');
-            });
-        }
-        
-        document.addEventListener('DOMContentLoaded', function() {
-        
-            var hoverAnimationTriggerList = [].slice.call(document.querySelectorAll('[data-bss-hover-animate]'));
-            var hoverAnimationList = hoverAnimationTriggerList.forEach(function (hoverAnimationEl) {
-                hoverAnimationEl.addEventListener('mouseenter', function(e){ e.target.classList.add('animated', e.target.dataset.bssHoverAnimate) });
-                hoverAnimationEl.addEventListener('mouseleave', function(e){ e.target.classList.remove('animated', e.target.dataset.bssHoverAnimate) });
-            });
-        }, false);
-        </script>
-
-<script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
 <script>
   kofiWidgetOverlay.draw('thirtyelevengaming', {
     'type': 'floating-chat',
@@ -1086,6 +1093,26 @@
     'floating-chat.donateButton.text-color': '#fff'
   });
 </script>
+
+<script>
+    if (window.innerWidth < 768) {
+        [].slice.call(document.querySelectorAll('[data-bss-disabled-mobile]')).forEach(function (elem) {
+            elem.classList.remove('animated');
+            elem.removeAttribute('data-bss-hover-animate');
+            elem.removeAttribute('data-aos');
+            elem.removeAttribute('data-bss-parallax-bg');
+            elem.removeAttribute('data-bss-scroll-zoom');
+        });
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+    
+        var hoverAnimationTriggerList = [].slice.call(document.querySelectorAll('[data-bss-hover-animate]'));
+        var hoverAnimationList = hoverAnimationTriggerList.forEach(function (hoverAnimationEl) {
+            hoverAnimationEl.addEventListener('mouseenter', function(e){ e.target.classList.add('animated', e.target.dataset.bssHoverAnimate) });
+            hoverAnimationEl.addEventListener('mouseleave', function(e){ e.target.classList.remove('animated', e.target.dataset.bssHoverAnimate) });
+        });
+    }, false);</script>
 </body>
 
 </html>
