@@ -85,6 +85,20 @@
             </div>
             <div class="col" data-bss-hover-animate="pulse">
                 <div class="d-flex flex-column align-items-center align-items-xl-center team-container">
+                    <div class="bs-icon-lg bs-icon-rounded bs-icon-primary d-flex flex-shrink-0 justify-content-center align-items-center d-inline-block mb-3 bs-icon"><a href="https://thirtyelevengaming.io/characters/baizhu" target="_blank" rel="noopener"><img data-bss-hover-animate="pulse" class="team-icon" src="https://res.cloudinary.com/djqzskg3z/image/upload/v1682660299/GENSHIN/Characters/Baizhu_j9rzsh.png"></a></div>
+                    <div class="vision-box">
+                        <h4 class="team-title"><img class="vision-icon" src="https://res.cloudinary.com/djqzskg3z/image/upload/v1675090750/GENSHIN/Vision/img_5f78d297464f0_aea8wj.png" alt="dendro"></h4>
+                    </div>
+                    <div class="row rarity-div">
+                        <div class="col rarity-row"><img class="rarity" src="https://res.cloudinary.com/djqzskg3z/image/upload/v1674050940/GENSHIN/icons8-hand-drawn-star-96_lhcqzr.png"><img class="rarity" src="https://res.cloudinary.com/djqzskg3z/image/upload/v1674050940/GENSHIN/icons8-hand-drawn-star-96_lhcqzr.png"><img class="rarity" src="https://res.cloudinary.com/djqzskg3z/image/upload/v1674050940/GENSHIN/icons8-hand-drawn-star-96_lhcqzr.png"><img class="rarity" src="https://res.cloudinary.com/djqzskg3z/image/upload/v1674050940/GENSHIN/icons8-hand-drawn-star-96_lhcqzr.png"><img class="rarity" src="https://res.cloudinary.com/djqzskg3z/image/upload/v1674050940/GENSHIN/icons8-hand-drawn-star-96_lhcqzr.png"></div>
+                    </div>
+                    <div class="px-3">
+                        <h4 class="team-title">Baizhu</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col" data-bss-hover-animate="pulse">
+                <div class="d-flex flex-column align-items-center align-items-xl-center team-container">
                     <div class="bs-icon-lg bs-icon-rounded bs-icon-primary d-flex flex-shrink-0 justify-content-center align-items-center d-inline-block mb-3 bs-icon"><a href="https://thirtyelevengaming.io/characters/collei" target="_blank" rel="noopener"><img data-bss-hover-animate="pulse" class="team-icon" src="https://res.cloudinary.com/djqzskg3z/image/upload/v1672771429/GENSHIN/Characters/Collei_q7qptt.png"></a></div>
                     <div class="vision-box">
                         <h4 class="team-title"><img class="vision-icon" src="https://res.cloudinary.com/djqzskg3z/image/upload/v1675090750/GENSHIN/Vision/img_5f78d297464f0_aea8wj.png"></h4>
@@ -108,6 +122,20 @@
                     </div>
                     <div class="px-3">
                         <h4 class="team-title" style="text-align: center;">Dendro Traveler</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col" data-bss-hover-animate="pulse">
+                <div class="d-flex flex-column align-items-center align-items-xl-center team-container">
+                    <div class="bs-icon-lg bs-icon-rounded bs-icon-primary d-flex flex-shrink-0 justify-content-center align-items-center d-inline-block mb-3 bs-icon"><a href="https://thirtyelevengaming.io/characters/kaveh" target="_blank" rel="noopener"><img data-bss-hover-animate="pulse" class="team-icon" src="https://res.cloudinary.com/djqzskg3z/image/upload/v1682660299/GENSHIN/Characters/Kaveh_buqijf.png"></a></div>
+                    <div class="vision-box">
+                        <h4 class="team-title"><img class="vision-icon" src="https://res.cloudinary.com/djqzskg3z/image/upload/v1675090750/GENSHIN/Vision/img_5f78d297464f0_aea8wj.png"></h4>
+                    </div>
+                    <div class="row rarity-div">
+                        <div class="col rarity-row"><img class="rarity" src="https://res.cloudinary.com/djqzskg3z/image/upload/v1674050940/GENSHIN/icons8-hand-drawn-star-96_lhcqzr.png"><img class="rarity" src="https://res.cloudinary.com/djqzskg3z/image/upload/v1674050940/GENSHIN/icons8-hand-drawn-star-96_lhcqzr.png"><img class="rarity" src="https://res.cloudinary.com/djqzskg3z/image/upload/v1674050940/GENSHIN/icons8-hand-drawn-star-96_lhcqzr.png"><img class="rarity" src="https://res.cloudinary.com/djqzskg3z/image/upload/v1674050940/GENSHIN/icons8-hand-drawn-star-96_lhcqzr.png"></div>
+                    </div>
+                    <div class="px-3">
+                        <h4 class="team-title">Kaveh</h4>
                     </div>
                 </div>
             </div>
@@ -195,6 +223,16 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
 
+    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+    <script>
+      kofiWidgetOverlay.draw('thirtyelevengaming', {
+        'type': 'floating-chat',
+        'floating-chat.donateButton.text': 'Support Us',
+        'floating-chat.donateButton.background-color': 'rgba(87,77,197,0.98)',
+        'floating-chat.donateButton.text-color': '#fff'
+      });
+    </script>
+    
     <script>
         if (window.innerWidth < 768) {
             [].slice.call(document.querySelectorAll('[data-bss-disabled-mobile]')).forEach(function (elem) {
@@ -213,18 +251,7 @@
                 hoverAnimationEl.addEventListener('mouseenter', function(e){ e.target.classList.add('animated', e.target.dataset.bssHoverAnimate) });
                 hoverAnimationEl.addEventListener('mouseleave', function(e){ e.target.classList.remove('animated', e.target.dataset.bssHoverAnimate) });
             });
-        }, false);
-        </script>
-
-<script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
-<script>
-  kofiWidgetOverlay.draw('thirtyelevengaming', {
-    'type': 'floating-chat',
-    'floating-chat.donateButton.text': 'Support Us',
-    'floating-chat.donateButton.background-color': 'rgba(87,77,197,0.98)',
-    'floating-chat.donateButton.text-color': '#fff'
-  });
-</script>
+        }, false);</script>
 </body>
 
 </html>
