@@ -279,6 +279,16 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
 
+    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+    <script>
+      kofiWidgetOverlay.draw('thirtyelevengaming', {
+        'type': 'floating-chat',
+        'floating-chat.donateButton.text': 'Support Us',
+        'floating-chat.donateButton.background-color': 'rgba(87,77,197,0.98)',
+        'floating-chat.donateButton.text-color': '#fff'
+      });
+    </script>
+    
     <script>
         if (window.innerWidth < 768) {
             [].slice.call(document.querySelectorAll('[data-bss-disabled-mobile]')).forEach(function (elem) {
@@ -297,18 +307,7 @@
                 hoverAnimationEl.addEventListener('mouseenter', function(e){ e.target.classList.add('animated', e.target.dataset.bssHoverAnimate) });
                 hoverAnimationEl.addEventListener('mouseleave', function(e){ e.target.classList.remove('animated', e.target.dataset.bssHoverAnimate) });
             });
-        }, false);
-        </script>
-
-<script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
-<script>
-  kofiWidgetOverlay.draw('thirtyelevengaming', {
-    'type': 'floating-chat',
-    'floating-chat.donateButton.text': 'Support Us',
-    'floating-chat.donateButton.background-color': 'rgba(87,77,197,0.98)',
-    'floating-chat.donateButton.text-color': '#fff'
-  });
-</script>
+        }, false);</script>
 </body>
 
 </html>
