@@ -1,0 +1,734 @@
+.weapon-container-2 {
+  background: rgba(61,94,84,0.38);
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  padding-top: 15px;
+  font-family: 'DM Sans', sans-serif;
+  padding-bottom: 10px;
+}
+
+.weapon-container-flex {
+  background: rgba(61,94,84,0.38);
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  padding-top: 15px;
+  font-family: 'DM Sans', sans-serif;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 10px;
+  height: 188px;
+}
+
+.weapon-container {
+  background: #2a2e32;
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  padding-top: 15px;
+  font-family: 'DM Sans', sans-serif;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 10px;
+}
+
+.artes-stat-container {
+  background: #2a2e32;
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  padding-top: 15px;
+  font-family: 'DM Sans', sans-serif;
+  width: 99%;
+  margin-left: auto;
+  margin-right: auto;
+  height: 50px;
+}
+
+.banner-container {
+  background: #2a2e32;
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  padding-top: 15px;
+  font-family: 'DM Sans', sans-serif;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  height: 90px;
+}
+
+.team-container {
+  border-radius: 6px;
+  padding-top: 15px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.stat-container {
+  border-radius: 6px;
+  font-family: 'DM Sans', sans-serif;
+  padding-top: 0px;
+}
+
+.team-title {
+  color: rgb(255,255,255);
+  font-size: 14px;
+  width: 100%;
+  margin-top: -4px;
+}
+
+.stat-title {
+  color: rgb(255,255,255);
+  font-size: 12px;
+  width: 100%;
+  margin-top: -5px;
+  min-width: 100px;
+}
+
+.weapon-stat-2 {
+  font-size: 14px;
+  color: rgb(255,255,255);
+  width: 60%;
+  left: 96px;
+  top: -45px;
+}
+
+.weapon-stat {
+  font-size: 14px;
+  color: rgb(255,255,255);
+  width: 100%;
+  margin-top: -6px;
+}
+
+.desired-substat {
+  font-size: 13px;
+  color: rgb(255,255,255);
+  width: 100%;
+}
+
+.ads {
+  font-size: 14px;
+  color: rgb(167,167,167);
+  width: 100%;
+  margin-top: 17px;
+}
+
+.talent-stat {
+  font-size: 14px;
+  width: 100%;
+  margin-top: -4px;
+  color: rgb(255,255,255);
+}
+
+.weapon-meta-2 {
+  color: rgb(255,255,255);
+  border-radius: 6px;
+  font-size: 14px;
+  padding-top: 5px;
+  margin-top: -32px;
+  padding-left: 3px;
+  width: 100%;
+}
+
+.weapon-meta {
+  color: rgb(255,255,255);
+  border-radius: 6px;
+  font-size: 14px;
+  padding-top: 5px;
+  padding-left: 3px;
+}
+
+.talent-meta {
+  color: rgb(255,255,255);
+  border-radius: 6px;
+  font-size: 13px;
+  padding-top: 10px;
+}
+
+.weapon-icon {
+  position: relative;
+  top: 0px;
+  width: 65px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  background: rgba(87,77,197,0.98);
+  border-radius: 6px;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.talent-icon {
+  position: relative;
+  top: 0px;
+  width: 50px;
+  background: rgba(40,64,56,0);
+  border-radius: 6px;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.artifact-icon-2 {
+  position: relative;
+  top: 0px;
+  width: 65px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  background: rgba(87,77,197,0.98);
+  border-radius: 6px;
+  align-items: center;
+  margin-left: 15px;
+  margin-right: auto;
+}
+
+.artifact-icon {
+  position: relative;
+  top: 0px;
+  width: 65px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  background: rgba(87,77,197,0.98);
+  border-radius: 6px;
+  align-items: center;
+  margin-left: 15px;
+  margin-right: auto;
+}
+
+.team-icon {
+  position: relative;
+  top: 0px;
+  width: 70px;
+  box-shadow: rgb(0 0 0 / 25%) 0px 0px 8px;
+  background: rgba(87,77,197,0.98);
+  border-radius: 6px;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: -10px;
+}
+
+.stat-icon {
+  position: relative;
+  top: 0px;
+  width: 45px;
+  border-radius: 6px;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+  background: rgba(65,135,113,0.98);
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  padding-top: 5px;
+  padding-right: 5px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+}
+
+@media (max-width: 460px) {
+  .weapon-meta-2 {
+    font-size: 12px;
+    padding-top: 10px;
+  }
+}
+
+@media (max-width: 460px) {
+  .weapon-meta {
+    font-size: 12px;
+    padding-top: 10px;
+  }
+}
+
+.title {
+  color: rgb(255,255,255);
+  font-size: 18px;
+  margin-top: 25px;
+  margin-bottom: 15px;
+}
+
+.name-title {
+  color: rgb(255,255,255);
+  font-size: 18px;
+  margin-top: 25px;
+  margin-bottom: 15px;
+}
+
+.bg {
+  height: 250px;
+  margin-right: auto;
+  margin-left: auto;
+  border-radius: 6px;
+  width: 100%;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 50%, #212529 100%), url("https://res.cloudinary.com/djqzskg3z/image/upload/v1683254603/GENSHIN/Namecards/Kaveh/Kaveh_Wish_yr80j7.webp") top / cover no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1683254602/GENSHIN/Namecards/Kaveh/Namecard_Background_Kaveh_Domed_Court_i4pibc.webp") center / cover;
+}
+
+.background-container {
+  width: 100%;
+  background: rgba(27,31,35,0.49);
+  padding-bottom: 25px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1100px;
+  border-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border-bottom-left-radius: 6px;
+  margin-top: 40px;
+  margin-bottom: 25px;
+}
+
+.container-row {
+  margin-top: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.banner-icon {
+  margin-top: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.team-row {
+  background-color: #2a2e32;
+  margin-top: 0px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 15px;
+  border-radius: 6px;
+  width: 96%;
+  margin-bottom: 15px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+}
+
+.artifact-stat-row {
+  background-color: rgba(61,94,84,0.38);
+  margin-top: 0px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 15px;
+  border-radius: 6px;
+  width: 97%;
+  margin-bottom: 15px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+}
+
+.talent-row {
+  margin-top: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.bg-content {
+  width: 100%;
+  padding-right: 0px;
+  padding-left: 0px;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+
+.rarity-row {
+  width: 100%;
+  position: relative;
+  margin-top: -38px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.rarity-star {
+  width: 14px;
+  margin-left: -2px;
+}
+
+@media (max-width: 460px) {
+  .weapon-icon {
+    width: 58px;
+  }
+}
+
+@media (max-width: 460px) {
+  .rarity-star {
+    width: 11px;
+  }
+}
+
+@media (max-width: 460px) {
+  .box-title {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 460px) {
+  .weapon-stat-2 {
+    font-size: 10px;
+    left: 76px;
+    top: -32px;
+  }
+}
+
+@media (max-width: 460px) {
+  .weapon-stat {
+    font-size: 10px;
+    left: 76px;
+    top: -32px;
+  }
+}
+
+@media (max-width: 460px) {
+  .artifact-icon {
+    width: 45px;
+  }
+}
+
+@media (max-width: 460px) {
+  .team-icon {
+    width: 50px;
+    margin-top: -20px;
+    height: 50px;
+  }
+}
+
+@media (max-width: 460px) {
+  .team-title {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 460px) {
+  .team-row {
+    padding-bottom: 10px;
+  }
+}
+
+.vision-icon {
+  width: 20px;
+  border-radius: 50px;
+  margin-top: -7px;
+}
+
+.vision-box {
+  position: relative;
+  margin-top: -18px;
+}
+
+@media (max-width: 460px) {
+  .vision-icon {
+    width: 17px;
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 460px) {
+  .vision-box {
+    margin-top: -42px;
+  }
+}
+
+@media (min-width: 992px) {
+  .bg {
+    background: linear-gradient(180deg, rgba(0,0,0,0) 40%, #212529 100%), url("https://res.cloudinary.com/djqzskg3z/image/upload/v1683254603/GENSHIN/Namecards/Kaveh/Kaveh_Wish_yr80j7.webp") bottom -650px left -450px / auto no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1683254602/GENSHIN/Namecards/Kaveh/Namecard_Background_Kaveh_Domed_Court_i4pibc.webp") center / cover;
+  }
+}
+
+@media (max-width: 460px) {
+  .stat-icon {
+    width: 35px;
+  }
+}
+
+@media (max-width: 460px) {
+  .stat-title {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 460px) {
+  .ads {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 460px) {
+  .title {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 460px) {
+  .talent-meta {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 460px) {
+  .talent-stat {
+    font-size: 13px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .weapon-column {
+    width: 49%;
+  }
+}
+
+@media (max-width: 412px) {
+  .desired-substat {
+    margin-top: -5px;
+  }
+}
+
+.material-icon {
+  width: 65px;
+  height: 65px;
+  margin-right: 10px;
+  border-radius: 6px;
+  background: rgba(87,77,197,0.98);
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  position: relative;
+  left: 4px;
+  margin-top: 15px;
+  padding: 5px;
+  margin-bottom: 5px;
+}
+
+@media (max-width: 576px) {
+  .material-icon {
+    width: 35px;
+    height: 35px;
+  }
+}
+
+@media (max-width: 576px) {
+  .table-size {
+    font-size: 10px;
+  }
+}
+
+.table-size {
+  min-width: 100px;
+  width: 120px;
+  font-size: 11px;
+}
+
+@media (max-width: 412px) {
+  .weapon-container-flex {
+    height: 140px;
+  }
+}
+
+@media (max-width: 576px) {
+  .desired-substat {
+    font-size: 10px;
+  }
+}
+
+.navi-title {
+  color: rgb(255,255,255);
+  font-size: 16px;
+  width: 100%;
+}
+
+.box-title {
+  color: rgba(160,181,255,0.98);
+  font-size: 16px;
+  width: 100%;
+  margin-top: -10px;
+}
+
+.table-title {
+  color: rgb(255,255,255);
+  font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.table-description {
+  font-size: 14px;
+  color: rgb(255,255,255);
+}
+
+@media (max-width: 460px) {
+  .artifact-icon {
+    width: 45px;
+  }
+}
+
+@media (max-width: 460px) {
+  .box-title {
+    font-size: 13px;
+  }
+}
+
+.container-row-flex {
+  margin-top: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+@media (max-width: 460px) {
+  .weapon-meta {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 460px) {
+  .weapon-stat {
+    font-size: 10px;
+  }
+}
+
+.stat-container {
+  border-radius: 6px;
+  font-family: 'DM Sans', sans-serif;
+  padding-top: 0px;
+}
+
+.stat-title {
+  color: rgb(255,255,255);
+  font-size: 12px;
+  width: 100%;
+  margin-top: -5px;
+  min-width: 100px;
+}
+
+.stat-icon {
+  position: relative;
+  top: 0px;
+  width: 45px;
+  border-radius: 6px;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+  background: rgba(87,77,197,0.98);
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  padding-top: 5px;
+  padding-right: 5px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+}
+
+.artifact-stat-row {
+  background-color: #2a2e32;
+  margin-top: 0px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 15px;
+  border-radius: 6px;
+  width: 97%;
+  margin-bottom: 15px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+}
+
+@media (max-width: 460px) {
+  .stat-icon {
+    width: 35px;
+  }
+}
+
+@media (max-width: 460px) {
+  .stat-title {
+    font-size: 11px;
+  }
+}
+
+.weapon-container-flex {
+  width: 100%;
+}
+
+.nav-bar {
+  background: linear-gradient(#212529, #212529), #212529;
+}
+
+.game-title {
+  margin-left: 10px;
+}
+
+.favicon {
+  width: 42px;
+}
+
+.container-nav {
+  color: #ffffff;
+  font-size: 16px;
+  border-radius: 6px;
+  background: rgba(61,94,84,0.38);
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.container-nav-option:hover {
+  background-color: rgba(87,77,197,0.98);
+}
+
+.nav-bar-links:hover {
+  background: rgba(87,77,197,0.98);
+}
+
+.nav-bar-links {
+  border-radius: 6px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.team-icon:hover {
+  background-color: rgba(111,100,237,0.98);
+}
+
+.flex-wrap-container {
+  background-color: #9d94ff;
+}
+
+.flex-wrapper {
+  background: #1b1f23;
+  padding-bottom: 25px;
+  margin-left: 5px;
+  margin-right: 5px;
+  padding-left: 6px;
+  padding-right: 6px;
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  margin-top: 0px;
+  padding-top: 1px;
+}
+
+.material-icon:hover {
+  background-color: rgba(74,64,184,0.98);
+}
+
+@media (max-width: 768px) {
+  .flex-wrapper {
+    margin-right: -5px;
+    margin-left: -5px;
+  }
+}
+
+.table-title {
+  color: rgb(255,255,255);
+  font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.table-description {
+  font-size: 14px;
+  color: rgb(255,255,255);
+}
+
+.table-size {
+  min-width: 100px;
+  width: 120px;
+}
+
+.container-nav-option {
+  color: rgb(255,255,255);
+  font-size: 15px;
+  text-align: center;
+  letter-spacing: 0.2px;
+  background: #2a2e32;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+}
+
+.tooltip .tooltip-inner {
+  background: rgba(87,77,197,0.98);
+}
+
+.tooltip .tooltip-arrow {
+  display: none !important;
+}
+
