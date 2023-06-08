@@ -1,151 +1,10 @@
-/* Body Styles */
-
-.sidebar.mobile-hid {
-}
-
-/* Sidebar Styles */
-
-.sidebar {
-  max-width: 14rem !important;
-  width: 100%;
-  min-height: 100vh;
-  background-color: #212529;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 1;
-}
-
-.sidebar .logo {
-  font-size: 1.6rem;
-}
-
-.sidebar .nav-link:hover, .sidebar .nav-link.active {
-  background-color: rgba(61,94,84,0.38);
-  opacity: 1;
-}
-
-.sidebar .nav-link span {
-  font-size: 1rem;
-}
-
-.sidebar .dropdown-toggle:after {
-  display: none;
-}
-
-.sidebar .dropdown-menu {
-  position: relative !important;
-  padding: 0;
-  margin: 0;
-  width: 100%;
-  overflow: hidden;
-  transform: unset !important;
-  top: unset !important;
-  left: unset !important;
-  min-width: unset !important;
-  background-color: #3a51b5;
-  border-radius: 0 !important;
-}
-
-.sidebar .dropdown-item {
-  padding: 0.8rem 0 0.8rem 1.5rem;
-  margin: 0;
-}
-
-.sidebar .dropdown-item:hover, .sidebar .dropdown-item:active, .dropdown-item:focus {
-  background-color: #6177d9;
-  color: #ffffff;
-}
-
-.sidebar .nav-link {
-  padding-top: 1rem !important;
-  padding-bottom: 1rem !important;
-  font-size: 1rem;
-  position: relative;
-  opacity: 0.9;
-}
-
-.sidebar .fas.fa-caret-down.float-none.float-lg-right.fa-sm {
-  position: absolute;
-  top: 50%;
-  right: 5%;
-  transform: translate(-50%, -50%);
-}
-
-.sidebar.collapsed .nav-item:not(.logo-holder) {
-  display: none !important;
-}
-
-@media (max-width: 991px) {
-  .sidebar.mobile-hid .nav-item {
-    display: none !important;
-  }
-}
-
-.sidebar.collapsed #sidebarToggleHolder {
-  position: absolute !important;
-  color: #858791 !important;
-  left: 0;
-  top: 0;
-  padding: 10px;
-  z-index: 999;
-}
-
-@media (max-width: 991px) {
-  .sidebar.mobile-hid #sidebarToggleHolder {
-    position: absolute !important;
-    color: #858791 !important;
-    left: 0;
-    top: 0;
-    margin: 10px;
-    z-index: 999;
-  }
-}
-
-.sidebar.collapsed .logo #title {
-  display: none;
-}
-
-@media (max-width: 991px) {
-  .sidebar.mobile-hid .logo #title {
-    display: none;
-  }
-}
-
-.sidebar.collapsed #sidebarToggleHolder {
-  float: none !important;
-}
-
-@media (max-width: 991px) {
-  .sidebar.mobile-hid #sidebarToggleHolder {
-    float: none !important;
-  }
-}
-
-.sidebar.collapsed {
-  width: 0 !important;
-}
-
-@media (max-width: 991px) {
-  .sidebar.mobile-hid {
-    width: 0 !important;
-  }
-}
-
-.sidebar #sidebarToggleHolder {
-  font-size: 20px !important;
-  margin: 7px 5px;
-  color: rgb(174,174,174);
-}
-
 .footer {
   margin-top: 25px;
   background: linear-gradient(#212529, #212529 100%), #212529;
 }
 
 .nav-bar {
-  background: linear-gradient(#212529, #212529), #212529;
+  background: linear-gradient(#180c3b, #212529), #212529;
 }
 
 .game-title {
@@ -157,7 +16,7 @@
 }
 
 .nav-bar-links:hover {
-  background: rgba(111,100,237,0.98);
+  color: #724cf9;
 }
 
 .nav-bar-links {
@@ -219,11 +78,13 @@
   height: 60px;
   margin-right: 10px;
   border-radius: 6px;
-  background: rgba(87,77,197,0.98);
   box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
   position: relative;
   left: 4px;
   margin-top: 5px;
+  border-bottom-right-radius: 20px;
+  border-top-left-radius: 6px;
+  background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686192014/GENSHIN/Rarity_4_background_sojeyv.png") top / cover no-repeat;
 }
 
 .table-title {
@@ -266,7 +127,7 @@
 }
 
 .banner-container {
-  background: #2a2e32;
+  background: rgb(18,27,34);
   border-radius: 6px;
   box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
   padding-top: 15px;
@@ -330,11 +191,43 @@
   height: 65px;
 }
 
-.name-title {
+.name-title-farming {
   color: rgb(255,255,255);
   font-size: 26px;
-  margin-bottom: 15px;
-  padding-top: 45px;
+  margin-bottom: 10px;
+  padding-top: 25px;
+  font-family: 'DM Sans', sans-serif;
+  text-shadow: 3px 2px rgb(0,0,0);
+  padding-left: 28px;
+}
+
+.name-title-farming {
+  color: rgb(255,255,255);
+  font-size: 26px;
+  margin-bottom: 10px;
+  padding-top: 25px;
+  font-family: 'DM Sans', sans-serif;
+  text-shadow: 3px 2px rgb(0,0,0);
+  padding-left: 28px;
+}
+
+.name-title-farming {
+  color: rgb(255,255,255);
+  font-size: 26px;
+  margin-bottom: 10px;
+  padding-top: 25px;
+  font-family: 'DM Sans', sans-serif;
+  text-shadow: 3px 2px rgb(0,0,0);
+  padding-left: 28px;
+}
+
+.name-title {
+  color: rgb(255,255,255);
+  font-size: 22px;
+  margin-bottom: 10px;
+  padding-top: 25px;
+  font-family: 'DM Sans', sans-serif;
+  text-shadow: 3px 2px rgb(0,0,0);
 }
 
 .bg {
@@ -345,18 +238,17 @@
   width: 100%;
   border-bottom-right-radius: 6px;
   border-bottom-left-radius: 6px;
-  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(30,30,30,6.90) 99%), url("https://res.cloudinary.com/djqzskg3z/image/upload/v1673961400/GENSHIN/Namecards/Yoimiya/Character_Yoimiya_Wish_k2v0fy.png") top/ cover no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1673961390/GENSHIN/Namecards/Yoimiya/Namecard_Background_Yoimiya_Auratus_Spark_uvsdkp.webp") top / cover;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(30,30,30,6.90) 99%), url("") top/ cover no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1680706488/GENSHIN/Wallpapers/3436_ytxnyd.jpg") top / cover;
 }
 
 .bg-2 {
-  height: 220px;
   margin-right: auto;
   margin-left: auto;
   border-radius: 6px;
   width: 100%;
   border-bottom-right-radius: 6px;
   border-bottom-left-radius: 6px;
-  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(30,30,30,6.90) 99%), url("https://res.cloudinary.com/djqzskg3z/image/upload/v1673961400/GENSHIN/Namecards/Yoimiya/Character_Yoimiya_Wish_k2v0fy.png") top/ cover no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1673961390/GENSHIN/Namecards/Yoimiya/Namecard_Background_Yoimiya_Auratus_Spark_uvsdkp.webp") top / cover;
+  background: linear-gradient(180deg, rgba(0,0,0,0) -500%, #0f161b 99%), url("") top/ cover no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1673961486/GENSHIN/Namecards/Kazuha/Namecard_Background_Kaedehara_Kazuha_Autumn_Maple-Viewing_rzsrre.png") center / cover;
 }
 
 .background-container {
@@ -369,7 +261,8 @@
   border-bottom-right-radius: 6px;
   border-bottom-left-radius: 6px;
   margin-top: 40px;
-  background-color: rgba(27,31,35,0.49);
+  background-color: rgba(15,22,27);
+  box-shadow: rgb(0 0 0 / 25%) 0px 0px 8px;
 }
 
 .banner-icon {
@@ -428,10 +321,12 @@
 }
 
 .vision-icon {
-  position: relative;
-  width: 20px;
+  width: 18px;
   border-radius: 50px;
-  margin-top: 2px;
+  position: relative;
+  margin-top: -27px;
+  left: 19px;
+  z-index: 90;
 }
 
 .vision-box {
@@ -479,25 +374,38 @@
   background: rgba(111,100,237,0.98);
 }
 
-.character-icon {
+.character-icon-4-star {
   height: 55px;
   width: 55px;
   border-radius: 6px;
   box-shadow: rgb(0 0 0 / 25%) 0px 0px 8px;
   margin-right: 5px;
-  background: rgba(87,77,197,0.98);
+  background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686192014/GENSHIN/Rarity_4_background_sojeyv.png") top;
   margin-top: 7px;
+  border-bottom-right-radius: 20px;
 }
 
-.ascension-material-icon {
-  height: 65px;
-  width: 65px;
+.character-icon-5-star {
+  height: 55px;
+  width: 55px;
   border-radius: 6px;
   box-shadow: rgb(0 0 0 / 25%) 0px 0px 8px;
   margin-right: 5px;
-  background: rgba(87,77,197,0.98);
+  background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686192120/GENSHIN/Rarity_5_background_dx6il0.png");
+  margin-top: 7px;
+  border-bottom-right-radius: 20px;
+}
+
+.ascension-material-icon {
+  height: 60px;
+  width: 60px;
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 25%) 0px 0px 8px;
+  margin-right: 5px;
   margin-top: 7px;
   margin-bottom: 7px;
+  background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686192014/GENSHIN/Rarity_4_background_sojeyv.png") top / cover no-repeat;
+  border-bottom-right-radius: 20px;
 }
 
 .table-row-3 {
@@ -526,5 +434,332 @@
   .table-row-3 {
     min-width: 500px;
   }
+}
+
+.front-page-text {
+  color: rgb(255,255,255);
+  text-shadow: 3px 2px rgb(35,35,35);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 50px;
+}
+
+.front-page-bg {
+  background: linear-gradient(180deg, rgba(0,0,0,0) -99%, #0f161b 90%), url("") center/ cover no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1685431078/GENSHIN/1175587_ynsbnk.png") center / cover;
+  width: 100%;
+  height: 400px;
+}
+
+.container-bg {
+  background: linear-gradient(180deg, rgba(0,0,0,0) -1999%, rgb(18,27,34) 99%), url("") top/ cover no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686191478/GENSHIN/Wallpapers/1161890_zqkfhg.jpg") center / cover;
+}
+
+@media (max-width: 576px) {
+  .material-icon {
+    width: 55px;
+    height: 55px;
+  }
+}
+
+@media (max-width: 576px) {
+  .character-icon-5-star {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media (max-width: 576px) {
+  .character-icon-4-star {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media (max-width: 576px) {
+  .vision-icon {
+    margin-top: -23px;
+  }
+}
+
+@media (max-width: 576px) {
+  .name-title {
+    font-size: 21px;
+  }
+}
+
+.banner-character-4-star {
+  background: rgb(18,27,34);
+  border-radius: 6px;
+  border-bottom-right-radius: 35px;
+  height: 80px;
+  width: 95%;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  margin-top: 15px;
+}
+
+.banner-character-5-star {
+  background: rgb(18,27,34);
+  border-radius: 6px;
+  border-bottom-right-radius: 35px;
+  height: 80px;
+  width: 95%;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  margin-top: 15px;
+}
+
+.character-banner-icon-4-star {
+  height: 80px;
+  background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686192014/GENSHIN/Rarity_4_background_sojeyv.png") top / cover;
+  border-radius: 6px;
+  border-bottom-right-radius: 30px;
+  position: relative;
+  box-shadow: rgb(0 0 0 / 30%) 0px 0px 8px;
+}
+
+.character-banner-icon-5-star {
+  height: 80px;
+  background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686192120/GENSHIN/Rarity_5_background_dx6il0.png") top / cover;
+  border-radius: 6px;
+  border-bottom-right-radius: 30px;
+  position: relative;
+  box-shadow: rgb(0 0 0 / 30%) 0px 0px 8px;
+}
+
+.character-slogan-title-4-star {
+  font-family: 'DM Sans', sans-serif;
+  color: rgb(255,255,255);
+  font-size: 16px;
+  position: absolute;
+  width: 310px;
+  padding-left: 100px;
+  margin-top: 47px;
+  font-style: italic;
+}
+
+.character-slogan-title {
+  font-family: 'DM Sans', sans-serif;
+  color: rgb(255,255,255);
+  font-size: 16px;
+  position: absolute;
+  width: 464px;
+  padding-left: 100px;
+  margin-top: 48px;
+  font-style: italic;
+}
+
+.character-region-title-4-star {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  position: absolute;
+  width: 310px;
+  padding-left: 100px;
+  margin-top: 30px;
+}
+
+.character-region-title {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  position: absolute;
+  width: 464px;
+  padding-left: 100px;
+  margin-top: 30px;
+}
+
+.character-name-title-4-star {
+  font-family: 'DM Sans', sans-serif;
+  color: rgb(255,255,255);
+  font-size: 18px;
+  position: absolute;
+  width: 28%;
+  padding-left: 100px;
+  margin-top: 8px;
+}
+
+.character-name-title {
+  font-family: 'DM Sans', sans-serif;
+  color: rgb(255,255,255);
+  font-size: 20px;
+  position: absolute;
+  width: 464px;
+  padding-left: 100px;
+  padding-top: 2px;
+}
+
+.character-weapon-icon {
+  width: 27px;
+  position: absolute;
+  z-index: 90;
+  margin-left: 75px;
+}
+
+.character-vision-icon {
+  width: 24px;
+  position: absolute;
+  z-index: 90;
+  margin-top: 2px;
+  margin-left: 2px;
+}
+
+.character-rarity-icon {
+  width: 14px;
+  height: 14px;
+  margin-right: -3px;
+}
+
+.rarity-icon-box {
+  position: absolute;
+  width: 80px;
+  z-index: 90;
+  margin-top: 56px;
+}
+
+.emblem-icon {
+  width: 100px;
+  margin-left: 225px;
+}
+
+.character-banner-icon-5-star:hover {
+  background-color: #ffffff;
+  transform: scale(1.1);
+  transition: 0.5s;
+}
+
+.character-icon-4-star:hover {
+  background-color: #ffffff;
+  transform: scale(1.1);
+  transition: 0.5s;
+}
+
+.character-icon-5-star:hover {
+  background-color: #ffffff;
+  transform: scale(1.1);
+  transition: 0.5s;
+}
+
+.character-banner-icon-4-star:hover {
+  background-color: #ffffff;
+  transform: scale(1.1);
+  transition: 0.5s;
+}
+
+@media (max-width: 992px) {
+  .character-name-title-4-star {
+    font-size: 16px;
+    margin-top: 6px;
+    padding-left: 90px;
+    width: 260px;
+  }
+}
+
+@media (max-width: 768px) {
+  .character-name-title {
+    font-size: 18px;
+    width: 350px;
+    margin-top: 2px;
+    padding-left: 90px;
+  }
+}
+
+@media (max-width: 992px) {
+  .character-name-title {
+    font-size: 18px;
+    margin-top: 2px;
+  }
+}
+
+@media (max-width: 992px) {
+  .character-region-title-4-star {
+    font-size: 14px;
+    margin-top: 28px;
+    padding-left: 90px;
+    width: 280px;
+  }
+}
+
+@media (max-width: 992px) {
+  .character-region-title {
+    font-size: 14px;
+    margin-top: 28px;
+  }
+}
+
+@media (max-width: 992px) {
+  .character-slogan-title-4-star {
+    margin-top: 43px;
+    padding-left: 90px;
+  }
+}
+
+@media (max-width: 992px) {
+  .character-slogan-title {
+    margin-top: 42px;
+  }
+}
+
+@media (max-width: 992px) {
+  .character-banner-icon-4-star {
+    width: 72px;
+    height: 72px;
+  }
+}
+
+@media (max-width: 992px) {
+  .character-banner-icon-5-star {
+    width: 72px;
+    height: 72px;
+  }
+}
+
+@media (max-width: 992px) {
+  .character-vision-icon {
+    width: 22px;
+  }
+}
+
+@media (max-width: 992px) {
+  .banner-character-4-star {
+    height: 72px;
+  }
+}
+
+@media (max-width: 992px) {
+  .banner-character-5-star {
+    height: 72px;
+  }
+}
+
+@media (max-width: 576px) {
+  .character-name-title {
+    font-size: 16px;
+    width: 260px;
+    padding-left: 90px;
+  }
+}
+
+@media (max-width: 768px) {
+  .character-region-title {
+    padding-left: 90px;
+  }
+}
+
+@media (max-width: 768px) {
+  .character-slogan-title {
+    padding-left: 90px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .row {
+    margin-left: 15px;
+  }
+}
+
+.information {
+  color: rgb(255,255,255);
+  font-family: 'DM Sans', sans-serif;
+  text-align: center;
+  font-size: 13px;
+  padding-left: 30px;
+  padding-right: 30px;
+  line-height: 18px;
 }
 
