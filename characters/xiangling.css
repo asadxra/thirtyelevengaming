@@ -334,7 +334,7 @@
 
 @media (min-width: 992px) {
   .bg {
-    background: linear-gradient(180deg, rgba(0,0,0,0) -400%, rgba(15,22,27) 100%), url("") bottom -610px left -450px / auto no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1673961524/GENSHIN/Namecards/Xiangling/Namecard_Background_Xiangling_Fresh_from_the_Pan_mvpenf.webp") center / cover;
+    background: linear-gradient(180deg, rgba(0,0,0,0) -400%, rgba(15,22,27) 100%), url("") bottom -610px left -450px / auto no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1674042934/GENSHIN/Namecards/Al%20Haitam/Namecard_Background_Alhaitham_Enlightenment_yfxkdo.webp") center / cover;
   }
 }
 
@@ -1665,21 +1665,16 @@ substitute-div:hover {
 }
 
 @media (max-width: 576px) {
-  h1 {
-    font-size: 12px;
-  }
-}
-
-@media (max-width: 576px) {
   .talent-icon {
     width: 39px;
   }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 576px) {
   .artifact-stat-title-1 {
-    font-size: 9px;
+    font-size: 10px;
     margin-top: 11px;
+    text-align: center;
   }
 }
 
@@ -1696,7 +1691,7 @@ substitute-div:hover {
 
 @media (max-width: 576px) {
   .character-vision-icon {
-    margin-left: 115px;
+    margin-left: 4px;
   }
 }
 
@@ -1725,7 +1720,7 @@ substitute-div:hover {
 }
 
 .optional.builds-nav-item {
-  background-color: #e2711d;
+  background-color: #469d89;
   border-radius: 6px;
   margin-right: 5px;
   margin-left: 5px;
@@ -1739,9 +1734,38 @@ substitute-div:hover {
   transition: 1s;
 }
 
+@media (max-width: 360px) {
+  .scrollspy-nav {
+  }
+}
+
+@media (max-width: 360px) {
+  .scrollspy-nav-item {
+    margin-bottom: 10px;
+  }
+}
+
+@media (max-width: 360px) {
+  .row {
+    margin-top: 25px;
+  }
+}
+
+@media (max-width: 576px) {
+  .weapon-banner-icon-5-star {
+    width: 72px;
+    height: 72px;
+  }
+}
+
+@media (max-width: 576px) {
+  .weapon-sub-stat-title {
+    font-size: 12px;
+  }
+}
+
 @media (max-width: 576px) {
   h1 {
-    font-size: 12px;
   }
 }
 
