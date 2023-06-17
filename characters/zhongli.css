@@ -649,9 +649,18 @@
   margin-top: 15px;
 }
 
-.weapon-banner-icon-5-star {
+.weapon-banner-icon-3-star {
   height: 80px;
   background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686447664/GENSHIN/Rarity_3_background_jkaet1.png") top / cover;
+  border-radius: 6px;
+  border-bottom-right-radius: 30px;
+  position: relative;
+  box-shadow: rgb(0 0 0 / 30%) 0px 0px 8px;
+}
+
+.weapon-banner-icon-5-star {
+  height: 80px;
+  background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686192120/GENSHIN/Rarity_5_background_dx6il0.png") top / cover;
   border-radius: 6px;
   border-bottom-right-radius: 30px;
   position: relative;
