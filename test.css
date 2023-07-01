@@ -632,7 +632,11 @@
 }
 
 .tooltip .tooltip-inner {
-  background: rgba(87,77,197,0.98);
+  background: #e2711d;
+  text-align: left;
+  opacity: 1;
+  font-family: 'DM Sans';
+  font-weight: 500;
 }
 
 .tooltip .tooltip-arrow {
@@ -643,10 +647,11 @@
   background: rgb(18,27,34);
   border-radius: 6px;
   border-bottom-right-radius: 35px;
-  height: 80px;
+  height: 70px;
   width: 95%;
+  max-width: 480px;
   box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
-  margin-top: 15px;
+  margin-top: 5px;
 }
 
 .weapon-banner-icon-4-star {
@@ -668,7 +673,7 @@
 }
 
 .weapon-banner-icon-5-star {
-  height: 80px;
+  height: 70px;
   background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686192120/GENSHIN/Rarity_5_background_dx6il0.png") top / cover;
   border-radius: 6px;
   border-bottom-right-radius: 30px;
@@ -677,7 +682,7 @@
 }
 
 .character-banner-icon-5-star {
-  height: 80px;
+  height: 70px;
   background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1673961390/GENSHIN/Namecards/Yoimiya/Namecard_Background_Yoimiya_Auratus_Spark_uvsdkp.webp") top / cover;
   border-radius: 6px;
   border-bottom-right-radius: 30px;
@@ -701,53 +706,58 @@
   color: rgb(255,255,255);
   font-size: 16px;
   position: absolute;
-  width: 464px;
-  padding-left: 100px;
-  margin-top: 48px;
+  width: 100%;
+  max-width: 476px;
+  padding-left: 84px;
+  margin-top: 38px;
   font-style: italic;
 }
 
 .weapon-sub-stat-title {
   font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
+  font-size: 12px;
   position: absolute;
-  width: 464px;
-  padding-left: 100px;
-  margin-top: 31px;
+  width: 100%;
+  max-width: 476px;
+  padding-left: 85px;
+  margin-top: 24px;
   color: rgb(255,255,255);
 }
 
 .character-region-title {
   font-family: 'DM Sans', sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   position: absolute;
-  width: 464px;
-  padding-left: 100px;
-  margin-top: 28px;
+  width: 100%;
+  max-width: 476px;
+  padding-left: 85px;
+  margin-top: 22px;
 }
 
 .weapon-name-title {
   font-family: 'DM Sans', sans-serif;
   color: #e2711d;
-  font-size: 20px;
+  font-size: 16px;
   position: absolute;
-  width: 464px;
-  padding-left: 100px;
+  width: 100%;
+  max-width: 476px;
+  padding-left: 85px;
   padding-top: 2px;
 }
 
 .character-name-title {
   font-family: 'DM Sans', sans-serif;
   color: rgb(255,255,255);
-  font-size: 20px;
+  font-size: 16px;
   position: absolute;
-  width: 464px;
-  padding-left: 100px;
+  width: 100%;
+  max-width: 460px;
+  padding-left: 85px;
   padding-top: 2px;
 }
 
 .character-vision-icon {
-  width: 23px;
+  width: 18px;
   position: absolute;
   z-index: 90;
   margin-top: 1px;
@@ -816,12 +826,6 @@
 }
 
 @media (max-width: 992px) {
-  .character-vision-icon {
-    width: 22px;
-  }
-}
-
-@media (max-width: 992px) {
   .banner-character-5-star {
     height: 72px;
   }
@@ -868,15 +872,16 @@
 .title-header {
   color: rgb(255,255,255);
   font-size: 16px;
-  width: 528px;
+  width: 100%;
+  max-width: 500px;
   position: absolute;
-  margin-top: -20px;
+  margin-top: -25px;
   text-shadow: 2px 2px rgb(0,0,0);
 }
 
 .front-page-column {
   margin-top: 40px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 @media (max-width: 768px) {
@@ -892,19 +897,6 @@
     font-size: 16px;
     padding-left: 90px;
   }
-}
-
-.context-title {
-  font-family: 'DM Sans', sans-serif;
-  color: rgb(255,255,255);
-  font-size: 16px;
-  text-shadow: 1px 1px rgb(0,0,0);
-  border-radius: 6px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 45px;
 }
 
 .ascension-div {
@@ -1069,12 +1061,21 @@
 }
 
 .artifact-stat-title-1 {
+  background: rgb(18,27,34);
   position: absolute;
   font-family: 'DM Sans', sans-serif;
   color: #e2711d;
   font-size: 14px;
   margin-top: 8px;
   font-style: italic;
+  padding-top: 5px;
+  padding-right: 15px;
+  padding-bottom: 5px;
+  padding-left: 15px;
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .artifact-stat-title {
@@ -1131,10 +1132,13 @@
 }
 
 .best-weapon-column {
-  width: 450px;
+  max-width: 450px;
+  width: 100%;
   margin-bottom: 20px;
   margin-left: auto;
   margin-right: auto;
+  column-count: 2;
+  column-gap: 3em;
 }
 
 .team-div {
@@ -1500,25 +1504,9 @@
   margin-top: -16px;
 }
 
-.tooltiptext {
-  color: rgb(255,255,255);
-  font-family: 'DM Sans', sans-serif;
-  z-index: 1;
-}
-
 .tooltip {
   position: relative;
   display: inline-block;
-}
-
-.tooltip .tooltiptext {
-  visibility: hidden;
-  width: 120px;
-  background-color: rgba(87,77,197,0.98);
-  color: #ffffff;
-  text-align: left;
-  padding: 5px 0px;
-  border-radius: 6px;
 }
 
 .substat-row {
@@ -1531,6 +1519,8 @@
   font-family: 'DM Sans', sans-serif;
   border-style: none;
   border-radius: 6px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .nav-description {
@@ -1550,6 +1540,7 @@
   margin-right: 5px;
   margin-left: 5px;
   box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  margin-bottom: 10px;
 }
 
 .scrollspy-nav-item:hover {
@@ -1572,6 +1563,11 @@
 
 .scrollspy-column {
   margin-top: 15px;
+  width: 85%;
+  max-width: 980px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 10px;
 }
 
 .nav-description:hover {
@@ -1704,17 +1700,6 @@ substitute-div:hover {
 }
 
 @media (max-width: 576px) {
-  .best-weapon-div {
-  }
-}
-
-@media (max-width: 576px) {
-  .character-vision-icon {
-    margin-left: 4px;
-  }
-}
-
-@media (max-width: 576px) {
   .team-column {
     width: 158px;
   }
@@ -1739,7 +1724,7 @@ substitute-div:hover {
 }
 
 .optional.builds-nav-item {
-  background-color: #469d89;
+  background-color: #e2711d;
   border-radius: 6px;
   margin-right: 5px;
   margin-left: 5px;
@@ -1747,7 +1732,7 @@ substitute-div:hover {
 }
 
 .optional.builds-nav-item:hover {
-  background-color: #74c69d;
+  background-color: #9d0208;
   color: #000000;
   transform: scale(1.1);
   transition: 1s;
@@ -1783,25 +1768,8 @@ substitute-div:hover {
   }
 }
 
-@media (max-width: 576px) {
-  h1 {
-  }
-}
-
 .best-weapon-column:hover {
   transition: 0.5s;
   transform: scale(1.1);
-}
-
-@media (max-width: 576px) {
-  .best-weapon-column {
-    width: 450px;
-  }
-}
-
-@media (max-width: 360px) {
-  .best-weapon-column {
-    width: 320px;
-  }
 }
 
