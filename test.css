@@ -57,7 +57,7 @@
   margin-bottom: 25px;
   box-shadow: rgb(0 0 0 / 25%) 0px 0px 8px;
   width: 100%;
-  background: rgba(15,22,27);
+  background: rgb(13,19,24);
   margin-left: auto;
   margin-right: auto;
   max-width: 1050px;
@@ -66,10 +66,12 @@
 }
 
 .character-card-content {
-  background: linear-gradient(180deg, rgba(0,0,0,0) -400%, rgba(15,22,27) 100%), url("") bottom -610px left -450px / auto no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1673961490/GENSHIN/Namecards/Klee/Namecard_Background_Klee_Explosive_yw6ubp.webp") center / cover;
   border-radius: 6px;
   height: 100px;
-  max-height: 90px;
+  width: auto;
+  max-width: 1050px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .character-card {
@@ -89,9 +91,9 @@
   font-size: 16px;
   position: absolute;
   width: 300px;
-  margin-top: 12px;
+  margin-top: 7px;
   font-style: italic;
-  margin-left: 80px;
+  margin-left: 75px;
 }
 
 .character-rarity-icon {
@@ -119,11 +121,11 @@
 }
 
 .weapon-icon-5-star {
-  width: 65px;
+  width: 60px;
   background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686192120/GENSHIN/Rarity_5_background_dx6il0.png") top / cover no-repeat;
   border-radius: 6px;
   border-bottom-right-radius: 25px;
-  height: 65px;
+  height: 60px;
   margin-top: 15px;
   margin-left: 15px;
 }
@@ -133,27 +135,27 @@
   font-family: 'DM Sans', sans-serif;
   letter-spacing: 0.5px;
   position: absolute;
-  margin-top: -5px;
+  margin-top: -7px;
   font-style: italic;
-  font-size: 12px;
-  margin-left: 80px;
+  font-size: 11px;
+  margin-left: 75px;
 }
 
 .best-weapon-title {
   color: #e2711d;
   font-family: 'DM Sans', sans-serif;
   position: static;
-  margin-top: -80px;
-  margin-left: 80px;
-  font-size: 16px;
+  margin-left: 75px;
+  font-size: 14px;
   font-weight: bold;
+  margin-top: -72px;
 }
 
 .weapon-description {
   color: rgb(255,255,255);
   font-family: 'DM Sans', sans-serif;
   font-size: 12px;
-  margin-top: 55px;
+  margin-top: 50px;
   position: static;
 }
 
@@ -197,28 +199,12 @@
 .CAROUSEL-DIV {
 }
 
-.context-title {
-  font-family: 'DM Sans', sans-serif;
-  color: #e2711d;
-  font-size: 16px;
-  text-shadow: 1px 1px rgb(0,0,0);
-  border-radius: 6px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 15px;
-}
-
 .scrollspy-nav {
-  padding-top: 70px;
   font-family: 'DM Sans', sans-serif;
   border-style: none;
   border-radius: 6px;
   margin-left: auto;
   margin-right: auto;
-}
-
-.nav-description {
-  color: #ffffff;
 }
 
 @media (max-width: 576px) {
@@ -280,21 +266,21 @@
 }
 
 .weapon-icon-3-star {
-  width: 65px;
+  width: 60px;
   background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686447664/GENSHIN/Rarity_3_background_jkaet1.png") top / cover no-repeat;
   border-radius: 6px;
   border-bottom-right-radius: 25px;
-  height: 65px;
+  height: 60px;
   margin-top: 15px;
   margin-left: 15px;
 }
 
 .weapon-icon-4-star {
-  width: 65px;
+  width: 60px;
   background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686192014/GENSHIN/Rarity_4_background_sojeyv.png") top / cover no-repeat;
   border-radius: 6px;
   border-bottom-right-radius: 25px;
-  height: 65px;
+  height: 60px;
   margin-top: 15px;
   margin-left: 15px;
 }
@@ -516,51 +502,6 @@
   }
 }
 
-.best-artifact-column-2 {
-  width: 300px;
-  padding-right: 8px;
-  padding-left: 8px;
-  margin-bottom: 10px;
-}
-
-.best-weapon-div-2 {
-  background: rgb(18,27,34);
-  border-radius: 6px;
-  border-bottom-right-radius: 45px;
-  width: 350px;
-  height: 60px;
-  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
-}
-
-.artifact-icon-2 {
-  width: 60px;
-  background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686192014/GENSHIN/Rarity_4_background_sojeyv.png") top / cover no-repeat;
-  border-radius: 6px;
-  border-bottom-right-radius: 25px;
-  height: 60px;
-}
-
-.artifact-set-piece-2 {
-  color: rgb(255,255,255);
-  font-family: 'DM Sans', sans-serif;
-  letter-spacing: 0.5px;
-  position: absolute;
-  font-style: italic;
-  font-size: 12px;
-  margin-left: 62px;
-  margin-top: -7px;
-}
-
-.artifact-title-2 {
-  color: #e2711d;
-  font-family: 'DM Sans', sans-serif;
-  position: static;
-  margin-top: -65px;
-  margin-left: 62px;
-  font-size: 14px;
-  font-weight: bold;
-}
-
 .best-weapon-div-2:hover {
   background-color: rgb(18,27,34);
   transition: 0.5s;
@@ -649,8 +590,8 @@
 
 .container-artifact .card .image {
   position: relative;
-  width: 60px;
-  height: 60px;
+  width: 55px;
+  height: 55px;
   top: 0%;
   z-index: 1;
   background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686192120/GENSHIN/Rarity_5_background_dx6il0.png") top / cover no-repeat;
@@ -661,6 +602,8 @@
 .container-artifact .card .image img {
   max-width: 100%;
   border-radius: 6px;
+  width: 55px;
+  height: 55px;
 }
 
 .container-artifact .card .content {
@@ -684,7 +627,7 @@
 .artifact-piece {
   color: #e2711d;
   position: absolute;
-  padding-left: 80px;
+  padding-left: 72px;
   padding-top: 11px;
   font-family: 'DM Sans', sans-serif;
   font-size: 14px;
@@ -693,14 +636,14 @@
 
 .artifact-title {
   position: absolute;
-  padding-left: 80px;
+  padding-left: 72px;
   color: #ffffff;
-  margin-top: 29px;
+  margin-top: 28px;
 }
 
 .artifact-column {
   width: 300px;
-  margin-right: 30px;
+  margin-right: 15px;
 }
 
 .container-artifact {
@@ -767,5 +710,209 @@
   .row {
     margin-top: 25px;
   }
+}
+
+.character-icon {
+  width: 65px;
+  background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1673961490/GENSHIN/Namecards/Klee/Namecard_Background_Klee_Explosive_yw6ubp.webp");
+  border-radius: 6px;
+  position: relative;
+  margin-top: 15px;
+  margin-left: 7px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+}
+
+.character-name {
+  position: absolute;
+  color: rgb(255,255,255);
+  font-size: 18px;
+  text-align: left;
+  margin-left: 90px;
+  margin-top: 22px;
+  letter-spacing: 0.5px;
+  text-shadow: 0px 0px 6px var(--bs-emphasis-color);
+}
+
+.vision-icon {
+  width: 18px;
+  position: absolute;
+  margin-top: 17px;
+  z-index: 10;
+  margin-left: 8px;
+}
+
+.character-description {
+  color: rgb(255,255,255);
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  text-align: left;
+  position: absolute;
+  margin-left: 90px;
+  margin-top: 44px;
+}
+
+.character-icon:hover {
+  transition: 1s;
+  transform: scale(1.1);
+}
+
+.rarity-icon {
+  height: 12px;
+  margin-right: -2px;
+}
+
+.rarity-icon-box {
+  position: absolute;
+  text-align: left;
+  margin-top: -25px;
+  margin-left: 90px;
+}
+
+.region-icon {
+  width: 90px;
+  position: absolute;
+  opacity: 0.10;
+}
+
+.region-div {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.description-box {
+  color: rgb(255,255,255);
+  font-size: 12px;
+  font-family: 'DM Sans';
+  padding-left: 45px;
+  padding-right: 20px;
+  margin-top: -15px;
+}
+
+.substitute-column {
+  width: 300px;
+  padding-right: 8px;
+  padding-left: 8px;
+  margin-bottom: 10px;
+}
+
+.best-artifact-column-2 {
+  width: 300px;
+  padding-right: 8px;
+  padding-left: 8px;
+  margin-bottom: 10px;
+  height: 55px;
+}
+
+.substitute-div {
+  background: rgb(18,27,34);
+  border-radius: 6px;
+  border-bottom-right-radius: 50px;
+  width: 350px;
+  height: 35px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  border-bottom-left-radius: 50px;
+  border-top-right-radius: 50px;
+  border-top-left-radius: 50px;
+}
+
+.best-weapon-div-2 {
+  background: rgb(18,27,34);
+  border-radius: 6px;
+  border-bottom-right-radius: 45px;
+  width: 350px;
+  height: 55px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+}
+
+.substitute-icon {
+  background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686192014/GENSHIN/Rarity_4_background_sojeyv.png") top / cover no-repeat;
+  border-radius: 60px;
+  height: 35px;
+}
+
+.artifact-icon-2 {
+  width: 55px;
+  background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686192014/GENSHIN/Rarity_4_background_sojeyv.png") top / cover no-repeat;
+  border-radius: 6px;
+  border-bottom-right-radius: 25px;
+  height: 55px;
+}
+
+.artifact-set-piece-2 {
+  color: rgb(255,255,255);
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0.5px;
+  position: absolute;
+  font-style: italic;
+  font-size: 12px;
+  margin-left: 55px;
+  margin-top: -7px;
+}
+
+.substitute-title {
+  color: #ffffff;
+  font-family: 'DM Sans', sans-serif;
+  position: static;
+  margin-top: -42px;
+  margin-left: 30px;
+  font-size: 13px;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.artifact-title-2 {
+  color: #e2711d;
+  font-family: 'DM Sans', sans-serif;
+  position: static;
+  margin-top: -62px;
+  margin-left: 55px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.substitute-row {
+  margin-top: 20px;
+}
+
+.best-weapon-row {
+  margin-top: 25px;
+}
+
+.head-title {
+  font-family: 'DM Sans', sans-serif;
+  color: rgb(255,255,255);
+  font-size: 16px;
+  text-shadow: 1px 1px 5px rgb(0,0,0);
+  border-radius: 6px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-left: auto;
+  margin-top: 15px;
+  padding-left: 15px;
+}
+
+.context-title {
+  font-family: 'DM Sans', sans-serif;
+  color: #deb76c;
+  font-size: 13px;
+  text-shadow: 1px 1px rgb(0,0,0);
+  border-radius: 6px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 45px;
+  font-style: italic;
+}
+
+@media (max-width: 360px) {
+  .row {
+    margin-top: 25px;
+  }
+}
+
+.title-icon {
+  width: 25px;
+  margin-top: -2px;
 }
 
