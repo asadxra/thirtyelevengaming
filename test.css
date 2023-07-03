@@ -50,6 +50,7 @@
   font-size: 13px;
   padding-top: 6px;
   padding-bottom: 6px;
+  border-radius: 6px;
 }
 
 .container-bg {
@@ -61,7 +62,7 @@
   margin-bottom: 25px;
   box-shadow: rgb(0 0 0 / 25%) 0px 0px 8px;
   width: 100%;
-  background: rgb(13,19,24);
+  background: rgb(11,17,21);
   margin-left: auto;
   margin-right: auto;
   max-width: 1050px;
@@ -119,7 +120,7 @@
 .best-weapon-div {
   background: rgb(18,27,34);
   border-radius: 6px;
-  border-bottom-right-radius: 45px;
+  border-bottom-right-radius: 6px;
   width: 440px;
   box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
 }
@@ -128,7 +129,7 @@
   width: 60px;
   background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686192120/GENSHIN/Rarity_5_background_dx6il0.png") top / cover no-repeat;
   border-radius: 6px;
-  border-bottom-right-radius: 25px;
+  border-bottom-right-radius: 12px;
   height: 60px;
   margin-top: 15px;
   margin-left: 15px;
@@ -273,7 +274,7 @@
   width: 60px;
   background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686447664/GENSHIN/Rarity_3_background_jkaet1.png") top / cover no-repeat;
   border-radius: 6px;
-  border-bottom-right-radius: 25px;
+  border-bottom-right-radius: 12px;
   height: 60px;
   margin-top: 15px;
   margin-left: 15px;
@@ -283,7 +284,7 @@
   width: 60px;
   background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686192014/GENSHIN/Rarity_4_background_sojeyv.png") top / cover no-repeat;
   border-radius: 6px;
-  border-bottom-right-radius: 25px;
+  border-bottom-right-radius: 12px;
   height: 60px;
   margin-top: 15px;
   margin-left: 15px;
@@ -404,33 +405,51 @@
 }
 
 .talent-icon {
+  margin-top: 5px;
   width: 35px;
   margin-left: 15px;
-  margin-top: 5px;
 }
 
-.substat-div {
-  height: 45px;
-  background: #e2711d;
+.artifact-substat-div {
+  height: 40px;
+  background: rgb(18,27,34);
   border-radius: 6px;
-  border-bottom-right-radius: 25px;
+  border-bottom-right-radius: 6px;
   width: 265px;
   box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
   margin-bottom: 10px;
-  margin-top: 15px;
+  margin-top: 10px;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+
+.substat-div {
+  height: 40px;
+  background: #e2711d;
+  border-radius: 6px;
+  border-bottom-right-radius: 6px;
+  width: 265px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  border-bottom-left-radius: 6px;
 }
 
 .substat-column {
   width: 240px;
+  margin-top: -5px;
 }
 
 .talent-title {
   position: absolute;
   font-family: 'DM Sans', sans-serif;
   color: rgb(255,255,255);
-  margin-top: -28px;
+  margin-top: -27px;
   margin-left: 55px;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 @media (max-width: 576px) {
@@ -441,7 +460,7 @@
 @media (max-width: 576px) {
   .substat-column {
     width: 380px;
-    margin-bottom: 15px;
+    margin-bottom: -5px;
   }
 }
 
@@ -454,15 +473,16 @@
 
 @media (max-width: 576px) {
   .talent-title {
-    font-size: 14px;
-    margin-top: -34px;
-    margin-left: 68px;
+    font-size: 13px;
+    margin-top: -30px;
+    margin-left: 60px;
   }
 }
 
 .substat-row {
   padding-top: 5px;
   margin-bottom: 20px;
+  margin-top: -5px;
 }
 
 .substat-div:hover {
@@ -474,6 +494,7 @@
 @media (max-width: 576px) {
   .talent-icon {
     width: 39px;
+    margin-top: 3px;
   }
 }
 
@@ -528,10 +549,6 @@
   font-weight: bold;
 }
 
-.best-weapon-row {
-  margin-top: 25px;
-}
-
 .best-weapon-div-1:hover {
   background-color: rgb(18,27,34);
   transition: 0.5s;
@@ -548,7 +565,7 @@
   box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
   transition: 0.3s ease-in-out;
   border-radius: 6px;
-  border-bottom-right-radius: 70px;
+  border-bottom-right-radius: 6px;
   padding-top: 0px;
   margin-top: -5px;
 }
@@ -565,7 +582,7 @@
   z-index: 1;
   background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686192120/GENSHIN/Rarity_5_background_dx6il0.png") top / cover no-repeat;
   border-radius: 6px;
-  border-bottom-right-radius: 25px;
+  border-bottom-right-radius: 12px;
 }
 
 .container-artifact .card .image img {
@@ -612,22 +629,17 @@
 
 .artifact-column {
   width: 300px;
-  margin-right: 15px;
+  margin-top: 20px;
 }
 
 .container-artifact {
   width: 300px;
+  margin-bottom: 24px;
 }
 
 @media (max-width: 992px) {
   .artifact-column {
     margin-bottom: -5px;
-  }
-}
-
-@media (max-width: 576px) {
-  .artifact-column {
-    margin-bottom: -10px;
   }
 }
 
@@ -640,24 +652,6 @@
   padding-right: 8px;
   padding-left: 8px;
   margin-bottom: 10px;
-}
-
-.substitute-div {
-  background: rgb(18,27,34);
-  border-radius: 6px;
-  border-bottom-right-radius: 50px;
-  width: 350px;
-  height: 35px;
-  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
-  border-bottom-left-radius: 50px;
-  border-top-right-radius: 50px;
-  border-top-left-radius: 50px;
-}
-
-.substitute-icon {
-  background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686192014/GENSHIN/Rarity_4_background_sojeyv.png") top / cover no-repeat;
-  border-radius: 60px;
-  height: 35px;
 }
 
 .substitute-title {
@@ -760,8 +754,7 @@
 
 .best-artifact-column-2 {
   width: 300px;
-  padding-right: 8px;
-  padding-left: 8px;
+  padding-right: 10px;
   margin-bottom: 10px;
   height: 55px;
 }
@@ -769,36 +762,45 @@
 .substitute-div {
   background: rgb(18,27,34);
   border-radius: 6px;
-  border-bottom-right-radius: 50px;
   width: 350px;
   height: 35px;
   box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
-  border-bottom-left-radius: 50px;
-  border-top-right-radius: 50px;
-  border-top-left-radius: 50px;
+  border-bottom-left-radius: 4px;
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
 }
 
 .best-weapon-div-2 {
   background: rgb(18,27,34);
   border-radius: 6px;
-  border-bottom-right-radius: 45px;
+  border-bottom-right-radius: 6px;
   width: 350px;
   height: 55px;
   box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  border-bottom-left-radius: 6px;
 }
 
 .substitute-icon {
   background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686192014/GENSHIN/Rarity_4_background_sojeyv.png") top / cover no-repeat;
   border-radius: 60px;
   height: 35px;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 6px;
 }
 
 .artifact-icon-2 {
   width: 55px;
   background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686192014/GENSHIN/Rarity_4_background_sojeyv.png") top / cover no-repeat;
   border-radius: 6px;
-  border-bottom-right-radius: 25px;
+  border-bottom-right-radius: 12px;
   height: 55px;
+  border-top-right-radius: 6px;
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
 }
 
 .artifact-set-piece-2 {
@@ -868,38 +870,28 @@
   font-style: italic;
 }
 
-@media (max-width: 360px) {
-  .row {
-    margin-top: 25px;
-  }
-}
-
 .title-icon {
   width: 25px;
   margin-top: -2px;
 }
 
-.artifact-sub-stat:hover {
-  background-color: #e2311d;
-  transition: 0.5s;
-  transform: scale(1.10);
-}
-
 .artifact-sub-stat {
-  background-color: #e2711d;
+  background-color: rgb(18,27,34);
   color: #ffffff;
   font-size: 13px;
   text-align: center;
   padding-right: 25px;
   padding-left: 25px;
   font-family: 'DM Sans';
-  margin-top: 0px;
   font-style: italic;
   padding-top: 8px;
   padding-bottom: 8px;
   border-radius: 6px;
-  border-bottom-right-radius: 25px;
+  border-bottom-right-radius: 6px;
   box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  border-bottom-left-radius: 6px;
 }
 
 @media (max-width: 576px) {
@@ -910,6 +902,8 @@
 @media (max-width: 576px) {
   .artifact-sub-stat {
     margin-top: 30px;
+    padding-top: 11px;
+    padding-bottom: 10px;
   }
 }
 
@@ -923,5 +917,157 @@
   .nav-bar-links {
     font-size: 12px;
   }
+}
+
+.team-row {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.team-vision {
+  height: 15px;
+  position: absolute;
+  margin-left: -37px;
+  margin-top: 2px;
+}
+
+.team-icon-4-star {
+  background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686192014/GENSHIN/Rarity_4_background_sojeyv.png") top no-repeat;
+  width: 55px;
+  border-radius: 8px;
+}
+
+.team-icon-5-star {
+  background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686192120/GENSHIN/Rarity_5_background_dx6il0.png") top no-repeat;
+  width: 55px;
+  border-radius: 8px;
+}
+
+.team-text {
+  position: absolute;
+  color: rgb(255,255,255);
+  font-family: 'DM Sans', sans-serif;
+  text-shadow: 0px 2px 6px var(--bs-emphasis-color);
+  font-size: 12px;
+  margin-top: 62px;
+}
+
+.team-slider {
+  width: 55px;
+  margin-right: 15px;
+  margin-left: 15px;
+  margin-top: 25px;
+}
+
+.team-column {
+  background: rgb(18,27,34);
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  width: auto;
+  margin-right: auto;
+  margin-left: auto;
+  border-radius: 6px;
+  padding-top: 15px;
+  padding-bottom: 41px;
+}
+
+.team-slider-div:hover {
+  transition: 0.5s;
+  transform: scale(1.1);
+}
+
+@media (max-width: 390px) {
+  .team-icon-4-star {
+    width: 48px;
+  }
+}
+
+@media (max-width: 390px) {
+  .team-icon-5-star {
+    width: 48px;
+  }
+}
+
+@media (max-width: 390px) {
+  .team-vision {
+    width: 12px;
+    height: 12px;
+    margin-top: 2px;
+    margin-left: -33px;
+  }
+}
+
+@media (max-width: 390px) {
+  .team-text {
+    margin-top: 55px;
+  }
+}
+
+.team-icon {
+  position: absolute;
+  width: 30px;
+  margin-top: -7px;
+  margin-left: -7px;
+}
+
+.team-title {
+  position: absolute;
+  border-color: rgb(255,255,255);
+  color: #deb76c;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  padding-left: 26px;
+}
+
+@media (max-width: 400px) {
+  .team-icon {
+    margin-left: 8px;
+  }
+}
+
+@media (max-width: 400px) {
+  .team-title {
+    margin-left: 15px;
+  }
+}
+
+@media (max-width: 360px) {
+  .team-slider {
+  }
+}
+
+@media (max-width: 772px) {
+  .team-column {
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 944px) {
+  .artifact-column {
+    margin-bottom: -30px;
+  }
+}
+
+@media (max-width: 576px) {
+  .head-title {
+  }
+}
+
+@media (min-width: 945px) {
+  .artifact-column {
+    margin-bottom: -25px;
+  }
+}
+
+.artifact-substat-div:hover {
+  background: #e2311d;
+  transition: 0.5s;
+  transform: scale(1.1);
+}
+
+.artifact-sub-stat:hover {
+  background: #e2311d;
+  transition: 0.5s;
+  transform: scale(1.1);
 }
 
