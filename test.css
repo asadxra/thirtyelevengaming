@@ -15,12 +15,14 @@
 }
 
 .nav-bar-links:hover {
-  color: #724cf9;
+  color: #e2711d;
 }
 
 .nav-bar-links {
   border-radius: 6px;
   font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  letter-spacing: 0.5px;
 }
 
 .tooltip .tooltip-inner {
@@ -45,7 +47,9 @@
 
 .nav-description {
   color: #ffffff;
-  font-size: 14px;
+  font-size: 13px;
+  padding-top: 6px;
+  padding-bottom: 6px;
 }
 
 .container-bg {
@@ -285,27 +289,8 @@
   margin-left: 15px;
 }
 
-@media (max-width: 300px) {
-  .ascension-row {
-  }
-}
-
-@media (max-width: 576px) {
-  .ascension-div {
-    width: 50px;
-    height: 50px;
-  }
-}
-
-@media (max-width: 576px) {
-  .ascension-column {
-    width: 85px;
-    padding-right: 0px;
-  }
-}
-
 .ascension-div {
-  height: 65px;
+  height: 55px;
   background: rgb(18,27,34);
   border-radius: 6px;
   border-bottom-right-radius: 25px;
@@ -313,16 +298,17 @@
   margin-bottom: 15px;
   margin-left: 10px;
   margin-right: 10px;
-  width: 65px;
+  width: 55px;
   position: relative;
 }
 
 .ascension-icon {
-  width: 65px;
+  width: 55px;
   background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686192565/GENSHIN/Rarity_1_background_vn8rcy.png") top / cover;
   border-radius: 6px;
   border-bottom-right-radius: 25px;
   box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  height: 55px;
 }
 
 .ascension-title {
@@ -333,7 +319,7 @@
   letter-spacing: 2px;
   padding-left: 5px;
   background: rgb(18,27,34);
-  margin-top: 48px;
+  margin-top: 38px;
   padding-right: 5px;
   border-radius: 6px;
   border-top-left-radius: 0px;
@@ -350,22 +336,17 @@
   }
 }
 
-@media (max-width: 300px) {
-  .ascension-row {
-  }
-}
-
 .ascension-column {
-  width: 95px;
+  width: 90px;
   padding-left: 0px;
 }
 
 .ascension-row {
   margin-left: 15px;
-  margin-right: 15px;
   border-radius: 6px;
   border-bottom-right-radius: 45px;
   margin-bottom: 20px;
+  margin-right: 15px;
 }
 
 @media (max-width: 576px) {
@@ -447,8 +428,8 @@
   position: absolute;
   font-family: 'DM Sans', sans-serif;
   color: rgb(255,255,255);
-  margin-top: -29px;
-  margin-left: 60px;
+  margin-top: -28px;
+  margin-left: 55px;
   font-size: 14px;
 }
 
@@ -493,12 +474,6 @@
 @media (max-width: 576px) {
   .talent-icon {
     width: 39px;
-  }
-}
-
-@media (max-width: 360px) {
-  .row {
-    margin-top: 25px;
   }
 }
 
@@ -561,12 +536,6 @@
   background-color: rgb(18,27,34);
   transition: 0.5s;
   transform: scale(1.1);
-}
-
-@media (max-width: 360px) {
-  .row {
-    margin-top: 25px;
-  }
 }
 
 .container-artifact .card {
@@ -704,12 +673,6 @@
 
 .substitute-row {
   margin-top: 20px;
-}
-
-@media (max-width: 360px) {
-  .row {
-    margin-top: 25px;
-  }
 }
 
 .character-icon {
@@ -914,5 +877,51 @@
 .title-icon {
   width: 25px;
   margin-top: -2px;
+}
+
+.artifact-sub-stat:hover {
+  background-color: #e2311d;
+  transition: 0.5s;
+  transform: scale(1.10);
+}
+
+.artifact-sub-stat {
+  background-color: #e2711d;
+  color: #ffffff;
+  font-size: 13px;
+  text-align: center;
+  padding-right: 25px;
+  padding-left: 25px;
+  font-family: 'DM Sans';
+  margin-top: 0px;
+  font-style: italic;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border-radius: 6px;
+  border-bottom-right-radius: 25px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+}
+
+@media (max-width: 576px) {
+  .artifact-sub-stat-div {
+  }
+}
+
+@media (max-width: 576px) {
+  .artifact-sub-stat {
+    margin-top: 30px;
+  }
+}
+
+@media (max-width: 992px) {
+  .ascension-title {
+    margin-top: -17px;
+  }
+}
+
+@media (max-width: 992px) {
+  .nav-bar-links {
+    font-size: 12px;
+  }
 }
 
