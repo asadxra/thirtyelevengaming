@@ -1098,3 +1098,8 @@
   width: 45px;
 }
 
+.substitute-column:hover {
+  transition: 0.5s;
+  transform: scale(1.1);
+}
+
