@@ -1,10 +1,10 @@
 .footer {
   margin-top: 25px;
-  background: linear-gradient(#212529, #212529 100%), #212529;
+  background: linear-gradient(#0f161b, #0f161b 100%), #0f161b;
 }
 
 .nav-bar {
-  background: linear-gradient(#180c3b, #212529), #212529;
+  background: linear-gradient(#0f161b, #0f161b), #0f161b;
 }
 
 .game-title {
@@ -73,49 +73,8 @@
   }
 }
 
-.material-icon {
-  width: 60px;
-  height: 60px;
-  margin-right: 10px;
-  border-radius: 6px;
-  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
-  position: relative;
-  left: 4px;
-  margin-top: 5px;
-  border-bottom-right-radius: 20px;
-  border-top-left-radius: 6px;
-  background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686192014/GENSHIN/Rarity_4_background_sojeyv.png") top / cover no-repeat;
-}
-
-.table-title {
-  color: rgb(255,255,255);
-  font-size: 15px;
-  font-family: 'DM Sans', sans-serif;
-}
-
-.table-description {
-  font-size: 14px;
-  color: rgb(255,255,255);
-}
-
-.tooltip .tooltip-inner {
-  background: rgba(87,77,197,0.98);
-}
-
-.tooltip .tooltip-arrow {
-  display: none !important;
-}
-
-.table-size {
-  min-width: 190px;
-}
-
-.fit-cover {
-  object-fit: cover;
-}
-
 .filter-container {
-  background: #2a2e32;
+  background: rgb(18,27,34);
   border-radius: 6px;
   box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
   padding-top: 15px;
@@ -142,15 +101,7 @@
   border-radius: 6px;
   padding-top: 15px;
   font-family: 'DM Sans', sans-serif;
-  background-color: #2a2e32;
-  box-shadow: rgb(0 0 0 / 25%) 0px 0px 8px;
-}
-
-.game-container {
-  border-radius: 6px;
-  padding-top: 15px;
-  font-family: 'DM Sans', sans-serif;
-  background-color: #2a2e32;
+  background-color: rgb(18,27,34);
   box-shadow: rgb(0 0 0 / 25%) 0px 0px 8px;
 }
 
@@ -160,14 +111,6 @@
   width: 100%;
   margin-top: 0px;
   margin-bottom: 10px;
-}
-
-.game-title {
-  color: rgb(255,255,255);
-  font-size: 20px;
-  width: 100%;
-  margin-top: 0px;
-  margin-bottom: 0px;
 }
 
 .ads {
@@ -191,57 +134,16 @@
   height: 65px;
 }
 
-.name-title-farming {
-  color: rgb(255,255,255);
-  font-size: 26px;
-  margin-bottom: 10px;
-  padding-top: 25px;
-  font-family: 'DM Sans', sans-serif;
-  text-shadow: 3px 2px rgb(0,0,0);
-  padding-left: 28px;
-}
-
-.name-title-farming {
-  color: rgb(255,255,255);
-  font-size: 26px;
-  margin-bottom: 10px;
-  padding-top: 25px;
-  font-family: 'DM Sans', sans-serif;
-  text-shadow: 3px 2px rgb(0,0,0);
-  padding-left: 28px;
-}
-
-.name-title-farming {
-  color: rgb(255,255,255);
-  font-size: 26px;
-  margin-bottom: 10px;
-  padding-top: 25px;
-  font-family: 'DM Sans', sans-serif;
-  text-shadow: 3px 2px rgb(0,0,0);
-  padding-left: 28px;
-}
-
 .name-title {
   color: rgb(255,255,255);
-  font-size: 22px;
+  font-size: 26px;
   margin-bottom: 10px;
-  padding-top: 25px;
+  padding-top: 15px;
   font-family: 'DM Sans', sans-serif;
   text-shadow: 3px 2px rgb(0,0,0);
 }
 
 .bg {
-  height: 220px;
-  margin-right: auto;
-  margin-left: auto;
-  border-radius: 6px;
-  width: 100%;
-  border-bottom-right-radius: 6px;
-  border-bottom-left-radius: 6px;
-  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(30,30,30,6.90) 99%), url("") top/ cover no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1680706488/GENSHIN/Wallpapers/3436_ytxnyd.jpg") top / cover;
-}
-
-.bg-2 {
   margin-right: auto;
   margin-left: auto;
   border-radius: 6px;
@@ -294,7 +196,7 @@
   left: 3px;
   width: 100%;
   position: relative;
-  margin-top: -12px;
+  margin-top: -10px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -321,12 +223,10 @@
 }
 
 .vision-icon {
-  width: 18px;
-  border-radius: 50px;
   position: relative;
-  margin-top: -27px;
-  left: 19px;
-  z-index: 90;
+  width: 20px;
+  border-radius: 50px;
+  margin-top: 2px;
 }
 
 .vision-box {
@@ -374,392 +274,7 @@
   background: rgba(111,100,237,0.98);
 }
 
-.character-icon-4-star {
-  height: 55px;
-  width: 55px;
-  border-radius: 6px;
-  box-shadow: rgb(0 0 0 / 25%) 0px 0px 8px;
-  margin-right: 5px;
-  background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686192014/GENSHIN/Rarity_4_background_sojeyv.png") top;
-  margin-top: 7px;
-  border-bottom-right-radius: 20px;
-}
-
-.character-icon-5-star {
-  height: 55px;
-  width: 55px;
-  border-radius: 6px;
-  box-shadow: rgb(0 0 0 / 25%) 0px 0px 8px;
-  margin-right: 5px;
-  background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686192120/GENSHIN/Rarity_5_background_dx6il0.png");
-  margin-top: 7px;
-  border-bottom-right-radius: 20px;
-}
-
-.ascension-material-icon {
-  height: 60px;
-  width: 60px;
-  border-radius: 6px;
-  box-shadow: rgb(0 0 0 / 25%) 0px 0px 8px;
-  margin-right: 5px;
-  margin-top: 7px;
-  margin-bottom: 7px;
-  background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686192014/GENSHIN/Rarity_4_background_sojeyv.png") top / cover no-repeat;
-  border-bottom-right-radius: 20px;
-}
-
-.table-row-3 {
-  font-family: 'DM Sans', sans-serif;
-  height: 79px;
-  min-width: 220px;
-}
-
-.character-icon:hover {
-  background-color: rgba(111,100,237,0.98);
-}
-
-.material-table {
-  margin-top: 25px;
-}
-
-.products-list {
-  padding-right: 20px;
-  padding-left: 20px;
-  color: rgb(255,255,255);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
-}
-
-@media (max-width: 768px) {
-  .table-row-3 {
-    min-width: 500px;
-  }
-}
-
-.front-page-text {
-  color: rgb(255,255,255);
-  text-shadow: 3px 2px rgb(35,35,35);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 50px;
-}
-
-.front-page-bg {
-  background: linear-gradient(180deg, rgba(0,0,0,0) -99%, #0f161b 90%), url("") center/ cover no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1685431078/GENSHIN/1175587_ynsbnk.png") center / cover;
-  width: 100%;
-  height: 400px;
-}
-
 .container-bg {
   background: linear-gradient(180deg, rgba(0,0,0,0) -1999%, rgb(18,27,34) 99%), url("") top/ cover no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686191478/GENSHIN/Wallpapers/1161890_zqkfhg.jpg") center / cover;
-}
-
-@media (max-width: 576px) {
-  .material-icon {
-    width: 55px;
-    height: 55px;
-  }
-}
-
-@media (max-width: 576px) {
-  .character-icon-5-star {
-    width: 50px;
-    height: 50px;
-  }
-}
-
-@media (max-width: 576px) {
-  .character-icon-4-star {
-    width: 50px;
-    height: 50px;
-  }
-}
-
-@media (max-width: 576px) {
-  .vision-icon {
-    margin-top: -23px;
-  }
-}
-
-@media (max-width: 576px) {
-  .name-title {
-    font-size: 21px;
-  }
-}
-
-.banner-character-4-star {
-  background: rgb(18,27,34);
-  border-radius: 6px;
-  border-bottom-right-radius: 35px;
-  height: 80px;
-  width: 95%;
-  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
-  margin-top: 15px;
-}
-
-.banner-character-5-star {
-  background: rgb(18,27,34);
-  border-radius: 6px;
-  border-bottom-right-radius: 35px;
-  height: 80px;
-  width: 95%;
-  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
-  margin-top: 15px;
-}
-
-.character-banner-icon-4-star {
-  height: 80px;
-  background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686192014/GENSHIN/Rarity_4_background_sojeyv.png") top / cover;
-  border-radius: 6px;
-  border-bottom-right-radius: 30px;
-  position: relative;
-  box-shadow: rgb(0 0 0 / 30%) 0px 0px 8px;
-}
-
-.character-banner-icon-5-star {
-  height: 80px;
-  background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686192120/GENSHIN/Rarity_5_background_dx6il0.png") top / cover;
-  border-radius: 6px;
-  border-bottom-right-radius: 30px;
-  position: relative;
-  box-shadow: rgb(0 0 0 / 30%) 0px 0px 8px;
-}
-
-.character-slogan-title-4-star {
-  font-family: 'DM Sans', sans-serif;
-  color: rgb(255,255,255);
-  font-size: 16px;
-  position: absolute;
-  width: 310px;
-  padding-left: 100px;
-  margin-top: 47px;
-  font-style: italic;
-}
-
-.character-slogan-title {
-  font-family: 'DM Sans', sans-serif;
-  color: rgb(255,255,255);
-  font-size: 16px;
-  position: absolute;
-  width: 464px;
-  padding-left: 100px;
-  margin-top: 48px;
-  font-style: italic;
-}
-
-.character-region-title-4-star {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 16px;
-  position: absolute;
-  width: 310px;
-  padding-left: 100px;
-  margin-top: 30px;
-}
-
-.character-region-title {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 16px;
-  position: absolute;
-  width: 464px;
-  padding-left: 100px;
-  margin-top: 30px;
-}
-
-.character-name-title-4-star {
-  font-family: 'DM Sans', sans-serif;
-  color: rgb(255,255,255);
-  font-size: 18px;
-  position: absolute;
-  width: 28%;
-  padding-left: 100px;
-  margin-top: 8px;
-}
-
-.character-name-title {
-  font-family: 'DM Sans', sans-serif;
-  color: rgb(255,255,255);
-  font-size: 20px;
-  position: absolute;
-  width: 464px;
-  padding-left: 100px;
-  padding-top: 2px;
-}
-
-.character-weapon-icon {
-  width: 27px;
-  position: absolute;
-  z-index: 90;
-  margin-left: 75px;
-}
-
-.character-vision-icon {
-  width: 24px;
-  position: absolute;
-  z-index: 90;
-  margin-top: 2px;
-  margin-left: 2px;
-}
-
-.character-rarity-icon {
-  width: 14px;
-  height: 14px;
-  margin-right: -3px;
-}
-
-.rarity-icon-box {
-  position: absolute;
-  width: 80px;
-  z-index: 90;
-  margin-top: 56px;
-}
-
-.emblem-icon {
-  width: 100px;
-  margin-left: 225px;
-}
-
-.character-banner-icon-5-star:hover {
-  background-color: #ffffff;
-  transform: scale(1.1);
-  transition: 0.5s;
-}
-
-.character-icon-4-star:hover {
-  background-color: #ffffff;
-  transform: scale(1.1);
-  transition: 0.5s;
-}
-
-.character-icon-5-star:hover {
-  background-color: #ffffff;
-  transform: scale(1.1);
-  transition: 0.5s;
-}
-
-.character-banner-icon-4-star:hover {
-  background-color: #ffffff;
-  transform: scale(1.1);
-  transition: 0.5s;
-}
-
-@media (max-width: 992px) {
-  .character-name-title-4-star {
-    font-size: 16px;
-    margin-top: 6px;
-    padding-left: 90px;
-    width: 260px;
-  }
-}
-
-@media (max-width: 768px) {
-  .character-name-title {
-    font-size: 18px;
-    width: 350px;
-    margin-top: 2px;
-    padding-left: 90px;
-  }
-}
-
-@media (max-width: 992px) {
-  .character-name-title {
-    font-size: 18px;
-    margin-top: 2px;
-  }
-}
-
-@media (max-width: 992px) {
-  .character-region-title-4-star {
-    font-size: 14px;
-    margin-top: 28px;
-    padding-left: 90px;
-    width: 280px;
-  }
-}
-
-@media (max-width: 992px) {
-  .character-region-title {
-    font-size: 14px;
-    margin-top: 28px;
-  }
-}
-
-@media (max-width: 992px) {
-  .character-slogan-title-4-star {
-    margin-top: 43px;
-    padding-left: 90px;
-  }
-}
-
-@media (max-width: 992px) {
-  .character-slogan-title {
-    margin-top: 42px;
-  }
-}
-
-@media (max-width: 992px) {
-  .character-banner-icon-4-star {
-    width: 72px;
-    height: 72px;
-  }
-}
-
-@media (max-width: 992px) {
-  .character-banner-icon-5-star {
-    width: 72px;
-    height: 72px;
-  }
-}
-
-@media (max-width: 992px) {
-  .character-vision-icon {
-    width: 22px;
-  }
-}
-
-@media (max-width: 992px) {
-  .banner-character-4-star {
-    height: 72px;
-  }
-}
-
-@media (max-width: 992px) {
-  .banner-character-5-star {
-    height: 72px;
-  }
-}
-
-@media (max-width: 576px) {
-  .character-name-title {
-    font-size: 16px;
-    width: 260px;
-    padding-left: 90px;
-  }
-}
-
-@media (max-width: 768px) {
-  .character-region-title {
-    padding-left: 90px;
-  }
-}
-
-@media (max-width: 768px) {
-  .character-slogan-title {
-    padding-left: 90px;
-  }
-}
-
-@media (max-width: 1200px) {
-  .row {
-    margin-left: 15px;
-  }
-}
-
-.information {
-  color: rgb(255,255,255);
-  font-family: 'DM Sans', sans-serif;
-  text-align: center;
-  font-size: 13px;
-  padding-left: 30px;
-  padding-right: 30px;
-  line-height: 18px;
 }
 
