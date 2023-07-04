@@ -26,7 +26,7 @@
 }
 
 .tooltip .tooltip-inner {
-  background: #d376f0;
+  background: #e2711d;
 }
 
 .tooltip .tooltip-arrow {
@@ -57,16 +57,171 @@
   background: linear-gradient(180deg, rgba(0,0,0,0) -1999%, rgb(18,27,34) 99%), url("") top/ cover no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686191478/GENSHIN/Wallpapers/1161890_zqkfhg.jpg") center / cover;
 }
 
-.farming-guide-table {
-  margin-bottom: 25px;
+.guide-container {
   margin-top: 25px;
-  padding-top: 25px;
-  padding-bottom: 10px;
-  padding-right: 25px;
-  padding-left: 25px;
+  margin-bottom: 25px;
+  box-shadow: rgb(0 0 0 / 25%) 0px 0px 8px;
+  width: 100%;
+  background: rgb(11,17,21);
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1050px;
+  border-radius: 6px;
+  padding-bottom: 5px;
 }
 
-.farming-guide-column {
+.character-card-content {
+  border-radius: 6px;
+  height: 100px;
+  width: auto;
+  max-width: 1050px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.character-card {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  max-width: 1000px;
+}
+
+.slider-column {
+  height: auto;
+}
+
+.best-weapon-rarity {
+  font-family: 'DM Sans', sans-serif;
+  color: rgb(255,255,255);
+  font-size: 16px;
+  position: absolute;
+  width: 300px;
+  margin-top: 7px;
+  font-style: italic;
+  margin-left: 75px;
+}
+
+.character-rarity-icon {
+  width: 13px;
+  height: 13px;
+  margin-right: -2px;
+}
+
+.best-weapon-column {
+  max-width: 400px;
+  width: 100%;
+  margin-bottom: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  column-count: 2;
+  column-gap: 3em;
+}
+
+.best-weapon-div {
+  background: rgb(18,27,34);
+  border-radius: 6px;
+  border-bottom-right-radius: 6px;
+  width: 440px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+}
+
+.weapon-icon-5-star {
+  width: 60px;
+  border-radius: 6px;
+  border-bottom-right-radius: 12px;
+  height: 60px;
+  margin-top: 15px;
+  margin-left: 15px;
+  background: url("../../assets/img/Genshin/Rarity/Rarity_5_background.png") top / cover no-repeat;
+}
+
+.best-sub-title {
+  color: rgb(255,255,255);
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0.5px;
+  position: absolute;
+  margin-top: -7px;
+  font-style: italic;
+  font-size: 11px;
+  margin-left: 75px;
+}
+
+.best-weapon-title {
+  color: #e2711d;
+  font-family: 'DM Sans', sans-serif;
+  position: static;
+  margin-left: 75px;
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: -72px;
+}
+
+.weapon-description {
+  color: rgb(255,255,255);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  margin-top: 50px;
+  position: static;
+}
+
+@media (MAX-width: 576px) {
+  .weapon-icon-5-star {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+@media (max-width: 576px) {
+  .best-weapon-title {
+    font-size: 14px;
+    margin-top: -72px;
+    margin-left: 75px;
+  }
+}
+
+@media (max-width: 576px) {
+  .best-sub-title {
+    margin-left: 75px;
+    margin-top: -6px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 576px) {
+  .best-weapon-rarity {
+    margin-left: 75px;
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 576px) {
+  .weapon-description {
+    font-size: 11px;
+    margin-top: 45px;
+  }
+}
+
+.scrollspy-nav {
+  font-family: 'DM Sans', sans-serif;
+  border-style: none;
+  border-radius: 6px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 576px) {
+  .scrollspy-column {
+    font-size: 14px;
+    border-style: none;
+  }
+}
+
+.nav-description:focus, .nav-description:hover {
+  color: #000000;
+}
+
+.nav-description:hover {
+  color: #ffffff;
 }
 
 .farming-guide-div {
@@ -74,27 +229,11 @@
   border-radius: 6px;
 }
 
-.farming-guide-table-cell {
-  background: linear-gradient(rgb(18,27,34), rgb(18,27,34));
-  font-family: 'DM Sans', sans-serif;
-}
-
-.farming-guide-table-cell {
-}
-
-.farming-guide-table-cell {
-}
-
 .farming-guide-container {
   margin-top: 25px;
   width: auto;
   max-width: 1000px;
   margin-bottom: 25px;
-}
-
-.farming-guide-icon {
-  width: 30px;
-  position: absolute;
 }
 
 .banner-icon {
