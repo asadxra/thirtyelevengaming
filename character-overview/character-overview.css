@@ -89,14 +89,14 @@
 
 .character-icon-4-star {
   width: 60px;
-  background: url("../../assets/img/Genshin/Rarity/Rarity_4_background.png") top / cover no-repeat;
   border-radius: 6px;
   box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  background: url("../../assets/img/Genshin/Rarity/Rarity_4_background.png") top / cover no-repeat;
 }
 
 .character-icon-5-star {
-  width: 60px;
   background: url("../../assets/img/Genshin/Rarity/Rarity_5_background.png") top / cover no-repeat;
+  width: 60px;
   border-radius: 6px;
   box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
 }
