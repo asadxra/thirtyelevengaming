@@ -1,0 +1,265 @@
+.nav-bar {
+  background: linear-gradient(#0f161b, #0f161b);
+}
+
+.game-title {
+  margin-left: 10px;
+}
+
+.favicon {
+  width: 42px;
+}
+
+.container-nav-option:hover {
+  background-color: rgba(87,77,197,0.98);
+}
+
+.nav-bar-links:hover {
+  color: #98c8e8;
+}
+
+.nav-bar-links {
+  border-radius: 6px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+}
+
+.tooltip .tooltip-inner {
+  background: #98c8e8;
+}
+
+.tooltip .tooltip-arrow {
+  display: none !important;
+}
+
+.tooltiptext {
+  font-family: 'DM Sans', sans-serif;
+  z-index: 1;
+  text-align: left;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  font-weight: 500;
+}
+
+.nav-description {
+  color: #ffffff;
+  font-size: 13px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  border-radius: 6px;
+}
+
+.container-bg {
+  background: linear-gradient(180deg, rgba(0,0,0,0) -1999%, rgb(18,27,34) 99%), url("") top/ cover no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686191478/GENSHIN/Wallpapers/1161890_zqkfhg.jpg") center / cover;
+}
+
+.guide-container {
+  margin-top: 25px;
+  margin-bottom: 25px;
+  box-shadow: rgb(0 0 0 / 25%) 0px 0px 8px;
+  width: 100%;
+  background: rgb(11,17,21);
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1050px;
+  border-radius: 6px;
+  padding-bottom: 5px;
+}
+
+.nav-description:hover {
+  color: #ffffff;
+}
+
+.ads {
+  font-size: 14px;
+  color: rgb(167,167,167);
+  width: 100%;
+  margin-top: 17px;
+}
+
+@media (max-width: 460px) {
+  .ads {
+    font-size: 10px;
+  }
+}
+
+.character-icon-4-star {
+  width: 60px;
+  background: url("../../assets/img/Genshin/Rarity/Rarity_4_background.png") top / cover no-repeat;
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+}
+
+.character-icon-5-star {
+  width: 60px;
+  background: url("../../assets/img/Genshin/Rarity/Rarity_5_background.png") top / cover no-repeat;
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+}
+
+.filterDiv {
+  float: left;
+  right: -2.5%;
+  position: relative;
+  width: 100px;
+  line-height: 110px;
+  text-align: center;
+  margin: 2px;
+  margin-right: 7px;
+}
+
+.btn {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding-right: 7px;
+  padding-left: 7px;
+  margin-top: 22px;
+}
+
+.show {
+  display: block;
+}
+
+.vision-icon {
+  width: 17px;
+  position: absolute;
+  margin-top: 30px;
+  margin-left: -58px;
+}
+
+.character-title {
+  color: rgb(255,255,255);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: bold;
+  margin-top: -15px;
+}
+
+.filterDiv:hover {
+  transition: 0.5s;
+  transform: scale(1.1);
+}
+
+.filter-container {
+  width: auto;
+  padding-left: 18px;
+  background: rgb(13,19,24);
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  height: 500px;
+  border-radius: 6px;
+}
+
+.button-vision {
+  width: 28px;
+}
+
+@media (max-width: 991px) {
+  .nav-bar-links {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 576px) {
+  .filterDiv {
+    width: 107px;
+  }
+}
+
+@media (max-width: 531px) {
+  .filterDiv {
+    width: 95px;
+  }
+}
+
+@media (max-width: 483px) {
+  .filterDiv {
+    width: 81px;
+    padding-right: 20px;
+  }
+}
+
+@media (max-width: 434px) {
+  .filterDiv {
+    width: 78px;
+  }
+}
+
+@media (max-width: 434px) {
+  .vision-icon {
+    margin-top: -82px;
+    margin-left: -28px;
+  }
+}
+
+@media (max-width: 415px) {
+  .filterDiv {
+    width: 71px;
+  }
+}
+
+@media (max-width: 415px) {
+  .vision-icon {
+    margin-left: -25px;
+    width: 15px;
+    margin-top: -78px;
+  }
+}
+
+@media (max-width: 415px) {
+  .character-icon-4-star {
+    width: 55px;
+  }
+}
+
+@media (max-width: 415px) {
+  .character-icon-5-star {
+    width: 55px;
+  }
+}
+
+@media (max-width: 415px) {
+  .character-title {
+    font-size: 11px;
+    margin-left: 4px;
+  }
+}
+
+@media (max-width: 394px) {
+  .filterDiv {
+    width: 68px;
+  }
+}
+
+@media (max-width: 380px) {
+  .filterDiv {
+    width: 60px;
+    margin-left: -12px;
+    margin-right: 28px;
+    padding-left: 5px;
+  }
+}
+
+@media (max-width: 380px) {
+  .vision-icon {
+    margin-left: -16px;
+    margin-top: -79px;
+  }
+}
+
+@media (max-width: 380px) {
+  .character-title {
+    width: 50px;
+  }
+}
+
+@media (max-width: 360px) {
+  .button-vision {
+    width: 25px;
+  }
+}
+
