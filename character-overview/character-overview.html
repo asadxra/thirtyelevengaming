@@ -112,14 +112,6 @@
     <script src="assets/js/bs-init.js"></script>
     <script src="assets/js/character-overview.js"></script>
 
-<script>document.addEventListener('DOMContentLoaded', function() {
-
-	var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bss-tooltip]'));
-	var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-	  return new bootstrap.Tooltip(tooltipTriggerEl);
-	})
-}, false);</script>
-
 <script>filterSelection("all")
     function filterSelection(c) {
       var x, i;
@@ -162,6 +154,14 @@
         this.className += " active";
       });
     }</script>
+
+    <script>document.addEventListener('DOMContentLoaded', function() {
+
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bss-tooltip]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+          return new bootstrap.Tooltip(tooltipTriggerEl);
+        })
+    }, false);</script>
 
 </body>
 
