@@ -110,7 +110,6 @@
   text-align: center;
   margin: 2px;
   margin-right: 7px;
-  display: none;
 }
 
 .btn {
@@ -138,7 +137,7 @@
   font-family: 'DM Sans', sans-serif;
   font-size: 13px;
   font-weight: bold;
-  margin-top: -10px;
+  margin-top: -14px;
 }
 
 .filterDiv:hover {
@@ -149,8 +148,6 @@
 .filter-container {
   width: auto;
   padding-left: 18px;
-  background: rgb(13,19,24);
-  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
   height: 500px;
   border-radius: 6px;
 }
@@ -240,7 +237,7 @@
 
 @media (max-width: 380px) {
   .vision-icon {
-    margin-left: 0px;
+    margin-left: -21px;
   }
 }
 
@@ -258,7 +255,7 @@
 
 @media (max-width: 360px) {
   .vision-icon {
-    margin-left: -22px;
+    margin-left: -21px;
     margin-top: -79px;
   }
 }
@@ -273,5 +270,13 @@
   .filterDiv {
     width: 55px;
   }
+}
+
+.character-row {
+  width: auto;
+  max-width: 1000px;
+  background: rgb(13,19,24);
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  border-radius: 6px;
 }
 
