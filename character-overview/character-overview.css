@@ -1,5 +1,5 @@
 .nav-bar {
-  background: linear-gradient(#0f161b, #0f161b);
+  background: linear-gradient(#0b1115, #0b1115);
 }
 
 .game-title {
@@ -15,7 +15,7 @@
 }
 
 .nav-bar-links:hover {
-  color: #98c8e8;
+  color: #d376f0;
 }
 
 .nav-bar-links {
@@ -92,6 +92,7 @@
   border-radius: 6px;
   box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
   background: url("../../assets/img/Genshin/Rarity/Rarity_4_background.png") top / cover no-repeat;
+  border-bottom-right-radius: 12px;
 }
 
 .character-icon-5-star {
@@ -99,18 +100,18 @@
   width: 60px;
   border-radius: 6px;
   box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  border-bottom-right-radius: 12px;
 }
 
 .filterDiv {
-  float: left;
-  right: -2.5%;
   position: relative;
-  width: 100px;
-  line-height: 110px;
-  text-align: center;
-  margin: 2px;
-  margin-right: 7px;
-  display: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 21.1px;
+  padding-bottom: 2.1px;
+  width: auto;
 }
 
 .btn {
@@ -120,6 +121,9 @@
   padding-right: 7px;
   padding-left: 7px;
   margin-top: 22px;
+  margin-bottom: 15px;
+  width: 40px;
+  height: 34px;
 }
 
 .show {
@@ -127,18 +131,19 @@
 }
 
 .vision-icon {
-  width: 18px;
+  width: 16px;
   position: absolute;
-  margin-top: 28px;
+  margin-top: 2px;
   margin-left: -58px;
 }
 
 .character-title {
   color: rgb(255,255,255);
   font-family: 'DM Sans', sans-serif;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: bold;
-  margin-top: -14px;
+  margin-top: 10px;
+  text-align: center;
 }
 
 .filterDiv:hover {
@@ -148,128 +153,22 @@
 
 .filter-container {
   width: auto;
-  padding-left: 18px;
-  height: 500px;
   border-radius: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  height: auto;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .button-vision {
-  width: 28px;
+  width: 24px;
 }
 
 @media (max-width: 991px) {
   .nav-bar-links {
     font-size: 12px;
-  }
-}
-
-@media (max-width: 576px) {
-  .filterDiv {
-    width: 107px;
-  }
-}
-
-@media (max-width: 531px) {
-  .filterDiv {
-    width: 95px;
-  }
-}
-
-@media (max-width: 483px) {
-  .filterDiv {
-    width: 81px;
-    padding-right: 20px;
-  }
-}
-
-@media (max-width: 434px) {
-  .filterDiv {
-    width: 78px;
-  }
-}
-
-@media (max-width: 415px) {
-  .filterDiv {
-    width: 71px;
-  }
-}
-
-@media (max-width: 415px) {
-  .vision-icon {
-    left: 28px;
-    width: 15px;
-    margin-top: -80px;
-  }
-}
-
-@media (max-width: 415px) {
-  .character-icon-4-star {
-    width: 55px;
-  }
-}
-
-@media (max-width: 415px) {
-  .character-icon-5-star {
-    width: 55px;
-  }
-}
-
-@media (max-width: 415px) {
-  .character-title {
-    font-size: 11px;
-    margin-left: 4px;
-  }
-}
-
-@media (max-width: 394px) {
-  .filterDiv {
-    width: 68px;
-  }
-}
-
-@media (max-width: 380px) {
-  .filterDiv {
-    width: 60px;
-    margin-left: -12px;
-    margin-right: 28px;
-    padding-left: 5px;
-  }
-}
-
-@media (max-width: 380px) {
-  .vision-icon {
-    margin-left: -21px;
-  }
-}
-
-@media (max-width: 380px) {
-  .character-title {
-    width: 50px;
-  }
-}
-
-@media (max-width: 360px) {
-  .button-vision {
-    width: 25px;
-  }
-}
-
-@media (max-width: 360px) {
-  .vision-icon {
-    margin-left: -21px;
-    margin-top: -79px;
-  }
-}
-
-@media (max-width: 432px) {
-  .vision-icon {
-    margin-left: -27px;
-  }
-}
-
-@media (max-width: 360px) {
-  .filterDiv {
-    width: 55px;
   }
 }
 
@@ -279,5 +178,58 @@
   background: rgb(13,19,24);
   box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
   border-radius: 6px;
+  margin-right: 12px;
+  margin-left: 12px;
+  padding-top: 15px;
+}
+
+.character-icon-5-star:hover {
+  transition: 0.5s;
+  transform: scale(1.1);
+  background: #ff983a;
+}
+
+.character-icon-4-star:hover {
+  transition: 0.5s;
+  transform: scale(1.1);
+  background: #a76dff;
+}
+
+.navbar-nav .nav-link.active, .navbar-nav .nav-link.show {
+  color: #724cf9;
+}
+
+.banner-container {
+  background: rgb(13,19,24);
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  padding-top: 15px;
+  font-family: 'DM Sans', sans-serif;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  height: 90px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.ads {
+  font-size: 14px;
+  color: rgb(167,167,167);
+  width: 100%;
+  margin-top: 17px;
+}
+
+.banner-icon {
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: -20px;
+}
+
+@media (max-width: 576px) {
+  .character-row {
+    margin-left: 0px;
+    margin-right: 0px;
+  }
 }
 
