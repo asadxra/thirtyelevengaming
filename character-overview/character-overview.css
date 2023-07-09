@@ -15,7 +15,7 @@
 }
 
 .nav-bar-links:hover {
-  color: #d376f0;
+  color: #724cf9;
 }
 
 .nav-bar-links {
@@ -60,12 +60,11 @@
 .guide-container {
   margin-top: 25px;
   margin-bottom: 25px;
-  box-shadow: rgb(0 0 0 / 25%) 0px 0px 8px;
   width: 100%;
-  background: rgb(11,17,21);
+  background: linear-gradient(180deg, rgba(0,0,0,0) -400%, rgb(13,19,24) 100%), url("../../assets/img/Genshin/Namecards/Electro-Traveler/Namecard_Background_Achievement_Traversal.webp") top / cover no-repeat;
   margin-left: auto;
   margin-right: auto;
-  max-width: 1050px;
+  max-width: 930px;
   border-radius: 6px;
   padding-bottom: 5px;
 }
@@ -121,7 +120,7 @@
   cursor: pointer;
   padding-right: 7px;
   padding-left: 7px;
-  margin-top: 22px;
+  margin-top: 8px;
   margin-bottom: 15px;
   width: 40px;
   height: 34px;
@@ -132,6 +131,7 @@
 }
 
 .vision-icon {
+  position: absolute;
   width: 16px;
   position: absolute;
   margin-top: 2px;
@@ -161,6 +161,7 @@
   max-width: 900px;
   margin-left: auto;
   margin-right: auto;
+  padding-bottom: 20px;
 }
 
 .button-vision {
@@ -197,7 +198,6 @@
 }
 
 .navbar-nav .nav-link.active, .navbar-nav .nav-link.show {
-  color: #724cf9;
 }
 
 .banner-container {
@@ -207,11 +207,9 @@
   padding-top: 15px;
   font-family: 'DM Sans', sans-serif;
   width: 100%;
-  margin-left: auto;
-  margin-right: auto;
   height: 90px;
   margin-bottom: 10px;
-  margin-top: 10px;
+  margin-top: 0px;
 }
 
 .ads {
@@ -222,15 +220,41 @@
 }
 
 .banner-icon {
-  margin-left: 0px;
-  margin-right: 0px;
   margin-top: -20px;
 }
 
 @media (max-width: 576px) {
   .character-row {
-    margin-left: 0px;
-    margin-right: 0px;
+    margin-right: -10px;
+    margin-left: -10px;
+  }
+}
+
+@media (max-width: 576px) {
+  .character-icon-5-star {
+    width: 50px;
+  }
+}
+
+@media (max-width: 576px) {
+  .character-icon-4-star {
+    width: 50px;
+  }
+}
+
+@media (max-width: 576px) {
+  .vision-icon {
+    width: 13px;
+    margin-left: -49px;
+  }
+}
+
+@media (max-width: 576px) {
+  .filterDiv {
+    width: auto;
+    max-width: 95px;
+    margin-right: -15px;
+    margin-left: -15px;
   }
 }
 
