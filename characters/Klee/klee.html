@@ -30,7 +30,7 @@
 </head>
 
 <body class="container-bg">
-    <nav class="navbar navbar-dark navbar-expand-md bg-dark nav-bar">
+    <nav class="navbar navbar-expand-md bg-dark nav-bar navbar-dark">
         <div class="container"><img class="rounded-circle favicon" src="assets/img/Keqing_pfp1ek.jpg"><a class="navbar-brand d-flex align-items-center" href="#"><span class="fw-semibold game-title" style="font-family: 'DM Sans', sans-serif;">Thirty Eleven Gaming</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-5"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navcol-5">
                 <ul class="navbar-nav ms-auto">
@@ -43,7 +43,7 @@
             </div>
         </div>
     </nav>
-    <div class="container guide-container" style="background: linear-gradient(180deg, rgba(0,0,0,0) -400%, rgb(13,19,24) 100%), url(assets/img/Genshin/Namecards/Klee/Namecard_Background_Klee_Explosive.webp;) center / cover no-repeat;height: 95px;">
+    <div class="container guide-container-character">
         <div class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex d-xxl-flex justify-content-end justify-content-sm-end justify-content-md-end justify-content-lg-end justify-content-xl-end justify-content-xxl-end region-div"><img class="d-xxl-flex region-icon" src="assets/img/Genshin/Region/Emblem_Mondstadt_White.webp"></div>
         <div class="character-card-content">
             <h1 class="fw-bold character-name">Klee</h1>
@@ -645,23 +645,23 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
 
-    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
-    <script>
-      kofiWidgetOverlay.draw('thirtyelevengaming', {
-        'type': 'floating-chat',
-        'floating-chat.donateButton.text': 'Support Us',
-        'floating-chat.donateButton.background-color': '#f45d22',
-        'floating-chat.donateButton.text-color': '#fff'
-      });
-    </script>
+<script>document.addEventListener('DOMContentLoaded', function() {
 
-    <script>document.addEventListener('DOMContentLoaded', function() {
+	var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bss-tooltip]'));
+	var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+	  return new bootstrap.Tooltip(tooltipTriggerEl);
+	})
+}, false);</script>
 
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bss-tooltip]'));
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-          return new bootstrap.Tooltip(tooltipTriggerEl);
-        })
-    }, false);</script>
+<script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+<script>
+  kofiWidgetOverlay.draw('thirtyelevengaming', {
+    'type': 'floating-chat',
+    'floating-chat.donateButton.text': 'Support Us',
+    'floating-chat.donateButton.background-color': '#e2311d',
+    'floating-chat.donateButton.text-color': '#fff'
+  });
+</script>
 
 </body>
 
