@@ -1,10 +1,5 @@
-.footer {
-  margin-top: 25px;
-  background: linear-gradient(#0f161b, #0f161b 100%), #0f161b;
-}
-
 .nav-bar {
-  background: linear-gradient(#0f161b, #0f161b), #0f161b;
+  background: linear-gradient(#0b1115, #0b1115);
 }
 
 .game-title {
@@ -15,6 +10,10 @@
   width: 42px;
 }
 
+.container-nav-option:hover {
+  background-color: rgba(87,77,197,0.98);
+}
+
 .nav-bar-links:hover {
   color: #724cf9;
 }
@@ -22,259 +21,240 @@
 .nav-bar-links {
   border-radius: 6px;
   font-family: 'DM Sans', sans-serif;
-}
-
-.vision-icon-overview {
-  width: 30px;
-  margin-right: 5px;
-  margin-left: 5px;
-  margin-top: -4px;
-}
-
-.title {
-  color: rgb(255,255,255);
-  font-size: 18px;
-  margin-top: 25px;
-  margin-bottom: 15px;
-}
-
-@media (max-width: 460px) {
-  .title {
-    font-size: 16px;
-  }
-}
-
-.container-nav-option:hover {
-  background-color: rgba(111,100,237,0.98);
-}
-
-.container-nav-option {
-  color: rgb(255,255,255);
   font-size: 15px;
-  text-align: center;
-  letter-spacing: 0.2px;
-  background: #2a2e32;
-  padding-top: 15px;
-  padding-bottom: 15px;
-  border-radius: 6px;
-  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  letter-spacing: 0.5px;
 }
 
-.title {
-  color: rgb(255,255,255);
-  font-size: 18px;
-  margin-top: 25px;
-  margin-bottom: 15px;
+.tooltip .tooltip-inner {
+  background: #98c8e8;
 }
 
-@media (max-width: 460px) {
-  .title {
-    font-size: 16px;
-  }
+.tooltip .tooltip-arrow {
+  display: none !important;
 }
 
-.filter-container {
-  background: rgb(18,27,34);
-  border-radius: 6px;
-  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
-  padding-top: 15px;
+.tooltiptext {
   font-family: 'DM Sans', sans-serif;
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-  height: 50px;
+  z-index: 1;
+  text-align: left;
 }
 
-.banner-container {
-  background: rgb(18,27,34);
-  border-radius: 6px;
-  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
-  padding-top: 15px;
-  font-family: 'DM Sans', sans-serif;
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-  height: 90px;
-}
-
-.team-container {
-  border-radius: 6px;
-  padding-top: 15px;
-  font-family: 'DM Sans', sans-serif;
-  background-color: rgb(18,27,34);
-  box-shadow: rgb(0 0 0 / 25%) 0px 0px 8px;
-}
-
-.team-title {
-  color: rgb(255,255,255);
-  font-size: 14px;
-  width: 100%;
-  margin-top: 0px;
-  margin-bottom: 10px;
-}
-
-.ads {
-  font-size: 14px;
-  color: rgb(197,197,197);
-  width: 100%;
-  margin-top: 17px;
-}
-
-.team-icon {
+.tooltip {
   position: relative;
-  top: 0px;
-  width: 65px;
-  box-shadow: rgb(0 0 0 / 25%) 0px 0px 8px;
-  background: rgba(87,77,197,0.98);
+  display: inline-block;
+  font-weight: 500;
+}
+
+.nav-description {
+  color: #ffffff;
+  font-size: 13px;
+  padding-top: 6px;
+  padding-bottom: 6px;
   border-radius: 6px;
-  align-items: center;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 0px;
-  height: 65px;
-}
-
-.name-title {
-  color: rgb(255,255,255);
-  font-size: 26px;
-  margin-bottom: 10px;
-  padding-top: 15px;
-  font-family: 'DM Sans', sans-serif;
-  text-shadow: 3px 2px rgb(0,0,0);
-}
-
-.bg {
-  margin-right: auto;
-  margin-left: auto;
-  border-radius: 6px;
-  width: 100%;
-  border-bottom-right-radius: 6px;
-  border-bottom-left-radius: 6px;
-  background: linear-gradient(180deg, rgba(0,0,0,0) -500%, #0f161b 99%), url("") top/ cover no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1673961486/GENSHIN/Namecards/Kazuha/Namecard_Background_Kaedehara_Kazuha_Autumn_Maple-Viewing_rzsrre.png") center / cover;
-}
-
-.background-container {
-  width: 100%;
-  padding-bottom: 25px;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 1000px;
-  border-radius: 6px;
-  border-bottom-right-radius: 6px;
-  border-bottom-left-radius: 6px;
-  margin-top: 40px;
-  background-color: rgba(15,22,27);
-  box-shadow: rgb(0 0 0 / 25%) 0px 0px 8px;
-}
-
-.banner-icon {
-  margin-top: 0px;
-  margin-left: 0px;
-  margin-right: 0px;
-}
-
-.team-row {
-  margin-top: 0px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-bottom: 15px;
-  border-radius: 6px;
-  width: 97%;
-}
-
-.bg-content {
-  width: 100%;
-  padding-right: 0px;
-  padding-left: 0px;
-  border-top-left-radius: 6px;
-  border-top-right-radius: 6px;
-  border-bottom-right-radius: 0px;
-  border-bottom-left-radius: 0px;
-}
-
-.rarity-row {
-  left: 3px;
-  width: 100%;
-  position: relative;
-  margin-top: -10px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-@media (max-width: 460px) {
-  .team-icon {
-    width: 50px;
-    margin-top: -2px;
-    height: 50px;
-  }
-}
-
-@media (max-width: 460px) {
-  .team-title {
-    font-size: 10px;
-    margin-top: -6px;
-  }
-}
-
-@media (max-width: 460px) {
-  .team-row {
-    padding-bottom: 10px;
-  }
-}
-
-.vision-icon {
-  position: relative;
-  width: 20px;
-  border-radius: 50px;
-  margin-top: 2px;
-}
-
-.vision-box {
-  position: relative;
-  margin-top: -30px;
-  margin-right: auto;
-  margin-left: auto;
-}
-
-@media (max-width: 460px) {
-  .vision-icon {
-    width: 17px;
-    margin-top: 20px;
-  }
-}
-
-@media (max-width: 460px) {
-  .vision-box {
-    margin-top: -42px;
-  }
-}
-
-.rarity-div {
-}
-
-.rarity {
-  width: 14px;
-  margin-left: -4px;
-}
-
-@media (max-width: 460px) {
-  .rarity {
-    width: 11px;
-    margin-top: -10px;
-  }
-}
-
-.vision-boxed-icon {
-  width: 30px;
-  margin-right: 5px;
-  margin-left: 5px;
-}
-
-.team-icon:hover {
-  background: rgba(111,100,237,0.98);
 }
 
 .container-bg {
   background: linear-gradient(180deg, rgba(0,0,0,0) -1999%, rgb(18,27,34) 99%), url("") top/ cover no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686191478/GENSHIN/Wallpapers/1161890_zqkfhg.jpg") center / cover;
+}
+
+.guide-container {
+  margin-top: 25px;
+  margin-bottom: 25px;
+  width: 100%;
+  background: linear-gradient(180deg, rgba(0,0,0,0) -400%, rgb(13,19,24) 100%), url("../../assets/img/Genshin/Namecards/Electro-Traveler/Namecard_Background_Achievement_Traversal.webp") top / cover no-repeat;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 930px;
+  border-radius: 6px;
+  padding-bottom: 5px;
+}
+
+.nav-description:hover {
+  color: #ffffff;
+}
+
+.ads {
+  font-size: 14px;
+  color: rgb(167,167,167);
+  width: 100%;
+  margin-top: 17px;
+}
+
+@media (max-width: 460px) {
+  .ads {
+    font-size: 10px;
+  }
+}
+
+.character-icon-4-star {
+  width: 60px;
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  background: url("../../assets/img/Genshin/Rarity/Rarity_4_background.png") top / cover no-repeat;
+  border-bottom-right-radius: 12px;
+}
+
+.character-icon-5-star {
+  background: url("../../assets/img/Genshin/Rarity/Rarity_5_background.png") top / cover no-repeat;
+  width: 60px;
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  border-bottom-right-radius: 12px;
+}
+
+.filterDiv {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 21.1px;
+  padding-bottom: 2.1px;
+  width: auto;
+  display: none;
+}
+
+.btn {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding-right: 7px;
+  padding-left: 7px;
+  margin-top: 8px;
+  margin-bottom: 15px;
+  width: 40px;
+  height: 34px;
+}
+
+.show {
+  display: block;
+}
+
+.vision-icon {
+  position: absolute;
+  width: 16px;
+  position: absolute;
+  margin-top: 2px;
+  margin-left: -58px;
+}
+
+.character-title {
+  color: rgb(255,255,255);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.filterDiv:hover {
+  transition: 0.5s;
+  transform: scale(1.1);
+}
+
+.filter-container {
+  width: auto;
+  border-radius: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  height: auto;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 20px;
+}
+
+.button-vision {
+  width: 24px;
+}
+
+@media (max-width: 991px) {
+  .nav-bar-links {
+    font-size: 12px;
+  }
+}
+
+.character-row {
+  width: auto;
+  max-width: 1000px;
+  background: rgb(13,19,24);
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  border-radius: 6px;
+  margin-right: 12px;
+  margin-left: 12px;
+  padding-top: 15px;
+}
+
+.character-icon-5-star:hover {
+  transition: 0.5s;
+  transform: scale(1.1);
+  background: #ff983a;
+}
+
+.character-icon-4-star:hover {
+  transition: 0.5s;
+  transform: scale(1.1);
+  background: #a76dff;
+}
+
+.navbar-nav .nav-link.active, .navbar-nav .nav-link.show {
+}
+
+.banner-container {
+  background: rgb(13,19,24);
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  padding-top: 15px;
+  font-family: 'DM Sans', sans-serif;
+  width: 100%;
+  height: 90px;
+  margin-bottom: 10px;
+  margin-top: 0px;
+}
+
+.ads {
+  font-size: 14px;
+  color: rgb(167,167,167);
+  width: 100%;
+  margin-top: 17px;
+}
+
+.banner-icon {
+  margin-top: -20px;
+}
+
+@media (max-width: 576px) {
+  .character-row {
+    margin-right: -10px;
+    margin-left: -10px;
+  }
+}
+
+@media (max-width: 576px) {
+  .character-icon-5-star {
+    width: 50px;
+  }
+}
+
+@media (max-width: 576px) {
+  .character-icon-4-star {
+    width: 50px;
+  }
+}
+
+@media (max-width: 576px) {
+  .vision-icon {
+    width: 13px;
+    margin-left: -49px;
+  }
+}
+
+@media (max-width: 576px) {
+  .filterDiv {
+    width: auto;
+    max-width: 95px;
+    margin-right: -15px;
+    margin-left: -15px;
+  }
 }
 
