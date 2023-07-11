@@ -1,0 +1,1170 @@
+.nav-bar {
+  background: linear-gradient(#0f161b, #0f161b);
+}
+
+.game-title {
+  margin-left: 10px;
+}
+
+.favicon {
+  width: 42px;
+}
+
+.container-nav-option:hover {
+  background-color: rgba(87,77,197,0.98);
+}
+
+.nav-bar-links:hover {
+  color: #d376f0;
+}
+
+.nav-bar-links {
+  border-radius: 6px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+}
+
+.tooltip .tooltip-inner {
+  background: #d376f0;
+}
+
+.tooltip .tooltip-arrow {
+  display: none !important;
+}
+
+.tooltiptext {
+  font-family: 'DM Sans', sans-serif;
+  z-index: 1;
+  text-align: left;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  font-weight: 500;
+}
+
+.nav-description {
+  color: #ffffff;
+  font-size: 13px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  border-radius: 6px;
+}
+
+.container-bg {
+  background: linear-gradient(180deg, rgba(0,0,0,0) -1999%, rgb(18,27,34) 99%), url("") top/ cover no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686191478/GENSHIN/Wallpapers/1161890_zqkfhg.jpg") center / cover;
+}
+
+.guide-container-character {
+  margin-top: 25px;
+  margin-bottom: 25px;
+  box-shadow: rgb(0 0 0 / 25%) 0px 0px 8px;
+  width: 100%;
+  background: linear-gradient(180deg, rgba(0,0,0,0) -400%, rgb(13,19,24) 100%), url("../../assets/img/Genshin/Namecards/Raiden-Shogun/Namecard_Background_Raiden_Shogun_Enlightenment.png") center / cover no-repeat;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1050px;
+  border-radius: 6px;
+  padding-bottom: 5px;
+  height: 95px;
+}
+
+.guide-container {
+  margin-top: 25px;
+  margin-bottom: 25px;
+  box-shadow: rgb(0 0 0 / 25%) 0px 0px 8px;
+  width: 100%;
+  background: rgb(11,17,21);
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1050px;
+  border-radius: 6px;
+  padding-bottom: 5px;
+}
+
+.character-card-content {
+  border-radius: 6px;
+  height: 100px;
+  width: auto;
+  max-width: 1050px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.character-card {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  max-width: 1000px;
+}
+
+.slider-column {
+  height: auto;
+}
+
+.best-weapon-rarity {
+  font-family: 'DM Sans', sans-serif;
+  color: rgb(255,255,255);
+  font-size: 16px;
+  position: absolute;
+  width: 300px;
+  margin-top: 7px;
+  font-style: italic;
+  margin-left: 75px;
+}
+
+.character-rarity-icon {
+  width: 13px;
+  height: 13px;
+  margin-right: -2px;
+}
+
+.best-weapon-column {
+  max-width: 400px;
+  width: 100%;
+  margin-bottom: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  column-count: 2;
+  column-gap: 3em;
+}
+
+.best-weapon-div {
+  background: rgb(18,27,34);
+  border-radius: 6px;
+  border-bottom-right-radius: 6px;
+  width: 440px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+}
+
+.weapon-icon-5-star {
+  width: 60px;
+  border-radius: 6px;
+  border-bottom-right-radius: 12px;
+  height: 60px;
+  margin-top: 15px;
+  margin-left: 15px;
+  background: url("../../assets/img/Genshin/Rarity/Rarity_5_background.png") top / cover no-repeat;
+}
+
+.best-sub-title {
+  color: rgb(255,255,255);
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0.5px;
+  position: absolute;
+  margin-top: -7px;
+  font-style: italic;
+  font-size: 11px;
+  margin-left: 75px;
+}
+
+.best-weapon-title {
+  color: #d376f0;
+  font-family: 'DM Sans', sans-serif;
+  position: static;
+  margin-left: 75px;
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: -72px;
+}
+
+.weapon-description {
+  color: rgb(255,255,255);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  margin-top: 50px;
+  position: static;
+}
+
+@media (MAX-width: 576px) {
+  .weapon-icon-5-star {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+@media (max-width: 576px) {
+  .best-weapon-title {
+    font-size: 14px;
+    margin-top: -72px;
+    margin-left: 75px;
+  }
+}
+
+@media (max-width: 576px) {
+  .best-sub-title {
+    margin-left: 75px;
+    margin-top: -6px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 576px) {
+  .best-weapon-rarity {
+    margin-left: 75px;
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 576px) {
+  .weapon-description {
+    font-size: 11px;
+    margin-top: 45px;
+  }
+}
+
+.CAROUSEL-DIV {
+}
+
+.scrollspy-nav {
+  font-family: 'DM Sans', sans-serif;
+  border-style: none;
+  border-radius: 6px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 576px) {
+  .scrollspy-column {
+    font-size: 14px;
+    border-style: none;
+  }
+}
+
+.scrollspy-nav-item {
+  background-color: #724cf9;
+  border-radius: 6px;
+  margin-right: 5px;
+  margin-left: 5px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  margin-bottom: 10px;
+}
+
+.scrollspy-nav-item:hover {
+  background-color: #d376f0;
+  color: #000000;
+  transform: scale(1.1);
+  transition: 1s;
+}
+
+.nav-description:focus, .nav-description:hover {
+  color: #000000;
+}
+
+@media (max-width: 576px) {
+  .scrollspy-nav {
+    font-size: 12px;
+    border-style: none;
+  }
+}
+
+.scrollspy-column {
+  margin-top: 15px;
+  width: 85%;
+  max-width: 980px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 10px;
+}
+
+.nav-description:hover {
+  color: #ffffff;
+}
+
+@media (max-width: 360px) {
+  .scrollspy-nav {
+  }
+}
+
+@media (max-width: 360px) {
+  .scrollspy-nav-item {
+    margin-bottom: 10px;
+  }
+}
+
+.weapon-icon-3-star {
+  width: 60px;
+  border-radius: 6px;
+  border-bottom-right-radius: 12px;
+  height: 60px;
+  margin-top: 15px;
+  margin-left: 15px;
+  background: url("../../assets/img/Genshin/Rarity/Rarity_3_background.png") top / cover no-repeat;
+}
+
+.weapon-icon-4-star {
+  width: 60px;
+  border-radius: 6px;
+  border-bottom-right-radius: 12px;
+  height: 60px;
+  margin-top: 15px;
+  margin-left: 15px;
+  background: url("../../assets/img/Genshin/Rarity/Rarity_4_background.png") top / cover no-repeat;
+}
+
+.ascension-div {
+  height: 55px;
+  background: rgb(18,27,34);
+  border-radius: 6px;
+  border-bottom-right-radius: 25px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  margin-left: 10px;
+  margin-right: 10px;
+  width: 55px;
+  position: relative;
+}
+
+.ascension-icon {
+  width: 55px;
+  background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686192565/GENSHIN/Rarity_1_background_vn8rcy.png") top / cover;
+  border-radius: 6px;
+  border-bottom-right-radius: 25px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  height: 55px;
+}
+
+.ascension-title {
+  position: absolute;
+  color: rgb(255,255,255);
+  font-size: 11px;
+  font-style: italic;
+  letter-spacing: 2px;
+  padding-left: 5px;
+  background: rgb(18,27,34);
+  margin-top: 38px;
+  padding-right: 5px;
+  border-radius: 6px;
+  border-top-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 3px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  opacity: 70%;
+}
+
+@media (max-width: 768px) {
+  .ascension-title {
+    margin-top: -17px;
+  }
+}
+
+.ascension-column {
+  width: 90px;
+  padding-left: 0px;
+}
+
+.ascension-row {
+  margin-left: 15px;
+  border-radius: 6px;
+  border-bottom-right-radius: 45px;
+  margin-bottom: 20px;
+  margin-right: 15px;
+}
+
+@media (max-width: 576px) {
+  .ascension-icon {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media (max-width: 576px) {
+  .ascension-div {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media (max-width: 576px) {
+  .ascension-column {
+    width: 85px;
+    padding-right: 0px;
+  }
+}
+
+.banner-container {
+  background: rgb(18,27,34);
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  padding-top: 15px;
+  font-family: 'DM Sans', sans-serif;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  height: 90px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.ads {
+  font-size: 14px;
+  color: rgb(167,167,167);
+  width: 100%;
+  margin-top: 17px;
+}
+
+.banner-icon {
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: -20px;
+}
+
+@media (max-width: 460px) {
+  .ads {
+    font-size: 10px;
+  }
+}
+
+.talent-icon {
+  margin-top: 5px;
+  width: 35px;
+  margin-left: 15px;
+}
+
+.artifact-substat-div {
+  height: 40px;
+  background: rgb(18,27,34);
+  border-radius: 6px;
+  border-bottom-right-radius: 6px;
+  width: 265px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+
+.substat-div {
+  height: 40px;
+  background: #724cf9;
+  border-radius: 6px;
+  border-bottom-right-radius: 6px;
+  width: 265px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+
+.substat-column {
+  width: 240px;
+  margin-top: -5px;
+}
+
+.talent-title {
+  position: absolute;
+  font-family: 'DM Sans', sans-serif;
+  color: #ffffff;
+  margin-top: -26px;
+  margin-left: 55px;
+  font-size: 12px;
+}
+
+@media (max-width: 576px) {
+  .substat-row {
+  }
+}
+
+@media (max-width: 576px) {
+  .substat-column {
+    width: 380px;
+    margin-bottom: -5px;
+  }
+}
+
+@media (max-width: 576px) {
+  .substat-div {
+    width: 280px;
+    margin-bottom: 10px;
+  }
+}
+
+@media (max-width: 576px) {
+  .talent-title {
+    font-size: 13px;
+    margin-top: -25px;
+    margin-left: 60px;
+  }
+}
+
+.substat-row {
+  padding-top: 5px;
+  margin-bottom: 20px;
+  margin-top: -5px;
+}
+
+.substat-div:hover {
+  background-color: #d376f0;
+  transition: 0.5s;
+  transform: scale(1.1);
+}
+
+@media (max-width: 576px) {
+  .talent-icon {
+    width: 39px;
+    margin-top: 3px;
+  }
+}
+
+.best-weapon-div-2:hover {
+  background-color: rgb(18,27,34);
+  transition: 0.5s;
+  transform: scale(1.1);
+}
+
+.best-artifact-column-1 {
+  width: 300px;
+  padding-right: 8px;
+  padding-left: 8px;
+  margin-bottom: 10px;
+}
+
+.best-weapon-div-1 {
+  background: rgb(18,27,34);
+  border-radius: 6px;
+  border-bottom-right-radius: 45px;
+  width: 350px;
+  height: 60px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+}
+
+.artifact-icon-1 {
+  width: 60px;
+  background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686192120/GENSHIN/Rarity_5_background_dx6il0.png") top / cover no-repeat;
+  border-radius: 6px;
+  border-bottom-right-radius: 25px;
+  height: 60px;
+}
+
+.artifact-set-piece-1 {
+  color: rgb(255,255,255);
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0.5px;
+  position: absolute;
+  font-style: italic;
+  font-size: 12px;
+  margin-left: 62px;
+  margin-top: -7px;
+}
+
+.artifact-title-1 {
+  color: #e2711d;
+  font-family: 'DM Sans', sans-serif;
+  position: static;
+  margin-top: -65px;
+  margin-left: 62px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.best-weapon-div-1:hover {
+  background-color: rgb(18,27,34);
+  transition: 0.5s;
+  transform: scale(1.1);
+}
+
+.container-artifact .card {
+  position: relative;
+  max-width: 300px;
+  height: 60px;
+  background-color: rgb(18,27,34);
+  display: flex;
+  flex-direction: column;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  transition: 0.3s ease-in-out;
+  border-radius: 6px;
+  border-bottom-right-radius: 6px;
+  padding-top: 0px;
+  margin-top: -5px;
+}
+
+.container-artifact .card {
+  position: relative;
+  max-width: 300px;
+  height: 60px;
+  background-color: rgb(18,27,34);
+  display: flex;
+  flex-direction: column;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  transition: 0.3s ease-in-out;
+  border-radius: 6px;
+  border-bottom-right-radius: 6px;
+  padding-top: 0px;
+  margin-top: -5px;
+}
+
+.container-artifact .card:hover {
+  height: inherit;
+}
+
+.container-artifact .card .image {
+  position: relative;
+  width: 55px;
+  height: 55px;
+  top: 0%;
+  z-index: 1;
+  background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686192120/GENSHIN/Rarity_5_background_dx6il0.png") top / cover no-repeat;
+  border-radius: 6px;
+  border-bottom-right-radius: 12px;
+}
+
+.container-artifact .card .image img {
+  max-width: 100%;
+  border-radius: 6px;
+  width: 55px;
+  height: 55px;
+}
+
+.container-artifact .card .content {
+  position: relative;
+  top: -20px;
+  padding: 10px 20px;
+  color: #111;
+  text-align: left;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.3s ease-in-out;
+}
+
+.container-artifact .card:hover .content {
+  margin-top: 25px;
+  visibility: visible;
+  opacity: 1;
+  transition-delay: 0.2s;
+}
+
+.contellation-piece {
+  color: #e2711d;
+  position: absolute;
+  padding-left: 72px;
+  padding-top: 11px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.artifact-piece {
+  color: #d376f0;
+  position: absolute;
+  padding-left: 72px;
+  padding-top: 11px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.artifact-title {
+  position: absolute;
+  padding-left: 72px;
+  color: #ffffff;
+  margin-top: 28px;
+}
+
+.constellations-column {
+  width: 300px;
+  margin-top: 20px;
+}
+
+.artifact-column {
+  width: 300px;
+  margin-top: 20px;
+}
+
+.constelation {
+  width: 300px;
+  margin-bottom: 24px;
+}
+
+.container-artifact {
+  width: 300px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 992px) {
+  .artifact-column {
+    margin-bottom: -5px;
+  }
+}
+
+.content {
+  margin-bottom: -30px;
+}
+
+.substitute-row {
+  margin-top: 20px;
+}
+
+.character-icon {
+  width: 65px;
+  border-radius: 6px;
+  position: relative;
+  margin-top: 15px;
+  margin-left: 7px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  background: url("../../assets/img/Genshin/Namecards/Raiden-Shogun/Namecard_Background_Raiden_Shogun_Enlightenment.png") center / cover no-repeat;
+}
+
+.character-name {
+  position: absolute;
+  color: rgb(255,255,255);
+  font-size: 18px;
+  text-align: left;
+  margin-left: 90px;
+  margin-top: 22px;
+  letter-spacing: 0.5px;
+  text-shadow: 0px 0px 6px var(--bs-emphasis-color);
+}
+
+.vision-icon {
+  width: 18px;
+  position: absolute;
+  margin-top: 17px;
+  z-index: 10;
+  margin-left: 8px;
+}
+
+.character-description {
+  color: rgb(255,255,255);
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  text-align: left;
+  position: absolute;
+  margin-left: 90px;
+  margin-top: 44px;
+}
+
+.character-icon:hover {
+  transition: 1s;
+  transform: scale(1.1);
+}
+
+.rarity-icon {
+  height: 12px;
+  margin-right: -2px;
+}
+
+.rarity-icon-box {
+  position: absolute;
+  text-align: left;
+  margin-top: -25px;
+  margin-left: 90px;
+}
+
+.region-icon {
+  width: 90px;
+  position: absolute;
+  opacity: 0.05;
+}
+
+.region-div {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.description-box {
+  color: rgb(255,255,255);
+  font-size: 12px;
+  font-family: 'DM Sans';
+  padding-left: 45px;
+  padding-right: 20px;
+  margin-top: -15px;
+}
+
+.substitute-column {
+  width: 250px;
+  padding-right: 8px;
+  padding-left: 8px;
+  margin-bottom: 10px;
+}
+
+.best-artifact-column-2 {
+  width: 300px;
+  padding-right: 10px;
+  margin-bottom: 10px;
+  height: 55px;
+}
+
+.substitute-div {
+  background: rgb(18,27,34);
+  border-radius: 6px;
+  width: 350px;
+  height: 35px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  border-bottom-left-radius: 4px;
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
+}
+
+.best-weapon-div-2 {
+  background: rgb(18,27,34);
+  border-radius: 6px;
+  border-bottom-right-radius: 6px;
+  width: 350px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+
+.substitute-icon {
+  background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686192014/GENSHIN/Rarity_4_background_sojeyv.png") top / cover no-repeat;
+  border-radius: 60px;
+  height: 35px;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 6px;
+}
+
+.artifact-icon-2 {
+  width: 55px;
+  background: url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686192014/GENSHIN/Rarity_4_background_sojeyv.png") top / cover no-repeat;
+  border-radius: 6px;
+  border-bottom-right-radius: 12px;
+  height: 55px;
+  border-top-right-radius: 6px;
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+
+.artifact-set-piece-2 {
+  color: rgb(255,255,255);
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0.5px;
+  position: absolute;
+  font-style: italic;
+  font-size: 12px;
+  margin-left: 55px;
+  margin-top: -8px;
+}
+
+.substitute-title {
+  color: #ffffff;
+  font-family: 'DM Sans', sans-serif;
+  position: static;
+  margin-top: -41px;
+  margin-left: 30px;
+  font-size: 12px;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.artifact-title-2 {
+  color: #d376f0;
+  font-family: 'DM Sans', sans-serif;
+  position: static;
+  margin-top: -59px;
+  margin-left: 55px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.substitute-row {
+  margin-top: 20px;
+}
+
+.best-weapon-row {
+  margin-top: 25px;
+}
+
+.head-title {
+  font-family: 'DM Sans', sans-serif;
+  color: rgb(255,255,255);
+  font-size: 16px;
+  text-shadow: 1px 1px 5px rgb(0,0,0);
+  border-radius: 6px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-left: auto;
+  margin-top: 15px;
+  padding-left: 15px;
+}
+
+.free-to-play-title {
+  font-family: 'DM Sans', sans-serif;
+  color: #deb76c;
+  font-size: 13px;
+  text-shadow: 1px 1px rgb(0,0,0);
+  border-radius: 6px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 45px;
+  font-style: italic;
+  margin-top: 20px;
+}
+
+.context-title {
+  font-family: 'DM Sans', sans-serif;
+  color: #deb76c;
+  font-size: 13px;
+  text-shadow: 1px 1px rgb(0,0,0);
+  border-radius: 6px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 45px;
+  font-style: italic;
+}
+
+.title-icon {
+  width: 25px;
+  margin-top: -2px;
+}
+
+.artifact-sub-stat {
+  background-color: rgb(18,27,34);
+  color: #deb76c;
+  font-size: 13px;
+  text-align: center;
+  padding-right: 25px;
+  padding-left: 25px;
+  font-family: 'DM Sans';
+  font-style: italic;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border-radius: 6px;
+  border-bottom-right-radius: 6px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+
+@media (max-width: 576px) {
+  .artifact-sub-stat-div {
+  }
+}
+
+@media (max-width: 576px) {
+  .artifact-sub-stat {
+    margin-top: 30px;
+    padding-top: 11px;
+    padding-bottom: 10px;
+  }
+}
+
+@media (max-width: 992px) {
+  .ascension-title {
+    margin-top: -17px;
+  }
+}
+
+@media (max-width: 992px) {
+  .nav-bar-links {
+    font-size: 12px;
+  }
+}
+
+.team-row {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.team-vision {
+  height: 15px;
+  position: absolute;
+  margin-left: -37px;
+  margin-top: 2px;
+}
+
+.team-icon-4-star {
+  background: url("../../assets/img/Genshin/Rarity/Rarity_4_background.png") top / cover no-repeat;
+  width: 55px;
+  border-radius: 8px;
+  border-bottom-right-radius: 12px;
+}
+
+.team-icon-5-star {
+  background: url("../../assets/img/Genshin/Rarity/Rarity_5_background.png") top / cover no-repeat;
+  width: 55px;
+  border-radius: 8px;
+  border-bottom-right-radius: 12px;
+}
+
+.team-text {
+  position: absolute;
+  color: rgb(255,255,255);
+  font-family: 'DM Sans', sans-serif;
+  text-shadow: 0px 2px 6px var(--bs-emphasis-color);
+  font-size: 12px;
+  margin-top: 62px;
+}
+
+.team-slider {
+  width: 55px;
+  margin-right: 15px;
+  margin-left: 15px;
+  margin-top: 25px;
+}
+
+.team-column {
+  background: rgb(18,27,34);
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+  width: auto;
+  margin-right: auto;
+  margin-left: auto;
+  border-radius: 6px;
+  padding-top: 15px;
+  padding-bottom: 41px;
+}
+
+.team-slider-div:hover {
+  transition: 0.5s;
+  transform: scale(1.1);
+}
+
+@media (max-width: 390px) {
+  .team-icon-4-star {
+    width: 48px;
+  }
+}
+
+@media (max-width: 390px) {
+  .team-icon-5-star {
+    width: 48px;
+  }
+}
+
+@media (max-width: 390px) {
+  .team-vision {
+    width: 12px;
+    height: 12px;
+    margin-top: 2px;
+    margin-left: -33px;
+  }
+}
+
+@media (max-width: 390px) {
+  .team-text {
+    margin-top: 55px;
+  }
+}
+
+.team-icon {
+  position: absolute;
+  width: 30px;
+  margin-top: -7px;
+  margin-left: -7px;
+}
+
+.team-title {
+  position: absolute;
+  border-color: rgb(255,255,255);
+  color: #deb76c;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  padding-left: 26px;
+}
+
+@media (max-width: 400px) {
+  .team-icon {
+    margin-left: 8px;
+  }
+}
+
+@media (max-width: 400px) {
+  .team-title {
+    margin-left: 15px;
+  }
+}
+
+@media (max-width: 360px) {
+  .team-slider {
+  }
+}
+
+@media (max-width: 772px) {
+  .team-column {
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 944px) {
+  .artifact-column {
+    margin-bottom: -30px;
+  }
+}
+
+@media (max-width: 576px) {
+  .head-title {
+  }
+}
+
+@media (min-width: 945px) {
+  .constellations-column {
+    margin-bottom: -60px;
+  }
+}
+
+@media (min-width: 945px) {
+  .artifact-column {
+    margin-bottom: -25px;
+  }
+}
+
+.artifact-substat-div:hover {
+  background: #d376f0;
+  transition: 0.5s;
+  transform: scale(1.1);
+}
+
+.artifact-sub-stat:hover {
+  color: #ffffff;
+  background: #d376f0;
+  transition: 0.5s;
+  transform: scale(1.1);
+}
+
+.constellation-icon {
+  width: 45px;
+}
+
+.substitute-column:hover {
+  transition: 0.5s;
+  transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+  .free-to-play-title {
+    margin-top: 0px;
+  }
+}
+
+.context-title {
+  font-family: 'DM Sans', sans-serif;
+  color: rgb(255,255,255);
+  font-size: 16px;
+  text-shadow: 1px 1px rgb(0,0,0);
+  border-radius: 6px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 45px;
+}
+
+.optional.builds-nav-item {
+  background-color: #724cf9;
+  border-radius: 6px;
+  margin-right: 5px;
+  margin-left: 5px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
+}
+
+.optional.builds-nav-item:hover {
+  background-color: #d376f0;
+  color: #000000;
+  transform: scale(1.1);
+  transition: 1s;
+}
+
