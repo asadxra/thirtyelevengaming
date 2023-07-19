@@ -1,3 +1,5 @@
+characters/albedo /characters/Albedo/albedo.html 200
+characters/arataki-itto /characters/Arataki-Itto/arataki-itto.html 200
 characters/alhaitham /characters/Alhaitham/alhaitham.html  200
 
 characters/baizhu /characters/Baizhu/baizhu.html 200
@@ -8,6 +10,7 @@ characters/dori /characters/Dori/dori.html 200
 characters/eula /characters/Eula/eula.html  200
 
 characters/faruzan /characters/Faruzan/faruzan.html  200
+characters/gorou /characters/Gorou/gorou.html  200
 
 characters/jean /characters/Jean/jean.html  200
 characters/kaedehara-kazuha /characters/Kaedehara-Kazuha/kaedehara-kazuha.html  200
@@ -17,6 +20,9 @@ characters/kirara /characters/Kirara/kirara.html  200
 characters/klee /characters/Klee/klee.html  200
 
 characters/nahida /characters/Nahida/nahida.html  200
+characters/noelle /characters/Noelle/noelle.html  200
+
+
 characters/mika /characters/Mika/mika.html  200
 characters/raiden-shogun /characters/Raiden-Shogun/raiden-shogun.html 200
 characters/razor /characters/Razor/razor.html 200
@@ -36,6 +42,8 @@ characters/yaoyao /characters/Yaoyao/yaoyao.html  200
 
 characters/wanderer /characters/Wanderer/wanderer.html  200
 
+characters/yun-jin /characters/Yun-Jin/yun-jin.html  200
+characters/zhongli /characters/Zhongli/zhongli.html  200
 
 
 /farming-guide  /farming-guide/farming-guide.html  200
@@ -48,11 +56,9 @@ characters/wanderer /characters/Wanderer/wanderer.html  200
 /https://thirtyelevengaming.io/privacy    /privacy.html   200
 /https://thirtyelevengaming.io/cookies    /cookie.html   200
 
-/https://thirtyelevengaming.io/characters/albedo /albedo.html 200
 /https://thirtyelevengaming.io/characters/aloy /aloy.html 200
 /https://thirtyelevengaming.io/characters/amber /amber.html 200
 /https://thirtyelevengaming.io/characters/anemo-traveler /anemo-traveler.html 200
-/https://thirtyelevengaming.io/characters/arataki-itto /arataki-itto.html 200
 /https://thirtyelevengaming.io/characters/kamisato-ayaka /kamisato-ayaka.html 200
 /https://thirtyelevengaming.io/characters/kamisato-ayato /kamisato-ayato.html 200
 /https://thirtyelevengaming.io/characters/barbara /barbara.html 200
@@ -67,7 +73,7 @@ characters/wanderer /characters/Wanderer/wanderer.html  200
 /https://thirtyelevengaming.io/characters/fischl /fischl.html 200
 /https://thirtyelevengaming.io/characters/ganyu /ganyu.html 200
 /https://thirtyelevengaming.io/characters/geo-traveler /geo-traveler.html 200
-/https://thirtyelevengaming.io/characters/gorou /gorou.html 200
+
 /https://thirtyelevengaming.io/characters/hu-tao /hu-tao.html 200
 /https://thirtyelevengaming.io/characters/kaeya /kaeya.html 200
 /https://thirtyelevengaming.io/characters/kujou-sara /kujou-sara.html 200
@@ -76,8 +82,7 @@ characters/wanderer /characters/Wanderer/wanderer.html  200
 /https://thirtyelevengaming.io/characters/lisa /lisa.html 200
 /https://thirtyelevengaming.io/characters/mona /mona.html 200
 /https://thirtyelevengaming.io/characters/nilou /nilou.html 200
-/https://thirtyelevengaming.io/characters/ningguang /ningguang.html 200
-/https://thirtyelevengaming.io/characters/noelle /noelle.html 200
+
 /https://thirtyelevengaming.io/characters/qiqi /qiqi.html 200
 /https://thirtyelevengaming.io/characters/rosaria /rosaria.html 200
 /https://thirtyelevengaming.io/characters/kokomi /kokomi.html 200
@@ -94,5 +99,3 @@ characters/wanderer /characters/Wanderer/wanderer.html  200
 /https://thirtyelevengaming.io/characters/yanfei /yanfei.html 200
 /https://thirtyelevengaming.io/characters/yelan /yelan.html 200
 /https://thirtyelevengaming.io/characters/yoimiya /yoimiya.html 200
-/https://thirtyelevengaming.io/characters/yun-jin /yun-jin.html 200
-/https://thirtyelevengaming.io/characters/zhongli /zhongli.html 200
