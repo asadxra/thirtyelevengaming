@@ -1,9 +1,10 @@
 characters/albedo /characters/Albedo/albedo.html 200
 characters/arataki-itto /characters/Arataki-Itto/arataki-itto.html 200
 characters/alhaitham /characters/Alhaitham/alhaitham.html  200
-
+characters/barbara /characters/Barbara/barbara.html 200
 characters/baizhu /characters/Baizhu/baizhu.html 200
 characters/beidou /characters/Beidou/beidou.html 200
+characters/candace /characters/Candace/candace.html  200
 characters/collei /characters/Collei/collei.html  200
 characters/cyno /characters/Cyno/cyno.html  200
 characters/dori /characters/Dori/dori.html 200
@@ -14,32 +15,35 @@ characters/gorou /characters/Gorou/gorou.html  200
 
 characters/jean /characters/Jean/jean.html  200
 characters/kaedehara-kazuha /characters/Kaedehara-Kazuha/kaedehara-kazuha.html  200
+characters/kamisato-ayato /characters/Kamisato-Ayato/kamisato-ayato.html  200
 
 characters/kaveh /characters/Kaveh/kaveh.html  200
 characters/kirara /characters/Kirara/kirara.html  200
 characters/klee /characters/Klee/klee.html  200
 
 characters/nahida /characters/Nahida/nahida.html  200
+characters/nilou /characters/Nilou/nilou.html  200
 characters/noelle /characters/Noelle/noelle.html  200
 characters/ningguang /characters/Ningguang/ningguang.html  200
 
 characters/mika /characters/Mika/mika.html  200
+characters/mona /characters/Mona/mona.html  200
 characters/raiden-shogun /characters/Raiden-Shogun/raiden-shogun.html 200
 characters/razor /characters/Razor/razor.html 200
-
+characters/sangonomiya-kokomi /characters/Sangonomiya-Kokomi/sangonomiya-kokomi.html 200
 characters/sayu /characters/Sayu/sayu.html 200
 characters/shikanoin-heizou /characters/Shikanoin-Heizou/shikanoin-heizou.html 200
 
 characters/sucrose /characters/Sucrose/sucrose.html 200
-
+characters/tartaglia /characters/Tartaglia/tartaglia.html  200
 characters/tighnari /characters/Tighnari/tighnari.html  200
 
 characters/venti /characters/Venti/venti.html  200
 characters/xiao /characters/Xiao/xiao.html  200
-
+characters/xingqiu /characters/Xingqiu/xingqiu.html  200
 characters/yae-miko /characters/Yae-Miko/yae-miko.html 200
 characters/yaoyao /characters/Yaoyao/yaoyao.html  200
-
+characters/yelan /characters/Yelan/yelan.html  200
 characters/wanderer /characters/Wanderer/wanderer.html  200
 
 characters/yun-jin /characters/Yun-Jin/yun-jin.html  200
@@ -55,15 +59,11 @@ characters/zhongli /characters/Zhongli/zhongli.html  200
 /https://thirtyelevengaming.io    /character-overview.html   200
 /https://thirtyelevengaming.io/privacy    /privacy.html   200
 /https://thirtyelevengaming.io/cookies    /cookie.html   200
-
 /https://thirtyelevengaming.io/characters/aloy /aloy.html 200
 /https://thirtyelevengaming.io/characters/amber /amber.html 200
 /https://thirtyelevengaming.io/characters/anemo-traveler /anemo-traveler.html 200
 /https://thirtyelevengaming.io/characters/kamisato-ayaka /kamisato-ayaka.html 200
-/https://thirtyelevengaming.io/characters/kamisato-ayato /kamisato-ayato.html 200
-/https://thirtyelevengaming.io/characters/barbara /barbara.html 200
 /https://thirtyelevengaming.io/characters/bennett /bennett.html 200
-/https://thirtyelevengaming.io/characters/candace /candace.html 200
 /https://thirtyelevengaming.io/characters/chongyun /chongyun.html 200
 /https://thirtyelevengaming.io/characters/dendro-traveler /dendro-traveler.html 200
 /https://thirtyelevengaming.io/characters/dehya /dehya.html 200
@@ -73,29 +73,21 @@ characters/zhongli /characters/Zhongli/zhongli.html  200
 /https://thirtyelevengaming.io/characters/fischl /fischl.html 200
 /https://thirtyelevengaming.io/characters/ganyu /ganyu.html 200
 /https://thirtyelevengaming.io/characters/geo-traveler /geo-traveler.html 200
-
 /https://thirtyelevengaming.io/characters/hu-tao /hu-tao.html 200
 /https://thirtyelevengaming.io/characters/kaeya /kaeya.html 200
 /https://thirtyelevengaming.io/characters/kujou-sara /kujou-sara.html 200
 /https://thirtyelevengaming.io/characters/kuki-shinobu /kuki-shinobu.html 200
 /https://thirtyelevengaming.io/characters/layla /layla.html 200
 /https://thirtyelevengaming.io/characters/lisa /lisa.html 200
-/https://thirtyelevengaming.io/characters/mona /mona.html 200
-/https://thirtyelevengaming.io/characters/nilou /nilou.html 200
-
 /https://thirtyelevengaming.io/characters/qiqi /qiqi.html 200
 /https://thirtyelevengaming.io/characters/rosaria /rosaria.html 200
-/https://thirtyelevengaming.io/characters/kokomi /kokomi.html 200
 /https://thirtyelevengaming.io/characters/shenhe /shenhe.html 200
-/https://thirtyelevengaming.io/characters/tartaglia /tartaglia.html 200
 /https://thirtyelevengaming.io/characters/thoma /thoma.html 200
 /https://thirtyelevengaming.io/characters/anemo-traveler /anemo-traveler.html 200
 /https://thirtyelevengaming.io/characters/dendro-traveler /dendro-traveler.html 200
 /https://thirtyelevengaming.io/characters/electro-traveler /electro-traveler.html 200
 /https://thirtyelevengaming.io/characters/geo-traveler /geo-traveler.html 200
 /https://thirtyelevengaming.io/characters/xiangling /xiangling.html 200
-/https://thirtyelevengaming.io/characters/xingqiu /xingqiu.html 200
 /https://thirtyelevengaming.io/characters/xinyan /xinyan.html 200
 /https://thirtyelevengaming.io/characters/yanfei /yanfei.html 200
-/https://thirtyelevengaming.io/characters/yelan /yelan.html 200
 /https://thirtyelevengaming.io/characters/yoimiya /yoimiya.html 200
