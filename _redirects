@@ -1,3 +1,9 @@
+/farming-guide  /farming-guide/farming-guide.html  200
+/home    /character-overview.html   200
+/characters    /character-overview.html   200
+/ads.txt    /ads.txt   200
+
+
 characters/albedo /characters/Albedo/albedo.html 200
 characters/arataki-itto /characters/Arataki-Itto/arataki-itto.html 200
 characters/alhaitham /characters/Alhaitham/alhaitham.html  200
@@ -13,9 +19,8 @@ characters/diona /characters/Diona/diona.html 200
 characters/dori /characters/Dori/dori.html 200
 characters/eula /characters/Eula/eula.html  200
 characters/faruzan /characters/Faruzan/faruzan.html  200
-
+characters/fischl /characters/Fischl/fischl.html  200
 characters/ganyu /characters/Ganyu/ganyu.html  200
-
 characters/gorou /characters/Gorou/gorou.html  200
 characters/jean /characters/Jean/jean.html  200
 characters/kaedehara-kazuha /characters/Kaedehara-Kazuha/kaedehara-kazuha.html  200
@@ -23,9 +28,13 @@ characters/kamisato-ayaka /characters/Kamisato-Ayaka/kamisato-ayaka.html  200
 characters/kamisato-ayato /characters/Kamisato-Ayato/kamisato-ayato.html  200
 characters/kaveh /characters/Kaveh/kaveh.html  200
 characters/kaeya /characters/Kaeya/kaeya.html  200
+characters/keqing /characters/Keqing/keqing.html  200
 characters/kirara /characters/Kirara/kirara.html  200
 characters/klee /characters/Klee/klee.html  200
+characters/kujou-sara /characters/Kujou-Sara/kujou-sara.html  200
+characters/kuki-shinobu /characters/Kuki-Shinobu/kuki-shinobu.html  200
 characters/layla /characters/Layla/layla.html  200
+characters/lisa /characters/Lisa/lisa.html  200
 characters/nahida /characters/Nahida/nahida.html  200
 characters/nilou /characters/Nilou/nilou.html  200
 characters/noelle /characters/Noelle/noelle.html  200
@@ -54,11 +63,6 @@ characters/yun-jin /characters/Yun-Jin/yun-jin.html  200
 characters/zhongli /characters/Zhongli/zhongli.html  200
 
 
-/farming-guide  /farming-guide/farming-guide.html  200
-
-/home    /character-overview.html   200
-/characters    /character-overview.html   200
-/ads.txt    /ads.txt   200
 
 /https://thirtyelevengaming.io    /character-overview.html   200
 /https://thirtyelevengaming.io/privacy    /privacy.html   200
@@ -70,12 +74,8 @@ characters/zhongli /characters/Zhongli/zhongli.html  200
 /https://thirtyelevengaming.io/characters/dehya /dehya.html 200
 /https://thirtyelevengaming.io/characters/diluc /diluc.html 200
 /https://thirtyelevengaming.io/characters/electro-traveler /electro-traveler.html 200
-/https://thirtyelevengaming.io/characters/fischl /fischl.html 200
 /https://thirtyelevengaming.io/characters/geo-traveler /geo-traveler.html 200
 /https://thirtyelevengaming.io/characters/hu-tao /hu-tao.html 200
-/https://thirtyelevengaming.io/characters/kujou-sara /kujou-sara.html 200
-/https://thirtyelevengaming.io/characters/kuki-shinobu /kuki-shinobu.html 200
-/https://thirtyelevengaming.io/characters/lisa /lisa.html 200
 /https://thirtyelevengaming.io/characters/thoma /thoma.html 200
 /https://thirtyelevengaming.io/characters/anemo-traveler /anemo-traveler.html 200
 /https://thirtyelevengaming.io/characters/dendro-traveler /dendro-traveler.html 200
