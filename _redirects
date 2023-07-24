@@ -8,6 +8,7 @@ characters/albedo /characters/Albedo/albedo.html 200
 characters/arataki-itto /characters/Arataki-Itto/arataki-itto.html 200
 characters/alhaitham /characters/Alhaitham/alhaitham.html  200
 characters/aloy /characters/Aloy/aloy.html 200
+characters/amber /characters/Amber/amber.html 200
 characters/barbara /characters/Barbara/barbara.html 200
 characters/baizhu /characters/Baizhu/baizhu.html 200
 characters/beidou /characters/Beidou/beidou.html 200
@@ -22,6 +23,7 @@ characters/faruzan /characters/Faruzan/faruzan.html  200
 characters/fischl /characters/Fischl/fischl.html  200
 characters/ganyu /characters/Ganyu/ganyu.html  200
 characters/gorou /characters/Gorou/gorou.html  200
+characters/hu-tao /characters/Hu-Tao/hu-tao.html  200
 characters/jean /characters/Jean/jean.html  200
 characters/kaedehara-kazuha /characters/Kaedehara-Kazuha/kaedehara-kazuha.html  200
 characters/kamisato-ayaka /characters/Kamisato-Ayaka/kamisato-ayaka.html  200
@@ -56,10 +58,12 @@ characters/venti /characters/Venti/venti.html  200
 characters/xiao /characters/Xiao/xiao.html  200
 characters/xingqiu /characters/Xingqiu/xingqiu.html  200
 characters/yae-miko /characters/Yae-Miko/yae-miko.html 200
+characters/yanfei /characters/Yanfei/yanfei.html 200
 characters/yaoyao /characters/Yaoyao/yaoyao.html  200
 characters/yelan /characters/Yelan/yelan.html  200
-characters/wanderer /characters/Wanderer/wanderer.html  200
+characters/yoimiya /characters/Yoimiya/yoimiya.html  200
 characters/yun-jin /characters/Yun-Jin/yun-jin.html  200
+characters/wanderer /characters/Wanderer/wanderer.html  200
 characters/zhongli /characters/Zhongli/zhongli.html  200
 
 
@@ -67,7 +71,6 @@ characters/zhongli /characters/Zhongli/zhongli.html  200
 /https://thirtyelevengaming.io    /character-overview.html   200
 /https://thirtyelevengaming.io/privacy    /privacy.html   200
 /https://thirtyelevengaming.io/cookies    /cookie.html   200
-/https://thirtyelevengaming.io/characters/amber /amber.html 200
 /https://thirtyelevengaming.io/characters/anemo-traveler /anemo-traveler.html 200
 /https://thirtyelevengaming.io/characters/bennett /bennett.html 200
 /https://thirtyelevengaming.io/characters/dendro-traveler /dendro-traveler.html 200
@@ -75,7 +78,6 @@ characters/zhongli /characters/Zhongli/zhongli.html  200
 /https://thirtyelevengaming.io/characters/diluc /diluc.html 200
 /https://thirtyelevengaming.io/characters/electro-traveler /electro-traveler.html 200
 /https://thirtyelevengaming.io/characters/geo-traveler /geo-traveler.html 200
-/https://thirtyelevengaming.io/characters/hu-tao /hu-tao.html 200
 /https://thirtyelevengaming.io/characters/thoma /thoma.html 200
 /https://thirtyelevengaming.io/characters/anemo-traveler /anemo-traveler.html 200
 /https://thirtyelevengaming.io/characters/dendro-traveler /dendro-traveler.html 200
@@ -83,5 +85,3 @@ characters/zhongli /characters/Zhongli/zhongli.html  200
 /https://thirtyelevengaming.io/characters/geo-traveler /geo-traveler.html 200
 /https://thirtyelevengaming.io/characters/xiangling /xiangling.html 200
 /https://thirtyelevengaming.io/characters/xinyan /xinyan.html 200
-/https://thirtyelevengaming.io/characters/yanfei /yanfei.html 200
-/https://thirtyelevengaming.io/characters/yoimiya /yoimiya.html 200
