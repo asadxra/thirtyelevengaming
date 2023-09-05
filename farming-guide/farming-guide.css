@@ -1,5 +1,5 @@
 .nav-bar {
-  background: linear-gradient(#0f161b, #0f161b);
+  background: linear-gradient(#0d121e, #0d121e);
 }
 
 .game-title {
@@ -15,7 +15,7 @@
 }
 
 .nav-bar-links:hover {
-  color: #d376f0;
+  color: #724cf9;
 }
 
 .nav-bar-links {
@@ -54,7 +54,7 @@
 }
 
 .container-bg {
-  background: linear-gradient(180deg, rgba(0,0,0,0) -1999%, rgb(18,27,34) 99%), url("") top/ cover no-repeat, url("https://res.cloudinary.com/djqzskg3z/image/upload/v1686191478/GENSHIN/Wallpapers/1161890_zqkfhg.jpg") center / cover;
+  background: linear-gradient(0deg, rgba(0,0,0,0) -150%, #12192a 99%), url("") top/ cover no-repeat, url("../../assets/img/bg.png") center / cover;
 }
 
 .guide-container {
@@ -225,7 +225,7 @@
 }
 
 .farming-guide-div {
-  background: #0f161b;
+  background: #0d121e;
   border-radius: 6px;
 }
 
@@ -295,7 +295,7 @@
   box-shadow: rgb(0 0 0 / 25%) 0px 0px 8px;
   margin-right: 5px;
   margin-top: 7px;
-  border-bottom-right-radius: 12px;
+  border-bottom-right-radius: 4PX;
   background: url("../../assets/img/Genshin/Rarity/Rarity_5_background.png") top / cover no-repeat;
 }
 
@@ -329,7 +329,7 @@
   box-shadow: rgb(0 0 0 / 25%) 0px 0px 8px;
   margin-right: 5px;
   margin-top: 7px;
-  border-bottom-right-radius: 12px;
+  border-bottom-right-radius: 4px;
   background: url("../../assets/img/Genshin/Rarity/Rarity_4_background.png") top / cover no-repeat;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
@@ -360,7 +360,7 @@
 }
 
 .banner-container {
-  background: rgb(18,27,34);
+  background: #12192a;
   border-radius: 6px;
   box-shadow: rgb(0 0 0 / 15%) 0px 0px 8px;
   padding-top: 15px;
