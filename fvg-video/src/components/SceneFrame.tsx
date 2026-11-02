@@ -102,17 +102,18 @@ export const ChapterHeader: React.FC<{ chapter: number; title: string; accent?: 
 };
 
 /**
- * Plays voiceover clips if they exist in public/voiceover/<id>/<cueIndex>.mp3.
+ * Plays voiceover clips if they exist in public/voiceover/<id>/<cueIndex>.<mp3|wav|m4a|...>.
  * Generate them with `npm run voiceover` (needs ELEVENLABS_API_KEY). Without the
  * files the video renders silently with captions only.
  */
 const Voiceover: React.FC<{ id: string; cues: Cue[] }> = ({ id, cues }) => {
-  const files = new Set(getStaticFiles().map((f) => f.name));
+  const files = getStaticFiles().map((f) => f.name);
   return (
     <>
       {cues.map((c, idx) => {
-        const name = `voiceover/${id}/${idx}.mp3`;
-        if (!files.has(name)) return null;
+        // Any audio format works: 0.mp3, 0.wav, 0.m4a, ...
+        const name = files.find((f) => f.startsWith(`voiceover/${id}/${idx}.`) && /\.(mp3|wav|m4a|aac|ogg|webm)$/i.test(f));
+        if (!name) return null;
         return (
           <Sequence key={idx} from={Math.round(c.from * FPS)} layout="none" name={`VO ${id} ${idx}`}>
             <Audio src={staticFile(name)} />
