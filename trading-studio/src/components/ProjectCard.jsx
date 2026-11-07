@@ -5,6 +5,7 @@ import { Icon } from './Icon.jsx';
 import { scriptStatus, voiceStatus, generationStatus, projectDuration, STATUS_LABEL, STATUS_TONE } from '../lib/status.js';
 import { fmtShort } from '../../shared/scenes.js';
 import { FORMATS } from '../../shared/defaults.js';
+import { conceptById } from '../../shared/concepts.js';
 
 export function Thumbnail({ project, character, compact }) {
   const hue = project.thumbnail?.hue ?? 270;
@@ -34,18 +35,24 @@ export default function ProjectCard({ project, characters, onOpen, actions }) {
       <Thumbnail project={project} character={character} />
       <div className="pc-body">
         <div className="row between start">
-          <h4 className="pc-title">{project.title}</h4>
+          <div>
+            <h4 className="pc-title">{project.title}</h4>
+            {project.conceptId && <span className="small accent-text">{conceptById(project.conceptId)?.name || 'Custom concept'}</span>}
+          </div>
           {actions && <Menu items={actions} />}
         </div>
         <div className="pc-meta muted small">
           <span><Icon name="user" size={12} /> {character?.name || 'No character'}</span>
           <span><Icon name="clock" size={12} /> {dur ? fmtShort(dur) : '—'}</span>
           <span>{FORMATS[project.format]?.label}</span>
+          <span><Icon name="chart" size={12} /> {(project.examples || []).length} chart example{(project.examples || []).length === 1 ? '' : 's'}</span>
         </div>
         <div className="pc-badges">
           <Badge tone={STATUS_TONE[ss]}>Script · {STATUS_LABEL[ss]}</Badge>
           <Badge tone={STATUS_TONE[vs]}>Voice · {STATUS_LABEL[vs]}</Badge>
           <Badge tone={STATUS_TONE[gs]}>{STATUS_LABEL[gs]}</Badge>
+          {project.publication?.status === 'published' && <Badge tone="ok">Published</Badge>}
+          {project.publication?.status === 'scheduled' && <Badge tone="accent">Scheduled</Badge>}
           {project.sample && <Badge tone="muted">Sample</Badge>}
         </div>
         <div className="pc-dates muted small">

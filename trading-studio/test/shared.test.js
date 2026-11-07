@@ -1,7 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { buildScenes, retime, captionsFromScenes, parseTime, fmtTime, splitSentences, hashText } from '../shared/scenes.js';
-import { localGenerate, runLocalOp } from '../shared/writer.js';
+import { composeScript, runLocalOp } from '../shared/writer.js';
+import { CONCEPTS } from '../shared/concepts.js';
+const localGenerate = () => composeScript({ concept: CONCEPTS[0], examples: [], inputs: { length: 'long', duration: 240, level: 'Intermediate', tone: 'Educational', complexity: 'Detailed' } });
 import { SECTIONS } from '../shared/defaults.js';
 
 test('splitSentences keeps punctuation', () => {
@@ -14,13 +16,14 @@ test('time parsing round-trips', () => {
   assert.equal(fmtTime(65.5), '01:05.5');
 });
 
-test('local writer produces all five sections', () => {
-  const s = localGenerate({ theme: 'Patience', duration: 45 }, { seed: 1 });
-  for (const k of SECTIONS) assert.ok(s[k].length > 10, k);
+test('writer produces all eight sections', () => {
+  const s = localGenerate();
+  for (const k of SECTIONS) assert.ok(typeof s[k] === 'string', k);
+  assert.ok(s.hook.length > 10 && s.technical.length > 10);
 });
 
 test('scenes are sequential and captions stay inside scenes', () => {
-  const sections = localGenerate({ theme: 'Risk management', duration: 60 }, { seed: 2 });
+  const sections = localGenerate();
   const scenes = buildScenes(sections);
   assert.ok(scenes.length >= 5);
   scenes.forEach((s, i) => { if (i) assert.ok(Math.abs(s.start - scenes[i - 1].end) < 0.05); });
@@ -37,10 +40,10 @@ test('hash changes with text (voice staleness)', () => {
   assert.notEqual(hashText('a'), hashText('b'));
 });
 
-test('local script ops', async () => {
-  const sections = localGenerate({ theme: 'Consistency', duration: 45 }, { seed: 3 });
-  const shorter = runLocalOp({ op: 'shorten', sections });
-  assert.ok(shorter.sections.story.length <= sections.story.length);
-  const hook = runLocalOp({ op: 'section', section: 'hook', inputs: { theme: 'Consistency', duration: 45 }, sections });
-  assert.equal(hook.sections.story, sections.story);
+test('local script ops', () => {
+  const sections = localGenerate();
+  const shorter = runLocalOp({ op: 'shorten', sections, conceptId: 'fvg' });
+  assert.ok(shorter.sections.technical.length <= sections.technical.length);
+  const hook = runLocalOp({ op: 'section', section: 'hook', conceptId: 'fvg', inputs: {}, sections });
+  assert.equal(hook.sections.technical, sections.technical);
 });

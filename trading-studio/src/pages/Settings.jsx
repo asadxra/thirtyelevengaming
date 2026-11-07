@@ -5,7 +5,9 @@ import { api } from '../lib/api.js';
 import { Button, Panel, Tabs, Select, Slider, ColorInput, Toggle, Chips, Badge, Input, Confirm, Prompt, IconButton, Menu } from '../components/ui.jsx';
 import { Icon } from '../components/Icon.jsx';
 import { ElevenConnect, useEleven } from '../components/VoicePanel.jsx';
-import { DEFAULT_THEME, FONT_CHOICES, FORMATS } from '../../shared/defaults.js';
+import { DEFAULT_THEME, DEFAULT_CHART_THEME, FONT_CHOICES, FORMATS } from '../../shared/defaults.js';
+import CandleChart from '../components/CandleChart.jsx';
+import { exampleBars } from '../../shared/examples.js';
 
 const TABS = [
   { id: 'appearance', label: 'Appearance', icon: 'palette' },
@@ -72,6 +74,7 @@ function Appearance() {
         <Slider label="Panel transparency" value={t.panelOpacity} min={0.15} max={1} step={0.01} onChange={(v) => set({ panelOpacity: v })} format={(v) => `${Math.round(v * 100)}% opaque`} />
         <Slider label="Glow intensity" value={t.glow} min={0} max={1.5} step={0.05} onChange={(v) => set({ glow: v })} format={(v) => v.toFixed(2)} />
       </Panel>
+      <ChartColors />
       <Panel title="Shape, type & motion">
         <Slider label="Border radius" value={t.radius} min={0} max={28} step={1} onChange={(v) => set({ radius: v })} format={(v) => `${v}px`} />
         <Select label="Font family" value={t.font} onChange={(e) => set({ font: e.target.value })} options={FONT_CHOICES} />
@@ -146,6 +149,18 @@ function Integrations() {
             </div>
           </form>
         )}
+      </Panel>
+
+      <Panel title="TradingView" subtitle="Real historical chart data for Chart Research"
+        actions={store.integrations?.tradingview?.configured ? <Badge tone="ok" dot>Connector available</Badge> : <Badge tone="muted" dot>{store.integrations?.tradingview?.connector ? 'Not connected' : 'Web version only'}</Badge>}>
+        {store.integrations?.tradingview?.connector ? (
+          <p className="small">{store.integrations.tradingview.configured
+            ? 'Chart Research fetches bars through your own claude.ai TradingView connector, under your TradingView plan and data subscriptions. The first fetch asks you to allow it for this page.'
+            : 'Connect the TradingView connector in claude.ai (Settings → Connectors), then reopen this page and allow it.'}</p>
+        ) : (
+          <p className="small">{store.integrations?.tradingview?.reason || 'The TradingView connector works in the claude.ai web version.'} TradingView does not offer a public historical-data API for self-hosted apps, so this version uses your chart exports (CSV) and screenshots.</p>
+        )}
+        <p className="small muted">Every example shows its source on screen. Imported or illustrative charts are labelled as such.</p>
       </Panel>
 
       <Panel title="Video rendering engine" actions={<Badge tone="muted" dot>Not connected</Badge>}>
@@ -299,5 +314,26 @@ function Storage() {
         <Input label="Type RESET to confirm" value={typed} onChange={(e) => setTyped(e.target.value)} />
       </Confirm>
     </div>
+  );
+}
+
+const CHART_KEYS = [
+  ['bg', 'Chart background'], ['grid', 'Grid'], ['text', 'Axis text'], ['bull', 'Bullish candles'], ['bear', 'Bearish candles'],
+  ['fvg', 'FVG boxes'], ['ifvg', 'Inverse FVG'], ['liquidity', 'Liquidity lines'], ['ob', 'Order blocks'], ['breaker', 'Breakers'],
+  ['structure', 'Structure labels'], ['entry', 'Entry'], ['stop', 'Stop loss'], ['target', 'Take profit'], ['fib', 'Fibonacci'], ['session', 'Session separators'], ['highlight', 'Candle highlight'],
+];
+
+function ChartColors() {
+  const store = useStore();
+  const chart = { ...DEFAULT_CHART_THEME, ...(store.settings.theme?.chart || {}) };
+  const ex = store.projects.flatMap((p) => p.examples || []).find((e) => e.kind === 'historical');
+  const bars = React.useMemo(() => exampleBars(ex), [ex]);
+  return (
+    <Panel title="Chart colors" actions={<Button size="sm" variant="ghost" icon="refresh" onClick={() => store.updateSettings({ theme: { chart: { ...DEFAULT_CHART_THEME } } })}>Reset</Button>}>
+      {ex && <div className="chart-preview"><CandleChart bars={bars} focus={ex.range} annotations={ex.annotations} width={640} height={300} compact /></div>}
+      <div className="grid-2">
+        {CHART_KEYS.map(([k, label]) => <ColorInput key={k} label={label} value={chart[k]} onChange={(v) => store.updateSettings({ theme: { chart: { [k]: v } } })} />)}
+      </div>
+    </Panel>
   );
 }

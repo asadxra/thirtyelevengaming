@@ -13,7 +13,7 @@ export const UPLOAD_DIR = path.join(DATA_DIR, 'uploads');
 const DB_FILE = path.join(DATA_DIR, 'db.json');
 const SECRETS_FILE = path.join(DATA_DIR, 'secrets.json');
 
-export const COLLECTIONS = ['projects', 'characters', 'assets', 'activity', 'presets'];
+export const COLLECTIONS = ['projects', 'characters', 'assets', 'activity', 'presets', 'datasets'];
 
 let db = null;
 let writeTimer = null;
@@ -43,6 +43,13 @@ export function load() {
   }
   for (const c of COLLECTIONS) if (!Array.isArray(db[c])) db[c] = [];
   if (!db.settings) db.settings = buildSeed({ uploadDir: UPLOAD_DIR, settingsOnly: true }).settings;
+  if (!(db.settings.explainerVersion >= 2)) {
+    // Upgrade from the motivational version: keep all data, add explainer samples and chart theme once.
+    const seed = buildSeed({ uploadDir: UPLOAD_DIR });
+    for (const c of ['datasets', 'projects']) for (const d of seed[c]) if (!db[c].some((x) => x.id === d.id)) db[c].push(d);
+    db.settings = { ...db.settings, explainerVersion: 2, customConcepts: db.settings.customConcepts || [], theme: { ...seed.settings.theme, ...db.settings.theme, chart: { ...seed.settings.theme.chart, ...(db.settings.theme?.chart || {}) } } };
+    flush();
+  }
   return db;
 }
 

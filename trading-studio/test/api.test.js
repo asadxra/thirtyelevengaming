@@ -45,9 +45,9 @@ test('project CRUD persists', async () => {
 });
 
 test('generation requires explicit confirmation and never renders', async () => {
-  const bad = await json('POST', '/api/projects/proj_why/generate', {});
+  const bad = await json('POST', '/api/projects/proj_fvg/generate', {});
   assert.equal(bad.status, 400);
-  const ok = await json('POST', '/api/projects/proj_why/generate', { confirmed: true });
+  const ok = await json('POST', '/api/projects/proj_fvg/generate', { confirmed: true });
   assert.equal(ok.body.rendered, false);
   assert.equal(ok.body.project.generation.status, 'approved');
 });

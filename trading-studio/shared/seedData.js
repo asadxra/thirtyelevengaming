@@ -4,7 +4,12 @@ import {
   DEFAULT_THEME, defaultCharacter, defaultCaptionStyle, emptyProject, emptyScript, DEFAULT_VOICE_SETTINGS, defaultVisualProps,
 } from './defaults.js';
 import { buildScenes, captionsFromScenes, hashText, scriptToText } from './scenes.js';
-import { localGenerate } from './writer.js';
+import { composeScript } from './writer.js';
+import { conceptById } from './concepts.js';
+import { toBars } from './market.js';
+import { DETECTORS } from './detectors.js';
+import { snapshotExample } from './examples.js';
+import NQ5M from './seed-market/nq5m.js';
 
 const iso = (daysAgo, h = 10) => new Date(Date.now() - daysAgo * 864e5 - h * 36e5).toISOString();
 
@@ -14,6 +19,8 @@ function settings() {
     defaults: { characterId: 'char_shadow', voiceName: 'Quentin', voiceId: null, format: 'shorts', captionPresetId: 'cp_highlight', animationPresetId: 'ap_cinematic', scriptEngine: 'local' },
     voiceSettings: { ...DEFAULT_VOICE_SETTINGS },
     storage: { autosave: true, autosaveDelay: 1200, keepScriptVersions: 15 },
+    explainerVersion: 2,
+    customConcepts: [],
   };
 }
 
@@ -44,28 +51,33 @@ function presets() {
   ].map((p) => ({ ...p, createdAt: iso(20), updatedAt: iso(20) }));
 }
 
-function makeProject({ id, title, theme, daysAgo, stage, format = 'shorts', hue, archived = false, seed }) {
-  const p = emptyProject({ id, title, format, archived, sample: true, characterId: 'char_shadow', thumbnail: { hue, label: theme } });
+const NQ_META = { symbol: NQ5M.symbol, interval: NQ5M.interval, source: NQ5M.source };
+
+export function seedDataset() {
+  return { ...NQ5M, name: `${NQ5M.label} · ${NQ5M.interval} · Nov 5–6 2026`, createdAt: '2026-11-07T00:00:00.000Z', updatedAt: '2026-11-07T00:00:00.000Z' };
+}
+
+function makeProject({ id, title, conceptId, daysAgo, stage, format = 'shorts', hue, n = 1 }) {
+  const p = emptyProject({ id, title, format, sample: true, characterId: 'char_shadow', conceptId, thumbnail: { hue, label: conceptById(conceptId)?.short || '' } });
+  p.market = { symbol: NQ5M.symbol, timeframe: '5m' };
   p.script = emptyScript();
-  p.script.inputs = { ...p.script.inputs, theme, topic: title, duration: format === 'shorts' ? 45 : 90 };
-  p.createdAt = iso(daysAgo + 3);
+  p.script.inputs = { ...p.script.inputs, length: format === 'shorts' ? 'short' : 'long', duration: format === 'shorts' ? 60 : 240 };
+  p.createdAt = iso(daysAgo + 2);
   p.updatedAt = iso(daysAgo);
-  if (stage === 'empty') return p;
-  p.script.sections = localGenerate(p.script.inputs, { seed });
+  const bars = toBars(NQ5M);
+  const concept = conceptById(conceptId);
+  const found = DETECTORS[concept.detector](bars).slice(0, n);
+  p.examples = found.map((ex) => ({ ...snapshotExample(bars, ex, { ...NQ_META, conceptId }), id: `ex_${id}_${ex.rank}` }));
+  if (stage === 'examples') return p;
+  p.script.sections = composeScript({ concept, examples: p.examples, inputs: p.script.inputs });
   p.script.status = stage === 'draft' ? 'draft' : 'completed';
   p.script.engine = 'local';
   p.script.lastGeneratedAt = p.updatedAt;
   if (stage === 'draft') return p;
-  p.scenes = buildScenes(p.script.sections);
+  p.scenes = buildScenes(p.script.sections, { examples: p.examples });
   p.scenesSourceHash = hashText(scriptToText(p.script.sections));
   p.captions.items = captionsFromScenes(p.scenes, 'sentence');
   p.captions.generatedAt = p.updatedAt;
-  p.visuals = p.scenes.flatMap((s, i) => s.visualTypes.map((type, j) => ({ id: `vis_${id}_${i}_${j}`, sceneId: s.id, type, props: defaultVisualProps(type) })));
-  if (stage === 'script') return p;
-  // Sample voiceover markers (no audio file — the UI labels them as samples).
-  p.voice.clips = Object.fromEntries(p.scenes.map((s) => [s.id, { url: null, sample: true, hash: hashText(s.voiceover), generatedAt: p.updatedAt }]));
-  if (stage === 'voice') return p;
-  if (stage === 'generated') p.generation = { status: 'generated', approvedAt: iso(daysAgo + 1), lastCheckAt: iso(daysAgo + 1) };
   return p;
 }
 
@@ -89,12 +101,9 @@ export function buildSeedData({ refUrl = null, settingsOnly = false } = {}) {
   character.animationPresets = [{ id: 'an_default', name: 'Night trader', default: 'sitting', speed: 0.9, intensity: 0.8 }];
 
   const projects = [
-    makeProject({ id: 'proj_why', title: 'Why Most Traders Start for the Wrong Reason', theme: 'Why people start trading', daysAgo: 0.2, stage: 'voice', hue: 270, seed: 11 }),
-    makeProject({ id: 'proj_revenge', title: 'The Trade After the Loss', theme: 'Revenge trading', daysAgo: 1, stage: 'script', hue: 350, seed: 22 }),
-    makeProject({ id: 'proj_patience', title: 'Six Hours of Doing Nothing', theme: 'Patience', daysAgo: 2.5, stage: 'draft', hue: 190, seed: 33 }),
-    makeProject({ id: 'proj_streak', title: 'Seven Losses in a Row', theme: 'Losing streaks', daysAgo: 4, stage: 'generated', hue: 220, seed: 44, format: 'landscape' }),
-    makeProject({ id: 'proj_risk', title: 'Right Direction, Wrong Size', theme: 'Risk management', daysAgo: 6, stage: 'empty', hue: 150, seed: 55 }),
-    makeProject({ id: 'proj_fomo', title: 'Forty Percent Too Late', theme: 'Fear of missing out', daysAgo: 12, stage: 'script', hue: 30, seed: 66, archived: true }),
+    makeProject({ id: 'proj_fvg', title: 'Fair Value Gaps on a Real NQ Chart', conceptId: 'fvg', daysAgo: 0.2, stage: 'scenes', hue: 270 }),
+    makeProject({ id: 'proj_sweep', title: 'Liquidity Sweeps Explained (NQ, Nov 6)', conceptId: 'sweep', daysAgo: 1, stage: 'draft', hue: 45, format: 'landscape', n: 2 }),
+    makeProject({ id: 'proj_mss', title: 'Market Structure Shift: Spot the Turn', conceptId: 'mss', daysAgo: 2, stage: 'examples', hue: 190 }),
   ];
 
   const assets = refUrl
@@ -102,12 +111,11 @@ export function buildSeedData({ refUrl = null, settingsOnly = false } = {}) {
     : [];
 
   const activity = [
-    { id: 'act_1', type: 'project', text: 'Updated scenes in “Why Most Traders Start for the Wrong Reason”', ref: 'proj_why', createdAt: iso(0.2) },
-    { id: 'act_2', type: 'script', text: 'Completed script for “The Trade After the Loss”', ref: 'proj_revenge', createdAt: iso(1) },
-    { id: 'act_3', type: 'script', text: 'Drafted script for “Six Hours of Doing Nothing”', ref: 'proj_patience', createdAt: iso(2.5) },
-    { id: 'act_4', type: 'project', text: 'Marked “Seven Losses in a Row” as generated (sample)', ref: 'proj_streak', createdAt: iso(4) },
-    { id: 'act_5', type: 'character', text: 'Uploaded reference image for “The Shadow Trader”', ref: 'char_shadow', createdAt: iso(21) },
+    { id: 'act_1', type: 'project', text: 'Built scenes for “Fair Value Gaps on a Real NQ Chart”', ref: 'proj_fvg', createdAt: iso(0.2) },
+    { id: 'act_2', type: 'script', text: 'Drafted script for “Liquidity Sweeps Explained (NQ, Nov 6)”', ref: 'proj_sweep', createdAt: iso(1) },
+    { id: 'act_3', type: 'project', text: 'Approved a real MSS example from NQ 5m (TradingView data)', ref: 'proj_mss', createdAt: iso(2) },
+    { id: 'act_4', type: 'character', text: 'Uploaded reference image for “The Shadow Trader”', ref: 'char_shadow', createdAt: iso(21) },
   ];
 
-  return { settings: settings(), projects, characters: [character], assets, activity, presets: presets(), meta: { seededAt: new Date().toISOString(), version: 1 } };
+  return { settings: settings(), projects, characters: [character], assets, activity, presets: presets(), datasets: [seedDataset()], meta: { seededAt: new Date().toISOString(), version: 2 } };
 }

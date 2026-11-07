@@ -6,6 +6,7 @@ import { Button, Empty, Confirm, Prompt, Select } from '../components/ui.jsx';
 import { Icon } from '../components/Icon.jsx';
 import ProjectCard from '../components/ProjectCard.jsx';
 import { scriptStatus, voiceStatus, generationStatus } from '../lib/status.js';
+import { conceptById } from '../../shared/concepts.js';
 
 const FILTERS = [
   { id: 'all', label: 'All Projects' },
@@ -13,7 +14,8 @@ const FILTERS = [
   { id: 'scripts', label: 'Scripts Completed' },
   { id: 'voice', label: 'Voiceovers Completed' },
   { id: 'ready', label: 'Ready for Generation' },
-  { id: 'generated', label: 'Generated' },
+  { id: 'generated', label: 'Rendered' },
+  { id: 'published', label: 'Published' },
   { id: 'archived', label: 'Archived' },
 ];
 
@@ -22,7 +24,8 @@ export function useProjectActions() {
   const [dialog, setDialog] = useState(null);
   const actionsFor = (p) => [
     { label: 'Open project', icon: 'right', onClick: () => navigate(`/projects/${p.id}`) },
-    { label: 'Edit script', icon: 'edit', onClick: () => navigate(`/scripts/${p.id}`) },
+    { label: 'Continue editing', icon: 'edit', onClick: () => navigate(`/projects/${p.id}/editor`) },
+    { label: 'Find chart examples', icon: 'search', onClick: () => navigate(`/research?concept=${p.conceptId || 'fvg'}&project=${p.id}`) },
     { label: 'Rename', icon: 'type', onClick: () => setDialog({ type: 'rename', project: p }) },
     { label: 'Duplicate', icon: 'copy', onClick: async () => { try { await store.duplicateDoc('projects', p.id); store.toast('Project duplicated', 'ok'); } catch (e) { store.toast(e.message, 'bad'); } } },
     { label: p.archived ? 'Unarchive' : 'Archive', icon: 'archive', onClick: () => { store.editDoc('projects', p.id, { archived: !p.archived }, { immediate: true }); store.toast(p.archived ? 'Project restored' : 'Project archived', 'ok'); } },
@@ -58,6 +61,7 @@ export default function Projects() {
       case 'voice': return voiceStatus(p) === 'completed';
       case 'ready': return ['ready', 'approved'].includes(generationStatus(p, characters));
       case 'generated': return generationStatus(p, characters) === 'generated';
+      case 'published': return p.publication?.status === 'published';
       default: return true;
     }
   };
@@ -70,7 +74,7 @@ export default function Projects() {
       if (!search.trim()) return true;
       const q = search.toLowerCase();
       const ch = characters.find((c) => c.id === p.characterId)?.name || '';
-      return [p.title, p.script?.inputs?.theme, p.script?.inputs?.topic, ch].join(' ').toLowerCase().includes(q);
+      return [p.title, conceptById(p.conceptId)?.name, p.market?.symbol, ch].join(' ').toLowerCase().includes(q);
     })
     .sort((a, b) => (sort === 'title' ? a.title.localeCompare(b.title) : sort === 'created' ? b.createdAt.localeCompare(a.createdAt) : b.updatedAt.localeCompare(a.updatedAt)));
 
@@ -78,8 +82,8 @@ export default function Projects() {
     <div className="page">
       <header className="page-head">
         <div>
-          <p className="eyebrow">Video Projects</p>
-          <h1>All video projects</h1>
+          <p className="eyebrow">Video Library</p>
+          <h1>All explainer videos</h1>
           <p className="muted">Every project has its own workspace for script, scenes, voice, captions and visuals.</p>
         </div>
         <Button variant="primary" icon="plus" onClick={async () => { try { await createProject(store); } catch (e) { store.toast(e.message, 'bad'); } }}>New video project</Button>

@@ -3,16 +3,10 @@ import { useStore } from '../lib/store.jsx';
 import { api } from '../lib/api.js';
 import { Button, Panel, Input, TextArea, Select, Badge, IconButton, Modal, timeAgo } from './ui.jsx';
 import { Icon } from './Icon.jsx';
-import { SCRIPT_THEMES, EMOTIONAL_DIRECTIONS, STORY_STYLES, TONES, SECTIONS, SECTION_LABELS } from '../../shared/defaults.js';
+import { SECTIONS, SECTION_LABELS, SECTION_HELP } from '../../shared/defaults.js';
+import { conceptById, LEVELS, TONES, LENGTHS, COMPLEXITY } from '../../shared/concepts.js';
+import { navigate } from '../lib/router.js';
 import { splitSentences, wordCount, estimateDuration, fmtShort } from '../../shared/scenes.js';
-
-const SECTION_HELP = {
-  hook: 'Capture attention immediately (first 2–3 seconds).',
-  problem: 'Present a relatable trading struggle.',
-  story: 'Develop the message through storytelling.',
-  realization: 'Deliver the important lesson.',
-  conclusion: 'End with a powerful motivational statement.',
-};
 
 export default function ScriptEditor({ project, update }) {
   const store = useStore();
@@ -40,7 +34,7 @@ export default function ScriptEditor({ project, update }) {
   const run = async (op, extra = {}, label) => {
     setBusy(op + (extra.section || ''));
     try {
-      const res = await api.post('/api/script', { engine, op, inputs: script.inputs, sections: script.sections, tone: script.tone, ...extra });
+      const res = await api.post('/api/script', { engine, op, inputs: script.inputs, sections: script.sections, conceptId: project.conceptId, customConcepts: store.settings?.customConcepts || [], examples: project.examples || [], ...extra });
       if (res.sections) {
         update((p) => ({
           script: {
@@ -90,25 +84,28 @@ export default function ScriptEditor({ project, update }) {
   };
 
   const i = script.inputs;
+  const concept = conceptById(project.conceptId, store.settings?.customConcepts || []);
+  const approved = (project.examples || []).filter((e) => e.approved !== false);
+  const len = LENGTHS.find((l) => l.id === i.length) || LENGTHS[0];
   return (
     <div className="col gap">
-      <Panel title="Script brief" subtitle="Everything the writer needs. Generation only runs when you click a button."
+      <Panel title="Script brief" subtitle={concept ? `${concept.name} · ${approved.length} approved chart example${approved.length === 1 ? '' : 's'}` : 'Choose a concept in the project overview first'}
         actions={<Button variant="ghost" size="sm" icon={briefOpen ? 'up' : 'down'} onClick={() => setBriefOpen((o) => !o)}>{briefOpen ? 'Collapse' : 'Expand'}</Button>}>
+        {!approved.length && (
+          <div className="notice warn small"><Icon name="alert" size={14} /> No approved chart examples yet. The script can’t reference a real chart until you approve one. <button className="link" onClick={() => navigate(`/research?concept=${project.conceptId || 'fvg'}&project=${project.id}`)}>Open Chart Research</button></div>
+        )}
         {briefOpen ? (
           <div className="brief-grid">
-            <Input label="Video topic" placeholder="e.g. Why most traders quit after 3 months" value={i.topic} onChange={(e) => setInputs({ topic: e.target.value })} />
-            <Select label="Theme" value={i.theme} onChange={(e) => setInputs({ theme: e.target.value })} options={SCRIPT_THEMES} />
-            <Input label="Main message" placeholder="What should viewers walk away believing?" value={i.message} onChange={(e) => setInputs({ message: e.target.value })} className="span-2" />
-            <Input label="Target audience" value={i.audience} onChange={(e) => setInputs({ audience: e.target.value })} />
-            <Input label="Desired duration (seconds)" type="number" min={15} max={600} value={i.duration} onChange={(e) => setInputs({ duration: Number(e.target.value) })} />
-            <Select label="Emotional direction" value={i.emotion} onChange={(e) => setInputs({ emotion: e.target.value })} options={EMOTIONAL_DIRECTIONS} />
-            <Select label="Storytelling style" value={i.storyStyle} onChange={(e) => setInputs({ storyStyle: e.target.value })} options={STORY_STYLES} />
-            <Input label="Main lesson" placeholder="e.g. Walk away after two losses" value={i.lesson} onChange={(e) => setInputs({ lesson: e.target.value })} />
-            <Input label="Ending message" placeholder="The final line you want to land" value={i.ending} onChange={(e) => setInputs({ ending: e.target.value })} />
-            <Input label="Optional keywords" placeholder="comma separated" value={i.keywords} onChange={(e) => setInputs({ keywords: e.target.value })} className="span-2" />
+            <Select label="Audience level" value={i.level} onChange={(e) => setInputs({ level: e.target.value })} options={LEVELS} />
+            <Select label="Tone" value={i.tone} onChange={(e) => setInputs({ tone: e.target.value })} options={TONES} />
+            <Select label="Format" value={i.length} onChange={(e) => { const l = LENGTHS.find((x) => x.id === e.target.value); setInputs({ length: l.id, duration: l.def }); }} options={LENGTHS.map((l) => ({ value: l.id, label: l.label }))} />
+            <Input label={`Target duration (seconds, ${len.min}–${len.max})`} type="number" min={len.min} max={len.max} value={i.duration} onChange={(e) => setInputs({ duration: Number(e.target.value) })} />
+            <Select label="Script complexity" value={i.complexity} onChange={(e) => setInputs({ complexity: e.target.value })} options={COMPLEXITY} />
+            <Input label="Voiceover speed" type="number" step="0.05" min={0.7} max={1.2} value={i.voiceSpeed} onChange={(e) => { const v = Number(e.target.value); setInputs({ voiceSpeed: v }); update((p) => ({ voice: { ...p.voice, settings: { ...p.voice.settings, speed: v } } })); }} />
+            <Input label="Notes for the writer (optional)" placeholder="e.g. mention the London session, keep it beginner friendly" value={i.notes} onChange={(e) => setInputs({ notes: e.target.value })} className="span-2" />
           </div>
         ) : (
-          <p className="small muted">{i.theme} · {i.duration}s · {i.emotion} · {i.storyStyle}{i.topic ? ` · “${i.topic}”` : ''}</p>
+          <p className="small muted">{i.level} · {i.tone} · {len.label} · {i.duration}s · {i.complexity}</p>
         )}
       </Panel>
 
@@ -117,16 +114,16 @@ export default function ScriptEditor({ project, update }) {
           <div className="row gap-s wrap">
             <Select value={engine} onChange={(e) => { setEngine(e.target.value); setScript({ engine: e.target.value }); }}
               options={[{ value: 'local', label: 'Writer · Local (offline)' }, { value: 'claude', label: claudeOn ? 'Writer · Claude' : 'Writer · Claude (not connected)' }]} />
-            <Select value={script.tone} onChange={(e) => setScript({ tone: e.target.value })} options={TONES.map((t) => ({ value: t, label: `Tone · ${t}` }))} />
+
           </div>
           <div className="row gap-s wrap">
             {!hasText
-              ? <Button variant="primary" icon="sparkles" loading={busy === 'generate'} disabled={engine === 'claude' && !claudeOn} onClick={() => run('generate', {}, 'Generated script')}>Generate script</Button>
+              ? <Button variant="primary" icon="sparkles" loading={busy === 'generate'} disabled={(engine === 'claude' && !claudeOn) || !concept} onClick={() => run('generate', {}, 'Generated script')}>Generate script</Button>
               : <>
                 <Button icon="refresh" loading={busy === 'variant'} onClick={() => run('variant', {}, 'Generated another version')}>Another version</Button>
                 <Button icon="expand" loading={busy === 'expand'} onClick={() => run('expand', {}, 'Expanded script')}>Expand</Button>
                 <Button icon="shrink" loading={busy === 'shorten'} onClick={() => run('shorten', {}, 'Shortened script')}>Shorten</Button>
-                <Button icon="wand" loading={busy === 'tone'} onClick={() => run('tone', {}, `Changed tone to ${script.tone}`)}>Apply tone</Button>
+                <Button icon="wand" loading={busy === 'tone'} onClick={() => run('tone', {}, `Applied ${i.tone.toLowerCase()} tone`)}>Apply tone</Button>
               </>}
           </div>
         </div>
@@ -134,7 +131,7 @@ export default function ScriptEditor({ project, update }) {
           <div className="notice warn"><Icon name="alert" size={14} /> Claude is not connected. <a href="#/settings/integrations">Connect it in Settings</a>, or switch to the local writer.</div>
         )}
         {engine === 'local' && (
-          <div className="notice subtle"><Icon name="sparkles" size={14} /> The local writer composes scripts from a curated trading-psychology line bank and works offline. Connect Claude in Settings for fully original AI writing.</div>
+          <div className="notice subtle"><Icon name="sparkles" size={14} /> The local writer builds the script from the concept library and the exact facts of your approved chart examples, and works offline. Claude writes more natural narration from the same facts.</div>
         )}
       </Panel>
 
@@ -165,7 +162,7 @@ export default function ScriptEditor({ project, update }) {
               <Button size="sm" variant="ghost" icon="wand" disabled={!text} onClick={() => openRewrite(s)}>Rewrite selection</Button>
               <Button size="sm" variant="ghost" icon="refresh" loading={busy === `section${s}`} disabled={!hasText}
                 onClick={() => run('section', { section: s }, `Regenerated ${SECTION_LABELS[s].toLowerCase()}`)}>
-                {s === 'hook' ? 'Regenerate hook' : s === 'conclusion' ? 'Regenerate ending' : 'Regenerate'}
+                {s === 'hook' ? 'Regenerate hook' : s === 'ending' ? 'Regenerate ending' : 'Regenerate'}
               </Button>
             </>}>
             {sv ? (

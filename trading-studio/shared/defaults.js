@@ -26,8 +26,22 @@ export const EMOTIONAL_DIRECTIONS = ['Reflective', 'Intense', 'Hopeful', 'Somber
 export const STORY_STYLES = ['Documentary narrator', 'Second-person (you)', 'First-person confession', 'Character story (third person)', 'Mentor speaking to student'];
 export const TONES = ['Cinematic', 'Raw & honest', 'Calm', 'Aggressive', 'Inspirational', 'Dark', 'Warm'];
 
-export const SECTIONS = ['hook', 'problem', 'story', 'realization', 'conclusion'];
-export const SECTION_LABELS = { hook: 'Hook', problem: 'Problem', story: 'Story', realization: 'Realization', conclusion: 'Conclusion' };
+// Trading explainer script structure.
+export const SECTIONS = ['hook', 'intro', 'simple', 'technical', 'demo', 'breakdown', 'takeaway', 'ending'];
+export const SECTION_LABELS = {
+  hook: 'Opening hook', intro: 'Introduction', simple: 'Simple explanation', technical: 'Technical explanation',
+  demo: 'Real chart demonstration', breakdown: 'Step-by-step breakdown', takeaway: 'Practical takeaway', ending: 'Ending',
+};
+export const SECTION_HELP = {
+  hook: 'Grab attention in the first seconds with the real chart moment.',
+  intro: 'Name the concept and what the viewer will learn.',
+  simple: 'Plain-language explanation anyone can follow.',
+  technical: 'The precise rules and definitions.',
+  demo: 'Walk through the real historical example. One paragraph per chart step.',
+  breakdown: 'Step-by-step: outcome, trade idea, invalidation, more examples. One paragraph per chart step.',
+  takeaway: 'What to do with this on your own charts.',
+  ending: 'Professional close and risk reminder.',
+};
 
 export const CHARACTER_STYLES = [
   { id: 'silhouette', label: 'Minimalist silhouette' },
@@ -124,11 +138,33 @@ export function defaultCharacter(overrides = {}) {
   };
 }
 
+export const DEFAULT_CHART_THEME = {
+  bg: '#0b0e14',
+  grid: '#1b2130',
+  text: '#8b93a7',
+  bull: '#26a69a',
+  bear: '#ef5350',
+  fvg: '#a855f7',
+  ifvg: '#f472b6',
+  liquidity: '#facc15',
+  ob: '#38bdf8',
+  breaker: '#fb923c',
+  structure: '#e2e8f0',
+  entry: '#38bdf8',
+  stop: '#ef4444',
+  target: '#22c55e',
+  fib: '#c084fc',
+  session: '#64748b',
+  info: '#94a3b8',
+  highlight: '#fde047',
+};
+
 export const DEFAULT_THEME = {
   mode: 'dark',
   primary: '#a855f7',
   secondary: '#22d3ee',
-  background: '#05060d',
+  background: '#07080c',
+  chart: { ...DEFAULT_CHART_THEME },
   panelOpacity: 0.55,
   glow: 0.6,
   radius: 14,
@@ -180,20 +216,16 @@ export const DEFAULT_VOICE_NAME = 'Quentin';
 export function emptyScript() {
   return {
     inputs: {
-      topic: '',
-      message: '',
-      theme: SCRIPT_THEMES[0],
-      audience: 'Beginner and struggling retail traders',
-      duration: 45,
-      emotion: EMOTIONAL_DIRECTIONS[0],
-      storyStyle: STORY_STYLES[0],
-      lesson: '',
-      ending: '',
-      keywords: '',
+      level: 'Beginner',
+      tone: 'Educational',
+      length: 'short',
+      duration: 60,
+      complexity: 'Standard',
+      voiceSpeed: 1,
+      notes: '',
     },
     sections: Object.fromEntries(SECTIONS.map((s) => [s, ''])),
     status: 'empty', // empty | draft | completed
-    tone: 'Cinematic',
     engine: null,
     versions: [],
     lastGeneratedAt: null,
@@ -202,7 +234,11 @@ export function emptyScript() {
 
 export function emptyProject(overrides = {}) {
   return {
-    title: 'Untitled project',
+    title: 'Untitled explainer',
+    conceptId: null,
+    market: { symbol: 'CME_MINI:NQ1!', timeframe: '5m' },
+    examples: [], // approved real chart examples (bar snapshots + source)
+    publication: { status: 'unpublished', url: '', date: '' },
     characterId: null,
     format: 'shorts',
     archived: false,

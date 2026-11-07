@@ -1,6 +1,16 @@
-# Thirty Eleven — Trading Motivation Video Studio
+# Thirty Eleven — Trading Explainer Video Studio
 
-A dark, neon production dashboard for planning motivational trading videos for YouTube: one consistent animated character, scripts, scene timelines, ElevenLabs voiceover, captions and code-animation visuals.
+A production studio for educational trading videos that teach concepts (ICT and classic technical analysis) with **real historical chart examples**.
+
+Workflow: pick a concept → choose market & timeframe → load real bars → review the examples the detector found → approve them → generate the script → edit it → generate the Quentin voiceover → sync narration to the chart → edit in the video editor → preview → render only when you click **Generate Video** and confirm.
+
+### Where the chart data comes from
+- **TradingView, via your own claude.ai TradingView connector** (web version on claude.ai). Bars are fetched under your TradingView plan with TradingView's official MCP tools; nothing is scraped.
+- **Chart exports (CSV)**: TradingView's “Export chart data”, or any OHLCV CSV, in both versions.
+- **Screenshots**: shown with the source you enter; images can be marked as illustrations.
+- Bundled sample: 240 real NQ 5-minute bars (Nov 5–6 2026) fetched from TradingView, used by the sample projects.
+
+The studio never generates prices. Detected examples are saved as snapshots of the real bars, with their source shown on screen. Higher timeframes are only built by aggregating real bars. Rule-based detection can be wrong, so every example is reviewed before use.
 
 **Nothing renders on its own.** No video is generated when a script is completed, a character is uploaded, a voiceover is generated, captions change or a project is saved. The **Generate Video** button asks you to confirm, then records your approval. No rendering engine is connected yet, so nothing is rendered.
 

@@ -30,10 +30,10 @@ export default function Dashboard() {
         <div>
           <p className="eyebrow">Production overview</p>
           <h1>Studio Dashboard</h1>
-          <p className="muted">Design your character, write the story, record the voice — generation only starts when you approve it.</p>
+          <p className="muted">Teach trading concepts with real historical charts: pick a concept, find where it actually happened, script it, voice it, and edit every frame. Rendering only starts when you approve it.</p>
         </div>
         <div className="row gap-s wrap">
-          <Button icon="upload" onClick={() => navigate('/assets')}>Upload asset</Button>
+          <Button icon="search" onClick={() => navigate('/research')}>Find real chart examples</Button>
           <Button variant="primary" icon="plus" onClick={newProject}>New video project</Button>
         </div>
       </header>
@@ -43,7 +43,7 @@ export default function Dashboard() {
         <Stat label="Draft scripts" value={drafts} icon="edit" tone="warn" onClick={() => navigate('/projects?filter=drafts')} />
         <Stat label="Completed scripts" value={completed} icon="check" tone="ok" onClick={() => navigate('/projects?filter=scripts')} />
         <Stat label="Ready for generation" value={ready} icon="zap" tone="secondary" onClick={() => navigate('/projects?filter=ready')} />
-        <Stat label="Characters" value={characters.length} icon="user" onClick={() => navigate('/characters')} />
+        <Stat label="Real chart examples" value={live.reduce((n, p) => n + (p.examples || []).filter((e) => e.kind === 'historical').length, 0)} icon="chart" onClick={() => navigate('/research')} />
       </div>
 
       <div className="dash-grid">
@@ -60,12 +60,13 @@ export default function Dashboard() {
         <div className="col gap">
           <Panel title="Quick access">
             <div className="quick-grid">
+              <QuickBtn icon="layers" label="Concept library" onClick={() => navigate('/concepts')} />
+              <QuickBtn icon="chart" label="Chart research" onClick={() => navigate('/research')} />
               <QuickBtn icon="script" label="Write a script" onClick={() => navigate('/scripts')} />
               <QuickBtn icon="user" label="Design character" onClick={() => navigate(main ? `/characters/${main.id}` : '/characters')} />
               <QuickBtn icon="mic" label="Voice Studio" onClick={() => navigate('/voice')} />
-              <QuickBtn icon="layers" label="Visual library" onClick={() => navigate('/assets?tab=visuals')} />
               <QuickBtn icon="palette" label="Appearance" onClick={() => navigate('/settings/appearance')} />
-              <QuickBtn icon="key" label="Integrations" onClick={() => navigate('/settings/integrations')} />
+
             </div>
           </Panel>
 

@@ -11,13 +11,17 @@ import Projects from './pages/Projects.jsx';
 import ProjectWorkspace from './pages/ProjectWorkspace.jsx';
 import AssetLibrary from './pages/AssetLibrary.jsx';
 import Settings from './pages/Settings.jsx';
+import ConceptLibrary from './pages/ConceptLibrary.jsx';
+import ChartResearch from './pages/ChartResearch.jsx';
 
 const NAV = [
   { id: 'dashboard', label: 'Dashboard', icon: 'dashboard' },
+  { id: 'concepts', label: 'Concept Library', icon: 'layers' },
+  { id: 'research', label: 'Chart Research', icon: 'chart' },
   { id: 'characters', label: 'Character Design', icon: 'user' },
   { id: 'scripts', label: 'Script Studio', icon: 'script' },
   { id: 'voice', label: 'Voice Studio', icon: 'mic' },
-  { id: 'projects', label: 'Video Projects', icon: 'film' },
+  { id: 'projects', label: 'Video Library', icon: 'film' },
   { id: 'assets', label: 'Asset Library', icon: 'folder' },
   { id: 'settings', label: 'Settings', icon: 'settings' },
 ];
@@ -40,6 +44,8 @@ export default function App() {
     );
   } else {
     switch (section) {
+      case 'concepts': page = <ConceptLibrary />; break;
+      case 'research': page = <ChartResearch key={query.toString()} />; break;
       case 'characters': page = <CharacterStudio id={parts[1]} />; break;
       case 'scripts': page = <ScriptStudio projectId={parts[1] || query.get('project')} />; break;
       case 'voice': page = <VoiceStudio projectId={parts[1] || query.get('project')} />; break;
@@ -59,7 +65,7 @@ export default function App() {
           <div className="brand-mark"><Icon name="chart" size={18} /></div>
           <div>
             <b>Thirty Eleven</b>
-            <span>Trading Motivation Studio</span>
+            <span>Trading Explainer Studio</span>
           </div>
         </div>
         <nav>
@@ -72,6 +78,7 @@ export default function App() {
         </nav>
         <div className="sidebar-foot">
           <IntegrationPill label="ElevenLabs" on={store.integrations?.elevenlabs?.configured} off={store.integrations?.elevenlabs?.unavailable ? 'Self-hosted only' : 'Connect'} href="#/settings/integrations" />
+          <IntegrationPill label="TradingView" on={store.integrations?.tradingview?.configured} off={store.integrations?.tradingview?.connector ? 'Not connected' : 'Web version'} href="#/settings/integrations" />
           <IntegrationPill label="Claude writer" on={store.integrations?.claude?.configured} off={store.integrations?.claude?.builtIn ? 'Unavailable' : 'Connect'} href="#/settings/integrations" />
           <IntegrationPill label="Video renderer" on={false} off="Not connected" href="#/settings/integrations" />
           <button className="mode-toggle" onClick={() => store.updateSettings({ theme: { mode: mode === 'dark' ? 'light' : 'dark' } })}>

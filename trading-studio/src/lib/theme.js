@@ -48,3 +48,9 @@ export function applyTheme(t) {
   r.dataset.mode = light ? 'light' : 'dark';
   r.dataset.motion = t.animation <= 0 ? 'off' : 'on';
 }
+
+// Chart colors (candles, FVG, liquidity, levels) as CSS variables used by CandleChart.
+export function applyChartTheme(chart = {}) {
+  const r = document.documentElement;
+  for (const [k, v] of Object.entries(chart)) r.style.setProperty(`--c-${k}`, v);
+}

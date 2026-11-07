@@ -7,7 +7,7 @@ import { SYSTEM, claudePrompt, runLocalOp } from '../../shared/writer.js';
 import { SECTIONS } from '../../shared/defaults.js';
 import referenceImage from '../../server/seed/reference-character.png?inline';
 
-const COLS = ['projects', 'characters', 'assets', 'presets', 'activity'];
+const COLS = ['projects', 'characters', 'assets', 'presets', 'activity', 'datasets'];
 const LS_KEY = 'tms-studio-v1';
 const now = () => new Date().toISOString();
 const newId = (p) => `${p}_${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`;
@@ -15,7 +15,7 @@ const fail = (message, status = 400) => { throw Object.assign(new Error(message)
 
 let state = null;
 let backend = { kind: 'browser', db: null, uid: null };
-let caps = { sample: null, assets: null, downloads: null };
+let caps = { sample: null, assets: null, downloads: null, mcp: null };
 let ready = null;
 const dirty = new Map(); // docKey -> 'set' | 'delete'
 let flushTimer = null;
@@ -57,7 +57,7 @@ async function flush() {
 
 function seedState() {
   const seed = buildSeedData({ refUrl: referenceImage });
-  return { settings: seed.settings, projects: seed.projects, characters: seed.characters, assets: seed.assets, presets: seed.presets, activity: seed.activity };
+  return { settings: seed.settings, projects: seed.projects, characters: seed.characters, assets: seed.assets, presets: seed.presets, activity: seed.activity, datasets: seed.datasets };
 }
 
 function markAllDirty() {
@@ -66,8 +66,8 @@ function markAllDirty() {
 }
 
 async function init() {
-  const [db, user, sample, assets, downloads] = await Promise.all(['db', 'user', 'sample', 'assets', 'downloads'].map((n) => withTimeout(use(n), 10000)));
-  caps = { sample, assets, downloads };
+  const [db, user, sample, assets, downloads, mcp] = await Promise.all(['db', 'user', 'sample', 'assets', 'downloads', 'mcp'].map((n) => withTimeout(use(n), 10000)));
+  caps = { sample, assets, downloads, mcp };
   let uid = null;
   if (db && user) { try { uid = await user.id(); } catch { uid = null; } }
   if (db && uid) {
@@ -85,6 +85,7 @@ async function init() {
           for (const c of COLS) loaded[c].sort((a, b) => (b.updatedAt || b.createdAt || '').localeCompare(a.updatedAt || a.createdAt || ''));
           loaded.activity.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
           state = loaded;
+          upgradeV2();
         } else {
           state = seedState();
           markAllDirty();
@@ -96,6 +97,19 @@ async function init() {
   backend = { kind: 'browser', db: null, uid: null };
   try { state = JSON.parse(localStorage.getItem(LS_KEY)); } catch { state = null; }
   if (!state?.settings) { state = seedState(); flush(); }
+  for (const c of COLS) state[c] ||= [];
+  upgradeV2();
+}
+
+// Existing studios from the motivational version: keep everything, add the explainer samples once.
+function upgradeV2() {
+  if (state.settings.explainerVersion >= 2) return;
+  const seed = seedState();
+  for (const c of ['datasets', 'projects', 'presets']) {
+    for (const d of seed[c]) if (!state[c].some((x) => x.id === d.id)) { state[c].push(d); markDirty(c, d.id); }
+  }
+  state.settings = { ...state.settings, explainerVersion: 2, theme: { ...seed.settings.theme, ...state.settings.theme, chart: { ...seed.settings.theme.chart, ...(state.settings.theme?.chart || {}) } } };
+  markDirty('settings', 'main');
 }
 
 const ensureReady = () => (ready ||= init());
@@ -114,6 +128,7 @@ function integrations() {
     elevenlabs: { configured: false, unavailable: true, source: null },
     claude: { configured: !!caps.sample, source: caps.sample ? 'claude.ai' : null, model: 'Claude via claude.ai', builtIn: true },
     renderer: { configured: false },
+    tradingview: { configured: !!caps.mcp, connector: true },
     storage: backend.kind,
     standalone: true,
   };
@@ -126,13 +141,13 @@ function deepMerge(a, b) {
   return out;
 }
 
-const LABEL = { projects: 'project', characters: 'character', assets: 'asset', presets: 'preset' };
+const LABEL = { projects: 'project', characters: 'character', assets: 'asset', presets: 'preset', datasets: 'dataset' };
 
 async function claudeScript(body) {
   if (!caps.sample) fail('Claude writing isn’t available in this view. Use the local writer instead.');
-  const { op, inputs = {}, sections = {}, tone = 'Cinematic', text = '', instruction = '', section = 'hook' } = body;
+  const { op } = body;
   const shape = op === 'rewrite' ? '{"text": "..."}' : `{${SECTIONS.map((s) => `"${s}": "..."`).join(', ')}}`;
-  const prompt = `${SYSTEM}\n\n${claudePrompt(op, { inputs, sections, tone, text, instruction, section })}\n\nRespond with only a JSON object of this shape: ${shape}`;
+  const prompt = `${SYSTEM}\n\n${claudePrompt(op, body)}\n\nRespond with only a JSON object of this shape: ${shape}`;
   try {
     const out = await caps.sample.json(prompt, { modelTier: 'default', cache: false });
     if (op === 'rewrite') {
@@ -179,7 +194,7 @@ export async function handle(method, url, body, extra = {}) {
   const parts = path.split('/').filter(Boolean);
   const clone = (x) => JSON.parse(JSON.stringify(x));
 
-  if (path === '/bootstrap') return clone({ ...state, activity: state.activity.slice(0, 50), integrations: integrations() });
+  if (path === '/bootstrap') return clone({ ...state, datasets: state.datasets.map(({ t, o, h, l, c, v, ...meta }) => ({ ...meta, bars: t?.length || 0, from: t?.[0], to: t?.[t.length - 1] })), activity: state.activity.slice(0, 50), integrations: integrations() });
   if (path === '/health') return { ok: true };
   if (path === '/integrations') return integrations();
   if (path === '/settings') {
@@ -202,7 +217,7 @@ export async function handle(method, url, body, extra = {}) {
   if (parts[0] === 'integrations') fail('Integrations with API keys need the self-hosted studio.', 501);
 
   const col = parts[0];
-  if (!['projects', 'characters', 'assets', 'presets'].includes(col)) fail('Unknown API route', 404);
+  if (!['projects', 'characters', 'assets', 'presets', 'datasets'].includes(col)) fail('Unknown API route', 404);
   const list = state[col];
   const id = parts[1];
 
@@ -212,7 +227,7 @@ export async function handle(method, url, body, extra = {}) {
       const doc = { ...clone(body || {}), id: body?.id || newId(col.slice(0, 4)), createdAt: now(), updatedAt: now() };
       list.unshift(doc);
       markDirty(col, doc.id);
-      if (col !== 'presets') logActivity(col.slice(0, -1), `Created ${LABEL[col]} “${doc.title || doc.name}”`, doc.id);
+      if (!['presets', 'datasets'].includes(col)) logActivity(col.slice(0, -1), `Created ${LABEL[col]} “${doc.title || doc.name}”`, doc.id);
       return clone(doc);
     }
   }
@@ -275,3 +290,5 @@ export async function exportBackup() {
 }
 
 export const storageKind = () => backend.kind;
+
+export const mcpCapability = async () => { await ensureReady(); return caps.mcp; };

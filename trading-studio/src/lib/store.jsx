@@ -2,8 +2,8 @@
 // this store mirrors it and autosaves edits with a debounce.
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { api } from './api.js';
-import { applyTheme } from './theme.js';
-import { DEFAULT_THEME } from '../../shared/defaults.js';
+import { applyTheme, applyChartTheme } from './theme.js';
+import { DEFAULT_THEME, DEFAULT_CHART_THEME } from '../../shared/defaults.js';
 
 const StoreCtx = createContext(null);
 export const useStore = () => useContext(StoreCtx);
@@ -41,7 +41,7 @@ export function StoreProvider({ children }) {
   }, []);
 
   useEffect(() => { load(); }, [load]);
-  useEffect(() => { applyTheme(state.settings?.theme || DEFAULT_THEME); }, [state.settings?.theme]);
+  useEffect(() => { applyTheme(state.settings?.theme || DEFAULT_THEME); applyChartTheme({ ...DEFAULT_CHART_THEME, ...(state.settings?.theme?.chart || {}) }); }, [state.settings?.theme]);
 
   const refreshActivity = useCallback(async () => {
     try {

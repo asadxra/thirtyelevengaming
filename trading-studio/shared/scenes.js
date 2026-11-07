@@ -4,9 +4,8 @@ import { SECTIONS, SECTION_LABELS } from './defaults.js';
 export const WORDS_PER_SECOND = 2.6; // calm documentary narration pace
 
 export function splitSentences(text = '') {
-  return (text.replace(/\s+/g, ' ').trim().match(/[^.!?…]+[.!?…]+["”’)]*|[^.!?…]+$/g) || [])
-    .map((s) => s.trim())
-    .filter(Boolean);
+  // Split after sentence punctuation followed by a space, so prices like 27,093.50 stay intact.
+  return text.replace(/\s+/g, ' ').trim().split(/(?<=[.!?…]["”’)]*)\s+/).map((s) => s.trim()).filter(Boolean);
 }
 
 export const wordCount = (t = '') => (t.trim() ? t.trim().split(/\s+/).length : 0);
@@ -49,68 +48,21 @@ export function hashText(str = '') {
 }
 
 const SUGGESTIONS = {
-  hook: {
-    action: 'Sits alone, motionless, facing a wall of trading monitors',
-    pose: 'sitting',
-    environment: 'Dark bedroom trading desk at 3 AM, only monitor light',
-    animation: 'Slow push-in on the character while code lines fade in behind',
-    camera: 'Slow dolly-in from wide to medium shot',
-    background: 'Multiple monitors with dim candlestick charts',
-    code: 'Scrolling Python strategy code, low opacity, purple tint — establishes the trading world',
-    visuals: ['screens', 'code'],
-    sfx: 'Low drone, faint keyboard clicks, room tone',
-  },
-  problem: {
-    action: 'Leans forward, taps keys faster, shoulders tense',
-    pose: 'trading',
-    environment: 'Same desk, screens flashing red and green',
-    animation: 'Rapid green/red numbers flicker across the frame',
-    camera: 'Handheld micro-shake, tight on character and screen',
-    background: 'Ticker tape of P&L numbers, mostly red',
-    code: 'Terminal prints failed orders and stop-loss hits — the struggle made literal',
-    visuals: ['ticker', 'terminal'],
-    sfx: 'Notification pings, heartbeat thump, sharp glitch on losses',
-  },
-  story: {
-    action: 'Walks slowly through a void of floating charts',
-    pose: 'walking',
-    environment: 'Abstract dark space with floating market data',
-    animation: 'Charts drift past in parallax; equity curve draws itself',
-    camera: 'Lateral tracking shot following the character',
-    background: 'Floating statistics and a drawdown curve',
-    code: 'Equity curve chart rendering line by line — the journey visualized',
-    visuals: ['chart', 'stats', 'particles'],
-    sfx: 'Soft piano notes, distant city ambience',
-  },
-  realization: {
-    action: 'Stops, looks up; eyes glow brighter',
-    pose: 'thinking',
-    environment: 'Darkness lifts; a single spotlight on the character',
-    animation: 'Noise fades out, one glowing rule appears in code: if (emotion) { wait(); }',
-    camera: 'Static frame, slow zoom on the eyes',
-    background: 'Clean glowing interface, minimal elements',
-    code: 'A single highlighted line of code — the lesson as a rule',
-    visuals: ['glow-ui', 'lighting'],
-    sfx: 'Silence drop, then a single resonant tone',
-  },
-  conclusion: {
-    action: 'Stands tall, motivational gesture, then sits back at the desk calmly',
-    pose: 'motivational',
-    environment: 'Desk at dawn, blue light through a window',
-    animation: 'Candlesticks print steady green; particles rise',
-    camera: 'Slow pull-back to wide shot',
-    background: 'Calm chart with steady uptrend',
-    code: 'Terminal logs: "discipline.check() → passed" — closure',
-    visuals: ['candles', 'particles', 'lighting'],
-    sfx: 'Rising cinematic swell, soft impact on final line',
-  },
+  hook: { action: 'Points at the chart as the key candle lights up', pose: 'motivational', animation: 'Fast zoom into the key moment; the decisive candle flashes', camera: 'Punch-in on the key candles', background: 'Chart full-frame, dark terminal background', code: 'None — the real chart is the visual', sfx: 'Low hit on the key candle, subtle whoosh on the zoom', chart: 'key' },
+  intro: { action: 'Stands beside the chart, calm gesture', pose: 'idle', animation: 'Chart eases out to show the wider context', camera: 'Slow pull-back to the full example window', background: 'Chart with session separators', code: 'Concept title card fades in over the chart', sfx: 'Soft rise', chart: 'overview' },
+  simple: { action: 'Thinking pose, then gestures toward the chart', pose: 'thinking', animation: 'Relevant candles highlight one by one', camera: 'Gentle drift across the formation', background: 'Chart, other candles dimmed', code: 'Plain-language label appears next to the formation', sfx: 'Light ticks as candles highlight', chart: 'formation' },
+  technical: { action: 'Typing / trading pose at the side of the frame', pose: 'trading', animation: 'Precise levels and labels draw onto the chart', camera: 'Tight framing on the exact prices', background: 'Chart with price scale emphasized', code: 'Rule text: exact definition with prices', sfx: 'Pen-draw sound as lines appear', chart: 'formation' },
+  demo: { action: 'Watches the chart, small reactions on each step', pose: 'trading', animation: 'Each step’s annotations animate in while the camera moves to its candles', camera: 'Camera follows the step’s focus window', background: 'Real historical chart (source shown on screen)', code: 'Annotations from the detected example', sfx: 'Subtle click per annotation', chart: 'step' },
+  breakdown: { action: 'Explains with hand gestures as levels appear', pose: 'thinking', animation: 'Entry, stop and target lines draw in; outcome candles play forward', camera: 'Follows the step’s focus window', background: 'Real historical chart', code: 'Trade plan levels with prices', sfx: 'Soft confirmation tone on the outcome', chart: 'step' },
+  takeaway: { action: 'Confident nod, motivational gesture', pose: 'motivational', animation: 'All annotations visible; checklist builds next to the chart', camera: 'Wide shot of the full example', background: 'Chart with every annotation', code: 'Three-point checklist', sfx: 'Gentle chime per checklist point', chart: 'all' },
+  ending: { action: 'Sits back calmly at the desk', pose: 'sitting', animation: 'Chart fades, character centered', camera: 'Slow pull-back', background: 'Dark terminal background', code: 'Subscribe / next-video card (edit in post)', sfx: 'Soft outro tone', chart: 'none' },
 };
 
 export function sectionSuggestions(section) {
-  return SUGGESTIONS[section] || SUGGESTIONS.story;
+  return SUGGESTIONS[section] || SUGGESTIONS.demo;
 }
 
-// Group sentences into scene-sized chunks (~1–2 sentences, ≤ 24 words).
+// Group sentences into scene-sized chunks (~1–2 sentences, ≤ maxWords words).
 function chunkSentences(sentences, maxWords = 24) {
   const chunks = [];
   let cur = [];
@@ -132,7 +84,9 @@ function chunkSentences(sentences, maxWords = 24) {
 let seq = 0;
 const sceneId = () => `scn_${Date.now().toString(36)}${(seq++).toString(36)}${Math.random().toString(36).slice(2, 6)}`;
 
-export function blankScene(section = 'story', overrides = {}) {
+export const DEFAULT_CHAR_LAYOUT = { visible: true, position: 'right', size: 1 };
+
+export function blankScene(section = 'demo', overrides = {}) {
   const sug = sectionSuggestions(section);
   return {
     id: sceneId(),
@@ -142,28 +96,79 @@ export function blankScene(section = 'story', overrides = {}) {
     voiceover: '',
     characterAction: sug.action,
     pose: sug.pose,
-    expression: section === 'problem' ? 'worried' : section === 'conclusion' ? 'determined' : 'focused',
-    environment: sug.environment,
+    expression: 'focused',
+    environment: sug.background,
     animation: sug.animation,
     camera: sug.camera,
     background: sug.background,
     codeAnimation: sug.code,
-    visualTypes: sug.visuals,
+    visualTypes: [],
     sfx: sug.sfx,
     caption: '',
+    chart: null, // { exampleId, stepId, focus:[a,b], reveal:[annotation ids], hide:[] }
+    characterLayout: { ...DEFAULT_CHAR_LAYOUT },
+    transition: 'cut',
     ...overrides,
   };
 }
 
-export function buildScenes(sections = {}, { speed = 1, gap = 0.35 } = {}) {
+// Default chart binding for a section, based on the first approved example.
+function chartFor(kind, ex, stepIdx = 0) {
+  if (!ex || kind === 'none') return null;
+  const steps = ex.steps || [];
+  const all = (ex.annotations || []).map((a) => a.id);
+  if (kind === 'step') {
+    const st = steps[Math.min(stepIdx, steps.length - 1)];
+    return st ? { exampleId: ex.id, stepId: st.id, focus: [...st.focus], reveal: [...(st.reveal || [])], hide: [] } : null;
+  }
+  if (kind === 'key') {
+    const k = steps.find((x) => x.reveal?.length) || steps[0];
+    return { exampleId: ex.id, stepId: k?.id || null, focus: k ? [...k.focus] : [...ex.range], reveal: [], hide: [] };
+  }
+  if (kind === 'formation') {
+    const k = steps.find((x) => x.reveal?.length) || steps[0];
+    return { exampleId: ex.id, stepId: k?.id || null, focus: k ? [...k.focus] : [...ex.range], reveal: k ? [...k.reveal] : [], hide: [] };
+  }
+  if (kind === 'all') return { exampleId: ex.id, stepId: null, focus: [...ex.range], reveal: all, hide: [] };
+  return { exampleId: ex.id, stepId: null, focus: [...ex.range], reveal: [], hide: [] };
+}
+
+// Build timed scenes from the script. In "demo" and "breakdown", each paragraph is bound
+// to the next teaching step of the approved examples (in order), so narration and chart stay in sync.
+export function buildScenes(sections = {}, { speed = 1, gap = 0.35, examples = [] } = {}) {
   const scenes = [];
   let t = 0;
+  const steps = examples.filter((e) => e.kind !== 'screenshot').flatMap((ex) => (ex.steps || []).map((_, k) => ({ ex, k })));
+  const shots = examples.filter((e) => e.kind === 'screenshot');
+  let stepPtr = 0;
+  let shotPtr = 0;
+  const first = examples.find((e) => e.kind !== 'screenshot');
   for (const section of SECTIONS) {
-    const chunks = chunkSentences(splitSentences(sections[section] || ''));
-    for (const text of chunks) {
-      const dur = Math.max(1.5, estimateDuration(text, speed) + gap);
-      scenes.push(blankScene(section, { start: +t.toFixed(1), end: +(t + dur).toFixed(1), voiceover: text, caption: text }));
-      t += dur;
+    const text = (sections[section] || '').trim();
+    if (!text) continue;
+    const sug = sectionSuggestions(section);
+    const paragraphs = sug.chart === 'step' ? text.split(/\n\s*\n/).map((x) => x.trim()).filter(Boolean) : [text];
+    for (const para of paragraphs) {
+      let chart = null;
+      if (sug.chart === 'step') {
+        // Prefer the step whose text this paragraph contains (the writer quotes step text); else the next step in order.
+        const match = steps.findIndex((x, k) => k >= stepPtr - 1 && para.includes(x.ex.steps[x.k].text.slice(0, 48)));
+        if (match >= 0) stepPtr = match;
+        if (stepPtr < steps.length) { const { ex, k } = steps[stepPtr++]; chart = chartFor('step', ex, k); }
+        else if (shotPtr < shots.length) { const sh = shots[shotPtr++]; chart = { exampleId: sh.id, stepId: null, focus: null, reveal: [], hide: [] }; }
+        else chart = chartFor('all', first);
+      } else chart = chartFor(sug.chart, first);
+      const chunks = chunkSentences(splitSentences(para), sug.chart === 'step' ? 40 : 24);
+      chunks.forEach((chunk, n) => {
+        const dur = Math.max(1.5, estimateDuration(chunk, speed) + gap);
+        scenes.push(blankScene(section, {
+          start: +t.toFixed(1), end: +(t + dur).toFixed(1), voiceover: chunk, caption: chunk,
+          chart: chart ? { ...chart, reveal: n === 0 ? chart.reveal : [] } : null,
+          characterLayout: { ...DEFAULT_CHAR_LAYOUT, position: chart ? 'right' : 'center', size: chart ? 0.8 : 1.2 },
+          transition: n === 0 ? 'zoom' : 'cut',
+        }));
+        t += dur;
+      });
     }
   }
   return scenes;

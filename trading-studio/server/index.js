@@ -35,6 +35,7 @@ app.get('/api/bootstrap', h(async (_req, res) => {
     characters: d.characters,
     assets: d.assets,
     presets: d.presets,
+    datasets: d.datasets.map(({ t, o, h, l, c, v, ...meta }) => ({ ...meta, bars: t?.length || 0, from: t?.[0], to: t?.[t.length - 1] })),
     activity: d.activity.slice(0, 50),
     integrations: integrationSummary(),
   });
@@ -45,13 +46,14 @@ function integrationSummary() {
     elevenlabs: { configured: !!eleven.keySource(), source: eleven.keySource() },
     claude: { configured: !!claudeKey(), source: process.env.ANTHROPIC_API_KEY ? 'environment' : db.getSecret('anthropicApiKey') ? 'stored' : null, model: CLAUDE_MODEL },
     renderer: { configured: false },
+    tradingview: { configured: false, reason: 'The TradingView connector is reachable from the claude.ai web version of the studio. Here, import TradingView chart exports (CSV) or screenshots.' },
   };
 }
 
 // ---------- Generic collections ----------
-const COLLECTION_LABEL = { projects: 'Project', characters: 'Character', assets: 'Asset', presets: 'Preset' };
+const COLLECTION_LABEL = { projects: 'Project', characters: 'Character', assets: 'Asset', presets: 'Preset', datasets: 'Dataset' };
 
-for (const col of ['projects', 'characters', 'assets', 'presets']) {
+for (const col of ['projects', 'characters', 'assets', 'presets', 'datasets']) {
   app.get(`/api/${col}`, h(async (_req, res) => res.json(db.list(col))));
   app.get(`/api/${col}/:id`, h(async (req, res) => {
     const doc = db.get(col, req.params.id);
@@ -60,7 +62,7 @@ for (const col of ['projects', 'characters', 'assets', 'presets']) {
   }));
   app.post(`/api/${col}`, h(async (req, res) => {
     const doc = db.insert(col, req.body || {});
-    if (col !== 'presets') db.logActivity(col.slice(0, -1), `Created ${COLLECTION_LABEL[col].toLowerCase()} “${doc.title || doc.name}”`, doc.id);
+    if (!['presets', 'datasets'].includes(col)) db.logActivity(col.slice(0, -1), `Created ${COLLECTION_LABEL[col].toLowerCase()} “${doc.title || doc.name}”`, doc.id);
     res.status(201).json(doc);
   }));
   app.put(`/api/${col}/:id`, h(async (req, res) => {

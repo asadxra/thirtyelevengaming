@@ -6,10 +6,11 @@ import TimelinePlayer from './TimelinePlayer.jsx';
 import { buildScenes, retime, blankScene, fmtTime, parseTime, totalDuration, hashText, scriptToText, sectionSuggestions } from '../../shared/scenes.js';
 import { SECTIONS, SECTION_LABELS, ANIMATIONS, EXPRESSIONS, defaultVisualProps } from '../../shared/defaults.js';
 import { clipState } from '../lib/status.js';
+import { sourceLabel } from '../../shared/examples.js';
 
 // Rebuild scenes from script while carrying over voice clips whose text is unchanged.
 export function rebuildScenesFromScript(project) {
-  const fresh = buildScenes(project.script.sections, { speed: project.voice?.settings?.speed || 1 });
+  const fresh = buildScenes(project.script.sections, { speed: project.voice?.settings?.speed || 1, examples: (project.examples || []).filter((e) => e.approved !== false) });
   const oldByHash = {};
   for (const s of project.scenes || []) {
     const clip = project.voice?.clips?.[s.id];
@@ -26,7 +27,7 @@ export function rebuildScenesFromScript(project) {
     }
     return s;
   });
-  const visuals = scenes.flatMap((s) => (s.visualTypes || []).map((type, j) => ({ id: `vis_${s.id}_${j}`, sceneId: s.id, type, props: defaultVisualProps(type) })));
+  const visuals = [];
   return { scenes, clips, visuals, scenesSourceHash: hashText(scriptToText(project.script.sections)) };
 }
 
@@ -176,6 +177,7 @@ export default function SceneBuilder({ project, update, character }) {
                   <Select label="Character pose / animation" value={s.pose} onChange={(e) => patchScene(s.id, { pose: e.target.value })} options={ANIMATIONS.map((a) => ({ value: a.id, label: a.label }))} />
                   <Select label="Expression" value={s.expression} onChange={(e) => patchScene(s.id, { expression: e.target.value })} options={EXPRESSIONS} />
                 </div>
+                <ChartRef scene={s} project={project} onChange={(chart) => patchScene(s.id, { chart })} />
                 <TextArea label="Voiceover" autoGrow rows={2} value={s.voiceover} onChange={(e) => patchScene(s.id, { voiceover: e.target.value })}
                   hint={cs === 'stale' ? 'Voiceover text changed — regenerate this scene in Voice Studio.' : undefined} />
                 <div className="grid-2">
@@ -184,7 +186,7 @@ export default function SceneBuilder({ project, update, character }) {
                   <TextArea label="Animation" rows={2} value={s.animation} onChange={(e) => patchScene(s.id, { animation: e.target.value })} />
                   <TextArea label="Camera movement" rows={2} value={s.camera} onChange={(e) => patchScene(s.id, { camera: e.target.value })} />
                   <TextArea label="Background visual" rows={2} value={s.background} onChange={(e) => patchScene(s.id, { background: e.target.value })} />
-                  <TextArea label="Code animation instructions" rows={2} value={s.codeAnimation} onChange={(e) => patchScene(s.id, { codeAnimation: e.target.value })} />
+                  <TextArea label="On-screen text / overlay instructions" rows={2} value={s.codeAnimation} onChange={(e) => patchScene(s.id, { codeAnimation: e.target.value })} />
                   <TextArea label="Sound effect suggestions" rows={2} value={s.sfx} onChange={(e) => patchScene(s.id, { sfx: e.target.value })} />
                   <TextArea label="Caption text" rows={2} value={s.caption} onChange={(e) => patchScene(s.id, { caption: e.target.value })} hint="Source text for auto-captions. Caption edits in the Captions tab never change the script." />
                 </div>
@@ -206,5 +208,26 @@ function TimeField({ label, value, onCommit }) {
   return (
     <Input label={label} className="time-field mono" value={v} onChange={(e) => setV(e.target.value)}
       onBlur={() => onCommit(v)} onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.blur()} />
+  );
+}
+
+function ChartRef({ scene, project, onChange }) {
+  const examples = project.examples || [];
+  const ex = examples.find((e) => e.id === scene.chart?.exampleId);
+  return (
+    <div className="chart-ref">
+      <Icon name="chart" size={15} />
+      <Select value={scene.chart?.exampleId || ''} onChange={(e) => {
+        const nx = examples.find((x) => x.id === e.target.value);
+        onChange(nx ? { exampleId: nx.id, stepId: null, focus: nx.range ? [...nx.range] : null, reveal: [], hide: [] } : null);
+      }} options={[{ value: '', label: 'Chart example: none' }, ...examples.map((x, k) => ({ value: x.id, label: `Chart example #${k + 1}: ${(x.summary || x.kind).slice(0, 50)}` }))]} />
+      {ex?.steps?.length > 0 && (
+        <Select value={scene.chart?.stepId || ''} onChange={(e) => {
+          const st = ex.steps.find((x) => x.id === e.target.value);
+          onChange(st ? { ...scene.chart, stepId: st.id, focus: [...st.focus], reveal: [...st.reveal] } : { ...scene.chart, stepId: null, focus: [...ex.range] });
+        }} options={[{ value: '', label: 'Step: overview' }, ...ex.steps.map((st) => ({ value: st.id, label: `Step: ${st.label}` }))]} />
+      )}
+      {ex && <span className="small muted">{sourceLabel(ex)}</span>}
+    </div>
   );
 }
