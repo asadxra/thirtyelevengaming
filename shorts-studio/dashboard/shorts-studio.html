@@ -183,7 +183,7 @@ pre.cmd { margin: 0; padding: 10px 12px; background: var(--panel-2); border: 1px
 
   <div class="side stack">
     <section class="panel monitor">
-      <div class="panel-head" style="width:100%"><h2>Monitor</h2><label class="check small muted"><input type="checkbox" id="show-safe"> Safe zones</label></div>
+      <div class="panel-head" style="width:100%"><h2>Monitor</h2><span class="row" style="flex:0 0 auto;gap:12px"><label class="check small muted"><input type="checkbox" id="preview-sfx" checked> SFX</label><label class="check small muted"><input type="checkbox" id="show-safe"> Safe zones</label></span></div>
       <div class="phone" id="phone"><div class="stage" id="stage"><div class="inner" id="inner"></div><div class="cap" id="cap"></div></div></div>
       <div class="transport">
         <button class="btn sm" id="play">▶ Play</button>
@@ -191,7 +191,7 @@ pre.cmd { margin: 0; padding: 10px 12px; background: var(--panel-2); border: 1px
         <span class="tc mono small" id="tc">00:00.0 / 00:00.0</span>
       </div>
       <div class="timeline" id="timeline"></div>
-      <p class="hint" style="margin:0;text-align:center">Browser preview of the layout and timing. The final render uses the real voiceover length.</p>
+      <p class="hint" style="margin:0;text-align:center">Each element enters when its words are spoken. The preview spaces words evenly; the render uses Whisper timestamps from the real voiceover.</p>
     </section>
 
     <section class="panel">
@@ -228,6 +228,8 @@ pre.cmd { margin: 0; padding: 10px 12px; background: var(--panel-2); border: 1px
           </div></div></div>
         <div class="stage-row"><input type="checkbox" id="p-tts"><div><div class="t">ElevenLabs · voiceover</div><div class="small muted">One clip per scene. Scene lengths follow the voice.</div></div></div>
         <div class="stage-row"><input type="checkbox" id="p-whisper"><div><div class="t">Whisper · captions</div><div class="small muted">Word-level timestamps, burned in as karaoke captions.</div></div></div>
+        <div class="stage-row"><input type="checkbox" id="p-sfx"><div><div class="t">Sound effects</div><div class="small muted">Whooshes between scenes; pops, ticks, risers and hits as each element lands on its spoken word.</div>
+          <div class="sub"><label class="f">SFX level<input type="range" id="p-sfx-vol" min="0" max="1.5" step="0.05"></label></div></div></div>
         <div class="stage-row"><span></span><div><div class="t">Render engine</div>
           <div class="sub"><select id="p-engine"><option value="remotion">Remotion (React)</option><option value="hyperframes">HyperFrames (HTML + GSAP)</option></select></div></div></div>
         <div class="stage-row"><input type="checkbox" id="p-loudnorm"><div><div class="t">FFmpeg · master</div><div class="small muted">Ducks music under the voice, −14 LUFS, H.264 with fast start, thumbnail.</div></div></div>
@@ -249,6 +251,184 @@ pre.cmd { margin: 0; padding: 10px 12px; background: var(--panel-2); border: 1px
   </div>
 </div>
 
+<script>
+/* Generated from src/script/timeline.ts: the same word-matching timeline the renderer uses */
+"use strict";
+var Timeline = (() => {
+  var __defProp = Object.defineProperty;
+  var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+  var __getOwnPropNames = Object.getOwnPropertyNames;
+  var __hasOwnProp = Object.prototype.hasOwnProperty;
+  var __export = (target, all) => {
+    for (var name in all)
+      __defProp(target, name, { get: all[name], enumerable: true });
+  };
+  var __copyProps = (to, from, except, desc) => {
+    if (from && typeof from === "object" || typeof from === "function") {
+      for (let key of __getOwnPropNames(from))
+        if (!__hasOwnProp.call(to, key) && key !== except)
+          __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+    }
+    return to;
+  };
+  var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+  var timeline_exports = {};
+  __export(timeline_exports, {
+    buildTimeline: () => buildTimeline,
+    elementsOf: () => elementsOf,
+    estimateWords: () => estimateWords,
+    norm: () => norm,
+    timeScene: () => timeScene
+  });
+  const NUM = {
+    zero: "0",
+    one: "1",
+    two: "2",
+    three: "3",
+    four: "4",
+    five: "5",
+    six: "6",
+    seven: "7",
+    eight: "8",
+    nine: "9",
+    ten: "10",
+    eleven: "11",
+    twelve: "12",
+    fifteen: "15",
+    twenty: "20",
+    "twenty-five": "25",
+    thirty: "30",
+    "thirty-three": "33",
+    forty: "40",
+    fifty: "50",
+    sixty: "60",
+    seventy: "70",
+    eighty: "80",
+    ninety: "90",
+    hundred: "100",
+    half: "50",
+    double: "100"
+  };
+  const STOP = new Set(
+    "the a an and or but to of in on at for with is are was be it its it's this that you your youre you're i my we our they them so just not no do does did says say said like feels feel then there here what when how all".split(" ")
+  );
+  const norm = (w) => {
+    const s = w.toLowerCase().replace(/[’']/g, "'").replace(/[^a-z0-9'%-]/g, "").replace(/%$/, "");
+    return NUM[s] ?? s.replace(/^-|-$/g, "");
+  };
+  const content = (text) => String(text || "").split(/\s+/).map(norm).filter((w) => w && !STOP.has(w) && (w.length > 2 || /^\d+$/.test(w)));
+  function elementsOf(s) {
+    const L = (lines = [], prefix, sfx) => lines.map((l, i) => ({ key: `${prefix}${i}`, text: l.text, sfx }));
+    switch (s.type) {
+      case "title":
+        return [
+          ...s.icon ? [{ key: "icon", text: "", sfx: "pop", fixed: 0 }] : [],
+          { key: "title", text: s.title, sfx: "impact", fixed: s.icon ? 0.25 : 0.05 },
+          ...s.subtitle ? [{ key: "subtitle", text: s.subtitle, sfx: "tick" }] : []
+        ];
+      case "statement":
+        return [...s.icon ? [{ key: "icon", text: "", sfx: "pop", fixed: 0 }] : [], ...L(s.lines, "line", "tick")];
+      case "chart":
+        return [
+          ...L(s.headline, "head", "tick"),
+          { key: "draw", text: "", sfx: "riser" },
+          { key: "result", text: `${s.resultNote ?? ""} ${s.levelLabel ?? ""} ${s.result ?? ""}`, sfx: "impact" }
+        ];
+      case "versus":
+        return [
+          { key: "a", text: `${s.a?.quote} ${s.a?.label}`, sfx: "swipe" },
+          { key: "b", text: `${s.b?.quote} ${s.b?.label}`, sfx: "swipe" },
+          ...L(s.footer, "foot", "tick")
+        ];
+      case "bars":
+        return [
+          { key: "head", text: s.headline, sfx: "tick", fixed: 0.05 },
+          ...(s.rows ?? []).map((r, i) => ({ key: `row${i}`, text: `${r.left} ${r.right}`, sfx: "pop" })),
+          ...s.footer ? [{ key: "foot", text: s.footer, sfx: "tick" }] : []
+        ];
+      case "list":
+        return [
+          { key: "head", text: s.headline, sfx: "tick", fixed: 0.05 },
+          ...(s.items ?? []).map((t, i) => ({ key: `item${i}`, text: t, sfx: "pop" }))
+        ];
+      case "outro":
+        return [
+          { key: "lead", text: s.lead, sfx: "tick" },
+          { key: "punch", text: s.punch, sfx: "impact" },
+          ...s.cta ? [{ key: "cta", text: s.cta, sfx: "ding" }] : []
+        ];
+    }
+    return [];
+  }
+  function estimateWords(voiceover, dur) {
+    const ws = String(voiceover || "").trim().split(/\s+/).filter(Boolean);
+    const per = Math.max(0.1, (dur - 0.4) / Math.max(1, ws.length));
+    return ws.map((text, i) => ({ text, start: 0.15 + i * per, end: 0.15 + (i + 1) * per }));
+  }
+  function timeScene(s, dur, words) {
+    const els = elementsOf(s);
+    const spoken = words.map((w) => norm(w.text));
+    const at = {};
+    const latest = Math.max(0.3, dur - 0.7);
+    let cursor = 0;
+    let last = -0.3;
+    const keysets = els.map((el) => new Set(content(el.text)));
+    const found = els.map((el, k) => {
+      if (el.fixed !== void 0) return el.fixed;
+      const keys = keysets[k];
+      if (!keys.size) return null;
+      const unique = new Set([...keys].filter((w) => !keysets.some((o, m) => m !== k && o.has(w))));
+      for (const pool of unique.size ? [unique, keys] : [keys]) {
+        for (let i = cursor; i < spoken.length; i++) {
+          if (pool.has(spoken[i])) {
+            cursor = i + 1;
+            return Math.max(0, words[i].start - 0.12);
+          }
+        }
+      }
+      return null;
+    });
+    for (let i = 0; i < els.length; i++) {
+      let t = found[i];
+      if (t == null) {
+        const prev = i === 0 ? 0 : at[els[i - 1].key];
+        let j = i + 1;
+        while (j < els.length && found[j] == null) j++;
+        const next = j < els.length ? found[j] : latest;
+        t = prev + (next - prev) / (j - i + 1);
+        if (els[i].key === "draw") t = Math.max(t, prev + 0.2);
+      }
+      t = Math.min(latest, Math.max(t, last + 0.22));
+      at[els[i].key] = Math.round(t * 100) / 100;
+      last = t;
+    }
+    if (at.draw !== void 0 && at.result !== void 0 && at.result - at.draw < 0.8) {
+      at.result = Math.min(latest, at.draw + 0.8);
+    }
+    return at;
+  }
+  const VOLUME = { whoosh: 0.35, swipe: 0.4, pop: 0.45, tick: 0.25, impact: 0.6, riser: 0.35, ding: 0.4 };
+  function buildTimeline(scenes, sceneDurations, captions, sfxVolume = 1) {
+    const out = [];
+    const cues = [];
+    let start = 0;
+    scenes.forEach((s, i) => {
+      const dur = sceneDurations[i];
+      const words = captions?.length ? captions.filter((c) => c.startMs / 1e3 >= start - 0.05 && c.startMs / 1e3 < start + dur).map((c) => ({ text: c.text.trim(), start: c.startMs / 1e3 - start, end: c.endMs / 1e3 - start })) : estimateWords(s.voiceover, dur);
+      const at = timeScene(s, dur, words);
+      out.push({ start, dur, at });
+      if (i > 0) cues.push({ t: Math.max(0, start - 0.18), sfx: "whoosh", volume: VOLUME.whoosh * sfxVolume });
+      for (const el of elementsOf(s)) {
+        if (el.sfx) cues.push({ t: start + at[el.key], sfx: el.sfx, volume: VOLUME[el.sfx] * sfxVolume });
+      }
+      start += dur;
+    });
+    return { scenes: out, cues: cues.sort((a, b) => a.t - b.t) };
+  }
+  return __toCommonJS(timeline_exports);
+})();
+
+</script>
 <script>
 (() => {
   // ---------- constants ----------
@@ -280,8 +460,8 @@ pre.cmd { margin: 0; padding: 10px 12px; background: var(--panel-2); border: 1px
     const id = `short-${Date.now().toString(36)}`;
     return {
       id, title: "Untitled short", topic: "", length: 30, tone: "Punchy and direct", status: "draft",
-      voice: { id: "", name: "", model: "eleven_v4" },
-      pipeline: { engine: "remotion", sources: false, tts: true, whisper: true, captions: true, loudnorm: true,
+      voice: { id: "Aa6nEBJJMKJwJkCx8VU2", name: "Quentin - Narrator and Educator", model: "eleven_v4" },
+      pipeline: { engine: "remotion", sources: false, tts: true, whisper: true, captions: true, loudnorm: true, sfx: true, sfxVolume: 1,
         music: { url: "", file: "", start: 0, end: 0, volume: 0.12 }, broll: { url: "", file: "", start: 0, end: 0, opacity: 0.22 } },
       script: { title: "Untitled short", scenes: [blankScene("title"), blankScene("statement"), blankScene("outro")] },
     };
@@ -450,7 +630,7 @@ pre.cmd { margin: 0; padding: 10px 12px; background: var(--panel-2); border: 1px
 - bars: {"headline": string (<= 7 words), "leftLabel": string, "rightLabel": string, "rows": [{"left": number, "right": number}] (2-4 rows), "suffix"?: "%", "footer"?: string}
 - list: {"headline": string (<= 4 words), "items": string[] (2-4 items, <= 7 words each)}
 - outro: {"lead": string (<= 9 words), "punch": string (<= 6 words), "cta"?: string (<= 6 words)}
-On-screen text is short and punchy; the voiceover carries the detail. Numbers must be correct (e.g. a 50% loss needs +100% to recover).`;
+On-screen text is short and punchy; the voiceover carries the detail. Animations are triggered when the narrator says an element's words, so every on-screen line, quote, row and list item must reuse at least one distinctive word from that scene's voiceover, in the same order the voiceover says them. Numbers must be correct (e.g. a 50% loss needs +100% to recover).`;
 
   async function writeScript() {
     if (!sample) return;
@@ -502,53 +682,88 @@ Reply with the single scene object as JSON only.`, { modelTier: "default" });
   let t = 0, playing = false, lastTs = 0, lastBuilt = -1, activeScene = 0;
   const C = (c) => VC[c] || VC.text;
   const line = (l, size, at) => `<div data-at="${at}" style="font-size:${fit(l.text, size, 22)}px;color:${C(l.color)}">${esc(l.text)}</div>`;
-  const beats = (n, dur, first = 0.15) => { const span = Math.max(0.7, dur * 0.55 - first); return Array.from({ length: n }, (_, i) => first + (n === 1 ? 0 : (span * i) / (n - 1))); };
 
-  function sceneHtml(s, dur) {
+  function sceneHtml(s, dur, at) {
+    const A = (k, fb) => (at[k] ?? fb);
     switch (s.type) {
       case "title": {
         const t = s.highlight && s.title?.includes(s.highlight) ? esc(s.title).replace(esc(s.highlight), `<span style="color:${VC.gold}">${esc(s.highlight)}</span>`) : esc(s.title);
-        return `${s.icon ? `<div data-at="0" data-pop style="font-size:190px;color:${VC.gold}">${esc(s.icon)}</div>` : ""}
-          <div data-at="0.3" style="font-size:${fit(s.title, 108, 24)}px;text-transform:uppercase;letter-spacing:-2px;line-height:1.05">${t}</div>
-          ${s.subtitle ? `<div data-at="1" style="font-size:${fit(s.subtitle, 46, 60)}px;font-weight:500;color:${VC.muted}">${esc(s.subtitle)}</div>` : ""}`;
+        return `${s.icon ? `<div data-at="${A("icon", 0)}" data-pop style="font-size:190px;color:${VC.gold}">${esc(s.icon)}</div>` : ""}
+          <div data-at="${A("title", 0.3)}" style="font-size:${fit(s.title, 108, 24)}px;text-transform:uppercase;letter-spacing:-2px;line-height:1.05">${t}</div>
+          ${s.subtitle ? `<div data-at="${A("subtitle", 1)}" style="font-size:${fit(s.subtitle, 46, 60)}px;font-weight:500;color:${VC.muted}">${esc(s.subtitle)}</div>` : ""}`;
       }
-      case "statement": { const b = beats((s.lines || []).length, dur, s.icon ? 0.35 : 0.15);
-        return `${s.icon ? `<div data-at="0" data-pop style="font-size:160px">${esc(s.icon)}</div>` : ""}${(s.lines || []).map((l, i) => line(l, 84, b[i])).join("")}`; }
+      case "statement":
+        return `${s.icon ? `<div data-at="${A("icon", 0)}" data-pop style="font-size:160px">${esc(s.icon)}</div>` : ""}${(s.lines || []).map((l, i) => line(l, 84, A(`line${i}`, i * 0.6))).join("")}`;
       case "chart": {
         const down = s.trend !== "up";
         const shape = down ? [50,54,58,55,60,56,51,47,43,45,39,34,37,29,24,20] : [50,47,44,48,45,50,54,52,58,62,59,66,70,68,75,80];
         const lvl = down ? 40 : 66; const c = down ? VC.red : VC.green; const Y = (p) => 320 - (p / 90) * 320;
         const pts = shape.map((p, i) => `${(i / 15) * 860},${Y(p)}`).join(" ");
-        return `${(s.headline || []).map((l, i) => line(l, 68, i * 0.27)).join("")}
-          <svg width="860" height="320" style="overflow:visible" data-chart="${(dur * 0.7).toFixed(2)}">
+        const r = A("result", dur * 0.7);
+        return `${(s.headline || []).map((l, i) => line(l, 68, A(`head${i}`, i * 0.27))).join("")}
+          <svg width="860" height="320" style="overflow:visible" data-draw="${A("draw", 0.4)}" data-end="${r}">
             <line x1="0" x2="860" y1="${Y(50)}" y2="${Y(50)}" stroke="${VC.muted}" stroke-width="3" stroke-dasharray="12 12"/><text x="0" y="${Y(50) - 14}" fill="${VC.muted}" font-size="30" font-weight="500">ENTRY</text>
             <line x1="0" x2="860" y1="${Y(lvl)}" y2="${Y(lvl)}" stroke="${c}" stroke-width="4" stroke-dasharray="12 12"/><text x="0" y="${Y(lvl) + (down ? 44 : -14)}" fill="${c}" font-size="30" font-weight="500">${esc(s.levelLabel || (down ? "STOP LOSS" : "TARGET"))}</text>
             <polyline points="${pts}" fill="none" stroke="${c}" stroke-width="10" stroke-linejoin="round" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/></svg>
-          ${s.result ? `<div data-at="${(dur * 0.7 - 0.2).toFixed(2)}" data-pop style="font-size:96px;line-height:1;color:${c}">${esc(s.result)}</div>` : ""}
-          ${s.resultNote ? `<div data-at="${(dur * 0.7).toFixed(2)}" style="font-size:46px;font-weight:800;color:${c}">${esc(s.resultNote)}</div>` : ""}`;
+          ${s.result ? `<div data-at="${r}" data-pop style="font-size:96px;line-height:1;color:${c}">${esc(s.result)}</div>` : ""}
+          ${s.resultNote ? `<div data-at="${r + 0.15}" style="font-size:46px;font-weight:800;color:${c}">${esc(s.resultNote)}</div>` : ""}`;
       }
-      case "versus": { const [a, b, f] = beats(3, dur);
-        const bub = (x, d, al, at) => `<div class="bubble" data-at="${at}" data-x="${al === "left" ? -160 : 160}" style="border-color:${C(x?.color || d)};background:${C(x?.color || d)}1a;text-align:${al}">
+      case "versus": {
+        const bub = (x, d, al, k) => `<div class="bubble" data-at="${A(k, 0)}" data-x="${al === "left" ? -160 : 160}" style="border-color:${C(x?.color || d)};background:${C(x?.color || d)}1a;text-align:${al}">
           <div style="font-size:40px;font-weight:800;color:${C(x?.color || d)};text-transform:uppercase;margin-bottom:12px">${esc(x?.label)}</div>
           <div style="font-size:${fit(x?.quote, 72, 20)}px">“${esc(x?.quote)}”</div></div>`;
-        return bub(s.a, "red", "left", a) + bub(s.b, "gold", "right", b) + (s.footer || []).map((l, i) => line(l, 60, f + i * 0.27)).join(""); }
-      case "bars": { const rows = s.rows || []; const b = beats(rows.length + 1, dur, 0.45); const max = Math.max(1, ...rows.flatMap((r) => [r.left, r.right]));
-        return `<div data-at="0" style="font-size:${fit(s.headline, 80, 34)}px">${esc(s.headline)}</div>
-          <div class="brow" data-at="0.25" style="font-size:40px;font-weight:800"><span style="color:${VC.red}">${esc(s.leftLabel)}</span><span style="color:${VC.green}">${esc(s.rightLabel)}</span></div>
-          ${rows.map((r, i) => `<div class="brow" style="align-items:center" data-grow="${b[i]}">
+        return bub(s.a, "red", "left", "a") + bub(s.b, "gold", "right", "b") + (s.footer || []).map((l, i) => line(l, 60, A(`foot${i}`, 2))).join(""); }
+      case "bars": { const rows = s.rows || []; const max = Math.max(1, ...rows.flatMap((r) => [r.left, r.right])); const h = A("head", 0);
+        return `<div data-at="${h}" style="font-size:${fit(s.headline, 80, 34)}px">${esc(s.headline)}</div>
+          <div class="brow" data-at="${h + 0.25}" style="font-size:40px;font-weight:800"><span style="color:${VC.red}">${esc(s.leftLabel)}</span><span style="color:${VC.green}">${esc(s.rightLabel)}</span></div>
+          ${rows.map((r, i) => `<div class="brow" style="align-items:center" data-grow="${A(`row${i}`, 0.5 + i)}">
             <div style="display:flex;flex-direction:column;align-items:flex-start;gap:6px"><div style="font-size:76px;color:${VC.red}" data-num="${r.left}" data-pre="${esc(s.leftPrefix ?? "-")}" data-suf="${esc(s.suffix ?? "%")}"></div><div data-bar="${(r.left / max) * 400}" style="height:32px;border-radius:16px;background:${VC.red}"></div></div>
             <div style="font-size:64px;color:${VC.muted}">→</div>
             <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px"><div style="font-size:76px;color:${VC.green}" data-num="${r.right}" data-pre="${esc(s.rightPrefix ?? "+")}" data-suf="${esc(s.suffix ?? "%")}"></div><div data-bar="${(r.right / max) * 400}" style="height:32px;border-radius:16px;background:${VC.green}"></div></div></div>`).join("")}
-          ${s.footer ? `<div data-at="${b[rows.length]}" style="font-size:${fit(s.footer, 52, 40)}px;font-weight:800">${esc(s.footer)}</div>` : ""}`; }
-      case "list": { const b = beats((s.items || []).length, dur, 0.5);
-        return `<div data-at="0" style="font-size:${fit(s.headline, 92, 20)}px;color:${VC.green}">${esc(s.headline)}</div>
-          ${(s.items || []).map((it, i) => `<div class="item" data-at="${b[i]}"><span class="num">${i + 1}</span><span style="font-size:${fit(it, 58, 32)}px;line-height:1.15">${esc(it)}</span></div>`).join("")}`; }
-      case "outro": { const [a, b, c] = beats(3, dur);
-        return `<div data-at="${a}" style="font-size:${fit(s.lead, 64, 40)}px;font-weight:800;color:${VC.muted}">${esc(s.lead)}</div>
-          <div data-at="${b}" data-pop style="font-size:${fit(s.punch, 120, 22)}px;line-height:1.05;color:${VC.green}">${esc(s.punch)}</div>
-          ${s.cta ? `<div data-at="${c}" style="font-size:42px;font-weight:600;padding:22px 44px;border-radius:999px;border:4px solid ${VC.gold};color:${VC.gold}">${esc(s.cta)}</div>` : ""}`; }
+          ${s.footer ? `<div data-at="${A("foot", dur * 0.7)}" style="font-size:${fit(s.footer, 52, 40)}px;font-weight:800">${esc(s.footer)}</div>` : ""}`; }
+      case "list":
+        return `<div data-at="${A("head", 0)}" style="font-size:${fit(s.headline, 92, 20)}px;color:${VC.green}">${esc(s.headline)}</div>
+          ${(s.items || []).map((it, i) => `<div class="item" data-at="${A(`item${i}`, 0.5 + i)}"><span class="num">${i + 1}</span><span style="font-size:${fit(it, 58, 32)}px;line-height:1.15">${esc(it)}</span></div>`).join("")}`;
+      case "outro":
+        return `<div data-at="${A("lead", 0)}" style="font-size:${fit(s.lead, 64, 40)}px;font-weight:800;color:${VC.muted}">${esc(s.lead)}</div>
+          <div data-at="${A("punch", 1)}" data-pop style="font-size:${fit(s.punch, 120, 22)}px;line-height:1.05;color:${VC.green}">${esc(s.punch)}</div>
+          ${s.cta ? `<div data-at="${A("cta", 2)}" style="font-size:42px;font-weight:600;padding:22px 44px;border-radius:999px;border:4px solid ${VC.gold};color:${VC.gold}">${esc(s.cta)}</div>` : ""}`;
     }
     return "";
+  }
+
+  // ---------- timeline + sound effects ----------
+  let tlCache = null, tlKey = "";
+  function timeline() {
+    const d = durations();
+    const key = JSON.stringify([job.script.scenes, d, job.pipeline.sfxVolume]);
+    if (key !== tlKey) { tlKey = key; tlCache = Timeline.buildTimeline(job.script.scenes, d, null, job.pipeline.sfxVolume ?? 1); }
+    return tlCache;
+  }
+  let actx = null;
+  function sfx(name, vol) {
+    if (!$("preview-sfx").checked || job.pipeline.sfx === false) return;
+    try { actx ||= new AudioContext(); } catch { return; }
+    const a = actx, t0 = a.currentTime, out = a.createGain(); out.gain.value = vol; out.connect(a.destination);
+    const tone = (f0, f1, dur, decay, type = "sine", g = 0.8) => {
+      const o = a.createOscillator(), e = a.createGain(); o.type = type;
+      o.frequency.setValueAtTime(f0, t0); o.frequency.exponentialRampToValueAtTime(Math.max(20, f1), t0 + dur);
+      e.gain.setValueAtTime(g, t0); e.gain.exponentialRampToValueAtTime(0.0001, t0 + decay); o.connect(e).connect(out); o.start(t0); o.stop(t0 + decay + 0.05);
+    };
+    const noise = (dur, f, q, attack) => {
+      const b = a.createBuffer(1, Math.ceil(a.sampleRate * dur), a.sampleRate), ch = b.getChannelData(0);
+      for (let i = 0; i < ch.length; i++) ch[i] = Math.random() * 2 - 1;
+      const src = a.createBufferSource(), bp = a.createBiquadFilter(), e = a.createGain(); src.buffer = b; bp.type = "bandpass"; bp.frequency.value = f; bp.Q.value = q;
+      e.gain.setValueAtTime(0.0001, t0); e.gain.exponentialRampToValueAtTime(0.9, t0 + attack); e.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+      src.connect(bp).connect(e).connect(out); src.start(t0);
+    };
+    if (name === "whoosh") noise(0.7, 1200, 0.6, 0.35);
+    else if (name === "swipe") noise(0.35, 2500, 0.9, 0.08);
+    else if (name === "pop") tone(2000, 500, 0.08, 0.2);
+    else if (name === "tick") tone(2400, 2400, 0.05, 0.07, "sine", 0.6);
+    else if (name === "impact") { tone(160, 45, 0.25, 1.0, "sine", 1); noise(0.35, 300, 0.5, 0.005); }
+    else if (name === "riser") { const o = a.createOscillator(), e = a.createGain(); o.frequency.setValueAtTime(180, t0); o.frequency.exponentialRampToValueAtTime(900, t0 + 1.2); e.gain.setValueAtTime(0.0001, t0); e.gain.exponentialRampToValueAtTime(0.3, t0 + 1.15); e.gain.exponentialRampToValueAtTime(0.0001, t0 + 1.3); o.connect(e).connect(out); o.start(t0); o.stop(t0 + 1.35); }
+    else if (name === "ding") { tone(1318, 1318, 1, 1.1, "sine", 0.5); tone(1975, 1975, 1, 0.9, "sine", 0.3); }
   }
   const ease = (x) => 1 - Math.pow(1 - Math.min(1, Math.max(0, x)), 3);
 
@@ -559,7 +774,7 @@ Reply with the single scene object as JSON only.`, { modelTier: "default" });
     const local = t - acc, dur = d[i] || 1, s = job.script.scenes[i];
     if (i !== activeScene) { activeScene = i; document.querySelectorAll(".scene").forEach((el, k) => el.classList.toggle("active", k === i)); }
     const inner = $("inner");
-    if (i !== lastBuilt) { inner.innerHTML = s ? sceneHtml(s, dur) : ""; lastBuilt = i; }
+    if (i !== lastBuilt) { inner.innerHTML = s ? sceneHtml(s, dur, timeline().scenes[i]?.at || {}) : ""; lastBuilt = i; }
     inner.style.opacity = String(Math.min(1, Math.max(0, (dur - local) / 0.2)));
     inner.querySelectorAll("[data-at]").forEach((el) => {
       const p = ease((local - Number(el.dataset.at)) / 0.55);
@@ -573,8 +788,8 @@ Reply with the single scene object as JSON only.`, { modelTier: "default" });
       row.querySelectorAll("[data-num]").forEach((n) => { n.textContent = `${n.dataset.pre}${Math.round(Number(n.dataset.num) * g)}${n.dataset.suf}`; });
       row.querySelectorAll("[data-bar]").forEach((b) => { b.style.width = `${Number(b.dataset.bar) * g}px`; });
     });
-    const chart = inner.querySelector("[data-chart]");
-    if (chart) chart.querySelector("polyline").style.strokeDashoffset = String(1 - ease((local - 0.4) / (Number(chart.dataset.chart) - 0.4)));
+    const chart = inner.querySelector("[data-draw]");
+    if (chart) { const d0 = Number(chart.dataset.draw), d1 = Number(chart.dataset.end); chart.querySelector("polyline").style.strokeDashoffset = String(1 - ease((local - d0) / Math.max(0.3, d1 - d0))); }
     // captions: voiceover words spread over the scene, three at a time
     const w = words(s?.voiceover); const cap = $("cap");
     if (w.length) {
@@ -586,11 +801,12 @@ Reply with the single scene object as JSON only.`, { modelTier: "default" });
     return total;
   }
   function tick(ts) {
-    if (playing) { const total = frame(); t += (ts - lastTs) / 1000; if (t >= total) { t = total; playing = false; $("play").textContent = "▶ Play"; } frame(); }
+    if (playing) { const total = frame(); const t0 = t; t += (ts - lastTs) / 1000;
+      for (const c of timeline().cues) if (c.t >= t0 && c.t < t) sfx(c.sfx, c.volume); if (t >= total) { t = total; playing = false; $("play").textContent = "▶ Play"; } frame(); }
     lastTs = ts; requestAnimationFrame(tick);
   }
   function seek(x) { t = Math.max(0, x); frame(); }
-  $("play").addEventListener("click", () => { const total = durations().reduce((a, b) => a + b, 0); if (t >= total - 0.05) t = 0; playing = !playing; $("play").textContent = playing ? "❚❚ Pause" : "▶ Play"; });
+  $("play").addEventListener("click", () => { try { (actx ||= new AudioContext()).resume(); } catch {} const total = durations().reduce((a, b) => a + b, 0); if (t >= total - 0.05) t = 0; playing = !playing; $("play").textContent = playing ? "❚❚ Pause" : "▶ Play"; });
   $("restart").addEventListener("click", () => seek(0));
   function renderTimeline() {
     const d = durations(); const total = d.reduce((a, b) => a + b, 0) || 1;
@@ -696,6 +912,7 @@ Reply with the single scene object as JSON only.`, { modelTier: "default" });
     const p = job.pipeline;
     $("p-sources").checked = !!p.sources; $("p-tts").checked = p.tts !== false; $("p-whisper").checked = p.whisper !== false; $("p-loudnorm").checked = p.loudnorm !== false;
     $("p-engine").value = p.engine || "remotion";
+    $("p-sfx").checked = p.sfx !== false; $("p-sfx-vol").value = p.sfxVolume ?? 1;
     $("p-music").value = p.music?.url || p.music?.file || ""; $("p-music-vol").value = p.music?.volume ?? 0.12;
     $("p-music-trim").value = p.music?.end ? `${p.music.start}-${p.music.end}` : "";
     $("p-broll").value = p.broll?.url || p.broll?.file || ""; $("p-broll-op").value = p.broll?.opacity ?? 0.22;
@@ -706,6 +923,7 @@ Reply with the single scene object as JSON only.`, { modelTier: "default" });
     const p = job.pipeline;
     p.sources = $("p-sources").checked; p.tts = $("p-tts").checked; p.whisper = $("p-whisper").checked; p.captions = p.whisper; p.loudnorm = $("p-loudnorm").checked;
     p.engine = $("p-engine").value;
+    p.sfx = $("p-sfx").checked; p.sfxVolume = Number($("p-sfx-vol").value);
     const m = $("p-music").value.trim(), b = $("p-broll").value.trim();
     p.music = { url: p.sources && isUrl(m) ? m : "", file: p.sources && m && !isUrl(m) ? m : "", volume: Number($("p-music-vol").value || 0.12), ...parseTrim($("p-music-trim").value) };
     p.broll = { url: p.sources && isUrl(b) ? b : "", file: p.sources && b && !isUrl(b) ? b : "", opacity: Number($("p-broll-op").value || 0.22), ...parseTrim($("p-broll-trim").value) };
@@ -722,7 +940,7 @@ Reply with the single scene object as JSON only.`, { modelTier: "default" });
   function renderMeta() {
     const s = job.status || "draft";
     $("job-status").className = `status ${s}`; $("job-status").textContent = s;
-    const flags = [job.pipeline.engine === "hyperframes" ? "--engine=hyperframes" : "", job.pipeline.tts === false ? "--no-tts" : "", job.pipeline.whisper === false ? "--no-whisper" : "", job.pipeline.sources ? "" : "--no-sources"].filter(Boolean).join(" ");
+    const flags = [job.pipeline.engine === "hyperframes" ? "--engine=hyperframes" : "", job.pipeline.tts === false ? "--no-tts" : "", job.pipeline.whisper === false ? "--no-whisper" : "", job.pipeline.sources ? "" : "--no-sources", job.pipeline.sfx === false ? "--no-sfx" : ""].filter(Boolean).join(" ");
     $("cmd").textContent = `npm run make -- jobs/${slug(job.id)}.json${flags ? " " + flags : ""}`;
     $("ask").textContent = `Render the queued shorts from my Shorts Studio dashboard`;
     const o = job.output;

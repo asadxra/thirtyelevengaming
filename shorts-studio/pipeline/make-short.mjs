@@ -8,6 +8,7 @@ import { loadEnv, log, ROOT, run } from "./lib.mjs";
 import { master } from "./steps/master.mjs";
 import { fetchSources } from "./steps/sources.mjs";
 import { makeVoice } from "./steps/voice.mjs";
+import { buildTimeline } from "../src/script/timeline.ts";
 
 loadEnv();
 const args = process.argv.slice(2);
@@ -15,7 +16,7 @@ const flag = (n) => args.includes(`--${n}`);
 const opt = (n) => args.find((a) => a.startsWith(`--${n}=`))?.split("=")[1];
 const jobFile = args.find((a) => !a.startsWith("--"));
 if (!jobFile) {
-  console.error("Usage: npm run make -- jobs/<id>.json [--engine=remotion|hyperframes] [--no-tts] [--no-whisper] [--no-sources]");
+  console.error("Usage: npm run make -- jobs/<id>.json [--engine=remotion|hyperframes] [--no-tts] [--no-whisper] [--no-sources] [--no-sfx]");
   process.exit(1);
 }
 
@@ -41,13 +42,17 @@ if (voice && p.whisper !== false && p.captions !== false && !flag("no-whisper"))
   fs.writeFileSync(path.join(pub, "captions.json"), JSON.stringify(captions, null, 1));
 }
 
+const durs = sceneDurations ?? job.script.scenes.map((s) => s.durationSec ?? estimateSeconds(s.voiceover));
+const sfxOn = p.sfx !== false && !flag("no-sfx");
+const timeline = buildTimeline(job.script.scenes, durs, captions, p.sfxVolume ?? 1);
+log("timeline", `${timeline.cues.length} cues synced to the ${captions ? "spoken words" : "estimated narration"}`);
+
 const raw = path.join(ROOT, "out", `${job.id}.raw.mp4`);
 if (engine === "hyperframes") {
-  const durs = sceneDurations ?? job.script.scenes.map((s) => s.durationSec ?? estimateSeconds(s.voiceover));
   const { renderHyperframes } = await import("./steps/hyperframes.mjs");
-  renderHyperframes({ job, sceneDurations: durs, voice, broll: sources.broll, captions, out: raw });
+  renderHyperframes({ job, sceneDurations: durs, timeline, voice, broll: sources.broll, captions, out: raw });
 } else {
-  const props = { script: job.script, sceneDurations, voiceSrc: rel(voice), brollSrc: rel(sources.broll), brollOpacity: p.broll?.opacity, captions };
+  const props = { script: job.script, sceneDurations: durs, sfx: sfxOn, sfxVolume: p.sfxVolume ?? 1, voiceSrc: rel(voice), brollSrc: rel(sources.broll), brollOpacity: p.broll?.opacity, captions };
   const propsFile = path.join(pub, "props.json");
   fs.writeFileSync(propsFile, JSON.stringify(props));
   log("remotion", "rendering ScriptShort");
@@ -56,5 +61,5 @@ if (engine === "hyperframes") {
 }
 
 const out = path.join(ROOT, "out", `${job.id}.mp4`);
-master({ video: raw, voice, music: sources.music, musicVolume: p.music?.volume, loudnorm: p.loudnorm !== false, out, thumb: out.replace(/\.mp4$/, ".jpg") });
+master({ video: raw, voice, cues: sfxOn ? timeline.cues : [], music: sources.music, musicVolume: p.music?.volume, loudnorm: p.loudnorm !== false, out, thumb: out.replace(/\.mp4$/, ".jpg") });
 log("done", path.relative(process.cwd(), out));

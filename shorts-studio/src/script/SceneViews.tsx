@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createContext, useContext } from "react";
 import { interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 import { COLORS } from "../theme";
 import { beats, fadeUp, pop, progress, slideIn } from "./anim";
@@ -6,6 +6,14 @@ import { fit } from "./fit";
 import type { Line, SceneContent, Tone } from "./types";
 
 export const tone = (t?: Tone) => COLORS[t ?? "text"];
+
+/** Entrance times (seconds, scene-local) from timeline.ts: when the narrator says each element. */
+export const AtContext = createContext<Record<string, number>>({});
+const useAt = () => {
+  const at = useContext(AtContext);
+  const { fps } = useVideoConfig();
+  return (key: string, fallback: number) => (at[key] !== undefined ? Math.round(at[key] * fps) : fallback);
+};
 
 const Lines: React.FC<{
   lines: Line[];
@@ -37,6 +45,7 @@ const Lines: React.FC<{
 
 const TitleView: React.FC<Extract<SceneContent, { type: "title" }>> = (s) => {
   const frame = useCurrentFrame();
+  const A = useAt();
   const parts =
     s.highlight && s.title.includes(s.highlight)
       ? s.title.split(s.highlight)
@@ -44,7 +53,7 @@ const TitleView: React.FC<Extract<SceneContent, { type: "title" }>> = (s) => {
   return (
     <>
       {s.icon ? (
-        <div style={{ fontSize: 200, lineHeight: 1, color: COLORS.gold, ...pop(frame, 0) }}>
+        <div style={{ fontSize: 200, lineHeight: 1, color: COLORS.gold, ...pop(frame, A("icon", 0)) }}>
           {s.icon}
         </div>
       ) : null}
@@ -56,7 +65,7 @@ const TitleView: React.FC<Extract<SceneContent, { type: "title" }>> = (s) => {
           letterSpacing: -2,
           textTransform: "uppercase",
           textWrap: "balance",
-          ...fadeUp(frame, 10),
+          ...fadeUp(frame, A("title", 10)),
         }}
       >
         {parts ? (
@@ -76,7 +85,7 @@ const TitleView: React.FC<Extract<SceneContent, { type: "title" }>> = (s) => {
             fontWeight: 500,
             color: COLORS.muted,
             textWrap: "balance",
-            ...fadeUp(frame, 30, 30),
+            ...fadeUp(frame, A("subtitle", 30), 30),
           }}
         >
           {s.subtitle}
@@ -89,11 +98,13 @@ const TitleView: React.FC<Extract<SceneContent, { type: "title" }>> = (s) => {
 const StatementView: React.FC<Extract<SceneContent, { type: "statement" }>> = (s) => {
   const frame = useCurrentFrame();
   const { durationInFrames } = useVideoConfig();
-  const starts = beats(s.lines.length, durationInFrames, s.icon ? 10 : 4);
+  const A = useAt();
+  const fb = beats(s.lines.length, durationInFrames, s.icon ? 10 : 4);
+  const starts = s.lines.map((_, i) => A(`line${i}`, fb[i]));
   return (
     <>
       {s.icon ? (
-        <div style={{ fontSize: 170, lineHeight: 1, ...pop(frame, 0) }}>{s.icon}</div>
+        <div style={{ fontSize: 170, lineHeight: 1, ...pop(frame, A("icon", 0)) }}>{s.icon}</div>
       ) : null}
       <Lines lines={s.lines} starts={starts} size={84} />
     </>
@@ -114,8 +125,9 @@ const ChartView: React.FC<Extract<SceneContent, { type: "chart" }>> = (s) => {
   const level = down ? 40 : 66;
   const toY = (p: number) => CHART_H - (p / 90) * CHART_H;
   const toX = (i: number) => (i / (shape.length - 1)) * CHART_W;
-  const end = Math.round(durationInFrames * 0.7);
-  const t = progress(frame, 12, end) * (shape.length - 1);
+  const A = useAt();
+  const end = A("result", Math.round(durationInFrames * 0.7));
+  const t = progress(frame, A("draw", 12), end) * (shape.length - 1);
   const whole = Math.floor(t);
   const pts = shape.slice(0, whole + 1).map((p, i) => [toX(i), toY(p)]);
   if (whole < shape.length - 1) {
@@ -125,10 +137,10 @@ const ChartView: React.FC<Extract<SceneContent, { type: "chart" }>> = (s) => {
   }
   const last = pts[pts.length - 1];
   const lineColor = down ? COLORS.red : COLORS.green;
-  const crossed = frame >= end - 8;
+  const crossed = frame >= end + 4;
   return (
     <>
-      <Lines lines={s.headline} starts={[0, 8, 16]} size={68} weight={800} />
+      <Lines lines={s.headline} starts={s.headline.map((_, i) => A(`head${i}`, i * 8))} size={68} weight={800} />
       <svg width={CHART_W} height={CHART_H} style={{ overflow: "visible", maxWidth: "100%" }}>
         <line x1={0} x2={CHART_W} y1={toY(50)} y2={toY(50)} stroke={COLORS.muted} strokeWidth={3} strokeDasharray="12 12" />
         <text x={0} y={toY(50) - 14} fill={COLORS.muted} fontSize={30}>ENTRY</text>
@@ -140,7 +152,7 @@ const ChartView: React.FC<Extract<SceneContent, { type: "chart" }>> = (s) => {
         <circle cx={last[0]} cy={last[1]} r={14} fill={COLORS.text} />
       </svg>
       {s.result ? (
-        <div style={{ fontSize: 96, fontWeight: 900, lineHeight: 1, color: lineColor, ...pop(frame, end - 6) }}>
+        <div style={{ fontSize: 96, fontWeight: 900, lineHeight: 1, color: lineColor, ...pop(frame, end) }}>
           {s.result}
         </div>
       ) : null}
@@ -183,13 +195,16 @@ const Bubble: React.FC<{ label: string; quote: string; color: string; start: num
 
 const VersusView: React.FC<Extract<SceneContent, { type: "versus" }>> = (s) => {
   const { durationInFrames } = useVideoConfig();
-  const [a, b, f] = beats(3, durationInFrames);
+  const A = useAt();
+  const fb = beats(3, durationInFrames);
+  const a = A("a", fb[0]);
+  const b = A("b", fb[1]);
   return (
     <>
       <Bubble label={s.a.label} quote={s.a.quote} color={tone(s.a.color ?? "red")} start={a} fromLeft />
       <Bubble label={s.b.label} quote={s.b.quote} color={tone(s.b.color ?? "gold")} start={b} fromLeft={false} />
       {s.footer ? (
-        <Lines lines={s.footer} starts={s.footer.map((_, i) => f + i * 8)} size={60} weight={800} />
+        <Lines lines={s.footer} starts={s.footer.map((_, i) => A(`foot${i}`, fb[2] + i * 8))} size={60} weight={800} />
       ) : null}
     </>
   );
@@ -199,14 +214,17 @@ const BarsView: React.FC<Extract<SceneContent, { type: "bars" }>> = (s) => {
   const frame = useCurrentFrame();
   const { durationInFrames } = useVideoConfig();
   const max = Math.max(...s.rows.flatMap((r) => [r.left, r.right]), 1);
-  const starts = beats(s.rows.length + 1, durationInFrames, 14);
+  const A = useAt();
+  const fb = beats(s.rows.length + 1, durationInFrames, 14);
+  const head = A("head", 0);
+  const starts = [...s.rows.map((_, i) => A(`row${i}`, fb[i])), A("foot", fb[s.rows.length])];
   const suffix = s.suffix ?? "%";
   return (
     <>
-      <div style={{ fontSize: fit(s.headline, 80, 34), fontWeight: 900, lineHeight: 1.1, textWrap: "balance", ...fadeUp(frame, 0) }}>
+      <div style={{ fontSize: fit(s.headline, 80, 34), fontWeight: 900, lineHeight: 1.1, textWrap: "balance", ...fadeUp(frame, head) }}>
         {s.headline}
       </div>
-      <div style={{ display: "flex", justifyContent: "space-between", width: "100%", fontSize: 40, fontWeight: 800, ...fadeUp(frame, 8, 20) }}>
+      <div style={{ display: "flex", justifyContent: "space-between", width: "100%", fontSize: 40, fontWeight: 800, ...fadeUp(frame, head + 8, 20) }}>
         <span style={{ color: COLORS.red }}>{s.leftLabel}</span>
         <span style={{ color: COLORS.green }}>{s.rightLabel}</span>
       </div>
@@ -242,10 +260,12 @@ const BarsView: React.FC<Extract<SceneContent, { type: "bars" }>> = (s) => {
 const ListView: React.FC<Extract<SceneContent, { type: "list" }>> = (s) => {
   const frame = useCurrentFrame();
   const { durationInFrames } = useVideoConfig();
-  const starts = beats(s.items.length, durationInFrames, 16);
+  const A = useAt();
+  const fb = beats(s.items.length, durationInFrames, 16);
+  const starts = s.items.map((_, i) => A(`item${i}`, fb[i]));
   return (
     <>
-      <div style={{ fontSize: fit(s.headline, 92, 20), fontWeight: 900, color: COLORS.green, ...fadeUp(frame, 0) }}>
+      <div style={{ fontSize: fit(s.headline, 92, 20), fontWeight: 900, color: COLORS.green, ...fadeUp(frame, A("head", 0)) }}>
         {s.headline}
       </div>
       {s.items.map((item, i) => (
@@ -277,7 +297,9 @@ const ListView: React.FC<Extract<SceneContent, { type: "list" }>> = (s) => {
 const OutroView: React.FC<Extract<SceneContent, { type: "outro" }>> = (s) => {
   const frame = useCurrentFrame();
   const { durationInFrames } = useVideoConfig();
-  const [a, b, c] = beats(3, durationInFrames);
+  const A = useAt();
+  const fb = beats(3, durationInFrames);
+  const [a, b, c] = [A("lead", fb[0]), A("punch", fb[1]), A("cta", fb[2])];
   return (
     <>
       <div style={{ fontSize: fit(s.lead, 64, 40), fontWeight: 800, color: COLORS.muted, textWrap: "balance", ...fadeUp(frame, a) }}>

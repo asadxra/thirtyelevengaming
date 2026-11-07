@@ -2,15 +2,32 @@
   "id": "addiction-to-being-right",
   "title": "The Addiction to Being Right",
   "topic": "Why traders would rather prove themselves right than protect their capital.",
-  "voice": { "id": "F3hPNAbHQ6mTZdjfgZdb", "name": "Marcus – Powerful Motivational Narrator", "model": "eleven_v4" },
+  "voice": {
+    "id": "Aa6nEBJJMKJwJkCx8VU2",
+    "name": "Quentin - Narrator and Educator",
+    "model": "eleven_v4"
+  },
   "pipeline": {
     "engine": "remotion",
     "tts": true,
     "whisper": true,
     "captions": true,
     "loudnorm": true,
-    "music": { "url": "", "file": "", "start": 0, "volume": 0.12 },
-    "broll": { "url": "", "file": "", "start": 0, "end": 0, "opacity": 0.22 }
+    "music": {
+      "url": "",
+      "file": "",
+      "start": 0,
+      "volume": 0.12
+    },
+    "broll": {
+      "url": "",
+      "file": "",
+      "start": 0,
+      "end": 0,
+      "opacity": 0.22
+    },
+    "sfx": true,
+    "sfxVolume": 1
   },
   "script": {
     "title": "The Addiction to Being Right",
@@ -27,7 +44,15 @@
       {
         "id": "trade",
         "type": "chart",
-        "headline": [{ "text": "You enter a trade." }, { "text": "It goes against you.", "color": "red" }],
+        "headline": [
+          {
+            "text": "You enter a trade."
+          },
+          {
+            "text": "It goes against you.",
+            "color": "red"
+          }
+        ],
         "trend": "down",
         "levelLabel": "STOP LOSS",
         "result": "-54%",
@@ -37,9 +62,25 @@
       {
         "id": "ego",
         "type": "versus",
-        "a": { "label": "Your stop says", "quote": "Get out.", "color": "red" },
-        "b": { "label": "Your ego says", "quote": "It'll come back.", "color": "gold" },
-        "footer": [{ "text": "So you move the stop." }, { "text": "And hope.", "color": "red" }],
+        "a": {
+          "label": "Your stop says",
+          "quote": "Get out.",
+          "color": "red"
+        },
+        "b": {
+          "label": "Your ego says",
+          "quote": "It'll come back.",
+          "color": "gold"
+        },
+        "footer": [
+          {
+            "text": "So you move the stop."
+          },
+          {
+            "text": "And hope.",
+            "color": "red"
+          }
+        ],
         "voiceover": "Your stop says get out. Your ego says it'll come back. So you move the stop, and you hope."
       },
       {
@@ -48,7 +89,20 @@
         "headline": "The math doesn't care about your ego",
         "leftLabel": "YOU LOSE",
         "rightLabel": "YOU NEED",
-        "rows": [{ "left": 10, "right": 11 }, { "left": 25, "right": 33 }, { "left": 50, "right": 100 }],
+        "rows": [
+          {
+            "left": 10,
+            "right": 11
+          },
+          {
+            "left": 25,
+            "right": 33
+          },
+          {
+            "left": 50,
+            "right": 100
+          }
+        ],
         "footer": "Every “it'll come back” digs the hole deeper.",
         "voiceover": "Lose ten percent, you need eleven to recover. Lose half, and you need to double your account."
       },
@@ -57,9 +111,18 @@
         "type": "statement",
         "icon": "🧠",
         "lines": [
-          { "text": "Being right feels like a reward." , "color": "gold" },
-          { "text": "Taking a loss feels like defeat.", "color": "red" },
-          { "text": "So you protect your ego, and sacrifice your account.", "color": "muted" }
+          {
+            "text": "Being right feels like a reward.",
+            "color": "gold"
+          },
+          {
+            "text": "Taking a loss feels like defeat.",
+            "color": "red"
+          },
+          {
+            "text": "So you protect your ego, and sacrifice your account.",
+            "color": "muted"
+          }
         ],
         "voiceover": "Being right feels like a reward. Taking a loss feels like defeat. So you protect your ego, and sacrifice your account."
       },
@@ -67,7 +130,11 @@
         "id": "fix",
         "type": "list",
         "headline": "The fix",
-        "items": ["Set your stop before you enter", "Never move it further away", "A small loss is a good trade"],
+        "items": [
+          "Set your stop before you enter",
+          "Never move it further away",
+          "A small loss is a good trade"
+        ],
         "voiceover": "Set your stop before you enter. Never move it further away. And remember, a small loss is a good trade."
       },
       {

@@ -6,48 +6,50 @@ import { log, ROOT, run } from "../lib.mjs";
 const C = { bg: "#0b0f1a", soft: "#151b2c", text: "#f5f7fb", muted: "#8b93a7", red: "#ff4d5e", green: "#22c55e", gold: "#facc15" };
 const esc = (s = "") => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 const col = (t) => C[t] ?? C.text;
-const line = (l, size = 84) => `<div class="b" style="font-size:${size}px;color:${col(l.color)}">${esc(l.text)}</div>`;
+const line = (l, size, k) => `<div class="b" data-k="${k}" style="font-size:${size}px;color:${col(l.color)}">${esc(l.text)}</div>`;
 
+// data-k names match the element keys in src/script/timeline.ts
 function sceneHtml(s) {
   switch (s.type) {
     case "title": {
       const t = s.highlight && s.title.includes(s.highlight)
         ? esc(s.title).replace(esc(s.highlight), `<span style="color:${C.gold}">${esc(s.highlight)}</span>`)
         : esc(s.title);
-      return `${s.icon ? `<div class="b" style="font-size:190px;color:${C.gold}">${esc(s.icon)}</div>` : ""}
-        <div class="b" style="font-size:108px;text-transform:uppercase;line-height:1.05">${t}</div>
-        ${s.subtitle ? `<div class="b" style="font-size:46px;font-weight:500;color:${C.muted}">${esc(s.subtitle)}</div>` : ""}`;
+      return `${s.icon ? `<div class="b" data-k="icon" style="font-size:190px;color:${C.gold}">${esc(s.icon)}</div>` : ""}
+        <div class="b" data-k="title" style="font-size:108px;text-transform:uppercase;line-height:1.05">${t}</div>
+        ${s.subtitle ? `<div class="b" data-k="subtitle" style="font-size:46px;font-weight:500;color:${C.muted}">${esc(s.subtitle)}</div>` : ""}`;
     }
     case "statement":
-      return `${s.icon ? `<div class="b" style="font-size:160px">${esc(s.icon)}</div>` : ""}${s.lines.map((l) => line(l)).join("")}`;
+      return `${s.icon ? `<div class="b" data-k="icon" style="font-size:160px">${esc(s.icon)}</div>` : ""}${s.lines.map((l, i) => line(l, 84, `line${i}`)).join("")}`;
     case "chart": {
       const down = s.trend === "down";
       const pts = (down ? [50,54,58,55,60,56,51,47,43,45,39,34,37,29,24,20] : [50,47,44,48,45,50,54,52,58,62,59,66,70,68,75,80])
         .map((p, i) => `${(i / 15) * 860},${320 - (p / 90) * 320}`).join(" ");
       const c = down ? C.red : C.green;
-      return `${s.headline.map((l) => line(l, 68)).join("")}
-        <svg class="b chart" width="860" height="320" style="overflow:visible"><polyline points="${pts}" fill="none" stroke="${c}" stroke-width="10" stroke-linejoin="round" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/></svg>
-        ${s.result ? `<div class="b" style="font-size:96px;color:${c}">${esc(s.result)}</div>` : ""}
-        ${s.resultNote ? `<div class="b" style="font-size:46px;color:${c}">${esc(s.resultNote)}</div>` : ""}`;
+      return `${s.headline.map((l, i) => line(l, 68, `head${i}`)).join("")}
+        <svg class="chart" width="860" height="320" style="overflow:visible"><polyline points="${pts}" fill="none" stroke="${c}" stroke-width="10" stroke-linejoin="round" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/></svg>
+        <div class="b" data-k="result" style="display:flex;flex-direction:column;gap:20px">
+        ${s.result ? `<div style="font-size:96px;color:${c};line-height:1">${esc(s.result)}</div>` : ""}
+        ${s.resultNote ? `<div style="font-size:46px;color:${c}">${esc(s.resultNote)}</div>` : ""}</div>`;
     }
     case "versus": {
-      const bub = (x, d, al) => `<div class="b bubble" style="border-color:${col(x.color ?? d)};background:${col(x.color ?? d)}1a;text-align:${al}">
+      const bub = (x, d, al, k) => `<div class="b bubble" data-k="${k}" style="border-color:${col(x.color ?? d)};background:${col(x.color ?? d)}1a;text-align:${al}">
         <div style="font-size:40px;color:${col(x.color ?? d)};text-transform:uppercase">${esc(x.label)}</div>
         <div style="font-size:70px">“${esc(x.quote)}”</div></div>`;
-      return bub(s.a, "red", "left") + bub(s.b, "gold", "right") + (s.footer ?? []).map((l) => line(l, 60)).join("");
+      return bub(s.a, "red", "left", "a") + bub(s.b, "gold", "right", "b") + (s.footer ?? []).map((l, i) => line(l, 60, `foot${i}`)).join("");
     }
     case "bars":
-      return `<div class="b" style="font-size:78px">${esc(s.headline)}</div>
-        <div class="b row" style="font-size:40px"><span style="color:${C.red}">${esc(s.leftLabel)}</span><span style="color:${C.green}">${esc(s.rightLabel)}</span></div>
-        ${s.rows.map((r) => `<div class="b row" style="font-size:76px"><span style="color:${C.red}">${esc(s.leftPrefix ?? "-")}${r.left}${esc(s.suffix ?? "%")}</span><span style="color:${C.muted}">→</span><span style="color:${C.green}">${esc(s.rightPrefix ?? "+")}${r.right}${esc(s.suffix ?? "%")}</span></div>`).join("")}
-        ${s.footer ? `<div class="b" style="font-size:50px">${esc(s.footer)}</div>` : ""}`;
+      return `<div class="b" data-k="head" style="font-size:78px">${esc(s.headline)}
+        <div class="row" style="font-size:40px;margin-top:40px"><span style="color:${C.red}">${esc(s.leftLabel)}</span><span style="color:${C.green}">${esc(s.rightLabel)}</span></div></div>
+        ${s.rows.map((r, i) => `<div class="b row" data-k="row${i}" style="font-size:76px"><span style="color:${C.red}">${esc(s.leftPrefix ?? "-")}${r.left}${esc(s.suffix ?? "%")}</span><span style="color:${C.muted}">→</span><span style="color:${C.green}">${esc(s.rightPrefix ?? "+")}${r.right}${esc(s.suffix ?? "%")}</span></div>`).join("")}
+        ${s.footer ? `<div class="b" data-k="foot" style="font-size:50px">${esc(s.footer)}</div>` : ""}`;
     case "list":
-      return `<div class="b" style="font-size:92px;color:${C.green}">${esc(s.headline)}</div>
-        ${s.items.map((it, i) => `<div class="b item"><span class="num">${i + 1}</span><span>${esc(it)}</span></div>`).join("")}`;
+      return `<div class="b" data-k="head" style="font-size:92px;color:${C.green}">${esc(s.headline)}</div>
+        ${s.items.map((it, i) => `<div class="b item" data-k="item${i}"><span class="num">${i + 1}</span><span>${esc(it)}</span></div>`).join("")}`;
     case "outro":
-      return `<div class="b" style="font-size:64px;color:${C.muted}">${esc(s.lead)}</div>
-        <div class="b" style="font-size:118px;color:${C.green};line-height:1.05">${esc(s.punch)}</div>
-        ${s.cta ? `<div class="b cta">${esc(s.cta)}</div>` : ""}`;
+      return `<div class="b" data-k="lead" style="font-size:64px;color:${C.muted}">${esc(s.lead)}</div>
+        <div class="b" data-k="punch" style="font-size:118px;color:${C.green};line-height:1.05">${esc(s.punch)}</div>
+        ${s.cta ? `<div class="b cta" data-k="cta">${esc(s.cta)}</div>` : ""}`;
   }
   return "";
 }
@@ -66,7 +68,7 @@ function captionPages(captions = []) {
   return pages;
 }
 
-export function renderHyperframes({ job, sceneDurations, voice, broll, captions, out }) {
+export function renderHyperframes({ job, sceneDurations, timeline, voice, broll, captions, out }) {
   const dir = path.join(ROOT, "out", `hf-${job.id}`);
   fs.mkdirSync(path.join(dir, "assets", "fonts"), { recursive: true });
   for (const w of [500, 800, 900]) fs.copyFileSync(path.join(ROOT, "public/fonts", `inter-latin-${w}-normal.woff2`), path.join(dir, "assets/fonts", `inter-${w}.woff2`));
@@ -84,11 +86,14 @@ export function renderHyperframes({ job, sceneDurations, voice, broll, captions,
   const pages = captionPages(captions ?? []);
   const withCaps = pages.length > 0;
 
+  // Every element enters when the narrator says it (timeline.ts)
   const tweens = scenes.map(({ start, dur, i }) => {
-    const step = Math.min(0.6, (dur * 0.55) / 6);
-    return `tl.from("#s${i} .b", { opacity: 0, y: 50, duration: 0.5, ease: "power3.out", stagger: ${step.toFixed(2)} }, ${(start + 0.1).toFixed(2)});
-      tl.to("#s${i} .chart polyline", { strokeDashoffset: 0, duration: ${(dur * 0.6).toFixed(2)}, ease: "power2.inOut" }, ${(start + 0.3).toFixed(2)});
-      tl.to("#s${i} .inner", { opacity: 0, duration: 0.2 }, ${(start + dur - 0.2).toFixed(2)});`;
+    const at = timeline.scenes[i].at;
+    const lines = Object.entries(at).filter(([k]) => k !== "draw").map(([k, t]) =>
+      `tl.from('#s${i} [data-k="${k}"]', { opacity: 0, y: 50, duration: 0.45, ease: "power3.out" }, ${(start + t).toFixed(2)});`);
+    if (at.draw !== undefined) lines.push(`tl.to("#s${i} .chart polyline", { strokeDashoffset: 0, duration: ${Math.max(0.6, (at.result ?? dur * 0.7) - at.draw).toFixed(2)}, ease: "power2.inOut" }, ${(start + at.draw).toFixed(2)});`);
+    lines.push(`tl.to("#s${i} .inner", { opacity: 0, duration: 0.2 }, ${(start + dur - 0.2).toFixed(2)});`);
+    return lines.join("\n");
   }).join("\n");
 
   const html = `<!doctype html>

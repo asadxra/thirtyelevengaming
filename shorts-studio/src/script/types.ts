@@ -67,4 +67,7 @@ export type ShortProps = {
   brollSrc?: string | null;
   brollOpacity?: number;
   captions?: Caption[] | null;
+  /** Sound effects on cues from timeline.ts (default on) */
+  sfx?: boolean;
+  sfxVolume?: number;
 };

@@ -22,7 +22,9 @@ npm run doctor
 npm run make -- jobs/<id>.json
 ```
 
-Output: `out/<id>.mp4` + `out/<id>.jpg`. Flags: `--engine=hyperframes`, `--no-tts`, `--no-whisper`, `--no-sources`.
+Animations are script-driven: `src/script/timeline.ts` matches each on-screen element to the moment the narrator says it (Whisper word timestamps) and places a sound effect on that cue. SFX live in `public/sfx/` (synthesized; drop in your own files with the same names to replace them).
+
+Output: `out/<id>.mp4` + `out/<id>.jpg`. Flags: `--engine=hyperframes`, `--no-tts`, `--no-whisper`, `--no-sources`, `--no-sfx`.
 Or ask Claude Code: "Render the queued shorts from my Shorts Studio dashboard".
 
 ## Pieces
