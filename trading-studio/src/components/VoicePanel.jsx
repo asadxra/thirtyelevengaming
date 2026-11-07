@@ -82,8 +82,8 @@ export function ElevenConnect({ eleven, compact }) {
       <div className={`connect-box ${compact ? 'compact' : ''}`}>
         <div className="connect-icon"><Icon name="mic" size={24} /></div>
         <div className="grow">
-          <h4>ElevenLabs needs the self-hosted studio</h4>
-          <p className="small muted">This web version can’t keep an ElevenLabs API key secret, so voice generation is turned off here. Everything else works: scenes, timing, captions and previews. To generate Quentin voiceovers, run the self-hosted studio from the <code>trading-studio</code> folder (see its README) and connect your key there.</p>
+          <h4>Connect your ElevenLabs connector</h4>
+          <p className="small muted">Voiceovers here are made through your own ElevenLabs connector in claude.ai, so no API key is stored in this page. Connect ElevenLabs under claude.ai Settings → Connectors, reopen this page, and allow it when asked. The default voice is Quentin (Narrator and Educator).</p>
         </div>
       </div>
     );
@@ -158,8 +158,8 @@ export default function VoicePanel({ project, update }) {
   const generateScene = async (scene) => {
     setBusy((b) => ({ ...b, [scene.id]: true }));
     try {
-      const out = await api.post('/api/elevenlabs/tts', { text: scene.voiceover, voiceId: voice.voiceId, settings, projectId: project.id, sceneId: scene.id });
-      update((p) => ({ voice: { ...p.voice, clips: { ...(p.voice?.clips || {}), [scene.id]: { url: out.url, assetId: out.assetId, hash: hashText(scene.voiceover), generatedAt: new Date().toISOString(), voiceId: voice.voiceId, settings } } } }));
+      const out = await api.post('/api/elevenlabs/tts', { text: scene.voiceover, voiceId: voice.voiceId, settings, projectId: project.id, sceneId: scene.id, flowId: voice.flowId });
+      update((p) => ({ voice: { ...p.voice, clips: { ...(p.voice?.clips || {}), [scene.id]: { url: out.url, assetId: out.assetId, hash: hashText(scene.voiceover), generatedAt: new Date().toISOString(), voiceId: voice.voiceId, settings, duration: out.duration ?? null, listenUrl: out.listenUrl || null, generationId: out.generationId || null, source: out.source || 'api' } }, ...(out.flowId ? { flowId: out.flowId } : {}) } }));
       store.refreshActivity();
       return true;
     } catch (err) {
@@ -196,7 +196,7 @@ export default function VoicePanel({ project, update }) {
   const syncToAudio = () => {
     const scenes = (project.scenes || []).map((s) => {
       const clip = voice.clips?.[s.id];
-      const d = clip?.url && durations[clip.url];
+      const d = clip?.duration || (clip?.url && durations[clip.url]);
       return d ? { ...s, end: s.start + d + 0.3 } : s;
     });
     update({ scenes: retime(scenes) });
@@ -212,7 +212,8 @@ export default function VoicePanel({ project, update }) {
   const total = Math.max(1, totalDuration(project.scenes));
   const selectedVoice = eleven.voices?.find((v) => v.id === voice.voiceId);
   const visibleVoices = (eleven.voices || []).filter((v) => !filter || v.name.toLowerCase().includes(filter.toLowerCase()) || Object.values(v.labels).join(' ').toLowerCase().includes(filter.toLowerCase()));
-  const hasRealClips = Object.values(voice.clips || {}).some((c) => c.url);
+  const viaConnector = eleven.status?.source === 'connector';
+  const hasRealClips = !viaConnector && Object.values(voice.clips || {}).some((c) => c.url && c.source !== 'elevenlabs-connector');
 
   return (
     <div className="col gap">
@@ -221,7 +222,7 @@ export default function VoicePanel({ project, update }) {
       ) : (
         <div className="voice-top">
           <Panel title="Voice" subtitle={`Default voice: Quentin${eleven.quentin ? '' : ' (not found in your account — pick another)'}`}
-            actions={<><Badge tone="ok" dot>Connected{eleven.status?.subscription ? ` · ${eleven.status.subscription.tier}` : ''}</Badge><IconButton icon="refresh" title="Reload voices" onClick={eleven.refresh} /></>}>
+            actions={<><Badge tone="ok" dot>{viaConnector ? 'Connected via your ElevenLabs connector' : 'Connected'}{eleven.status?.subscription ? ` · ${eleven.status.subscription.tier}` : ''}</Badge><IconButton icon="refresh" title="Reload voices" onClick={eleven.refresh} /></>}>
             {eleven.status?.subscription && (
               <div className="quota">
                 <span className="small muted">Characters used: {eleven.status.subscription.used?.toLocaleString()} / {eleven.status.subscription.limit?.toLocaleString()}</span>
@@ -232,7 +233,9 @@ export default function VoicePanel({ project, update }) {
             <div className="voice-list">
               {eleven.voices == null ? <Spinner /> : visibleVoices.map((v) => (
                 <div key={v.id} className={`voice-item ${voice.voiceId === v.id ? 'on' : ''}`} onClick={() => setVoice({ voiceId: v.id, voiceName: v.name })}>
-                  <IconButton icon={nowPlaying === v.id ? 'pause' : 'play'} title="Play ElevenLabs preview" disabled={!v.previewUrl} onClick={(e) => { e.stopPropagation(); play(v.previewUrl, v.id); }} />
+                  {viaConnector
+                    ? <a className="icon-btn" href={v.previewUrl} target="_blank" rel="noreferrer" title="Hear the ElevenLabs preview (opens a new tab)" onClick={(e) => e.stopPropagation()}><Icon name="play" size={16} /></a>
+                    : <IconButton icon={nowPlaying === v.id ? 'pause' : 'play'} title="Play ElevenLabs preview" disabled={!v.previewUrl} onClick={(e) => { e.stopPropagation(); play(v.previewUrl, v.id); }} />}
                   <div className="grow">
                     <b>{v.name}</b> {v.name === eleven.quentin?.name && <Badge tone="accent">Default</Badge>}
                     <div className="small muted">{[v.labels.accent, v.labels.gender, v.labels.age, v.labels.description || v.labels.use_case, v.category].filter(Boolean).join(' · ')}</div>
@@ -242,6 +245,14 @@ export default function VoicePanel({ project, update }) {
               ))}
             </div>
           </Panel>
+          {viaConnector ? (
+          <Panel title="How voiceovers are made here" subtitle={selectedVoice ? selectedVoice.name : 'Select a voice'}>
+            <p className="small">Each scene is generated with your ElevenLabs connector (model: Multilingual v2) using the voice’s own settings. Every clip lands in one ElevenLabs flow for this video.</p>
+            <p className="small">The real length of each clip is saved, so <b>Sync timestamps to audio</b> times the scenes to Quentin’s actual delivery.</p>
+            <p className="small muted">This page can’t play ElevenLabs audio inline (claude.ai blocks outside media), so use <b>Listen in ElevenLabs</b> on each scene to hear or download it. Each clip uses ElevenLabs credits; about 15 credits per second of speech in my test.</p>
+            {voice.flowId && <p className="small">All clips for this video: <a href={`https://elevenlabs.io/app/flows/${voice.flowId}`} target="_blank" rel="noreferrer">open the ElevenLabs flow</a></p>}
+          </Panel>
+          ) : (
           <Panel title="Voice settings" subtitle={selectedVoice ? `Applied to ${selectedVoice.name}` : 'Select a voice'}>
             <Slider label="Stability" value={settings.stability} onChange={(v) => setSettings({ stability: v })} format={(v) => v.toFixed(2)} />
             <Slider label="Similarity" value={settings.similarity} onChange={(v) => setSettings({ similarity: v })} format={(v) => v.toFixed(2)} />
@@ -254,6 +265,7 @@ export default function VoicePanel({ project, update }) {
             </div>
             <p className="small muted">Previews use your ElevenLabs character quota and are not attached to the project.</p>
           </Panel>
+          )}
         </div>
       )}
 
@@ -270,7 +282,7 @@ export default function VoicePanel({ project, update }) {
               <Button variant="primary" icon="mic" disabled={!connected || !voice.voiceId || !!batch || !missing.length} onClick={() => runBatch(missing, 'Generate missing')}>Generate voiceover ({missing.length} missing)</Button>
               <Button icon="refresh" disabled={!connected || !voice.voiceId || !!batch || !stale.length} onClick={() => runBatch(stale, 'Regenerate changed')}>Regenerate changed scenes ({stale.length})</Button>
               <Button variant="ghost" icon="refresh" disabled={!connected || !voice.voiceId || !!batch} onClick={async () => (await store.ask({ title: 'Regenerate all scenes', message: `Regenerate all ${scenes.length} scenes? This uses ElevenLabs credits.`, confirmLabel: 'Regenerate all' })) && runBatch(scenes, 'Regenerate all')}>Regenerate all</Button>
-              <Button variant="ghost" icon="clock" disabled={!Object.keys(durations).length} onClick={syncToAudio} title="Set each scene’s duration to its audio length">Sync timestamps to audio</Button>
+              <Button variant="ghost" icon="clock" disabled={!Object.keys(durations).length && !Object.values(voice.clips || {}).some((c) => c.duration)} onClick={syncToAudio} title="Set each scene’s duration to its audio length">Sync timestamps to audio</Button>
               {batch && <span className="small accent-text"><span className="spinner" /> {batch.label}: {batch.done}/{batch.total}</span>}
             </div>
             {!connected && <div className="notice warn"><Icon name="alert" size={14} /> Connect ElevenLabs above to generate audio.</div>}
@@ -281,7 +293,7 @@ export default function VoicePanel({ project, update }) {
                 {project.scenes.map((s, i) => {
                   const st = clipState(project, s);
                   const clip = voice.clips?.[s.id];
-                  const d = clip?.url ? durations[clip.url] : null;
+                  const d = clip?.duration || (clip?.url ? durations[clip.url] : null);
                   const over = d && d > s.end - s.start + 0.05;
                   return (
                     <div key={s.id} className={`at-block st-${st} ${over ? 'over' : ''}`} style={{ left: `${(s.start / total) * 100}%`, width: `${((s.end - s.start) / total) * 100}%` }} title={`Scene ${i + 1}: ${st}${d ? ` · audio ${d.toFixed(1)}s` : ''}`}>
@@ -298,7 +310,7 @@ export default function VoicePanel({ project, update }) {
               {project.scenes.map((s, i) => {
                 const st = clipState(project, s);
                 const clip = voice.clips?.[s.id];
-                const d = clip?.url ? durations[clip.url] : null;
+                const d = clip?.duration || (clip?.url ? durations[clip.url] : null);
                 return (
                   <div key={s.id} className={`sv-row st-${st}`}>
                     <span className="scene-num">{String(i + 1).padStart(2, '0')}</span>
@@ -306,8 +318,9 @@ export default function VoicePanel({ project, update }) {
                     <p className="grow">{s.voiceover || <em className="muted">No text</em>}</p>
                     <Badge tone={{ ready: 'ok', sample: 'muted', stale: 'bad', missing: 'muted' }[st]}>{{ ready: d ? `${d.toFixed(1)}s` : 'Ready', sample: 'Sample (no audio)', stale: 'Text changed', missing: 'Not generated' }[st]}</Badge>
                     <div className="row gap-xs">
-                      {clip?.url && <IconButton icon={nowPlaying === s.id ? 'pause' : 'play'} title="Play" onClick={() => play(clip.url, s.id)} />}
-                      {clip?.url && <a className="icon-btn" href={clip.url} download={`scene-${i + 1}.mp3`} title="Download"><Icon name="download" size={16} /></a>}
+                      {clip?.url && clip.source !== 'elevenlabs-connector' && <IconButton icon={nowPlaying === s.id ? 'pause' : 'play'} title="Play" onClick={() => play(clip.url, s.id)} />}
+                      {clip?.url && clip.source !== 'elevenlabs-connector' && <a className="icon-btn" href={clip.url} download={`scene-${i + 1}.mp3`} title="Download"><Icon name="download" size={16} /></a>}
+                      {clip?.listenUrl && <a className="btn btn-sm btn-ghost" href={clip.listenUrl} target="_blank" rel="noreferrer" title="Listen or download in ElevenLabs"><Icon name="volume" size={14} /><span>Listen in ElevenLabs</span></a>}
                       <Button size="sm" variant={st === 'stale' ? 'primary' : 'default'} loading={busy[s.id]} disabled={!connected || !voice.voiceId || !s.voiceover?.trim() || !!batch} onClick={() => generateScene(s)}>
                         {st === 'missing' || st === 'sample' ? 'Generate' : 'Regenerate'}
                       </Button>

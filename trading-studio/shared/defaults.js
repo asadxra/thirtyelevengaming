@@ -211,7 +211,9 @@ export const DEFAULT_VOICE_SETTINGS = {
   speakerBoost: true,
 };
 
-export const DEFAULT_VOICE_NAME = 'Quentin';
+export const DEFAULT_VOICE_NAME = 'Quentin - Narrator and Educator';
+// ElevenLabs library voice: deep, calm American educator.
+export const QUENTIN_VOICE_ID = 'Aa6nEBJJMKJwJkCx8VU2';
 
 export function emptyScript() {
   return {
@@ -247,7 +249,7 @@ export function emptyProject(overrides = {}) {
     script: emptyScript(),
     scenes: [],
     captions: { mode: 'sentence', items: [], style: defaultCaptionStyle(), generatedAt: null },
-    voice: { voiceId: null, voiceName: DEFAULT_VOICE_NAME, settings: { ...DEFAULT_VOICE_SETTINGS }, clips: {} },
+    voice: { voiceId: QUENTIN_VOICE_ID, voiceName: DEFAULT_VOICE_NAME, settings: { ...DEFAULT_VOICE_SETTINGS }, clips: {} },
     visuals: [],
     audio: { music: 'none', musicVolume: 0.3, sfxEnabled: true },
     generation: { status: 'not_ready', lastCheckAt: null, approvedAt: null },

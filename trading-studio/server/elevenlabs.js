@@ -88,7 +88,7 @@ export async function voices() {
     description: v.description || '',
   }));
   list.sort((a, b) => (a.name === 'Quentin' ? -1 : b.name === 'Quentin' ? 1 : a.name.localeCompare(b.name)));
-  return { voices: list, quentin: list.find((v) => /^quentin/i.test(v.name)) || null };
+  return { voices: list, quentin: list.find((v) => v.id === 'Aa6nEBJJMKJwJkCx8VU2') || list.find((v) => /^quentin/i.test(v.name)) || null };
 }
 
 export async function synthesize({ text, voiceId, settings = {} }) {

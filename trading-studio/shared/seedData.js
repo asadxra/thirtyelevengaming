@@ -16,7 +16,7 @@ const iso = (daysAgo, h = 10) => new Date(Date.now() - daysAgo * 864e5 - h * 36e
 function settings() {
   return {
     theme: { ...DEFAULT_THEME },
-    defaults: { characterId: 'char_shadow', voiceName: 'Quentin', voiceId: null, format: 'shorts', captionPresetId: 'cp_highlight', animationPresetId: 'ap_cinematic', scriptEngine: 'local' },
+    defaults: { characterId: 'char_shadow', voiceName: 'Quentin - Narrator and Educator', voiceId: 'Aa6nEBJJMKJwJkCx8VU2', format: 'shorts', captionPresetId: 'cp_highlight', animationPresetId: 'ap_cinematic', scriptEngine: 'local' },
     voiceSettings: { ...DEFAULT_VOICE_SETTINGS },
     storage: { autosave: true, autosaveDelay: 1200, keepScriptVersions: 15 },
     explainerVersion: 2,
