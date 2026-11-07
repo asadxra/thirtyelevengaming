@@ -7,6 +7,9 @@ import { MathScene } from "./scenes/MathScene";
 import { WhyScene } from "./scenes/WhyScene";
 import { FixScene } from "./scenes/FixScene";
 import { OutroScene } from "./scenes/OutroScene";
+import { ScriptShort, calculateShortMetadata } from "./script/ScriptShort";
+import type { ShortProps } from "./script/types";
+import example from "../jobs/addiction-to-being-right.json";
 import { SCENE_DURATIONS, TRANSITION_FRAMES, VIDEO } from "./theme";
 
 const SCENES = [
@@ -41,6 +44,15 @@ export const RemotionRoot: React.FC = () => (
       component={AddictionToBeingRight}
       durationInFrames={TOTAL}
       {...VIDEO}
+    />
+    {/* Data-driven template: the pipeline renders this with --props from a job */}
+    <Composition
+      id="ScriptShort"
+      component={ScriptShort}
+      durationInFrames={300}
+      {...VIDEO}
+      defaultProps={{ script: example.script } as ShortProps}
+      calculateMetadata={calculateShortMetadata}
     />
   </>
 );

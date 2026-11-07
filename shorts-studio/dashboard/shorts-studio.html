@@ -1,0 +1,800 @@
+<title>Shorts Studio</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,600..900&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Inter:wght@500;800;900&display=swap">
+<style>
+/* Layout: an editing bay. Jobs rail | script editor | monitor + signal chain (voice → pipeline → render) */
+:root {
+  --bg: #eef0f5; --panel: #ffffff; --panel-2: #f6f7fa; --line: #d9dde7; --fg: #151a28; --muted: #5a6276;
+  --accent: #8a6a00; --accent-ink: #ffffff; --accent-soft: #f6e7a8;
+  --ok: #15803d; --warn: #b45309; --bad: #c0283a; --info: #2457c5;
+  --font-display: "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --r: 10px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0b0f1a; --panel: #121827; --panel-2: #0f1422; --line: #222a3d; --fg: #e8ecf4; --muted: #8b93a7;
+  --accent: #facc15; --accent-ink: #1a1400; --accent-soft: #3a3110;
+  --ok: #22c55e; --warn: #f59e0b; --bad: #ff4d5e; --info: #7aa2ff; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0b0f1a; --panel: #121827; --panel-2: #0f1422; --line: #222a3d; --fg: #e8ecf4; --muted: #8b93a7;
+  --accent: #facc15; --accent-ink: #1a1400; --accent-soft: #3a3110;
+  --ok: #22c55e; --warn: #f59e0b; --bad: #ff4d5e; --info: #7aa2ff; color-scheme: dark }
+
+* { box-sizing: border-box }
+[hidden] { display: none !important }
+.stage-row > input { align-self: start; margin-top: 3px }
+pre.cmd { white-space: pre-wrap; word-break: break-all }
+body { background: var(--bg); color: var(--fg); font: 14px/1.5 var(--font-body); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0 40px }
+h1, h2, h3 { font-family: var(--font-display); font-stretch: 85%; margin: 0; text-wrap: balance; letter-spacing: .01em }
+h2 { font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em }
+button, input, select, textarea { font: inherit; color: inherit }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums }
+.muted { color: var(--muted) }
+.small { font-size: 12px }
+
+header.top { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding-block: 18px 14px; border-bottom: 1px solid var(--line); margin-bottom: 18px }
+.brand { display: flex; align-items: baseline; gap: 10px }
+.brand h1 { font-size: 26px; font-weight: 900; text-transform: uppercase }
+.brand .rec { width: 10px; height: 10px; border-radius: 50%; background: var(--bad); align-self: center }
+.chips { display: flex; gap: 8px; flex-wrap: wrap; margin-left: auto }
+.chip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border: 1px solid var(--line); border-radius: 999px; font-size: 12px; color: var(--muted); background: var(--panel) }
+.chip i { width: 7px; height: 7px; border-radius: 50%; background: var(--muted) }
+.chip.ok i { background: var(--ok) } .chip.warn i { background: var(--warn) } .chip.bad i { background: var(--bad) }
+
+.layout { display: grid; grid-template-columns: 220px minmax(0, 1fr) 380px; gap: 18px; align-items: start }
+@media (max-width: 1180px) { .layout { grid-template-columns: 200px minmax(0, 1fr) } .side { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px } }
+@media (max-width: 760px) { .layout { grid-template-columns: minmax(0, 1fr) } .side { grid-template-columns: minmax(0, 1fr) } }
+
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 16px; display: flex; flex-direction: column; gap: 12px; min-width: 0 }
+.panel-head { display: flex; align-items: center; justify-content: space-between; gap: 10px }
+.stack { display: flex; flex-direction: column; gap: 18px; min-width: 0 }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; border: 1px solid var(--line); background: var(--panel-2); border-radius: 8px; padding: 7px 12px; cursor: pointer; font-weight: 600; white-space: nowrap }
+.btn:hover { border-color: var(--muted) }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent) }
+.btn.primary:hover { filter: brightness(1.06) }
+.btn.ghost { background: transparent }
+.btn.danger { color: var(--bad) }
+.btn.sm { padding: 3px 8px; font-size: 12px }
+.btn:disabled { opacity: .5; cursor: not-allowed }
+label.f { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--muted); font-weight: 500; min-width: 0 }
+input[type=text], input[type=number], input[type=url], select, textarea { background: var(--panel-2); border: 1px solid var(--line); border-radius: 7px; padding: 7px 9px; color: var(--fg); width: 100%; min-width: 0 }
+textarea { resize: vertical; min-height: 40px; line-height: 1.45 }
+.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: end }
+.row > * { flex: 1 1 140px }
+.check { display: flex; align-items: center; gap: 8px; font-size: 13px }
+
+/* Jobs rail */
+.jobs { position: sticky; top: env(safe-area-inset-top, 0px) }
+.joblist { display: flex; flex-direction: column; gap: 4px; max-height: 70vh; overflow: auto }
+.job { text-align: left; border: 1px solid transparent; background: transparent; border-radius: 8px; padding: 8px 10px; cursor: pointer; display: flex; flex-direction: column; gap: 3px }
+.job:hover { background: var(--panel-2) }
+.job[aria-current="true"] { background: var(--panel-2); border-color: var(--line) }
+.job b { font-weight: 600; line-height: 1.25 }
+.status { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .04em; color: var(--muted) }
+.status::before { content: ""; width: 6px; height: 6px; border-radius: 50% ; background: currentColor }
+.status.queued { color: var(--warn) } .status.rendering { color: var(--info) } .status.done { color: var(--ok) } .status.failed { color: var(--bad) }
+.empty { border: 1px dashed var(--line); border-radius: 8px; padding: 14px; color: var(--muted); font-size: 13px }
+
+/* Script */
+.scenes { display: flex; flex-direction: column; gap: 10px }
+.scene { border: 1px solid var(--line); border-radius: 9px; background: var(--panel-2); display: grid; grid-template-columns: 44px minmax(0, 1fr); overflow: hidden }
+.scene.active { border-color: var(--accent) }
+.scene .idx { background: var(--panel); border-right: 1px solid var(--line); display: flex; flex-direction: column; align-items: center; padding-top: 10px; gap: 2px; font-family: var(--font-mono); font-size: 12px; color: var(--muted) }
+.scene .idx b { font-size: 16px; color: var(--fg) }
+.scene .body { padding: 12px; display: flex; flex-direction: column; gap: 10px; min-width: 0 }
+.scene .head { display: flex; gap: 8px; align-items: center; flex-wrap: wrap }
+.scene .head select { width: auto }
+.scene .head .tc { margin-left: auto }
+.fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px }
+.fields .wide { grid-column: 1 / -1 }
+.vo textarea { border-left: 3px solid var(--accent) }
+.hint { font-size: 11px; color: var(--muted) }
+.spark { color: var(--accent) }
+
+/* Monitor */
+.monitor { align-items: center }
+.phone { position: relative; width: min(100%, 300px); aspect-ratio: 9 / 16; border-radius: 22px; overflow: hidden; background: #0b0f1a; border: 6px solid #05070c; box-shadow: 0 10px 30px rgba(0,0,0,.25) }
+.stage { position: absolute; top: 0; left: 0; width: 1080px; height: 1920px; transform-origin: 0 0; font-family: "Inter", system-ui, sans-serif; color: #f5f7fb; background: radial-gradient(circle at 50% 30%, #151b2c 0%, #0b0f1a 70%) }
+.stage .inner { position: absolute; inset: 200px 90px 830px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 44px; text-align: center; line-height: 1.1; font-weight: 900 }
+.stage .cap { position: absolute; left: 90px; right: 90px; top: 1110px; height: 220px; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 66px; font-weight: 900; text-shadow: 0 4px 18px rgba(0,0,0,.8) }
+.stage .safe { position: absolute; left: 0; right: 0; border-top: 3px dashed rgba(122,162,255,.35) }
+.stage .bubble { width: 100%; padding: 40px 52px; border-radius: 36px; border: 6px solid }
+.stage .brow { display: flex; justify-content: space-between; width: 100% }
+.stage .item { display: flex; align-items: center; gap: 36px; width: 100%; text-align: left; font-weight: 800 }
+.stage .num { flex-shrink: 0; width: 104px; height: 104px; border-radius: 52px; background: #22c55e; color: #0b0f1a; display: flex; align-items: center; justify-content: center; font-size: 56px }
+.transport { display: flex; gap: 8px; align-items: center; width: 100%; max-width: 300px }
+.transport .tc { margin-left: auto }
+.timeline { position: relative; width: 100%; max-width: 300px; height: 26px; display: flex; gap: 2px; cursor: pointer }
+.timeline span { height: 100%; background: var(--panel-2); border: 1px solid var(--line); border-radius: 4px; font: 10px var(--font-mono); color: var(--muted); padding: 5px 4px; overflow: hidden; white-space: nowrap }
+.timeline .head { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--accent); pointer-events: none }
+
+/* Voice */
+.voices { display: flex; flex-direction: column; gap: 6px; max-height: 260px; overflow: auto }
+.voice { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 10px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; cursor: pointer; background: var(--panel-2); text-align: left }
+.voice[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft) }
+.voice b { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.voice .d { grid-column: 1 / -1; font-size: 12px; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden }
+.voice a { font-size: 12px; color: var(--info) }
+.selected-voice { display: flex; justify-content: space-between; gap: 8px; align-items: center; padding: 8px 10px; border-radius: 8px; background: var(--panel-2); border: 1px solid var(--line) }
+.note { font-size: 12px; padding: 8px 10px; border-radius: 8px; background: var(--panel-2); border: 1px solid var(--line) }
+.note.bad { border-color: var(--bad); color: var(--bad) }
+.note.ok { border-color: var(--ok) }
+.confirm { display: flex; flex-direction: column; gap: 8px; padding: 10px; border-radius: 8px; border: 1px solid var(--warn) }
+
+/* Chain */
+.chain { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--line); border-radius: 9px; overflow: hidden }
+.stage-row { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; padding: 10px 12px; border-top: 1px solid var(--line); background: var(--panel-2) }
+.stage-row:first-child { border-top: 0 }
+.stage-row .t { font-weight: 600 }
+.stage-row .sub { display: flex; flex-direction: column; gap: 8px; margin-top: 6px }
+pre.cmd { margin: 0; padding: 10px 12px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px; overflow-x: auto; font: 12px/1.5 var(--font-mono) }
+.cmdrow { display: flex; gap: 6px; align-items: stretch }
+.cmdrow pre { flex: 1; min-width: 0 }
+.save-state { font-size: 12px; color: var(--muted); font-family: var(--font-mono) }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto } }
+</style>
+
+<header class="top">
+  <div class="brand"><span class="rec" aria-hidden="true"></span><h1>Shorts Studio</h1><span class="muted small">script → voice → captions → render → master</span></div>
+  <div class="chips" aria-label="Connections">
+    <span class="chip" id="chip-db"><i></i>Jobs database</span>
+    <span class="chip" id="chip-claude"><i></i>Claude</span>
+    <span class="chip" id="chip-el"><i></i>ElevenLabs</span>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="panel jobs">
+    <div class="panel-head"><h2>Shorts</h2><button class="btn sm primary" id="new-job">+ New</button></div>
+    <div class="joblist" id="joblist"><div class="empty">Loading your shorts…</div></div>
+  </aside>
+
+  <main class="stack">
+    <section class="panel">
+      <div class="panel-head"><h2>Brief</h2><span class="save-state" id="save-state"></span></div>
+      <div class="row">
+        <label class="f" style="flex:2 1 260px">Title<input type="text" id="f-title" placeholder="The Addiction to Being Right"></label>
+        <label class="f">Length<select id="f-length"><option value="20">~20 s</option><option value="30" selected>~30 s</option><option value="45">~45 s</option><option value="58">~58 s</option></select></label>
+        <label class="f">Voice style<select id="f-tone"><option>Punchy and direct</option><option>Calm and wise</option><option>Story-driven</option><option>Data-heavy</option></select></label>
+      </div>
+      <label class="f">Topic and angle<textarea id="f-topic" rows="2" placeholder="Why traders would rather prove themselves right than protect their capital."></textarea></label>
+      <div class="row" style="align-items:center">
+        <button class="btn primary" id="write-script" style="flex:0 0 auto"><span class="spark">✦</span> Write script with Claude</button>
+        <span class="small muted" id="write-status" style="flex:1 1 200px">Claude drafts the scenes and the voiceover. Everything stays editable.</span>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head"><h2>Scenes</h2><span class="mono small muted" id="total-time"></span></div>
+      <div class="scenes" id="scenes"></div>
+      <div class="row" style="align-items:center">
+        <select id="add-type" style="flex:0 1 200px">
+          <option value="statement">Statement</option><option value="title">Title</option><option value="chart">Chart</option>
+          <option value="versus">Versus</option><option value="bars">Bars</option><option value="list">List</option><option value="outro">Outro</option>
+        </select>
+        <button class="btn" id="add-scene" style="flex:0 0 auto">+ Add scene</button>
+      </div>
+    </section>
+  </main>
+
+  <div class="side stack">
+    <section class="panel monitor">
+      <div class="panel-head" style="width:100%"><h2>Monitor</h2><label class="check small muted"><input type="checkbox" id="show-safe"> Safe zones</label></div>
+      <div class="phone" id="phone"><div class="stage" id="stage"><div class="inner" id="inner"></div><div class="cap" id="cap"></div></div></div>
+      <div class="transport">
+        <button class="btn sm" id="play">▶ Play</button>
+        <button class="btn sm ghost" id="restart">⟲</button>
+        <span class="tc mono small" id="tc">00:00.0 / 00:00.0</span>
+      </div>
+      <div class="timeline" id="timeline"></div>
+      <p class="hint" style="margin:0;text-align:center">Browser preview of the layout and timing. The final render uses the real voiceover length.</p>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head"><h2>Voice · ElevenLabs</h2></div>
+      <div id="voice-current"></div>
+      <div class="row">
+        <label class="f" style="flex:2 1 160px">Find a voice<input type="text" id="voice-q" placeholder="confident narrator"></label>
+        <label class="f" style="flex:1 1 90px">Gender<select id="voice-g"><option value="">Any</option><option value="male">Male</option><option value="female">Female</option></select></label>
+      </div>
+      <div class="row" style="align-items:center">
+        <button class="btn" id="voice-search" style="flex:0 0 auto">Search voices</button>
+        <label class="f" style="flex:1 1 140px">Model<select id="voice-model">
+          <option value="eleven_v4">Eleven v4</option><option value="eleven_multilingual_v2">Multilingual v2</option>
+          <option value="eleven_v3">Eleven v3</option><option value="eleven_turbo_v2_5">Turbo v2.5</option><option value="eleven_flash_v2_5">Flash v2.5</option>
+        </select></label>
+      </div>
+      <div class="voices" id="voices"></div>
+      <div class="row" style="align-items:center">
+        <button class="btn" id="vo-estimate" style="flex:0 0 auto">Estimate cost</button>
+        <button class="btn" id="vo-generate" style="flex:0 0 auto">Generate take</button>
+      </div>
+      <div id="vo-out"></div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head"><h2>Pipeline</h2><span class="status" id="job-status">draft</span></div>
+      <div class="chain">
+        <div class="stage-row"><input type="checkbox" id="p-sources"><div><div class="t">yt-dlp · sources</div><div class="small muted">Music and b-roll you have the rights to use.</div>
+          <div class="sub" id="sources-sub">
+            <label class="f">Music URL or local file<input type="text" id="p-music" placeholder="https://… or assets/music.mp3"></label>
+            <div class="row"><label class="f">Music volume<input type="number" id="p-music-vol" step="0.02" min="0" max="1"></label><label class="f">Trim (start–end s)<input type="text" id="p-music-trim" placeholder="0-60"></label></div>
+            <label class="f">B-roll URL or local file<input type="text" id="p-broll" placeholder="https://… or assets/broll.mp4"></label>
+            <div class="row"><label class="f">B-roll opacity<input type="number" id="p-broll-op" step="0.02" min="0" max="1"></label><label class="f">Trim (start–end s)<input type="text" id="p-broll-trim" placeholder="10-40"></label></div>
+          </div></div></div>
+        <div class="stage-row"><input type="checkbox" id="p-tts"><div><div class="t">ElevenLabs · voiceover</div><div class="small muted">One clip per scene. Scene lengths follow the voice.</div></div></div>
+        <div class="stage-row"><input type="checkbox" id="p-whisper"><div><div class="t">Whisper · captions</div><div class="small muted">Word-level timestamps, burned in as karaoke captions.</div></div></div>
+        <div class="stage-row"><span></span><div><div class="t">Render engine</div>
+          <div class="sub"><select id="p-engine"><option value="remotion">Remotion (React)</option><option value="hyperframes">HyperFrames (HTML + GSAP)</option></select></div></div></div>
+        <div class="stage-row"><input type="checkbox" id="p-loudnorm"><div><div class="t">FFmpeg · master</div><div class="small muted">Ducks music under the voice, −14 LUFS, H.264 with fast start, thumbnail.</div></div></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head"><h2>Render</h2></div>
+      <div id="render-out"></div>
+      <div class="row" style="align-items:center">
+        <button class="btn primary" id="queue" style="flex:0 0 auto">Queue for render</button>
+        <button class="btn" id="export" style="flex:0 0 auto">Download job file</button>
+      </div>
+      <div class="small muted">Run it on your machine, inside <span class="mono">shorts-studio/</span>:</div>
+      <div class="cmdrow"><pre class="cmd" id="cmd"></pre><button class="btn sm" data-copy="cmd">Copy</button></div>
+      <div class="small muted">Or ask Claude Code in your repo:</div>
+      <div class="cmdrow"><pre class="cmd" id="ask"></pre><button class="btn sm" data-copy="ask">Copy</button></div>
+    </section>
+  </div>
+</div>
+
+<script>
+(() => {
+  // ---------- constants ----------
+  const VC = { text: "#f5f7fb", muted: "#8b93a7", red: "#ff4d5e", green: "#22c55e", gold: "#facc15" };
+  const TYPES = ["title", "statement", "chart", "versus", "bars", "list", "outro"];
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+  const words = (t) => String(t || "").trim().split(/\s+/).filter(Boolean);
+  const estimate = (vo) => Math.max(3, Math.round((words(vo).length / 2.6 + 1.2) * 10) / 10);
+  const fit = (text, base, chars) => { const n = String(text || "").length; return n <= chars ? base : Math.max(base * 0.6, base * Math.sqrt(chars / n)); };
+  const uid = () => Math.random().toString(36).slice(2, 7);
+  const slug = (s) => String(s || "short").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 48) || "short";
+  const fmt = (s) => { const m = Math.floor(s / 60); return `${String(m).padStart(2, "0")}:${(s - m * 60).toFixed(1).padStart(4, "0")}`; };
+  const setChip = (id, cls, label) => { const c = $(id); c.className = `chip ${cls}`; c.lastChild.textContent = label; };
+
+  const blankScene = (type) => {
+    const base = { id: `${type}-${uid()}`, type, voiceover: "" };
+    switch (type) {
+      case "title": return { ...base, icon: "", title: "Your hook here", highlight: "", subtitle: "" };
+      case "statement": return { ...base, icon: "", lines: [{ text: "First line" }, { text: "Second line", color: "gold" }] };
+      case "chart": return { ...base, headline: [{ text: "You enter a trade." }, { text: "It goes against you.", color: "red" }], trend: "down", levelLabel: "STOP LOSS", result: "-20%", resultNote: "" };
+      case "versus": return { ...base, a: { label: "Your plan says", quote: "Get out.", color: "red" }, b: { label: "Your ego says", quote: "Just wait.", color: "gold" }, footer: [] };
+      case "bars": return { ...base, headline: "The math", leftLabel: "YOU LOSE", rightLabel: "YOU NEED", rows: [{ left: 10, right: 11 }, { left: 50, right: 100 }], suffix: "%", footer: "" };
+      case "list": return { ...base, headline: "The fix", items: ["First rule", "Second rule", "Third rule"] };
+      case "outro": return { ...base, lead: "Lead-in line", punch: "The punchline.", cta: "Follow for more" };
+    }
+  };
+  const newJob = () => {
+    const id = `short-${Date.now().toString(36)}`;
+    return {
+      id, title: "Untitled short", topic: "", length: 30, tone: "Punchy and direct", status: "draft",
+      voice: { id: "", name: "", model: "eleven_v4" },
+      pipeline: { engine: "remotion", sources: false, tts: true, whisper: true, captions: true, loudnorm: true,
+        music: { url: "", file: "", start: 0, end: 0, volume: 0.12 }, broll: { url: "", file: "", start: 0, end: 0, opacity: 0.22 } },
+      script: { title: "Untitled short", scenes: [blankScene("title"), blankScene("statement"), blankScene("outro")] },
+    };
+  };
+
+  // ---------- state ----------
+  let db = null, mcp = null, sample = null, downloads = null;
+  let jobs = new Map();
+  let job = newJob();
+  let dirty = false, saveTimer = null, saving = false;
+  let voices = [];
+
+  // ---------- persistence ----------
+  const saveState = (t) => { $("save-state").textContent = t; };
+  function touch() {
+    dirty = true;
+    job.updatedAt = new Date().toISOString();
+    renderMeta();
+    if (!db) { saveState("Not saved · no database in this view"); return; }
+    saveState("Unsaved changes");
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(save, 1200);
+  }
+  async function save() {
+    if (!db || saving) return;
+    saving = true; saveState("Saving…");
+    const snapshot = JSON.parse(JSON.stringify(job));
+    try {
+      await db.collection("jobs").doc(job.id).set(snapshot);
+      dirty = false; saveState("Saved");
+    } catch (e) {
+      saveState(e?.code === "not_granted" ? "Read-only: you can't save here" : `Couldn't save: ${e?.message || e}`);
+    } finally { saving = false; }
+  }
+
+  // ---------- jobs rail ----------
+  function renderJobs() {
+    const list = $("joblist");
+    const all = [...jobs.values()].sort((a, b) => String(b.updatedAt || "").localeCompare(String(a.updatedAt || "")));
+    if (!jobs.has(job.id) && db) all.unshift(job);
+    if (!all.length) { list.innerHTML = `<div class="empty">No shorts yet. Press <b>+ New</b> to start one.</div>`; return; }
+    list.innerHTML = all.map((j) => `<button class="job" data-id="${esc(j.id)}" aria-current="${j.id === job.id}">
+      <b>${esc(j.title || "Untitled")}</b><span class="status ${esc(j.status || "draft")}">${esc(j.status || "draft")}</span></button>`).join("");
+  }
+  $("joblist").addEventListener("click", (e) => {
+    const b = e.target.closest(".job"); if (!b) return;
+    const next = jobs.get(b.dataset.id); if (!next || next.id === job.id) return;
+    if (dirty) save();
+    load(JSON.parse(JSON.stringify(next)));
+  });
+  $("new-job").addEventListener("click", () => { if (dirty) save(); load(newJob()); touch(); });
+
+  function load(j) {
+    job = j;
+    job.pipeline ||= newJob().pipeline;
+    job.voice ||= { id: "", name: "", model: "eleven_v4" };
+    dirty = false;
+    renderAll();
+  }
+
+  // ---------- brief ----------
+  function bindBrief() {
+    $("f-title").addEventListener("input", (e) => { job.title = e.target.value; job.script.title = e.target.value; touch(); renderJobs(); });
+    $("f-topic").addEventListener("input", (e) => { job.topic = e.target.value; touch(); });
+    $("f-length").addEventListener("change", (e) => { job.length = Number(e.target.value); touch(); });
+    $("f-tone").addEventListener("change", (e) => { job.tone = e.target.value; touch(); });
+  }
+  function renderBrief() {
+    $("f-title").value = job.title || "";
+    $("f-topic").value = job.topic || "";
+    $("f-length").value = String(job.length || 30);
+    $("f-tone").value = job.tone || "Punchy and direct";
+  }
+
+  // ---------- scene editor ----------
+  const linesToText = (lines = []) => lines.map((l) => (l.color && l.color !== "text" ? `[${l.color}] ` : "") + l.text).join("\n");
+  const textToLines = (t) => t.split("\n").map((s) => s.trim()).filter(Boolean).map((s) => {
+    const m = s.match(/^\[(red|green|gold|muted|text)\]\s*(.*)$/i);
+    return m ? { text: m[2], color: m[1].toLowerCase() } : { text: s };
+  });
+  const rowsToText = (rows = []) => rows.map((r) => `${r.left} → ${r.right}`).join("\n");
+  const textToRows = (t) => t.split("\n").map((s) => s.match(/(-?[\d.]+)\D+(-?[\d.]+)/)).filter(Boolean).map((m) => ({ left: Number(m[1]), right: Number(m[2]) }));
+
+  const F = {
+    title: [["title", "Title", "text", "wide"], ["highlight", "Highlight word", "text"], ["icon", "Icon", "text"], ["subtitle", "Subtitle", "text", "wide"]],
+    statement: [["icon", "Icon (emoji)", "text"], ["lines", "Lines · one per line, [red] [green] [gold] [muted] to colour", "lines", "wide"]],
+    chart: [["headline", "Headline lines", "lines", "wide"], ["trend", "Trend", "trend"], ["levelLabel", "Level label", "text"], ["result", "Result", "text"], ["resultNote", "Result note", "text"]],
+    versus: [["a.label", "Left label", "text"], ["a.quote", "Left quote", "text"], ["b.label", "Right label", "text"], ["b.quote", "Right quote", "text"], ["footer", "Footer lines", "lines", "wide"]],
+    bars: [["headline", "Headline", "text", "wide"], ["leftLabel", "Left label", "text"], ["rightLabel", "Right label", "text"], ["rows", "Rows · left → right", "rows"], ["suffix", "Suffix", "text"], ["footer", "Footer", "text", "wide"]],
+    list: [["headline", "Headline", "text"], ["items", "Items · one per line", "items", "wide"]],
+    outro: [["lead", "Lead", "text", "wide"], ["punch", "Punchline", "text", "wide"], ["cta", "Call to action", "text", "wide"]],
+  };
+  const getp = (o, p) => p.split(".").reduce((a, k) => a?.[k], o);
+  const setp = (o, p, v) => { const ks = p.split("."); const last = ks.pop(); const t = ks.reduce((a, k) => (a[k] ||= {}), o); t[last] = v; };
+
+  function fieldHtml(s, i, [path, label, kind, wide]) {
+    const v = getp(s, path);
+    const id = `s${i}-${path.replace(".", "-")}`;
+    let input;
+    if (kind === "lines") input = `<textarea id="${id}" rows="3" data-i="${i}" data-p="${path}" data-k="lines">${esc(linesToText(v))}</textarea>`;
+    else if (kind === "items") input = `<textarea id="${id}" rows="3" data-i="${i}" data-p="${path}" data-k="items">${esc((v || []).join("\n"))}</textarea>`;
+    else if (kind === "rows") input = `<textarea id="${id}" rows="3" data-i="${i}" data-p="${path}" data-k="rows">${esc(rowsToText(v))}</textarea>`;
+    else if (kind === "trend") input = `<select id="${id}" data-i="${i}" data-p="${path}" data-k="text"><option value="down"${v === "down" ? " selected" : ""}>Down</option><option value="up"${v === "up" ? " selected" : ""}>Up</option></select>`;
+    else input = `<input type="text" id="${id}" value="${esc(v)}" data-i="${i}" data-p="${path}" data-k="text">`;
+    return `<label class="f${wide ? " wide" : ""}">${esc(label)}${input}</label>`;
+  }
+
+  function renderScenes() {
+    const durs = durations();
+    $("scenes").innerHTML = job.script.scenes.map((s, i) => `
+      <article class="scene${i === activeScene ? " active" : ""}" data-scene="${i}">
+        <div class="idx"><b>${i + 1}</b><span>${durs[i].toFixed(1)}s</span></div>
+        <div class="body">
+          <div class="head">
+            <select id="type-${i}" data-type="${i}" aria-label="Scene type">${TYPES.map((t) => `<option${t === s.type ? " selected" : ""}>${t}</option>`).join("")}</select>
+            <button class="btn sm ghost" data-act="up" data-i="${i}" ${i === 0 ? "disabled" : ""} aria-label="Move up">↑</button>
+            <button class="btn sm ghost" data-act="down" data-i="${i}" ${i === job.script.scenes.length - 1 ? "disabled" : ""} aria-label="Move down">↓</button>
+            <button class="btn sm ghost" data-act="rewrite" data-i="${i}"><span class="spark">✦</span> Rewrite</button>
+            <button class="btn sm ghost danger" data-act="del" data-i="${i}">Delete</button>
+            <button class="btn sm ghost tc" data-act="seek" data-i="${i}">Preview ▸</button>
+          </div>
+          <label class="f vo">Voiceover<textarea id="s${i}-vo" rows="2" data-i="${i}" data-p="voiceover" data-k="text">${esc(s.voiceover)}</textarea></label>
+          <div class="fields">${(F[s.type] || []).map((f) => fieldHtml(s, i, f)).join("")}</div>
+        </div>
+      </article>`).join("");
+    $("total-time").textContent = `${job.script.scenes.length} scenes · ${fmt(durs.reduce((a, b) => a + b, 0))}`;
+  }
+
+  $("scenes").addEventListener("input", (e) => {
+    const el = e.target; const i = Number(el.dataset.i); if (Number.isNaN(i) || !el.dataset.p) return;
+    const s = job.script.scenes[i];
+    const k = el.dataset.k;
+    const val = k === "lines" ? textToLines(el.value) : k === "items" ? el.value.split("\n").map((x) => x.trim()).filter(Boolean) : k === "rows" ? textToRows(el.value) : el.value;
+    setp(s, el.dataset.p, val);
+    if (el.dataset.p === "voiceover") { const d = durations(); el.closest(".scene").querySelector(".idx span").textContent = `${d[i].toFixed(1)}s`; $("total-time").textContent = `${job.script.scenes.length} scenes · ${fmt(d.reduce((a, b) => a + b, 0))}`; renderTimeline(); }
+    lastBuilt = -1; touch();
+  });
+  $("scenes").addEventListener("change", (e) => {
+    const t = e.target.dataset.type; if (t === undefined) return;
+    const i = Number(t); const old = job.script.scenes[i];
+    job.script.scenes[i] = { ...blankScene(e.target.value), id: old.id, voiceover: old.voiceover };
+    renderScenes(); lastBuilt = -1; touch();
+  });
+  $("scenes").addEventListener("click", async (e) => {
+    const b = e.target.closest("button[data-act]"); if (!b) return;
+    const i = Number(b.dataset.i); const sc = job.script.scenes;
+    if (b.dataset.act === "up" && i > 0) [sc[i - 1], sc[i]] = [sc[i], sc[i - 1]];
+    else if (b.dataset.act === "down" && i < sc.length - 1) [sc[i + 1], sc[i]] = [sc[i], sc[i + 1]];
+    else if (b.dataset.act === "del") { if (b.dataset.armed) sc.splice(i, 1); else { b.dataset.armed = "1"; b.textContent = "Confirm delete"; return; } }
+    else if (b.dataset.act === "seek") { seek(sceneStart(i) + 0.01); return; }
+    else if (b.dataset.act === "rewrite") { rewrite(i, b); return; }
+    renderScenes(); renderTimeline(); lastBuilt = -1; touch();
+  });
+  $("add-scene").addEventListener("click", () => {
+    const sc = job.script.scenes; const at = sc.length && sc[sc.length - 1].type === "outro" ? sc.length - 1 : sc.length;
+    sc.splice(at, 0, blankScene($("add-type").value));
+    renderScenes(); renderTimeline(); lastBuilt = -1; touch();
+  });
+
+  // ---------- Claude ----------
+  const SCHEMA = `Return JSON: {"title": string, "scenes": Scene[]}. Every Scene has "id" (short kebab-case), "type", "voiceover" (what the narrator says; 8-28 words, spoken English, no stage directions) plus the fields of its type:
+- title: {"title": string (<= 6 words), "highlight"?: one word that appears in title, "subtitle"?: string (<= 12 words), "icon"?: single emoji or symbol}
+- statement: {"lines": [{"text": string (<= 9 words), "color"?: "red"|"green"|"gold"|"muted"}] (1-3 lines), "icon"?: emoji}
+- chart: {"headline": lines (1-2), "trend": "down"|"up", "levelLabel"?: string, "result"?: short number string like "-38%", "resultNote"?: string (<= 6 words)}
+- versus: {"a": {"label": string, "quote": string (<= 5 words), "color"?: color}, "b": {...same}, "footer"?: lines (<= 2)}
+- bars: {"headline": string (<= 7 words), "leftLabel": string, "rightLabel": string, "rows": [{"left": number, "right": number}] (2-4 rows), "suffix"?: "%", "footer"?: string}
+- list: {"headline": string (<= 4 words), "items": string[] (2-4 items, <= 7 words each)}
+- outro: {"lead": string (<= 9 words), "punch": string (<= 6 words), "cta"?: string (<= 6 words)}
+On-screen text is short and punchy; the voiceover carries the detail. Numbers must be correct (e.g. a 50% loss needs +100% to recover).`;
+
+  async function writeScript() {
+    if (!sample) return;
+    const btn = $("write-script"), st = $("write-status");
+    if (!job.topic.trim() && !job.title.trim()) { st.textContent = "Add a title or a topic first."; return; }
+    btn.disabled = true; st.textContent = "Claude is writing…";
+    const target = Number(job.length || 30);
+    try {
+      const out = await sample.json(`You write scripts for animated YouTube Shorts (vertical, 1080x1920) for a channel about trading psychology and markets.
+Title: ${job.title}
+Topic and angle: ${job.topic}
+Voice style: ${job.tone}
+Target length: about ${target} seconds of narration (about ${Math.round(target * 2.6)} words in total).
+Structure: open with a hook (title scene), build tension with concrete examples (chart / versus / bars / statement), give the fix (list), end with an outro. Use ${target <= 20 ? "4-5" : target <= 30 ? "6-7" : "7-9"} scenes.
+${SCHEMA}
+Reply with the JSON only.`, { modelTier: "complex" });
+      const scenes = (out?.scenes || []).filter((s) => TYPES.includes(s.type)).map((s) => ({ ...s, id: slug(s.id || s.type) + "-" + uid() }));
+      if (!scenes.length) throw new Error("The draft had no usable scenes. Try again.");
+      job.script = { title: out.title || job.title, scenes };
+      if (!job.title || job.title === "Untitled short") job.title = job.script.title;
+      st.textContent = `Drafted ${scenes.length} scenes. Edit anything below.`;
+      renderAll(); touch();
+    } catch (e) {
+      st.textContent = e?.code === "not_granted" ? "Claude isn't available in this view." : e?.code === "rate_limited" ? "Claude is busy. Try again in a minute." : `Couldn't write the script: ${e?.message || e}`;
+    } finally { btn.disabled = false; }
+  }
+  async function rewrite(i, btn) {
+    if (!sample) return;
+    const s = job.script.scenes[i];
+    btn.disabled = true; btn.textContent = "Rewriting…";
+    try {
+      const out = await sample.json(`Rewrite scene ${i + 1} of this YouTube Short so it hits harder and flows from the scene before it. Keep the same "type" and "id".
+Short title: ${job.title}
+Topic: ${job.topic}
+Previous scene voiceover: ${job.script.scenes[i - 1]?.voiceover || "(none, this is the opening)"}
+Next scene voiceover: ${job.script.scenes[i + 1]?.voiceover || "(none, this is the end)"}
+Scene: ${JSON.stringify(s)}
+${SCHEMA}
+Reply with the single scene object as JSON only.`, { modelTier: "default" });
+      if (out && out.type === s.type) { job.script.scenes[i] = { ...out, id: s.id }; renderScenes(); lastBuilt = -1; touch(); }
+    } catch (e) { btn.textContent = "Couldn't rewrite"; setTimeout(() => renderScenes(), 1600); return; }
+    btn.disabled = false;
+  }
+  $("write-script").addEventListener("click", writeScript);
+
+  // ---------- preview ----------
+  const durations = () => job.script.scenes.map((s) => (job.sceneDurations?.[job.script.scenes.indexOf(s)]) ?? s.durationSec ?? estimate(s.voiceover));
+  const sceneStart = (i) => durations().slice(0, i).reduce((a, b) => a + b, 0);
+  let t = 0, playing = false, lastTs = 0, lastBuilt = -1, activeScene = 0;
+  const C = (c) => VC[c] || VC.text;
+  const line = (l, size, at) => `<div data-at="${at}" style="font-size:${fit(l.text, size, 22)}px;color:${C(l.color)}">${esc(l.text)}</div>`;
+  const beats = (n, dur, first = 0.15) => { const span = Math.max(0.7, dur * 0.55 - first); return Array.from({ length: n }, (_, i) => first + (n === 1 ? 0 : (span * i) / (n - 1))); };
+
+  function sceneHtml(s, dur) {
+    switch (s.type) {
+      case "title": {
+        const t = s.highlight && s.title?.includes(s.highlight) ? esc(s.title).replace(esc(s.highlight), `<span style="color:${VC.gold}">${esc(s.highlight)}</span>`) : esc(s.title);
+        return `${s.icon ? `<div data-at="0" data-pop style="font-size:190px;color:${VC.gold}">${esc(s.icon)}</div>` : ""}
+          <div data-at="0.3" style="font-size:${fit(s.title, 108, 24)}px;text-transform:uppercase;letter-spacing:-2px;line-height:1.05">${t}</div>
+          ${s.subtitle ? `<div data-at="1" style="font-size:${fit(s.subtitle, 46, 60)}px;font-weight:500;color:${VC.muted}">${esc(s.subtitle)}</div>` : ""}`;
+      }
+      case "statement": { const b = beats((s.lines || []).length, dur, s.icon ? 0.35 : 0.15);
+        return `${s.icon ? `<div data-at="0" data-pop style="font-size:160px">${esc(s.icon)}</div>` : ""}${(s.lines || []).map((l, i) => line(l, 84, b[i])).join("")}`; }
+      case "chart": {
+        const down = s.trend !== "up";
+        const shape = down ? [50,54,58,55,60,56,51,47,43,45,39,34,37,29,24,20] : [50,47,44,48,45,50,54,52,58,62,59,66,70,68,75,80];
+        const lvl = down ? 40 : 66; const c = down ? VC.red : VC.green; const Y = (p) => 320 - (p / 90) * 320;
+        const pts = shape.map((p, i) => `${(i / 15) * 860},${Y(p)}`).join(" ");
+        return `${(s.headline || []).map((l, i) => line(l, 68, i * 0.27)).join("")}
+          <svg width="860" height="320" style="overflow:visible" data-chart="${(dur * 0.7).toFixed(2)}">
+            <line x1="0" x2="860" y1="${Y(50)}" y2="${Y(50)}" stroke="${VC.muted}" stroke-width="3" stroke-dasharray="12 12"/><text x="0" y="${Y(50) - 14}" fill="${VC.muted}" font-size="30" font-weight="500">ENTRY</text>
+            <line x1="0" x2="860" y1="${Y(lvl)}" y2="${Y(lvl)}" stroke="${c}" stroke-width="4" stroke-dasharray="12 12"/><text x="0" y="${Y(lvl) + (down ? 44 : -14)}" fill="${c}" font-size="30" font-weight="500">${esc(s.levelLabel || (down ? "STOP LOSS" : "TARGET"))}</text>
+            <polyline points="${pts}" fill="none" stroke="${c}" stroke-width="10" stroke-linejoin="round" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/></svg>
+          ${s.result ? `<div data-at="${(dur * 0.7 - 0.2).toFixed(2)}" data-pop style="font-size:96px;line-height:1;color:${c}">${esc(s.result)}</div>` : ""}
+          ${s.resultNote ? `<div data-at="${(dur * 0.7).toFixed(2)}" style="font-size:46px;font-weight:800;color:${c}">${esc(s.resultNote)}</div>` : ""}`;
+      }
+      case "versus": { const [a, b, f] = beats(3, dur);
+        const bub = (x, d, al, at) => `<div class="bubble" data-at="${at}" data-x="${al === "left" ? -160 : 160}" style="border-color:${C(x?.color || d)};background:${C(x?.color || d)}1a;text-align:${al}">
+          <div style="font-size:40px;font-weight:800;color:${C(x?.color || d)};text-transform:uppercase;margin-bottom:12px">${esc(x?.label)}</div>
+          <div style="font-size:${fit(x?.quote, 72, 20)}px">“${esc(x?.quote)}”</div></div>`;
+        return bub(s.a, "red", "left", a) + bub(s.b, "gold", "right", b) + (s.footer || []).map((l, i) => line(l, 60, f + i * 0.27)).join(""); }
+      case "bars": { const rows = s.rows || []; const b = beats(rows.length + 1, dur, 0.45); const max = Math.max(1, ...rows.flatMap((r) => [r.left, r.right]));
+        return `<div data-at="0" style="font-size:${fit(s.headline, 80, 34)}px">${esc(s.headline)}</div>
+          <div class="brow" data-at="0.25" style="font-size:40px;font-weight:800"><span style="color:${VC.red}">${esc(s.leftLabel)}</span><span style="color:${VC.green}">${esc(s.rightLabel)}</span></div>
+          ${rows.map((r, i) => `<div class="brow" style="align-items:center" data-grow="${b[i]}">
+            <div style="display:flex;flex-direction:column;align-items:flex-start;gap:6px"><div style="font-size:76px;color:${VC.red}" data-num="${r.left}" data-pre="${esc(s.leftPrefix ?? "-")}" data-suf="${esc(s.suffix ?? "%")}"></div><div data-bar="${(r.left / max) * 400}" style="height:32px;border-radius:16px;background:${VC.red}"></div></div>
+            <div style="font-size:64px;color:${VC.muted}">→</div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px"><div style="font-size:76px;color:${VC.green}" data-num="${r.right}" data-pre="${esc(s.rightPrefix ?? "+")}" data-suf="${esc(s.suffix ?? "%")}"></div><div data-bar="${(r.right / max) * 400}" style="height:32px;border-radius:16px;background:${VC.green}"></div></div></div>`).join("")}
+          ${s.footer ? `<div data-at="${b[rows.length]}" style="font-size:${fit(s.footer, 52, 40)}px;font-weight:800">${esc(s.footer)}</div>` : ""}`; }
+      case "list": { const b = beats((s.items || []).length, dur, 0.5);
+        return `<div data-at="0" style="font-size:${fit(s.headline, 92, 20)}px;color:${VC.green}">${esc(s.headline)}</div>
+          ${(s.items || []).map((it, i) => `<div class="item" data-at="${b[i]}"><span class="num">${i + 1}</span><span style="font-size:${fit(it, 58, 32)}px;line-height:1.15">${esc(it)}</span></div>`).join("")}`; }
+      case "outro": { const [a, b, c] = beats(3, dur);
+        return `<div data-at="${a}" style="font-size:${fit(s.lead, 64, 40)}px;font-weight:800;color:${VC.muted}">${esc(s.lead)}</div>
+          <div data-at="${b}" data-pop style="font-size:${fit(s.punch, 120, 22)}px;line-height:1.05;color:${VC.green}">${esc(s.punch)}</div>
+          ${s.cta ? `<div data-at="${c}" style="font-size:42px;font-weight:600;padding:22px 44px;border-radius:999px;border:4px solid ${VC.gold};color:${VC.gold}">${esc(s.cta)}</div>` : ""}`; }
+    }
+    return "";
+  }
+  const ease = (x) => 1 - Math.pow(1 - Math.min(1, Math.max(0, x)), 3);
+
+  function frame() {
+    const d = durations(); const total = d.reduce((a, b) => a + b, 0) || 1;
+    if (t > total) t = total;
+    let i = 0, acc = 0; while (i < d.length - 1 && t >= acc + d[i]) { acc += d[i]; i++; }
+    const local = t - acc, dur = d[i] || 1, s = job.script.scenes[i];
+    if (i !== activeScene) { activeScene = i; document.querySelectorAll(".scene").forEach((el, k) => el.classList.toggle("active", k === i)); }
+    const inner = $("inner");
+    if (i !== lastBuilt) { inner.innerHTML = s ? sceneHtml(s, dur) : ""; lastBuilt = i; }
+    inner.style.opacity = String(Math.min(1, Math.max(0, (dur - local) / 0.2)));
+    inner.querySelectorAll("[data-at]").forEach((el) => {
+      const p = ease((local - Number(el.dataset.at)) / 0.55);
+      el.style.opacity = String(Math.min(1, Math.max(0, (local - Number(el.dataset.at)) / 0.4)));
+      const x = Number(el.dataset.x || 0);
+      el.style.transform = el.hasAttribute("data-pop") ? `scale(${0.4 + 0.6 * p})` : x ? `translateX(${x * (1 - p)}px)` : `translateY(${50 * (1 - p)}px)`;
+    });
+    inner.querySelectorAll("[data-grow]").forEach((row) => {
+      const g = ease((local - Number(row.dataset.grow)) / 0.8);
+      row.style.opacity = g > 0 ? "1" : "0";
+      row.querySelectorAll("[data-num]").forEach((n) => { n.textContent = `${n.dataset.pre}${Math.round(Number(n.dataset.num) * g)}${n.dataset.suf}`; });
+      row.querySelectorAll("[data-bar]").forEach((b) => { b.style.width = `${Number(b.dataset.bar) * g}px`; });
+    });
+    const chart = inner.querySelector("[data-chart]");
+    if (chart) chart.querySelector("polyline").style.strokeDashoffset = String(1 - ease((local - 0.4) / (Number(chart.dataset.chart) - 0.4)));
+    // captions: voiceover words spread over the scene, three at a time
+    const w = words(s?.voiceover); const cap = $("cap");
+    if (w.length) {
+      const per = (dur - 0.35) / w.length; const k = Math.min(w.length - 1, Math.floor(local / per)); const p0 = k - (k % 3);
+      cap.innerHTML = w.slice(p0, p0 + 3).map((x, j) => `<span style="color:${p0 + j === k ? VC.gold : VC.text}">${esc(x)} </span>`).join("");
+    } else cap.textContent = "";
+    $("tc").textContent = `${fmt(t)} / ${fmt(total)}`;
+    const head = $("timeline").querySelector(".head"); if (head) head.style.left = `${(t / total) * 100}%`;
+    return total;
+  }
+  function tick(ts) {
+    if (playing) { const total = frame(); t += (ts - lastTs) / 1000; if (t >= total) { t = total; playing = false; $("play").textContent = "▶ Play"; } frame(); }
+    lastTs = ts; requestAnimationFrame(tick);
+  }
+  function seek(x) { t = Math.max(0, x); frame(); }
+  $("play").addEventListener("click", () => { const total = durations().reduce((a, b) => a + b, 0); if (t >= total - 0.05) t = 0; playing = !playing; $("play").textContent = playing ? "❚❚ Pause" : "▶ Play"; });
+  $("restart").addEventListener("click", () => seek(0));
+  function renderTimeline() {
+    const d = durations(); const total = d.reduce((a, b) => a + b, 0) || 1;
+    $("timeline").innerHTML = d.map((x, i) => `<span style="flex:${x}" title="Scene ${i + 1}">${i + 1}</span>`).join("") + `<i class="head"></i>`;
+    frame();
+  }
+  $("timeline").addEventListener("click", (e) => { const r = e.currentTarget.getBoundingClientRect(); seek(((e.clientX - r.left) / r.width) * durations().reduce((a, b) => a + b, 0)); });
+  const scalePhone = () => { const w = $("phone").clientWidth; $("stage").style.transform = `scale(${w / 1080})`; };
+  new ResizeObserver(scalePhone).observe($("phone"));
+  $("show-safe").addEventListener("change", (e) => {
+    $("stage").querySelectorAll(".safe").forEach((x) => x.remove());
+    if (e.target.checked) for (const y of [168, 1330]) { const d = document.createElement("div"); d.className = "safe"; d.style.top = `${y}px`; $("stage").appendChild(d); }
+  });
+
+  // ---------- ElevenLabs ----------
+  const elErr = (e) => {
+    const c = e?.code;
+    if (c === "server_not_connected" || c === "server_not_found") return "ElevenLabs isn't connected. Add it in claude.ai Settings → Connectors, then reload.";
+    if (c === "needs_reauth") return "Your ElevenLabs connection expired. Reconnect it in claude.ai Settings → Connectors.";
+    if (c === "not_granted" || c === "consent_required") return "Allow this page to use ElevenLabs (artifact menu → Permissions), then try again.";
+    if (c === "blocked_by_policy") return "Your organization blocks this ElevenLabs action.";
+    if (c === "rate_limited") return "ElevenLabs is rate-limiting requests. Wait a moment and try again.";
+    return `ElevenLabs: ${e?.message || e}`;
+  };
+  const voText = () => job.script.scenes.map((s) => s.voiceover.trim()).filter(Boolean).join(" ");
+  function renderVoice() {
+    const v = job.voice || {};
+    $("voice-current").innerHTML = v.id
+      ? `<div class="selected-voice"><div style="min-width:0"><div class="small muted">Narrator</div><b>${esc(v.name || v.id)}</b></div><span class="mono small muted">${esc(v.id.slice(0, 8))}…</span></div>`
+      : `<div class="note">Pick a narrator below. The pipeline uses this voice for every scene.</div>`;
+    $("voice-model").value = v.model || "eleven_v4";
+    $("voices").innerHTML = voices.map((x) => `<div class="voice" role="button" tabindex="0" data-v="${esc(x.voice_id)}" aria-pressed="${x.voice_id === v.id}">
+      <b>${esc(x.name)}</b>${x.preview_url ? `<a href="${esc(x.preview_url)}" target="_blank" rel="noopener">Listen ↗</a>` : "<span></span>"}
+      <span class="d">${esc([x.labels?.accent, x.labels?.age, x.labels?.gender].filter(Boolean).join(" · "))}${x.description ? " · " + esc(x.description) : ""}</span></div>`).join("");
+    if (v.flowUrl) $("vo-out").innerHTML = `<div class="note ok">Latest take: <a href="${esc(v.flowUrl)}" target="_blank" rel="noopener">open in ElevenLabs ↗</a></div>`;
+  }
+  async function searchVoices() {
+    const out = $("vo-out");
+    if (!mcp) { out.innerHTML = `<div class="note bad">ElevenLabs isn't available in this view.</div>`; return; }
+    $("voice-search").disabled = true; $("voices").innerHTML = `<div class="small muted">Searching…</div>`;
+    try {
+      const input = { context: "Pick a narrator voice for an animated YouTube Short in Shorts Studio.", languages: ["en"] };
+      if ($("voice-q").value.trim()) input.search = $("voice-q").value.trim(); else input.use_cases = ["social_media"];
+      if ($("voice-g").value) input.gender = $("voice-g").value;
+      const r = await mcp.callTool("ElevenLabs", "creative_list_voices", input);
+      voices = r.payload?.voices || [];
+      if (!voices.length) $("voices").innerHTML = `<div class="small muted">No voices matched. Try fewer words.</div>`; else renderVoice();
+      setChip("chip-el", "ok", "ElevenLabs");
+    } catch (e) { $("voices").innerHTML = ""; out.innerHTML = `<div class="note bad">${esc(elErr(e))}</div>`; setChip("chip-el", "warn", "ElevenLabs"); }
+    finally { $("voice-search").disabled = false; }
+  }
+  $("voice-search").addEventListener("click", searchVoices);
+  $("voice-q").addEventListener("keydown", (e) => { if (e.key === "Enter") searchVoices(); });
+  const pickVoice = (el) => { const x = voices.find((v) => v.voice_id === el.dataset.v); if (!x) return; job.voice = { ...job.voice, id: x.voice_id, name: x.name, model: $("voice-model").value }; renderVoice(); touch(); };
+  $("voices").addEventListener("click", (e) => { if (e.target.closest("a")) return; const el = e.target.closest(".voice"); if (el) pickVoice(el); });
+  $("voices").addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { const el = e.target.closest(".voice"); if (el) { e.preventDefault(); pickVoice(el); } } });
+  $("voice-model").addEventListener("change", (e) => { job.voice.model = e.target.value; touch(); });
+
+  async function speech(estimateOnly) {
+    const out = $("vo-out");
+    if (!mcp) { out.innerHTML = `<div class="note bad">ElevenLabs isn't available in this view.</div>`; return null; }
+    if (!job.voice?.id) { out.innerHTML = `<div class="note">Pick a voice first.</div>`; return null; }
+    const text = voText(); if (!text) { out.innerHTML = `<div class="note">Write the voiceover first.</div>`; return null; }
+    const r = await mcp.callTool("ElevenLabs", "creative_generate_speech", {
+      context: `Voiceover for the YouTube Short "${job.title}" made in Shorts Studio.`,
+      prompt: text, model_id: job.voice.model || "eleven_v4", voice_id: job.voice.id, generations_count: 1, estimate_only: estimateOnly,
+    });
+    return r.payload;
+  }
+  $("vo-estimate").addEventListener("click", async () => {
+    const out = $("vo-out"); out.innerHTML = `<div class="small muted">Asking ElevenLabs…</div>`;
+    try { const p = await speech(true); if (!p) return;
+      const e = p.estimate || {};
+      out.innerHTML = `<div class="note">About <b class="mono">${Math.round(e.credits ?? 0)}</b> credits (≈ $${((e.price_cents ?? 0) / 100).toFixed(2)}) for ${words(voText()).length} words. Nothing was generated.</div>`;
+    } catch (e) { out.innerHTML = `<div class="note bad">${esc(elErr(e))}</div>`; }
+  });
+  $("vo-generate").addEventListener("click", () => {
+    $("vo-out").innerHTML = `<div class="confirm"><div class="small">Generate one take of the full voiceover with <b>${esc(job.voice?.name || "the selected voice")}</b>? This spends ElevenLabs credits. You'll listen to it in ElevenLabs.</div>
+      <div class="row"><button class="btn primary sm" id="vo-yes" style="flex:0 0 auto">Generate</button><button class="btn sm" id="vo-no" style="flex:0 0 auto">Cancel</button></div></div>`;
+    $("vo-no").onclick = () => { $("vo-out").innerHTML = ""; renderVoice(); };
+    $("vo-yes").onclick = async () => {
+      const out = $("vo-out"); out.innerHTML = `<div class="small muted">Generating…</div>`;
+      try {
+        const p = await speech(false); if (!p) return;
+        job.voice.flowUrl = p.url; touch();
+        out.innerHTML = `<div class="note">Generating in ElevenLabs… <a href="${esc(p.url)}" target="_blank" rel="noopener">open ↗</a></div>`;
+        if (p.flow_id && p.session_ids?.length) {
+          for (let k = 0; k < 24; k++) {
+            await new Promise((r) => setTimeout(r, Math.max(2, p.poll_after_seconds || 5) * 1000));
+            const st = (await mcp.callTool("ElevenLabs", "creative_get_flow_run_status", { context: "Check whether the Shorts Studio voiceover take is ready.", flow_id: p.flow_id, session_ids: p.session_ids }, { cache: false })).payload || {};
+            if (st.has_failures) { out.innerHTML = `<div class="note bad">The take failed in ElevenLabs. <a href="${esc(p.url)}" target="_blank" rel="noopener">Open the flow ↗</a></div>`; return; }
+            if (st.all_completed) { out.innerHTML = `<div class="note ok">Take ready. <a href="${esc(p.url)}" target="_blank" rel="noopener">Listen in ElevenLabs ↗</a></div>`; return; }
+          }
+        }
+      } catch (e) { out.innerHTML = `<div class="note bad">${esc(elErr(e))}</div>`; }
+    };
+  });
+
+  // ---------- pipeline ----------
+  const parseTrim = (v) => { const m = String(v || "").match(/([\d.]+)\s*[-–]\s*([\d.]+)/); return m ? { start: Number(m[1]), end: Number(m[2]) } : { start: 0, end: 0 }; };
+  const isUrl = (v) => /^https?:\/\//i.test(String(v || "").trim());
+  function renderPipeline() {
+    const p = job.pipeline;
+    $("p-sources").checked = !!p.sources; $("p-tts").checked = p.tts !== false; $("p-whisper").checked = p.whisper !== false; $("p-loudnorm").checked = p.loudnorm !== false;
+    $("p-engine").value = p.engine || "remotion";
+    $("p-music").value = p.music?.url || p.music?.file || ""; $("p-music-vol").value = p.music?.volume ?? 0.12;
+    $("p-music-trim").value = p.music?.end ? `${p.music.start}-${p.music.end}` : "";
+    $("p-broll").value = p.broll?.url || p.broll?.file || ""; $("p-broll-op").value = p.broll?.opacity ?? 0.22;
+    $("p-broll-trim").value = p.broll?.end ? `${p.broll.start}-${p.broll.end}` : "";
+    $("sources-sub").hidden = !p.sources;
+  }
+  function readPipeline() {
+    const p = job.pipeline;
+    p.sources = $("p-sources").checked; p.tts = $("p-tts").checked; p.whisper = $("p-whisper").checked; p.captions = p.whisper; p.loudnorm = $("p-loudnorm").checked;
+    p.engine = $("p-engine").value;
+    const m = $("p-music").value.trim(), b = $("p-broll").value.trim();
+    p.music = { url: p.sources && isUrl(m) ? m : "", file: p.sources && m && !isUrl(m) ? m : "", volume: Number($("p-music-vol").value || 0.12), ...parseTrim($("p-music-trim").value) };
+    p.broll = { url: p.sources && isUrl(b) ? b : "", file: p.sources && b && !isUrl(b) ? b : "", opacity: Number($("p-broll-op").value || 0.22), ...parseTrim($("p-broll-trim").value) };
+    $("sources-sub").hidden = !p.sources;
+    renderMeta(); touch();
+  }
+  document.querySelectorAll(".chain input, .chain select").forEach((el) => el.addEventListener("change", readPipeline));
+
+  // ---------- render ----------
+  const exportJob = () => {
+    const { id, title, topic, voice, pipeline, script } = job;
+    return JSON.stringify({ id: slug(id), title, topic, voice: { id: voice.id, name: voice.name, model: voice.model }, pipeline, script }, null, 2);
+  };
+  function renderMeta() {
+    const s = job.status || "draft";
+    $("job-status").className = `status ${s}`; $("job-status").textContent = s;
+    const flags = [job.pipeline.engine === "hyperframes" ? "--engine=hyperframes" : "", job.pipeline.tts === false ? "--no-tts" : "", job.pipeline.whisper === false ? "--no-whisper" : "", job.pipeline.sources ? "" : "--no-sources"].filter(Boolean).join(" ");
+    $("cmd").textContent = `npm run make -- jobs/${slug(job.id)}.json${flags ? " " + flags : ""}`;
+    $("ask").textContent = `Render the queued shorts from my Shorts Studio dashboard`;
+    const o = job.output;
+    $("render-out").innerHTML = o?.file
+      ? `<div class="note ok">Rendered <span class="mono">${esc(o.file)}</span>${o.durationSec ? ` · ${Number(o.durationSec).toFixed(1)}s` : ""}${o.renderedAt ? ` · ${esc(new Date(o.renderedAt).toLocaleString())}` : ""}</div>`
+      : o?.error ? `<div class="note bad">Last render failed: ${esc(o.error)}</div>`
+      : s === "queued" ? `<div class="note">Queued. Run the command below, or ask Claude Code to render it.</div>`
+      : `<div class="note">${job.voice?.id ? "" : "Pick a voice, then "}Queue it when the script is ready.</div>`;
+    $("queue").textContent = s === "queued" ? "Unqueue" : "Queue for render";
+  }
+  $("queue").addEventListener("click", () => {
+    if (job.status === "queued") job.status = "draft";
+    else { job.status = "queued"; job.queuedAt = new Date().toISOString(); }
+    renderMeta(); renderJobs(); touch();
+  });
+  $("export").addEventListener("click", async () => {
+    const data = exportJob();
+    if (downloads) {
+      try { await downloads.save({ filename: `${slug(job.id)}.json`, data }); $("render-out").innerHTML = `<div class="note ok">Saved <span class="mono">${esc(slug(job.id))}.json</span>. Put it in <span class="mono">shorts-studio/jobs/</span>.</div>`; return; }
+      catch (e) { if (e?.code === "declined") return; }
+    }
+    try { await navigator.clipboard.writeText(data); $("render-out").innerHTML = `<div class="note">Downloads aren't available here, so the job JSON was copied. Paste it into <span class="mono">shorts-studio/jobs/${esc(slug(job.id))}.json</span>.</div>`; }
+    catch { $("render-out").innerHTML = `<div class="note bad">Couldn't save or copy the job file in this view.</div>`; }
+  });
+  document.addEventListener("click", async (e) => {
+    const b = e.target.closest("[data-copy]"); if (!b) return;
+    const el = $(b.dataset.copy);
+    try { await navigator.clipboard.writeText(el.textContent); b.textContent = "Copied"; }
+    catch { const r = document.createRange(); r.selectNodeContents(el); const s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = "Selected"; }
+    setTimeout(() => (b.textContent = "Copy"), 1400);
+  });
+
+  // ---------- boot ----------
+  function renderAll() { renderBrief(); renderScenes(); renderVoice(); renderPipeline(); renderMeta(); renderJobs(); lastBuilt = -1; t = 0; renderTimeline(); scalePhone(); }
+  bindBrief();
+  renderAll();
+  requestAnimationFrame((ts) => { lastTs = ts; requestAnimationFrame(tick); });
+  setChip("chip-db", "", "Jobs database"); setChip("chip-claude", "", "Claude"); setChip("chip-el", "", "ElevenLabs");
+
+  const use = (n) => (window.claude?.use ? window.claude.use(n).catch(() => null) : Promise.resolve(null));
+  use("sample").then((s) => { sample = s; setChip("chip-claude", s ? "ok" : "bad", s ? "Claude" : "Claude unavailable"); $("write-script").disabled = !s; });
+  use("downloads").then((d) => { downloads = d; });
+  use("mcp").then(async (m) => {
+    mcp = m;
+    if (!m) { setChip("chip-el", "bad", "ElevenLabs unavailable"); return; }
+    try {
+      const lt = await m.listTools("ElevenLabs");
+      const srv = lt.servers?.[0];
+      if (!srv) setChip("chip-el", "warn", "ElevenLabs not connected");
+      else if (srv.authStatus === "needs_reauth") setChip("chip-el", "warn", "ElevenLabs: reconnect");
+      else setChip("chip-el", "ok", "ElevenLabs");
+    } catch { setChip("chip-el", "warn", "ElevenLabs: allow access"); }
+  });
+  use("db").then((d) => {
+    db = d;
+    if (!d) { setChip("chip-db", "bad", "No database · not saving"); $("joblist").innerHTML = `<div class="empty">Sign in to claude.ai to keep your shorts. This draft isn't saved.</div>`; saveState("Not saved"); return; }
+    const timer = setTimeout(() => setChip("chip-db", "warn", "Database slow"), 10000);
+    let first = true;
+    d.collection("jobs").onSnapshot((snap) => {
+      clearTimeout(timer); setChip("chip-db", "ok", "Jobs database");
+      jobs = new Map(snap.docs.map((doc) => [doc.id, { ...doc.data(), id: doc.id }]));
+      if (first) {
+        first = false;
+        const latest = [...jobs.values()].sort((a, b) => String(b.updatedAt || "").localeCompare(String(a.updatedAt || "")))[0];
+        if (latest) load(JSON.parse(JSON.stringify(latest)));
+        else saveState("New draft · saves when you edit");
+      } else if (!dirty && jobs.has(job.id)) {
+        const remote = jobs.get(job.id);
+        if (JSON.stringify(remote) !== JSON.stringify(job)) { const keepT = t; load(JSON.parse(JSON.stringify(remote))); seek(keepT); }
+      }
+      renderJobs();
+    }, (e) => { clearTimeout(timer); setChip("chip-db", "bad", e?.code === "not_granted" ? "Database: no access" : "Database error"); });
+  });
+})();
+</script>
