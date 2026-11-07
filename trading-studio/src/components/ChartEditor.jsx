@@ -275,11 +275,28 @@ export function VideoStylePanel({ value = {}, onChange, title = 'Video style', d
 
 function CandleColor({ value, fallback, onChange }) {
   const shown = value || fallback || '#000000';
+  const [draft, setDraft] = useState(value || '');
+  const [bad, setBad] = useState(false);
+  React.useEffect(() => { setDraft(value || ''); setBad(false); }, [value]);
+  // Accepts #rgb or #rrggbb, with or without the "#".
+  const commit = (raw) => {
+    const t = raw.trim().replace(/^#?/, '#').toLowerCase();
+    if (raw.trim() === '') { setBad(false); return; }
+    if (/^#([0-9a-f]{3}|[0-9a-f]{6})$/.test(t)) {
+      const full = t.length === 4 ? `#${t[1]}${t[1]}${t[2]}${t[2]}${t[3]}${t[3]}` : t;
+      setBad(false);
+      onChange(full);
+    } else setBad(true);
+  };
   return (
     <div className="candle-color">
-      <input type="color" value={shown} onChange={(e) => onChange(e.target.value)} aria-label="Color" />
-      <span className="mono small">{value ? shown : 'body'}</span>
+      <input type="color" value={shown} onChange={(e) => onChange(e.target.value)} aria-label="Pick color" />
+      <input className={`input mono hex-input ${bad ? 'bad' : ''}`} value={draft} placeholder={value ? '' : fallback ? 'body' : '#000000'}
+        onChange={(e) => { setDraft(e.target.value); const t = e.target.value.trim().replace(/^#?/, '#'); if (/^#([0-9a-f]{6})$/i.test(t)) { setBad(false); onChange(t.toLowerCase()); } }}
+        onBlur={(e) => commit(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && commit(e.currentTarget.value)}
+        aria-label="Color code" spellCheck={false} maxLength={7} title="Type a color code like #089981" />
       {value && fallback !== undefined && <button type="button" className="link small" onClick={() => onChange(null)}>Same as body</button>}
+      {bad && <span className="small bad-text">Use a code like #089981</span>}
     </div>
   );
 }
