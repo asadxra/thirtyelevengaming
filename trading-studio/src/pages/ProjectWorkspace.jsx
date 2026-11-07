@@ -11,6 +11,7 @@ import CaptionsEditor from '../components/CaptionsEditor.jsx';
 import VisualsEditor from '../components/VisualsEditor.jsx';
 import ChartEditor from '../components/ChartEditor.jsx';
 import ExamplesPanel from '../components/ExamplesPanel.jsx';
+import ThumbnailPanel from '../components/ThumbnailPanel.jsx';
 import { CONCEPTS, CATEGORIES, conceptById } from '../../shared/concepts.js';
 import TimelinePlayer from '../components/TimelinePlayer.jsx';
 import { useProjectActions } from './Projects.jsx';
@@ -27,6 +28,7 @@ const TABS = [
   { id: 'captions', label: 'Captions', icon: 'type' },
   { id: 'editor', label: 'Video editor', icon: 'edit' },
   { id: 'visuals', label: 'Overlays', icon: 'layers' },
+  { id: 'thumbnail', label: 'Thumbnail', icon: 'image' },
   { id: 'generate', label: 'Generate', icon: 'zap' },
 ];
 
@@ -69,6 +71,7 @@ export default function ProjectWorkspace({ id, tab = 'overview' }) {
       <div className="tab-body">
         {tab === 'overview' && <Overview project={project} update={update} character={character} onTab={setTab} />}
         {tab === 'examples' && <ExamplesPanel project={project} update={update} />}
+        {tab === 'thumbnail' && <ThumbnailPanel project={project} update={update} />}
         {tab === 'script' && <ScriptEditor project={project} update={update} />}
         {tab === 'editor' && <ChartEditor project={project} update={update} character={character} />}
         {tab === 'scenes' && <SceneBuilder project={project} update={update} character={character} />}

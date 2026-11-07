@@ -288,3 +288,23 @@ export function defaultVisualProps(type) {
   };
   return { ...base, ...(tweaks[type] || {}) };
 }
+
+// ---------- Video look ----------
+// Light theme is the default for videos: clean white chart, dark text.
+export const LIGHT_VIDEO_PALETTE = {
+  bg: '#ffffff', grid: '#eef1f5', text: '#5b6475',
+  bull: '#089981', bear: '#f23645',
+  fvg: '#7c3aed', ifvg: '#db2777', liquidity: '#d97706', ob: '#0284c7', breaker: '#ea580c',
+  structure: '#0f172a', entry: '#2563eb', stop: '#dc2626', target: '#16a34a', fib: '#9333ea',
+  session: '#94a3b8', info: '#475569', highlight: '#ca8a04', ote: '#9333ea', premium: '#dc2626', discount: '#16a34a',
+};
+
+export const CANDLE_PRESETS = [
+  { id: 'tv', label: 'TradingView', bull: '#089981', bear: '#f23645' },
+  { id: 'classic', label: 'Green / Red', bull: '#16a34a', bear: '#dc2626' },
+  { id: 'mono', label: 'Black / White', bull: '#ffffff', bear: '#111827', bullWick: '#111827', bearWick: '#111827', bullBorder: '#111827', bearBorder: '#111827' },
+  { id: 'blue', label: 'Blue / Orange', bull: '#2563eb', bear: '#f97316' },
+  { id: 'purple', label: 'Teal / Purple', bull: '#14b8a6', bear: '#8b5cf6' },
+];
+
+export const DEFAULT_VIDEO_STYLE = { theme: 'light', focusMode: 'one', bull: null, bear: null };

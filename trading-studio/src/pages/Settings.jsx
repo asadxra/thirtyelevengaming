@@ -7,6 +7,7 @@ import { Icon } from '../components/Icon.jsx';
 import { ElevenConnect, useEleven } from '../components/VoicePanel.jsx';
 import { DEFAULT_THEME, DEFAULT_CHART_THEME, FONT_CHOICES, FORMATS } from '../../shared/defaults.js';
 import CandleChart from '../components/CandleChart.jsx';
+import { VideoStylePanel } from '../components/ChartEditor.jsx';
 import { exampleBars } from '../../shared/examples.js';
 
 const TABS = [
@@ -74,6 +75,7 @@ function Appearance() {
         <Slider label="Panel transparency" value={t.panelOpacity} min={0.15} max={1} step={0.01} onChange={(v) => set({ panelOpacity: v })} format={(v) => `${Math.round(v * 100)}% opaque`} />
         <Slider label="Glow intensity" value={t.glow} min={0} max={1.5} step={0.05} onChange={(v) => set({ glow: v })} format={(v) => v.toFixed(2)} />
       </Panel>
+      <VideoStylePanel defaults title="Video defaults" value={store.settings.videoStyle} onChange={(patch) => store.updateSettings({ videoStyle: patch })} />
       <ChartColors />
       <Panel title="Shape, type & motion">
         <Slider label="Border radius" value={t.radius} min={0} max={28} step={1} onChange={(v) => set({ radius: v })} format={(v) => `${v}px`} />
@@ -328,7 +330,7 @@ function ChartColors() {
   const ex = store.projects.flatMap((p) => p.examples || []).find((e) => e.kind === 'historical');
   const bars = React.useMemo(() => exampleBars(ex), [ex]);
   return (
-    <Panel title="Chart colors" actions={<Button size="sm" variant="ghost" icon="refresh" onClick={() => store.updateSettings({ theme: { chart: { ...DEFAULT_CHART_THEME } } })}>Reset</Button>}>
+    <Panel title="Dashboard chart colors" subtitle="Charts inside the studio. Video colors are set under Video defaults." actions={<Button size="sm" variant="ghost" icon="refresh" onClick={() => store.updateSettings({ theme: { chart: { ...DEFAULT_CHART_THEME } } })}>Reset</Button>}>
       {ex && <div className="chart-preview"><CandleChart bars={bars} focus={ex.range} annotations={ex.annotations} width={640} height={300} compact /></div>}
       <div className="grid-2">
         {CHART_KEYS.map(([k, label]) => <ColorInput key={k} label={label} value={chart[k]} onChange={(v) => store.updateSettings({ theme: { chart: { [k]: v } } })} />)}

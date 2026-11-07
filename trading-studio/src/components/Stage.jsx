@@ -3,7 +3,38 @@
 // so layout, character placement and caption sizes match the selected format.
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import VisualElement from './VisualElement.jsx';
-import { FORMATS } from '../../shared/defaults.js';
+import { FORMATS, LIGHT_VIDEO_PALETTE, DEFAULT_CHART_THEME, CANDLE_PRESETS, DEFAULT_VIDEO_STYLE } from '../../shared/defaults.js';
+import { useStore } from '../lib/store.jsx';
+
+export const CANDLE_KEYS = ['bull', 'bear', 'bullWick', 'bearWick', 'bullBorder', 'bearBorder'];
+
+// Resolved look of a video: light/dark theme, candle colors, one-idea-at-a-time mode.
+export function videoStyle(project, settings) {
+  const vs = { ...DEFAULT_VIDEO_STYLE, ...(settings?.videoStyle || {}), ...(project?.videoStyle || {}) };
+  const base = vs.theme === 'light' ? LIGHT_VIDEO_PALETTE : { ...DEFAULT_CHART_THEME, ...(settings?.theme?.chart || {}) };
+  const preset = CANDLE_PRESETS.find((p) => p.id === vs.candlePreset);
+  const palette = { ...base };
+  if (preset) for (const k of CANDLE_KEYS) palette[k] = preset[k] || null;
+  for (const k of CANDLE_KEYS) if (vs[k]) palette[k] = vs[k];
+  return { vs, palette };
+}
+
+// Which annotations are "current" vs. earlier context, so each scene explains one thing.
+function focusSets(scenes, idx, exId, mode) {
+  const { shown, fresh } = revealState(scenes, idx);
+  if (mode === 'build') return { visible: shown, fresh, faded: null };
+  let current = new Set(fresh);
+  let animate = true;
+  if (!current.size) {
+    for (let k = idx - 1; k >= 0; k--) {
+      const sc = scenes[k];
+      if (sc.chart?.exampleId !== exId) break;
+      if ((sc.chart.reveal || []).length) { current = new Set(sc.chart.reveal); animate = false; break; }
+    }
+  }
+  const faded = new Set([...shown].filter((id) => !current.has(id)));
+  return { visible: animate ? new Set() : current, fresh: animate ? current : new Set(), faded };
+}
 import CandleChart from './CandleChart.jsx';
 import { exampleBars, revealState, sourceLabel } from '../../shared/examples.js';
 
@@ -54,7 +85,7 @@ function BottomLabels({ labels }) {
   );
 }
 
-function ChartLayer({ project, scene, sceneIdx, time, format, W, H, selectedAnn, onSelectAnn }) {
+function ChartLayer({ project, scene, sceneIdx, time, format, W, H, selectedAnn, onSelectAnn, look }) {
   const ex = (project.examples || []).find((e) => e.id === scene.chart?.exampleId);
   const bars = useMemo(() => exampleBars(ex), [ex]);
   if (!ex) return null;
@@ -78,12 +109,12 @@ function ChartLayer({ project, scene, sceneIdx, time, format, W, H, selectedAnn,
     const k = ease(Math.min(1, local / 0.9));
     focus = [prev.chart.focus[0] + (target[0] - prev.chart.focus[0]) * k, prev.chart.focus[1] + (target[1] - prev.chart.focus[1]) * k];
   }
-  const { shown, fresh } = revealState(scenes, sceneIdx);
+  const { visible, fresh, faded } = focusSets(scenes, sceneIdx, ex.id, look.vs.focusMode);
   const progress = Math.min(1, local / (0.7 + 0.35 * fresh.size));
   const date = ex.keyLabel?.split(' ')[0] || '';
   return (
     <div className="stage-chart" style={style}>
-      <CandleChart bars={bars} focus={focus} annotations={ex.annotations} visible={shown} fresh={fresh} progress={progress}
+      <CandleChart bars={bars} focus={focus} annotations={ex.annotations} visible={visible} fresh={fresh} faded={faded} progress={progress} palette={look.palette} labelScale={format === 'shorts' ? 1.15 : 1.1}
         width={Math.round(bw * (format === 'shorts' ? 1 : 1.2))} height={Math.round(bh * (format === 'shorts' ? 1 : 1.2))} showVolume={format === 'landscape'} overlays={ex.overlays || []}
         selectedId={selectedAnn} onSelect={onSelectAnn} compact={format === 'shorts'} />
       <div className="stage-source">{sourceLabel(ex)}{date ? ` · ${date}` : ''}</div>
@@ -113,9 +144,12 @@ export const LAYOUT = {
   landscape: { charX: 30, charY: 56, charH: 70 },
 };
 
-export function CaptionLine({ caption, time, style, format = 'shorts' }) {
+export function CaptionLine({ caption, time, style, format = 'shorts', light = false }) {
   if (!caption) return null;
-  const s = style;
+  // Light videos: swap the default white-on-black caption for dark text with a white edge.
+  const s = light && (style.color || '').toLowerCase() === '#ffffff'
+    ? { ...style, color: '#0f172a', outlineColor: (style.outlineColor || '').toLowerCase() === '#000000' ? '#ffffff' : style.outlineColor, shadow: 0 }
+    : style;
   const words = caption.words?.length ? caption.words : caption.text.split(/\s+/).map((w) => ({ w, start: caption.start, end: caption.end }));
   const pos = { upper: '14%', middle: '46%', lower: format === 'shorts' ? '72%' : '80%' }[s.position] || '72%';
   const base = {
@@ -164,6 +198,9 @@ export function CaptionLine({ caption, time, style, format = 'shorts' }) {
 
 export default function Stage({ project, scene, character, time = 0, showCaptions = true, captionsOverride, visuals, selectedVisualId, onSelectVisual, animate = true, className = '', showSafe = false, selectedAnn, onSelectAnn }) {
   const fmt = FORMATS[project?.format] || FORMATS.shorts;
+  const store = useStore();
+  const look = videoStyle(project, store?.settings);
+  const light = look.vs.theme === 'light';
   const W = fmt.width / 3;
   const H = fmt.height / 3;
   const [ref, scale] = useFitScale(W, H);
@@ -177,15 +214,15 @@ export default function Stage({ project, scene, character, time = 0, showCaption
 
   return (
     <div className={`stage-fit ${className}`} ref={ref} style={{ aspectRatio: `${fmt.width} / ${fmt.height}` }}>
-      <div className={`stage stage-${fmt.id}`} style={{ width: W, height: H, transform: `scale(${scale})` }}>
+      <div className={`stage stage-${fmt.id} ${light ? 'stage-light' : ''}`} style={{ width: W, height: H, transform: `scale(${scale})` }}>
         <div className={`stage-bg bg-${scene?.bgStyle || 'terminal'}`} />
         {scene?.transitionFx && scene.transitionFx !== 'none' && <div key={scene.id} className={`stage-fx fx-${scene.transitionFx}`} />}
         {layers.map((v) => (
           <VisualElement key={v.id} type={v.type} props={v.props} selected={v.id === selectedVisualId} onClick={onSelectVisual ? (e) => { e.stopPropagation(); onSelectVisual(v.id); } : undefined} />
         ))}
         {scene && !scene.chart && <div className="stage-title"><span>{project?.title}</span></div>}
-        {scene?.chart && <div style={{ position: 'absolute', inset: 0, zIndex: 2 }}><ChartLayer project={project} scene={scene} sceneIdx={sceneIdx} time={time} format={fmt.id} W={W} H={H} selectedAnn={selectedAnn} onSelectAnn={onSelectAnn} /></div>}
-        {caption && <div style={{ position: 'absolute', inset: 0, zIndex: 20, pointerEvents: 'none' }}><CaptionLine caption={caption} time={time} style={project.captions.style} format={fmt.id} /></div>}
+        {scene?.chart && <div style={{ position: 'absolute', inset: 0, zIndex: 2 }}><ChartLayer project={project} scene={scene} sceneIdx={sceneIdx} time={time} format={fmt.id} W={W} H={H} selectedAnn={selectedAnn} onSelectAnn={onSelectAnn} look={look} /></div>}
+        {caption && <div style={{ position: 'absolute', inset: 0, zIndex: 20, pointerEvents: 'none' }}><CaptionLine caption={caption} time={time} style={project.captions.style} format={fmt.id} light={light} /></div>}
         {showSafe && <div className="safe-area" />}
         <div style={{ position: 'absolute', inset: 0, zIndex: 22, pointerEvents: 'none' }}><BottomLabels labels={activeBottomLabels(project, scene, time)} /></div>
         <div className="stage-vignette" />

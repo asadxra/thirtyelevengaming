@@ -34,6 +34,14 @@ export const api = {
       extra: { file, tags },
       headers: { 'Content-Type': file.type || 'application/octet-stream', 'X-Filename': encodeURIComponent(file.name), 'X-Tags': tags.join(',') },
     }),
+  saveFile: async (blob, filename) => {
+    if (STANDALONE) return (await import('./localServer.js')).saveFile(blob, filename);
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = filename; a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+    return null;
+  },
   exportBackup: async () => {
     if (STANDALONE) return (await import('./localServer.js')).exportBackup();
     window.location.href = '/api/export';

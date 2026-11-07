@@ -2,7 +2,8 @@ import React, { useMemo, useState } from 'react';
 import { useStore } from '../lib/store.jsx';
 import { Button, Panel, Select, Slider, Toggle, Chips, Input, ColorInput, Badge, Empty, IconButton } from './ui.jsx';
 import { Icon } from './Icon.jsx';
-import Stage, { DEFAULT_LAYOUT } from './Stage.jsx';
+import Stage, { DEFAULT_LAYOUT, videoStyle } from './Stage.jsx';
+import { CANDLE_PRESETS } from '../../shared/defaults.js';
 import { SECTION_LABELS, ANIMATIONS, EXPRESSIONS } from '../../shared/defaults.js';
 import { exampleBars, sourceLabel } from '../../shared/examples.js';
 import { fmtTime } from '../../shared/scenes.js';
@@ -152,6 +153,7 @@ export default function ChartEditor({ project, update, character }) {
         )}
 
 
+        <VideoStylePanel value={project.videoStyle} onChange={(patch) => update((p) => ({ videoStyle: { ...(p.videoStyle || {}), ...patch } }))} />
         <LayoutPanel project={project} scene={scene} update={update} />
         <LabelsPanel project={project} scene={scene} update={update} />
 
@@ -227,5 +229,57 @@ function LabelsPanel({ project, scene, update }) {
         </div>
       ))}
     </Panel>
+  );
+}
+
+// Shared by the video editor (per video) and Settings (defaults for new videos).
+export function VideoStylePanel({ value = {}, onChange, title = 'Video style', defaults = false }) {
+  const store = useStore();
+  const look = videoStyle({ videoStyle: value }, defaults ? {} : store.settings);
+  const vs = look.vs;
+  return (
+    <Panel title={title} subtitle={defaults ? 'Used by every video unless the video sets its own' : 'This video only'}>
+      <div className="field"><span className="field-label">Theme</span>
+        <Chips options={[{ value: 'light', label: 'Light' }, { value: 'dark', label: 'Dark' }]} value={vs.theme} onChange={(v) => onChange({ theme: v })} /></div>
+      <div className="field"><span className="field-label">Explanation style</span>
+        <Chips options={[{ value: 'one', label: 'One idea at a time' }, { value: 'build', label: 'Build up everything' }]} value={vs.focusMode} onChange={(v) => onChange({ focusMode: v })} />
+        <span className="field-hint">{vs.focusMode === 'one' ? 'Only the current step’s marks are shown in full; earlier marks fade into the background.' : 'Marks stay fully visible as the explanation builds.'}</span></div>
+      <div className="field"><span className="field-label">Candle colors</span>
+        <div className="candle-presets">
+          {CANDLE_PRESETS.map((p) => (
+            <button key={p.id} type="button" className={`candle-preset ${vs.candlePreset === p.id && !vs.bull && !vs.bear && !vs.bullWick && !vs.bearWick && !vs.bullBorder && !vs.bearBorder ? 'on' : ''}`} onClick={() => onChange({ candlePreset: p.id, bull: null, bear: null, bullWick: null, bearWick: null, bullBorder: null, bearBorder: null })}>
+              <i style={{ background: p.bull, borderColor: p.outline ? '#111827' : p.bull }} /><i style={{ background: p.bear }} />
+              <span>{p.label}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="candle-colors">
+        <span />
+        <span className="field-label">Bullish</span>
+        <span className="field-label">Bearish</span>
+        <span className="field-label">Body</span>
+        <CandleColor value={look.palette.bull} onChange={(v) => onChange({ bull: v })} />
+        <CandleColor value={look.palette.bear} onChange={(v) => onChange({ bear: v })} />
+        <span className="field-label">Wick</span>
+        <CandleColor value={look.palette.bullWick} fallback={look.palette.bull} onChange={(v) => onChange({ bullWick: v })} />
+        <CandleColor value={look.palette.bearWick} fallback={look.palette.bear} onChange={(v) => onChange({ bearWick: v })} />
+        <span className="field-label">Border</span>
+        <CandleColor value={look.palette.bullBorder} fallback={look.palette.bull} onChange={(v) => onChange({ bullBorder: v })} />
+        <CandleColor value={look.palette.bearBorder} fallback={look.palette.bear} onChange={(v) => onChange({ bearBorder: v })} />
+      </div>
+      <span className="field-hint">Wick and border follow the body color until you change them. “Same as body” resets one.</span>
+    </Panel>
+  );
+}
+
+function CandleColor({ value, fallback, onChange }) {
+  const shown = value || fallback || '#000000';
+  return (
+    <div className="candle-color">
+      <input type="color" value={shown} onChange={(e) => onChange(e.target.value)} aria-label="Color" />
+      <span className="mono small">{value ? shown : 'body'}</span>
+      {value && fallback !== undefined && <button type="button" className="link small" onClick={() => onChange(null)}>Same as body</button>}
+    </div>
   );
 }

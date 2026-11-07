@@ -4,13 +4,17 @@
 import React, { useId, useMemo, useRef } from 'react';
 import { ema, fmtPrice, formatBarTime, sessionBreaks, nyParts } from '../../shared/market.js';
 
-const ROLE_VAR = (role) => `var(--c-${role || 'info'}, var(--c-info))`;
 
 export default function CandleChart({
   bars = [], focus, annotations = [], visible = null, fresh = null, progress = 1, selectedId, onSelect,
   width = 960, height = 540, interactive = false, onFocusChange, showSessions = true, showVolume = true,
   overlays = [], replayTo = null, sourceLabel = '', compact = false, className = '', axis = true,
+  palette = null, faded = null, labelScale = 1, embed = null,
 }) {
+  // Explicit palette (videos, thumbnails) or theme CSS variables (dashboard).
+  const C = (k) => (palette ? palette[k] || palette.info : `var(--c-${k}, var(--c-info))`);
+  const ROLE_VAR = (role) => C(role || 'info');
+  const pillQueue = [];
   const svgRef = useRef(null);
   const clipId = `clip${useId().replace(/:/g, '')}`;
   const drag = useRef(null);
@@ -105,18 +109,34 @@ export default function CandleChart({
     return Math.max(0, Math.min(1, (progress - order * slot * 0.6) / (slot * 1.4 || 1)));
   };
   const freshList = annotations.filter((an) => isFresh(an.id));
-  const shown = annotations.filter((an) => !visible || visible.has(an.id) || isFresh(an.id));
+  const shown = annotations.filter((an) => !visible || visible.has(an.id) || isFresh(an.id) || (faded && faded.has(an.id)));
 
+  // Labels are queued and laid out at the end so they never overlap each other.
   const pill = (tx, ty, text, color, anchor = 'start', key) => {
-    const w = text.length * (compact ? 5.4 : 6.6) + 12;
-    const h = compact ? 14 : 18;
+    const fs = (compact ? 9 : 11) * labelScale;
+    const w = text.length * fs * 0.6 + 12 * labelScale;
+    const h = fs + 8 * labelScale;
     const x0 = anchor === 'end' ? tx - w : anchor === 'middle' ? tx - w / 2 : tx;
-    return (
-      <g key={key} className="pill">
-        <rect x={x0} y={ty - h / 2} width={w} height={h} rx={4} fill="var(--c-bg)" stroke={color} strokeWidth="1" opacity=".92" />
-        <text x={x0 + 6} y={ty + (compact ? 3.5 : 4.5)} fill={color} fontSize={compact ? 9 : 11} fontWeight="600">{text}</text>
-      </g>
-    );
+    pillQueue.push({ key: key || `${text}${tx}${ty}`, x: x0, y: ty - h / 2, w, h, fs, text, color });
+    return null;
+  };
+
+  const layoutPills = () => {
+    const placed = [];
+    const minX = padL + 2, maxX = padL + plotW - 2, minY = padT + 2, maxY = padT + plotH - 2;
+    const hit = (r) => placed.some((q) => r.x < q.x + q.w + 3 && r.x + r.w + 3 > q.x && r.y < q.y + q.h + 2 && r.y + r.h + 2 > q.y);
+    for (const p0 of [...pillQueue].sort((u, v) => u.y - v.y)) {
+      const r = { ...p0, x: Math.min(Math.max(p0.x, minX), maxX - p0.w) };
+      const offs = [0];
+      for (let k = 1; k <= 8; k++) offs.push(k * (r.h + 3), -k * (r.h + 3));
+      let done = null;
+      for (const o of offs) {
+        const cand = { ...r, y: Math.min(Math.max(r.y + o, minY), maxY - r.h) };
+        if (!hit(cand)) { done = cand; break; }
+      }
+      placed.push(done || r);
+    }
+    return placed;
   };
 
   const renderAnn = (an) => {
@@ -126,7 +146,9 @@ export default function CandleChart({
     const color = an.color || ROLE_VAR(an.role);
     const sel = selectedId === an.id;
     const common = { 'data-ann': an.id, onClick: onSelect ? (e) => { e.stopPropagation(); onSelect(an.id); } : undefined, style: { cursor: onSelect ? 'pointer' : 'default' }, className: `ann ann-${an.type} ${sel ? 'sel' : ''}` };
-    const op = an.opacity ?? 1;
+    const isFaded = faded && faded.has(an.id) && !isFresh(an.id);
+    const op = (an.opacity ?? 1) * (isFaded ? 0.22 : 1);
+    if (isFaded) an = { ...an, text: '' };
     switch (an.type) {
       case 'highlight': {
         const x1 = x(an.i1) - stepW * 0.55, x2 = x(an.i2) + stepW * 0.55;
@@ -160,7 +182,7 @@ export default function CandleChart({
           <g key={an.id} {...common} opacity={op}>
             <line x1={x1} x2={x2} y1={yy} y2={yy} stroke={color} strokeWidth={sel ? 3 : an.role === 'entry' || an.role === 'stop' || an.role === 'target' ? 1.8 : 1.4} strokeDasharray={an.dashed ? '6 5' : undefined} />
             <line x1={x1} x2={x2} y1={yy} y2={yy} stroke="transparent" strokeWidth="10" />
-            {an.text && p > 0.8 && pill(x2 + 4, yy, an.text, color)}
+            {an.text && p > 0.8 && pill(x2 - 4, yy - 11 * labelScale, an.text, color, 'end')}
           </g>
         );
       }
@@ -219,26 +241,26 @@ export default function CandleChart({
   };
 
   return (
-    <svg ref={svgRef} viewBox={`0 0 ${width} ${height}`} className={`candle-chart ${interactive ? 'interactive' : ''} ${className}`}
+    <svg ref={svgRef} viewBox={`0 0 ${width} ${height}`} {...(embed || {})} className={embed ? undefined : `candle-chart ${interactive ? 'interactive' : ''} ${className}`}
       onWheel={onWheel} onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerLeave={onUp}
       onClick={() => onSelect?.(null)} role="img" aria-label="Candlestick chart">
-      <rect x="0" y="0" width={width} height={height} fill="var(--c-bg)" />
+      <rect x="0" y="0" width={width} height={height} fill={C('bg')} />
       <defs><clipPath id={clipId}><rect x={padL} y={padT} width={plotW} height={plotH} /></clipPath></defs>
       {/* grid */}
-      {ticks.map((p) => <line key={p} x1={padL} x2={padL + plotW} y1={y(p)} y2={y(p)} stroke="var(--c-grid)" strokeWidth="1" />)}
-      {timeTicks.map((i) => <line key={i} x1={x(i)} x2={x(i)} y1={padT} y2={padT + plotH} stroke="var(--c-grid)" strokeWidth="1" opacity=".6" />)}
+      {ticks.map((p) => <line key={p} x1={padL} x2={padL + plotW} y1={y(p)} y2={y(p)} stroke={C('grid')} strokeWidth="1" />)}
+      {timeTicks.map((i) => <line key={i} x1={x(i)} x2={x(i)} y1={padT} y2={padT + plotH} stroke={C('grid')} strokeWidth="1" opacity=".6" />)}
       <g clipPath={`url(#${clipId})`}>
         {breaks.map((s) => (
           <g key={s.index}>
-            <line x1={x(s.index) - stepW / 2} x2={x(s.index) - stepW / 2} y1={padT} y2={padT + plotH} stroke="var(--c-session)" strokeDasharray="2 5" />
-            {!compact && <text x={x(s.index) - stepW / 2 + 4} y={padT + plotH - 6} fill="var(--c-session)" fontSize="10">{s.label}</text>}
+            <line x1={x(s.index) - stepW / 2} x2={x(s.index) - stepW / 2} y1={padT} y2={padT + plotH} stroke={C('session')} strokeDasharray="2 5" />
+            {!compact && <text x={x(s.index) - stepW / 2 + 4} y={padT + plotH - 6} fill={C('session')} fontSize="10">{s.label}</text>}
           </g>
         ))}
         {/* volume */}
         {showVolume && !compact && bars.slice(a, lastShown + 1).map((q, k) => {
           const i = a + k;
           const vh = ((q.v || 0) / vmax) * plotH * 0.16;
-          return <rect key={`v${i}`} x={x(i) - stepW * 0.35} y={padT + plotH - vh} width={Math.max(1, stepW * 0.7)} height={vh} fill={q.c >= q.o ? 'var(--c-bull)' : 'var(--c-bear)'} opacity=".18" />;
+          return <rect key={`v${i}`} x={x(i) - stepW * 0.35} y={padT + plotH - vh} width={Math.max(1, stepW * 0.7)} height={vh} fill={q.c >= q.o ? C('bull') : C('bear')} opacity=".18" />;
         })}
         {/* annotations behind candles: highlights & boxes */}
         {shown.filter((an) => an.type === 'highlight' || an.type === 'box').map(renderAnn)}
@@ -246,37 +268,43 @@ export default function CandleChart({
         {bars.slice(a, lastShown + 1).map((q, k) => {
           const i = a + k;
           const up = q.c >= q.o;
-          const col = up ? 'var(--c-bull)' : 'var(--c-bear)';
+          const col = up ? C('bull') : C('bear');
           const bw = Math.max(1, stepW * 0.68);
           const yo = y(Math.max(q.o, q.c)), yc = y(Math.min(q.o, q.c));
           return (
             <g key={i}>
-              <line x1={x(i)} x2={x(i)} y1={y(q.h)} y2={y(q.l)} stroke={col} strokeWidth={Math.max(1, stepW * 0.1)} />
-              <rect x={x(i) - bw / 2} y={yo} width={bw} height={Math.max(1, yc - yo)} fill={col} />
+              <line x1={x(i)} x2={x(i)} y1={y(q.h)} y2={y(q.l)} stroke={(up ? palette?.bullWick : palette?.bearWick) || col} strokeWidth={Math.max(1, stepW * 0.1)} />
+              <rect x={x(i) - bw / 2} y={yo} width={bw} height={Math.max(1, yc - yo)} fill={col} stroke={(up ? palette?.bullBorder : palette?.bearBorder) || 'none'} strokeWidth={(up ? palette?.bullBorder : palette?.bearBorder) ? Math.max(1, stepW * 0.08) : 0} />
             </g>
           );
         })}
         {emas.ema20 && <polyline fill="none" stroke="#f59e0b" strokeWidth="1.5" points={emas.ema20.slice(a, lastShown + 1).map((v, k) => `${x(a + k)},${y(v)}`).join(' ')} />}
         {emas.ema50 && <polyline fill="none" stroke="#60a5fa" strokeWidth="1.5" points={emas.ema50.slice(a, lastShown + 1).map((v, k) => `${x(a + k)},${y(v)}`).join(' ')} />}
         {shown.filter((an) => an.type !== 'highlight' && an.type !== 'box').map(renderAnn)}
+        {layoutPills().map((q) => (
+          <g key={q.key} className="pill">
+            <rect x={q.x} y={q.y} width={q.w} height={q.h} rx={4 * labelScale} fill={C('bg')} stroke={q.color} strokeWidth="1" opacity=".95" />
+            <text x={q.x + 6 * labelScale} y={q.y + q.h / 2 + q.fs * 0.36} fill={q.color} fontSize={q.fs} fontWeight="600">{q.text}</text>
+          </g>
+        ))}
       </g>
       {/* axes */}
       {axis && (
-        <g fontSize={compact ? 9 : 11} fill="var(--c-text)" fontFamily="'JetBrains Mono', ui-monospace, monospace">
+        <g fontSize={compact ? 9 : 11} fill={C('text')} fontFamily="'JetBrains Mono', ui-monospace, monospace">
           {ticks.map((p) => <text key={p} x={padL + plotW + 6} y={y(p) + 4}>{fmtPrice(p, ref)}</text>)}
           {timeTicks.map((i) => bars[i] && (
             <text key={i} x={x(i)} y={height - 8} textAnchor="middle">{(() => { const p = nyParts(bars[i].t); return compact ? `${String(p.h).padStart(2, '0')}:${String(p.m).padStart(2, '0')}` : `${p.mo}/${p.d} ${String(p.h).padStart(2, '0')}:${String(p.m).padStart(2, '0')}`; })()}</text>
           ))}
           {bars[lastShown] && (
             <g>
-              <rect x={padL + plotW + 1} y={y(bars[lastShown].c) - 9} width={padR - 2} height={18} rx="3" fill={bars[lastShown].c >= bars[lastShown].o ? 'var(--c-bull)' : 'var(--c-bear)'} />
+              <rect x={padL + plotW + 1} y={y(bars[lastShown].c) - 9} width={padR - 2} height={18} rx="3" fill={bars[lastShown].c >= bars[lastShown].o ? C('bull') : C('bear')} />
               <text x={padL + plotW + 6} y={y(bars[lastShown].c) + 4} fill="#fff">{fmtPrice(bars[lastShown].c, ref)}</text>
             </g>
           )}
         </g>
       )}
-      {sourceLabel && <text x={padL + 6} y={padT + 14} fill="var(--c-text)" fontSize={compact ? 9 : 11} opacity=".85">{sourceLabel}</text>}
-      {!compact && bars[a] && axis && <text x={padL + plotW - 4} y={padT + 14} textAnchor="end" fill="var(--c-text)" fontSize="11" opacity=".7">{formatBarTime(bars[a].t)} → {formatBarTime(bars[lastShown].t, false)}</text>}
+      {sourceLabel && <text x={padL + 6} y={padT + 14} fill={C('text')} fontSize={compact ? 9 : 11} opacity=".85">{sourceLabel}</text>}
+      {!compact && bars[a] && axis && <text x={padL + plotW - 4} y={padT + 14} textAnchor="end" fill={C('text')} fontSize="11" opacity=".7">{formatBarTime(bars[a].t)} → {formatBarTime(bars[lastShown].t, false)}</text>}
     </svg>
   );
 }

@@ -5,8 +5,19 @@ import { scriptStatus, voiceStatus, generationStatus, projectDuration, STATUS_LA
 import { fmtShort } from '../../shared/scenes.js';
 import { FORMATS } from '../../shared/defaults.js';
 import { conceptById } from '../../shared/concepts.js';
+import ThumbnailArt from './ThumbnailArt.jsx';
 
-export function Thumbnail({ project, character, compact }) {
+export function Thumbnail({ project }) {
+  return (
+    <div className={`thumb thumb-art-wrap`}>
+      <ThumbnailArt project={project} />
+      <span className="thumb-format">{FORMATS[project.format]?.ratio}</span>
+      {project.archived && <span className="thumb-archived">Archived</span>}
+    </div>
+  );
+}
+
+export function OldThumbnail({ project, character, compact }) {
   const hue = project.thumbnail?.hue ?? 270;
   const firstPose = project.scenes?.[0]?.pose || 'sitting';
   return (

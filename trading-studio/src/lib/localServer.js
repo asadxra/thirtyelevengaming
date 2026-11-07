@@ -292,3 +292,9 @@ export async function exportBackup() {
 export const storageKind = () => backend.kind;
 
 export const mcpCapability = async () => { await ensureReady(); return caps.mcp; };
+
+export async function saveFile(blob, filename) {
+  await ensureReady();
+  if (!caps.downloads) fail('Downloads aren’t available in this view.', 501);
+  await caps.downloads.save({ filename, data: blob });
+}
