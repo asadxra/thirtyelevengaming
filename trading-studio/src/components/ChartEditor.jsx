@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { useStore } from '../lib/store.jsx';
 import { Button, Panel, Select, Slider, Toggle, Chips, Input, ColorInput, Badge, Empty, IconButton } from './ui.jsx';
 import { Icon } from './Icon.jsx';
-import Stage from './Stage.jsx';
+import Stage, { DEFAULT_LAYOUT } from './Stage.jsx';
 import { SECTION_LABELS, ANIMATIONS, EXPRESSIONS } from '../../shared/defaults.js';
 import { exampleBars, sourceLabel } from '../../shared/examples.js';
 import { fmtTime } from '../../shared/scenes.js';
@@ -152,6 +152,9 @@ export default function ChartEditor({ project, update, character }) {
         )}
 
 
+        <LayoutPanel project={project} scene={scene} update={update} />
+        <LabelsPanel project={project} scene={scene} update={update} />
+
         <Panel title="Scene look">
           <Select label="Background" value={scene.bgStyle || 'terminal'} onChange={(e) => patchScene({ bgStyle: e.target.value })} options={BG} />
           <Select label="Transition into this scene" value={scene.transitionFx || 'none'} onChange={(e) => patchScene({ transitionFx: e.target.value })}
@@ -161,5 +164,68 @@ export default function ChartEditor({ project, update, character }) {
         </Panel>
       </div>
     </div>
+  );
+}
+
+function LayoutPanel({ project, scene, update }) {
+  const [scope, setScope] = useState(scene.layout ? 'scene' : 'all');
+  React.useEffect(() => setScope(scene.layout ? 'scene' : 'all'), [scene.id]); // eslint-disable-line react-hooks/exhaustive-deps
+  const L = { ...DEFAULT_LAYOUT, ...(project.layout || {}), ...(scope === 'scene' ? scene.layout || {} : {}) };
+  const set = (patch) => {
+    if (scope === 'all') update((p) => ({ layout: { ...DEFAULT_LAYOUT, ...(p.layout || {}), ...patch } }));
+    else update((p) => ({ scenes: p.scenes.map((s) => (s.id === scene.id ? { ...s, layout: { ...L, ...patch } } : s)) }));
+  };
+  return (
+    <Panel title="Content size & position">
+      <div className="field"><span className="field-label">Apply to</span>
+        <Chips options={[{ value: 'all', label: 'Whole video' }, { value: 'scene', label: 'This scene only' }]} value={scope} onChange={(v) => {
+          setScope(v);
+          if (v === 'all' && scene.layout) update((p) => ({ scenes: p.scenes.map((s) => (s.id === scene.id ? { ...s, layout: undefined } : s)) }));
+        }} />
+      </div>
+      <Slider label="Chart size" value={L.size} min={40} max={106} step={1} onChange={(v) => set({ size: v })} format={(v) => `${v}%`} />
+      <Slider label="Move left / right" value={L.x} min={-30} max={30} step={0.5} onChange={(v) => set({ x: v })} format={(v) => `${v > 0 ? '+' : ''}${v}%`} />
+      <Slider label="Move up / down" value={L.y} min={-20} max={30} step={0.5} onChange={(v) => set({ y: v })} format={(v) => `${v > 0 ? '+' : ''}${v}%`} />
+      <Button size="sm" variant="ghost" icon="refresh" onClick={() => set({ ...DEFAULT_LAYOUT })}>Reset size & position</Button>
+      {scope === 'scene' && <p className="small muted">This scene overrides the whole-video layout. Switch back to “Whole video” to remove the override.</p>}
+    </Panel>
+  );
+}
+
+const LABEL_STYLES = [{ value: 'bar', label: 'Bar' }, { value: 'pill', label: 'Pill' }, { value: 'plain', label: 'Plain text' }];
+
+function LabelsPanel({ project, scene, update }) {
+  const labels = project.bottomLabels || [];
+  const set = (id, patch) => update((p) => ({ bottomLabels: (p.bottomLabels || []).map((l) => (l.id === id ? { ...l, ...patch } : l)) }));
+  const add = () => update((p) => ({ bottomLabels: [...(p.bottomLabels || []), { id: `bl_${Date.now().toString(36)}`, text: 'New label', style: 'bar', align: 'left', size: 28, color: '#ffffff', bg: 'rgba(0,0,0,.65)', accent: '#a855f7', scope: 'all', visible: true }] }));
+  return (
+    <Panel title="Bottom labels" subtitle="Text shown along the bottom of the video" actions={<Button size="sm" icon="plus" onClick={add}>Add label</Button>}>
+      {!labels.length && <p className="small muted">No labels yet. Add one for your channel name, the instrument and date, or a risk disclaimer.</p>}
+      {labels.map((l) => (
+        <div key={l.id} className="label-row">
+          <div className="row gap-s">
+            <input className="input grow" value={l.text} onChange={(e) => set(l.id, { text: e.target.value })} aria-label="Label text" />
+            <IconButton icon={l.visible === false ? 'eye' : 'x'} title={l.visible === false ? 'Show' : 'Hide'} onClick={() => set(l.id, { visible: l.visible === false })} />
+            <IconButton icon="trash" title="Delete label" onClick={() => update((p) => ({ bottomLabels: p.bottomLabels.filter((x) => x.id !== l.id) }))} />
+          </div>
+          <div className="field"><span className="field-label">Style</span><Chips options={LABEL_STYLES} value={l.style || 'bar'} onChange={(v) => set(l.id, { style: v })} /></div>
+          <div className="field"><span className="field-label">Position</span><Chips options={['left', 'center', 'right']} value={l.align || 'left'} onChange={(v) => set(l.id, { align: v })} /></div>
+          <Slider label="Text size (px at 1080p)" value={l.size || 28} min={16} max={72} step={1} onChange={(v) => set(l.id, { size: v })} format={(v) => `${v}px`} />
+          <div className="grid-2">
+            <ColorInput label="Text color" value={l.color || '#ffffff'} onChange={(v) => set(l.id, { color: v })} />
+            <ColorInput label="Accent" value={l.accent || '#a855f7'} onChange={(v) => set(l.id, { accent: v })} />
+          </div>
+          <Select label="Background" value={l.bg || 'rgba(0,0,0,.65)'} onChange={(e) => set(l.id, { bg: e.target.value })}
+            options={[{ value: 'rgba(0,0,0,.65)', label: 'Dark' }, { value: 'rgba(255,255,255,.9)', label: 'Light' }, { value: 'rgba(168,85,247,.85)', label: 'Purple' }, { value: 'rgba(34,211,238,.85)', label: 'Cyan' }, { value: 'transparent', label: 'None' }]} />
+          <Select label="Show" value={l.scope || 'all'} onChange={(e) => set(l.id, { scope: e.target.value, sceneId: e.target.value === 'scene' ? scene.id : l.sceneId, from: l.from ?? scene.start, to: l.to ?? scene.end })}
+            options={[{ value: 'all', label: 'Whole video' }, { value: 'scene', label: 'Only in the selected scene' }, { value: 'range', label: 'Between two times' }]} />
+          {l.scope === 'scene' && <p className="small muted">Shown in scene {Math.max(1, (project.scenes || []).findIndex((s) => s.id === l.sceneId) + 1)}. <button className="link small" onClick={() => set(l.id, { sceneId: scene.id })}>Move to this scene</button></p>}
+          {l.scope === 'range' && <div className="grid-2">
+            <Input label="From (seconds)" type="number" step="0.1" value={l.from ?? 0} onChange={(e) => set(l.id, { from: Number(e.target.value) })} />
+            <Input label="To (seconds)" type="number" step="0.1" value={l.to ?? 10} onChange={(e) => set(l.id, { to: Number(e.target.value) })} />
+          </div>}
+        </div>
+      ))}
+    </Panel>
   );
 }

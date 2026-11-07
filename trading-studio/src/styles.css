@@ -684,3 +684,12 @@ input[type="range"] { width: 100%; accent-color: var(--primary); height: 18px; }
 .project-card.picked { border-color: var(--bad); box-shadow: 0 0 0 2px rgba(239,68,68,.45); }
 .pick-box { position: absolute; top: 10px; left: 10px; z-index: 5; width: 24px; height: 24px; border-radius: 6px; border: 2px solid #fff; background: rgba(0,0,0,.5); display: grid; place-items: center; color: #fff; }
 .pick-box.on { background: var(--bad); border-color: var(--bad); }
+.bottom-labels { position: absolute; left: 3%; right: 3%; bottom: 2.2%; display: flex; align-items: flex-end; gap: 6px; }
+.bl-col { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1 1 auto; }
+.bl-col:empty { flex: 0 0 0; }
+.bl-left { align-items: flex-start; } .bl-center { align-items: center; text-align: center; } .bl-right { align-items: flex-end; text-align: right; }
+.bl { font-weight: 700; line-height: 1.2; padding: 2px 6px; border-radius: 3px; max-width: 100%; overflow-wrap: anywhere; }
+.bl-bar { border-left: 3px solid; border-radius: 2px; }
+.bl-pill { border-radius: 999px; padding: 2px 9px; }
+.bl-plain { padding: 0; text-shadow: 0 1px 4px rgba(0,0,0,.9); }
+.label-row { display: flex; flex-direction: column; gap: 8px; padding: 10px; border-radius: 10px; background: var(--input); border: 1px solid var(--border); }

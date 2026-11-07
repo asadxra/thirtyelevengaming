@@ -19,11 +19,46 @@ const CHAR_SPOT = {
   landscape: { left: { x: 12, y: 62 }, right: { x: 87, y: 60 }, center: { x: 50, y: 58 } },
 };
 
+// Chart size/position: project-wide layout, optionally overridden per scene.
+export const DEFAULT_LAYOUT = { size: 100, x: 0, y: 0 };
+export function chartBox(project, scene, format) {
+  const base = CHART_BOX[format];
+  const L = { ...DEFAULT_LAYOUT, ...(project?.layout || {}), ...(scene?.layout || {}) };
+  const k = Math.max(0.4, Math.min(1.06, L.size / 100));
+  const width = Math.min(100, base.width * k);
+  const height = Math.min(100, base.height * k);
+  return { width, height, left: (100 - width) / 2 + L.x, top: base.top + (base.height - height) / 2 + L.y };
+}
+
+export function activeBottomLabels(project, scene, time) {
+  return (project?.bottomLabels || []).filter((l) => l.visible !== false && (
+    l.scope === 'scene' ? l.sceneId === scene?.id
+      : l.scope === 'range' ? time >= (l.from ?? 0) && time < (l.to ?? Infinity)
+        : true));
+}
+
+function BottomLabels({ labels }) {
+  if (!labels.length) return null;
+  const byAlign = { left: [], center: [], right: [] };
+  labels.forEach((l) => byAlign[l.align || 'center'].push(l));
+  return (
+    <div className="bottom-labels">
+      {['left', 'center', 'right'].map((a) => (
+        <div key={a} className={`bl-col bl-${a}`}>
+          {byAlign[a].map((l) => (
+            <span key={l.id} className={`bl bl-${l.style || 'bar'}`} style={{ color: l.color || '#fff', background: l.style === 'plain' ? 'transparent' : (l.bg || 'rgba(0,0,0,.65)'), fontSize: (l.size || 28) / 3, borderColor: l.accent || 'var(--primary)' }}>{l.text}</span>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function ChartLayer({ project, scene, sceneIdx, time, format, W, H, selectedAnn, onSelectAnn }) {
   const ex = (project.examples || []).find((e) => e.id === scene.chart?.exampleId);
   const bars = useMemo(() => exampleBars(ex), [ex]);
   if (!ex) return null;
-  const box = CHART_BOX[format];
+  const box = chartBox(project, scene, format);
   const bw = (W * box.width) / 100, bh = (H * box.height) / 100;
   const style = { left: `${box.left}%`, top: `${box.top}%`, width: `${box.width}%`, height: `${box.height}%` };
   if (ex.kind === 'screenshot' || ex.kind === 'illustration') {
@@ -152,6 +187,7 @@ export default function Stage({ project, scene, character, time = 0, showCaption
         {scene?.chart && <div style={{ position: 'absolute', inset: 0, zIndex: 2 }}><ChartLayer project={project} scene={scene} sceneIdx={sceneIdx} time={time} format={fmt.id} W={W} H={H} selectedAnn={selectedAnn} onSelectAnn={onSelectAnn} /></div>}
         {caption && <div style={{ position: 'absolute', inset: 0, zIndex: 20, pointerEvents: 'none' }}><CaptionLine caption={caption} time={time} style={project.captions.style} format={fmt.id} /></div>}
         {showSafe && <div className="safe-area" />}
+        <div style={{ position: 'absolute', inset: 0, zIndex: 22, pointerEvents: 'none' }}><BottomLabels labels={activeBottomLabels(project, scene, time)} /></div>
         <div className="stage-vignette" />
       </div>
     </div>
