@@ -720,3 +720,12 @@ input[type="range"] { width: 100%; accent-color: var(--primary); height: 18px; }
 .style-flags { display: flex; flex-direction: column; gap: 6px; padding: 8px 10px; border-radius: 8px; background: rgba(245,158,11,.08); border: 1px solid rgba(245,158,11,.25); }
 .style-flags .link { color: var(--warn); }
 .style-flags ul { margin: 0; padding-left: 18px; font-size: 12.5px; display: flex; flex-direction: column; gap: 3px; }
+/* Clean look captions: bold black headline at the top */
+.caption-clean { transform: none; font-family: 'Montserrat', 'Poppins', Arial, sans-serif; font-weight: 800; color: #111827; text-align: center; line-height: 1.12; letter-spacing: -.01em; left: 8%; right: 8%; text-wrap: balance; }
+.cap-rise { animation: capRise .35s cubic-bezier(.2,.8,.2,1) both; }
+@keyframes capRise { from { opacity: 0; transform: translateY(6px); } }
+.stage-light .stage-bg.bg-terminal:has(+ *) { }
+.stage-clean .stage-bg, .stage-light.stage-clean .stage-bg { background: #ffffff !important; }
+.stage-clean .stage-chart { background: transparent; box-shadow: none; border-radius: 0; }
+.stage-clean .stage-source { background: transparent; color: #9ca3af; }
+.stage-clean .stage-title span { font-family: 'Montserrat', 'Poppins', Arial, sans-serif; font-weight: 800; }

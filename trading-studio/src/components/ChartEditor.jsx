@@ -241,6 +241,10 @@ export function VideoStylePanel({ value = {}, onChange, title = 'Video style', d
     <Panel title={title} subtitle={defaults ? 'Used by every video unless the video sets its own' : 'This video only'}>
       <div className="field"><span className="field-label">Theme</span>
         <Chips options={[{ value: 'light', label: 'Light' }, { value: 'dark', label: 'Dark' }]} value={vs.theme} onChange={(v) => onChange({ theme: v })} /></div>
+      {vs.theme === 'light' && <div className="field"><span className="field-label">Look</span>
+        <Chips options={[{ value: 'clean', label: 'Clean' }, { value: 'classic', label: 'Classic' }]} value={vs.look || 'clean'} onChange={(v) => onChange({ look: v })} />
+        <span className="field-hint">{(vs.look || 'clean') === 'clean' ? 'White page, dashed grid, soft candles with dark outlines, pale zones with dashed edges, bold headline captions at the top, candles that build in.' : 'Original light look with labelled pills and the caption style from the Captions tab.'}</span></div>}
+      {vs.theme === 'light' && (vs.look || 'clean') === 'clean' && <Toggle label="Bold headline captions at the top" hint="Off: use the caption style from the Captions tab" checked={vs.cleanCaptions !== false} onChange={(v) => onChange({ cleanCaptions: v })} />}
       <div className="field"><span className="field-label">Explanation style</span>
         <Chips options={[{ value: 'one', label: 'One idea at a time' }, { value: 'build', label: 'Build up everything' }]} value={vs.focusMode} onChange={(v) => onChange({ focusMode: v })} />
         <span className="field-hint">{vs.focusMode === 'one' ? 'Only the current step’s marks are shown in full; earlier marks fade into the background.' : 'Marks stay fully visible as the explanation builds.'}</span></div>

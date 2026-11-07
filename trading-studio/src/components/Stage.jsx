@@ -3,7 +3,7 @@
 // so layout, character placement and caption sizes match the selected format.
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import VisualElement from './VisualElement.jsx';
-import { FORMATS, LIGHT_VIDEO_PALETTE, DEFAULT_CHART_THEME, CANDLE_PRESETS, DEFAULT_VIDEO_STYLE } from '../../shared/defaults.js';
+import { FORMATS, LIGHT_VIDEO_PALETTE, CLEAN_PALETTE, DEFAULT_CHART_THEME, CANDLE_PRESETS, DEFAULT_VIDEO_STYLE } from '../../shared/defaults.js';
 import { useStore } from '../lib/store.jsx';
 
 export const CANDLE_KEYS = ['bull', 'bear', 'bullWick', 'bearWick', 'bullBorder', 'bearBorder'];
@@ -11,12 +11,13 @@ export const CANDLE_KEYS = ['bull', 'bear', 'bullWick', 'bearWick', 'bullBorder'
 // Resolved look of a video: light/dark theme, candle colors, one-idea-at-a-time mode.
 export function videoStyle(project, settings) {
   const vs = { ...DEFAULT_VIDEO_STYLE, ...(settings?.videoStyle || {}), ...(project?.videoStyle || {}) };
-  const base = vs.theme === 'light' ? LIGHT_VIDEO_PALETTE : { ...DEFAULT_CHART_THEME, ...(settings?.theme?.chart || {}) };
+  const clean = vs.look === 'clean' && vs.theme === 'light';
+  const base = clean ? CLEAN_PALETTE : vs.theme === 'light' ? LIGHT_VIDEO_PALETTE : { ...DEFAULT_CHART_THEME, ...(settings?.theme?.chart || {}) };
   const preset = CANDLE_PRESETS.find((p) => p.id === vs.candlePreset);
   const palette = { ...base };
   if (preset) for (const k of CANDLE_KEYS) palette[k] = preset[k] || null;
   for (const k of CANDLE_KEYS) if (vs[k]) palette[k] = vs[k];
-  return { vs, palette };
+  return { vs, palette, clean };
 }
 
 // Which annotations are "current" vs. earlier context, so each scene explains one thing.
@@ -45,6 +46,10 @@ export const CHART_BOX = {
   shorts: { left: 3, top: 7, width: 94, height: 55 },
   landscape: { left: 3, top: 5, width: 94, height: 74 },
 };
+export const CLEAN_CHART_BOX = {
+  shorts: { left: 3, top: 21, width: 94, height: 56 },
+  landscape: { left: 3, top: 17, width: 94, height: 72 },
+};
 const CHAR_SPOT = {
   shorts: { left: { x: 22, y: 80 }, right: { x: 78, y: 80 }, center: { x: 50, y: 76 } },
   landscape: { left: { x: 12, y: 62 }, right: { x: 87, y: 60 }, center: { x: 50, y: 58 } },
@@ -52,8 +57,9 @@ const CHAR_SPOT = {
 
 // Chart size/position: project-wide layout, optionally overridden per scene.
 export const DEFAULT_LAYOUT = { size: 100, x: 0, y: 0 };
-export function chartBox(project, scene, format) {
-  const base = CHART_BOX[format];
+export function chartBox(project, scene, format, clean = false) {
+  // Clean look keeps the top of the frame free for the headline caption.
+  const base = clean ? CLEAN_CHART_BOX[format] : CHART_BOX[format];
   const L = { ...DEFAULT_LAYOUT, ...(project?.layout || {}), ...(scene?.layout || {}) };
   const k = Math.max(0.4, Math.min(1.06, L.size / 100));
   const width = Math.min(100, base.width * k);
@@ -89,7 +95,7 @@ function ChartLayer({ project, scene, sceneIdx, time, format, W, H, selectedAnn,
   const ex = (project.examples || []).find((e) => e.id === scene.chart?.exampleId);
   const bars = useMemo(() => exampleBars(ex), [ex]);
   if (!ex) return null;
-  const box = chartBox(project, scene, format);
+  const box = chartBox(project, scene, format, look.clean);
   const bw = (W * box.width) / 100, bh = (H * box.height) / 100;
   const style = { left: `${box.left}%`, top: `${box.top}%`, width: `${box.width}%`, height: `${box.height}%` };
   if (ex.kind === 'screenshot' || ex.kind === 'illustration') {
@@ -110,11 +116,20 @@ function ChartLayer({ project, scene, sceneIdx, time, format, W, H, selectedAnn,
     focus = [prev.chart.focus[0] + (target[0] - prev.chart.focus[0]) * k, prev.chart.focus[1] + (target[1] - prev.chart.focus[1]) * k];
   }
   const { visible, fresh, faded } = focusSets(scenes, sceneIdx, ex.id, look.vs.focusMode);
+  // Motion: candles build in on an example's first appearance, and a new
+  // candle formation (highlight) draws one candle at a time.
+  let buildIn = null;
+  if (look.clean) {
+    const firstShow = prev?.chart?.exampleId !== ex.id;
+    const hl = ex.annotations.find((an) => fresh.has(an.id) && an.type === 'highlight');
+    if (firstShow) buildIn = { from: Math.floor(target[0]), to: Math.ceil(target[1]), t: Math.min(1, local / 1.6) };
+    else if (hl) buildIn = { from: hl.i1, to: hl.i2, t: Math.min(1, local / 1.1) };
+  }
   const progress = Math.min(1, local / (0.7 + 0.35 * fresh.size));
   const date = ex.keyLabel?.split(' ')[0] || '';
   return (
     <div className="stage-chart" style={style}>
-      <CandleChart bars={bars} focus={focus} annotations={ex.annotations} visible={visible} fresh={fresh} faded={faded} progress={progress} palette={look.palette} labelScale={format === 'shorts' ? 1.15 : 1.1}
+      <CandleChart bars={bars} focus={focus} annotations={ex.annotations} visible={visible} fresh={fresh} faded={faded} progress={buildIn ? Math.max(0, progress - (buildIn.t < 1 ? 0.5 : 0)) : progress} palette={look.palette} buildIn={buildIn} axis={!look.clean} labelScale={format === 'shorts' ? 1.15 : 1.1}
         width={Math.round(bw * (format === 'shorts' ? 1 : 1.2))} height={Math.round(bh * (format === 'shorts' ? 1 : 1.2))} showVolume={format === 'landscape'} overlays={ex.overlays || []}
         selectedId={selectedAnn} onSelect={onSelectAnn} compact={format === 'shorts'} />
       <div className="stage-source">{sourceLabel(ex)}{date ? ` · ${date}` : ''}</div>
@@ -144,8 +159,16 @@ export const LAYOUT = {
   landscape: { charX: 30, charY: 56, charH: 70 },
 };
 
-export function CaptionLine({ caption, time, style, format = 'shorts', light = false }) {
+export function CaptionLine({ caption, time, style, format = 'shorts', light = false, clean = false }) {
   if (!caption) return null;
+  if (clean) {
+    // Clean look: bold black headline at the top, phrase by phrase, gentle rise-in.
+    return (
+      <div className="caption-line caption-clean cap-rise" key={caption.id} style={{ top: format === 'shorts' ? '6.5%' : '4.5%', fontSize: format === 'shorts' ? 22 : 20 }}>
+        {caption.text}
+      </div>
+    );
+  }
   // Light videos: swap the default white-on-black caption for dark text with a white edge.
   const s = light && (style.color || '').toLowerCase() === '#ffffff'
     ? { ...style, color: '#0f172a', outlineColor: (style.outlineColor || '').toLowerCase() === '#000000' ? '#ffffff' : style.outlineColor, shadow: 0 }
@@ -214,7 +237,7 @@ export default function Stage({ project, scene, character, time = 0, showCaption
 
   return (
     <div className={`stage-fit ${className}`} ref={ref} style={{ aspectRatio: `${fmt.width} / ${fmt.height}` }}>
-      <div className={`stage stage-${fmt.id} ${light ? 'stage-light' : ''}`} style={{ width: W, height: H, transform: `scale(${scale})` }}>
+      <div className={`stage stage-${fmt.id} ${light ? 'stage-light' : ''} ${look.clean ? 'stage-clean' : ''}`} style={{ width: W, height: H, transform: `scale(${scale})` }}>
         <div className={`stage-bg bg-${scene?.bgStyle || 'terminal'}`} />
         {scene?.transitionFx && scene.transitionFx !== 'none' && <div key={scene.id} className={`stage-fx fx-${scene.transitionFx}`} />}
         {layers.map((v) => (
@@ -222,7 +245,7 @@ export default function Stage({ project, scene, character, time = 0, showCaption
         ))}
         {scene && !scene.chart && <div className="stage-title"><span>{project?.title}</span></div>}
         {scene?.chart && <div style={{ position: 'absolute', inset: 0, zIndex: 2 }}><ChartLayer project={project} scene={scene} sceneIdx={sceneIdx} time={time} format={fmt.id} W={W} H={H} selectedAnn={selectedAnn} onSelectAnn={onSelectAnn} look={look} /></div>}
-        {caption && <div style={{ position: 'absolute', inset: 0, zIndex: 20, pointerEvents: 'none' }}><CaptionLine caption={caption} time={time} style={project.captions.style} format={fmt.id} light={light} /></div>}
+        {caption && <div style={{ position: 'absolute', inset: 0, zIndex: 20, pointerEvents: 'none' }}><CaptionLine caption={caption} time={time} style={project.captions.style} format={fmt.id} light={light} clean={look.clean && look.vs.cleanCaptions !== false} /></div>}
         {showSafe && <div className="safe-area" />}
         <div style={{ position: 'absolute', inset: 0, zIndex: 22, pointerEvents: 'none' }}><BottomLabels labels={activeBottomLabels(project, scene, time)} /></div>
         <div className="stage-vignette" />

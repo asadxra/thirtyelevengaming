@@ -302,6 +302,7 @@ export const LIGHT_VIDEO_PALETTE = {
 };
 
 export const CANDLE_PRESETS = [
+  { id: 'clean', label: 'Clean', bull: '#86cf8a', bear: '#44474e', bullWick: '#2b2e33', bearWick: '#2b2e33', bullBorder: '#2b2e33', bearBorder: '#2b2e33' },
   { id: 'tv', label: 'TradingView', bull: '#089981', bear: '#f23645' },
   { id: 'classic', label: 'Green / Red', bull: '#16a34a', bear: '#dc2626' },
   { id: 'mono', label: 'Black / White', bull: '#ffffff', bear: '#111827', bullWick: '#111827', bearWick: '#111827', bullBorder: '#111827', bearBorder: '#111827' },
@@ -309,4 +310,13 @@ export const CANDLE_PRESETS = [
   { id: 'purple', label: 'Teal / Purple', bull: '#14b8a6', bear: '#8b5cf6' },
 ];
 
-export const DEFAULT_VIDEO_STYLE = { theme: 'light', focusMode: 'one', bull: null, bear: null };
+export const DEFAULT_VIDEO_STYLE = { theme: 'light', look: 'clean', focusMode: 'one', candlePreset: 'clean', bull: null, bear: null };
+
+// "Clean" look: white page, dashed grid, pale zones with dashed edges, plain bold labels.
+export const CLEAN_PALETTE = {
+  clean: true,
+  bg: '#ffffff', grid: '#dfe2e7', text: '#6b7280', label: '#111827', edge: '#3a3d44',
+  bull: '#86cf8a', bear: '#44474e',
+  fvg: '#dbe6fb', ifvg: '#f8d4d4', ob: '#cdeedc', breaker: '#fbe1c8', ote: '#e9dcfb', premium: '#f8d4d4', discount: '#cdeedc', session: '#c7cbd2',
+  liquidity: '#3a3d44', structure: '#111827', entry: '#2563eb', stop: '#e05252', target: '#3fa66b', fib: '#6b7280', info: '#e05252', highlight: '#f5d06b',
+};

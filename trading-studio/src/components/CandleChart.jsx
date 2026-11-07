@@ -9,8 +9,10 @@ export default function CandleChart({
   bars = [], focus, annotations = [], visible = null, fresh = null, progress = 1, selectedId, onSelect,
   width = 960, height = 540, interactive = false, onFocusChange, showSessions = true, showVolume = true,
   overlays = [], replayTo = null, sourceLabel = '', compact = false, className = '', axis = true,
-  palette = null, faded = null, labelScale = 1, embed = null,
+  palette = null, faded = null, labelScale = 1, embed = null, buildIn = null,
 }) {
+  // Clean look (palette.clean): dashed grid, plain-text labels, zones with dashed edges.
+  const clean = !!palette?.clean;
   // Explicit palette (videos, thumbnails) or theme CSS variables (dashboard).
   const C = (k) => (palette ? palette[k] || palette.info : `var(--c-${k}, var(--c-info))`);
   const ROLE_VAR = (role) => C(role || 'info');
@@ -168,7 +170,11 @@ export default function CandleChart({
         const y1 = y(Math.max(an.p1, an.p2)), y2 = y(Math.min(an.p1, an.p2));
         return (
           <g key={an.id} {...common} opacity={op}>
-            <rect x={x1} y={y1} width={Math.max(1, x2 - x1)} height={Math.max(1, y2 - y1)} fill={color} fillOpacity=".2" stroke={color} strokeWidth={sel ? 2.5 : 1.2} />
+            {clean ? (<>
+              <rect x={x1} y={y1} width={Math.max(1, x2 - x1)} height={Math.max(1, y2 - y1)} fill={color} fillOpacity=".55" stroke={sel ? C('structure') : 'none'} strokeWidth="2" />
+              <line x1={x1} x2={x2} y1={y1} y2={y1} stroke={C('edge')} strokeWidth="1.4" strokeDasharray="6 5" />
+              <line x1={x1} x2={x2} y1={y2} y2={y2} stroke={C('edge')} strokeWidth="1.4" strokeDasharray="6 5" />
+            </>) : <rect x={x1} y={y1} width={Math.max(1, x2 - x1)} height={Math.max(1, y2 - y1)} fill={color} fillOpacity=".2" stroke={color} strokeWidth={sel ? 2.5 : 1.2} />}
             {an.text && p > 0.6 && pill(x1 + 4, y1 - (compact ? 9 : 12), an.text, color)}
           </g>
         );
@@ -247,8 +253,8 @@ export default function CandleChart({
       <rect x="0" y="0" width={width} height={height} fill={C('bg')} />
       <defs><clipPath id={clipId}><rect x={padL} y={padT} width={plotW} height={plotH} /></clipPath></defs>
       {/* grid */}
-      {ticks.map((p) => <line key={p} x1={padL} x2={padL + plotW} y1={y(p)} y2={y(p)} stroke={C('grid')} strokeWidth="1" />)}
-      {timeTicks.map((i) => <line key={i} x1={x(i)} x2={x(i)} y1={padT} y2={padT + plotH} stroke={C('grid')} strokeWidth="1" opacity=".6" />)}
+      {ticks.map((p) => <line key={p} x1={padL} x2={padL + plotW} y1={y(p)} y2={y(p)} stroke={C('grid')} strokeWidth="1" strokeDasharray={clean ? '7 6' : undefined} />)}
+      {timeTicks.map((i) => <line key={i} x1={x(i)} x2={x(i)} y1={padT} y2={padT + plotH} stroke={C('grid')} strokeWidth="1" opacity={clean ? 1 : 0.6} strokeDasharray={clean ? '7 6' : undefined} />)}
       <g clipPath={`url(#${clipId})`}>
         {breaks.map((s) => (
           <g key={s.index}>
@@ -271,8 +277,15 @@ export default function CandleChart({
           const col = up ? C('bull') : C('bear');
           const bw = Math.max(1, stepW * 0.68);
           const yo = y(Math.max(q.o, q.c)), yc = y(Math.min(q.o, q.c));
+          // Build-in motion: candles in [from, to] appear one after another.
+          let bi = 1;
+          if (buildIn && i >= buildIn.from && i <= buildIn.to) {
+            const n = buildIn.to - buildIn.from + 1;
+            bi = Math.max(0, Math.min(1, (buildIn.t * n - (i - buildIn.from)) * 1.6));
+            if (bi <= 0) return null;
+          }
           return (
-            <g key={i}>
+            <g key={i} opacity={bi} transform={bi < 1 ? `translate(0 ${(1 - bi) * 10})` : undefined}>
               <line x1={x(i)} x2={x(i)} y1={y(q.h)} y2={y(q.l)} stroke={(up ? palette?.bullWick : palette?.bearWick) || col} strokeWidth={Math.max(1, stepW * 0.1)} />
               <rect x={x(i) - bw / 2} y={yo} width={bw} height={Math.max(1, yc - yo)} fill={col} stroke={(up ? palette?.bullBorder : palette?.bearBorder) || 'none'} strokeWidth={(up ? palette?.bullBorder : palette?.bearBorder) ? Math.max(1, stepW * 0.08) : 0} />
             </g>
@@ -283,8 +296,9 @@ export default function CandleChart({
         {shown.filter((an) => an.type !== 'highlight' && an.type !== 'box').map(renderAnn)}
         {layoutPills().map((q) => (
           <g key={q.key} className="pill">
-            <rect x={q.x} y={q.y} width={q.w} height={q.h} rx={4 * labelScale} fill={C('bg')} stroke={q.color} strokeWidth="1" opacity=".95" />
-            <text x={q.x + 6 * labelScale} y={q.y + q.h / 2 + q.fs * 0.36} fill={q.color} fontSize={q.fs} fontWeight="600">{q.text}</text>
+            {!clean && <rect x={q.x} y={q.y} width={q.w} height={q.h} rx={4 * labelScale} fill={C('bg')} stroke={q.color} strokeWidth="1" opacity=".95" />}
+            <text x={q.x + 6 * labelScale} y={q.y + q.h / 2 + q.fs * 0.36} fill={clean ? C('label') : q.color} fontSize={clean ? q.fs * 1.15 : q.fs} fontWeight={clean ? 800 : 600}
+              stroke={clean ? C('bg') : undefined} strokeWidth={clean ? 3 : undefined} paintOrder="stroke" fontFamily={clean ? "'Montserrat', 'Poppins', Arial, sans-serif" : undefined}>{q.text}</text>
           </g>
         ))}
       </g>
