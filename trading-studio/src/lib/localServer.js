@@ -4,6 +4,7 @@
 // Claude through claude.ai, and stores uploads in the artifact's asset store.
 import { buildSeedData } from '../../shared/seedData.js';
 import { SYSTEM, claudePrompt, runLocalOp } from '../../shared/writer.js';
+import { clean, cleanSections } from '../../shared/styleGuard.js';
 import { SECTIONS, QUENTIN_VOICE_ID } from '../../shared/defaults.js';
 import referenceImage from '../../server/seed/reference-character.png?inline';
 
@@ -152,10 +153,10 @@ async function claudeScript(body) {
     const out = await caps.sample.json(prompt, { modelTier: 'default', cache: false });
     if (op === 'rewrite') {
       if (typeof out?.text !== 'string') fail('Claude returned an unexpected answer. Try again.', 502);
-      return { text: out.text };
+      return { text: clean(out.text) };
     }
     if (!SECTIONS.every((s) => typeof out?.[s] === 'string')) fail('Claude returned an unexpected answer. Try again.', 502);
-    return { sections: Object.fromEntries(SECTIONS.map((s) => [s, out[s]])) };
+    return { sections: cleanSections(Object.fromEntries(SECTIONS.map((s) => [s, out[s]]))) };
   } catch (err) {
     if (err?.status) throw err;
     const msg = { not_granted: 'Claude access wasn’t allowed for this page. Allow it from the artifact’s permissions, or use the local writer.', rate_limited: 'Claude is busy right now. Wait a moment and try again.', invalid_json: 'Claude returned an unexpected answer. Try again.' }[err?.code];

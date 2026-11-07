@@ -6,6 +6,7 @@ import { SECTIONS, SECTION_LABELS } from './defaults.js';
 import { splitSentences, wordCount } from './scenes.js';
 import { conceptById } from './concepts.js';
 import { sourceLabel } from './examples.js';
+import { clean, cleanSections, PROMPT_RULES } from './styleGuard.js';
 
 const shortSym = (s = '') => s.split(':').pop().replace('1!', '');
 
@@ -125,7 +126,12 @@ function rewrite(text) {
   return text.replace(/\b(really|very|just|actually|basically)\s+/gi, '').replace(/\s+/g, ' ').trim();
 }
 
-export function runLocalOp({ op, inputs = {}, sections = {}, conceptId, customConcepts = [], examples = [], text = '', section = 'hook' }) {
+export function runLocalOp(args) {
+  const out = runLocalOpRaw(args);
+  return out.sections ? { sections: cleanSections(out.sections) } : { text: clean(out.text) };
+}
+
+function runLocalOpRaw({ op, inputs = {}, sections = {}, conceptId, customConcepts = [], examples = [], text = '', section = 'hook' }) {
   const concept = conceptById(conceptId, customConcepts);
   switch (op) {
     case 'generate':
@@ -156,6 +162,7 @@ Rules:
 - If an example failed (stop hit or invalidated), say so plainly.
 - Say "this is education, not financial advice" once at the end.
 - Narration is spoken aloud: short sentences, no headings, no emojis, no stage directions.
+${PROMPT_RULES}
 Structure: exactly eight parts: hook, intro, simple, technical, demo, breakdown, takeaway, ending.
 In "demo" and "breakdown", write ONE paragraph per chart step listed in the facts, in the same order, separated by a blank line, so each paragraph can be synced to its chart step.`;
 

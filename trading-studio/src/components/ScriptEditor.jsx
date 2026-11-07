@@ -6,6 +6,7 @@ import { Icon } from './Icon.jsx';
 import { SECTIONS, SECTION_LABELS, SECTION_HELP } from '../../shared/defaults.js';
 import { conceptById, LEVELS, TONES, LENGTHS, COMPLEXITY } from '../../shared/concepts.js';
 import { navigate } from '../lib/router.js';
+import { check, clean, cleanSections } from '../../shared/styleGuard.js';
 import { splitSentences, wordCount, estimateDuration, fmtShort } from '../../shared/scenes.js';
 
 export default function ScriptEditor({ project, update }) {
@@ -83,6 +84,7 @@ export default function ScriptEditor({ project, update }) {
     }
   };
 
+  const aiFlags = SECTIONS.reduce((n, k) => n + check(script.sections[k] || '').length, 0);
   const i = script.inputs;
   const concept = conceptById(project.conceptId, store.settings?.customConcepts || []);
   const approved = (project.examples || []).filter((e) => e.approved !== false);
@@ -144,6 +146,9 @@ export default function ScriptEditor({ project, update }) {
         </div>
         <div className="row gap-s">
           <Button size="sm" variant="ghost" icon="clock" onClick={() => setVersionsOpen(true)}>Versions ({(script.versions || []).length})</Button>
+          {aiFlags > 0
+            ? <Button size="sm" icon="wand" onClick={() => { update((p) => ({ script: { ...p.script, sections: cleanSections(p.script.sections), versions: snapshot('Before AI-phrasing cleanup') } })); store.toast('Cleaned up AI-style phrasing. Review anything still flagged.', 'ok'); }}>Clean up AI phrasing ({aiFlags})</Button>
+            : hasText && <Badge tone="ok"><Icon name="check" size={11} /> No AI-style phrasing</Badge>}
           <Button size="sm" icon="save" onClick={saveDraft}>Save draft</Button>
           {script.status === 'completed'
             ? <Button size="sm" icon="edit" onClick={() => setScript({ status: 'draft' })}>Reopen as draft</Button>
@@ -182,6 +187,7 @@ export default function ScriptEditor({ project, update }) {
                 onChange={(e) => setSection(s, e.target.value)}
                 onSelect={(e) => { refs.current[s] = e.target; }} onFocus={(e) => { refs.current[s] = e.target; }} />
             )}
+            <StyleFlags text={text} onFix={() => setSection(s, clean(text))} />
           </Panel>
         );
       })}
@@ -213,6 +219,27 @@ export default function ScriptEditor({ project, update }) {
           </ul>
         ) : <p className="muted">Versions are saved automatically before every rewrite and when you click Save draft.</p>}
       </Modal>
+    </div>
+  );
+}
+
+// "Avoid AI writing" checker shown under each script section.
+function StyleFlags({ text, onFix }) {
+  const issues = check(text);
+  const [open, setOpen] = useState(false);
+  if (!issues.length) return null;
+  const fixable = clean(text) !== text;
+  return (
+    <div className="style-flags">
+      <div className="row gap-s wrap">
+        <button className="link small" onClick={() => setOpen((o) => !o)}><Icon name="alert" size={12} /> {issues.length} AI-style phrase{issues.length === 1 ? '' : 's'}</button>
+        {fixable && <Button size="sm" variant="ghost" icon="wand" onClick={onFix}>Fix automatically</Button>}
+      </div>
+      {open && (
+        <ul>
+          {issues.map((x, k) => <li key={k}><b>{x.label}</b> <code>{x.match}</code> <span className="muted">· {x.tip}</span></li>)}
+        </ul>
+      )}
     </div>
   );
 }

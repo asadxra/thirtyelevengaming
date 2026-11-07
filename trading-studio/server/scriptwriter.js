@@ -4,6 +4,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { getSecret } from './db.js';
 import { SYSTEM, SECTIONS_SCHEMA, TEXT_SCHEMA, claudePrompt, runLocalOp } from '../shared/writer.js';
+import { clean, cleanSections } from '../shared/styleGuard.js';
 
 export const CLAUDE_MODEL = process.env.ANTHROPIC_MODEL || 'claude-opus-5-5';
 
@@ -35,7 +36,7 @@ export async function runScriptOp(body = {}) {
     if (!claudeKey()) throw Object.assign(new Error('Claude is not connected. Add an Anthropic API key in Settings → Integrations, or use the local writer.'), { status: 400 });
     const schema = op === 'rewrite' ? TEXT_SCHEMA : SECTIONS_SCHEMA;
     const result = await callClaude(claudePrompt(op, body), schema);
-    return op === 'rewrite' ? { text: result.text } : { sections: result };
+    return op === 'rewrite' ? { text: clean(result.text) } : { sections: cleanSections(result) };
   }
   return runLocalOp(body);
 }

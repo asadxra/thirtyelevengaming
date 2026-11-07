@@ -717,3 +717,6 @@ input[type="range"] { width: 100%; accent-color: var(--primary); height: 18px; }
 .candle-color input[type="color"] { width: 34px; height: 30px; border: 1px solid var(--border); border-radius: 6px; background: none; padding: 2px; cursor: pointer; }
 .hex-input { width: 92px; height: 30px; padding: 0 8px; font-size: 12.5px; }
 .hex-input.bad { border-color: var(--bad); }
+.style-flags { display: flex; flex-direction: column; gap: 6px; padding: 8px 10px; border-radius: 8px; background: rgba(245,158,11,.08); border: 1px solid rgba(245,158,11,.25); }
+.style-flags .link { color: var(--warn); }
+.style-flags ul { margin: 0; padding-left: 18px; font-size: 12.5px; display: flex; flex-direction: column; gap: 3px; }
