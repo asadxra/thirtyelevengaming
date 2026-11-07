@@ -2,6 +2,8 @@
 import fs from "node:fs";
 import path from "node:path";
 import { log, ROOT, run } from "../lib.mjs";
+import { mascotSvg, moodFor } from "../../src/script/mascot.ts";
+import { estimateWords } from "../../src/script/timeline.ts";
 
 const C = { bg: "#0b0f1a", soft: "#151b2c", text: "#f5f7fb", muted: "#8b93a7", red: "#ff4d5e", green: "#22c55e", gold: "#facc15" };
 const esc = (s = "") => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
@@ -68,7 +70,7 @@ function captionPages(captions = []) {
   return pages;
 }
 
-export function renderHyperframes({ job, sceneDurations, timeline, voice, broll, captions, out }) {
+export function renderHyperframes({ job, sceneDurations, timeline, mascot = true, voice, broll, captions, out }) {
   const dir = path.join(ROOT, "out", `hf-${job.id}`);
   fs.mkdirSync(path.join(dir, "assets", "fonts"), { recursive: true });
   for (const w of [500, 800, 900]) fs.copyFileSync(path.join(ROOT, "public/fonts", `inter-latin-${w}-normal.woff2`), path.join(dir, "assets/fonts", `inter-${w}.woff2`));
@@ -96,6 +98,23 @@ export function renderHyperframes({ job, sceneDurations, timeline, voice, broll,
     return lines.join("\n");
   }).join("\n");
 
+  // Wick: per scene, a mouth-closed and a mouth-open drawing, swapped on every spoken word
+  const words = captions?.length
+    ? captions.map((c) => ({ start: c.startMs / 1000, end: c.endMs / 1000 }))
+    : scenes.flatMap(({ s, start, dur }) => estimateWords(s.voiceover, dur).map((w) => ({ start: w.start + start, end: w.end + start })));
+  const mascotHtml = !mascot ? "" : `<div id="wick" class="clip" data-start="0" data-duration="${total.toFixed(3)}" data-track-index="4" style="position:absolute;left:50px;top:1078px;width:210px;height:284px;filter:drop-shadow(0 8px 18px rgba(0,0,0,.45))"><div id="wick-bob" style="position:absolute;inset:0;transform-origin:50% 100%">
+${scenes.map(({ s, i }) => {
+    const mood = moodFor(s);
+    return `<div id="wk${i}" style="position:absolute;inset:0;opacity:0"><div class="wk-c" style="position:absolute;inset:0">${mascotSvg({ mood, wave: 0.2 }, 210)}</div><div class="wk-o" style="position:absolute;inset:0;opacity:0">${mascotSvg({ mood, mouth: 0.8, wave: 0.2 }, 210)}</div></div>`;
+  }).join("\n")}</div></div>`;
+  const mascotTweens = !mascot ? "" : [
+    ...scenes.map(({ start, dur, i }) => `tl.set("#wk${i}", { opacity: 1 }, ${start.toFixed(3)}); tl.set("#wk${i}", { opacity: 0 }, ${(start + dur).toFixed(3)}); tl.fromTo("#wk${i}", { scale: 0.86 }, { scale: 1, duration: 0.25, ease: "back.out(3)", transformOrigin: "50% 100%" }, ${start.toFixed(3)});`),
+    ...words.flatMap((w) => [`tl.set("#wick .wk-o", { opacity: 1 }, ${w.start.toFixed(3)}); tl.set("#wick .wk-c", { opacity: 0 }, ${w.start.toFixed(3)});`,
+      `tl.set("#wick .wk-o", { opacity: 0 }, ${(w.end - 0.03).toFixed(3)}); tl.set("#wick .wk-c", { opacity: 1 }, ${(w.end - 0.03).toFixed(3)});`]),
+    `tl.fromTo("#wick-bob", { y: -6 }, { y: 6, duration: 1.3, ease: "sine.inOut", yoyo: true, repeat: ${Math.max(1, Math.floor(total / 1.3))} }, 0);`,
+    ...timeline.cues.filter((c) => c.sfx === "impact").map((c) => `tl.to("#wick", { y: -34, duration: 0.2, ease: "power2.out", yoyo: true, repeat: 1 }, ${c.t.toFixed(3)});`),
+  ].join("\n");
+
   const html = `<!doctype html>
 <html lang="en"><head><meta charset="UTF-8" /><meta name="viewport" content="width=1080, height=1920" />
 <script src="assets/gsap.min.js"></script>
@@ -111,7 +130,7 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:${C.bg}}
 .item{display:flex;align-items:center;gap:36px;width:100%;text-align:left;font-size:58px;font-weight:800}
 .num{flex-shrink:0;width:104px;height:104px;border-radius:52px;background:${C.green};color:${C.bg};display:flex;align-items:center;justify-content:center}
 .cta{font-size:42px;font-weight:600;padding:22px 44px;border-radius:999px;border:4px solid ${C.gold};color:${C.gold}}
-.cap{position:absolute;left:90px;right:90px;top:1110px;height:220px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:66px;white-space:pre-wrap;text-shadow:0 4px 18px rgba(0,0,0,.8)}
+.cap{position:absolute;left:${mascot ? 290 : 90}px;right:90px;font-size:${mascot ? 58 : 66}px !important;top:1110px;height:220px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:66px;white-space:pre-wrap;text-shadow:0 4px 18px rgba(0,0,0,.8)}
 #broll{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:${job.pipeline?.broll?.opacity ?? 0.22}}
 </style></head>
 <body>
@@ -119,12 +138,14 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:${C.bg}}
 ${broll ? `<video id="broll" class="clip" src="assets/broll.mp4" muted data-start="0" data-duration="${total.toFixed(3)}" data-track-index="0"></video>` : ""}
 ${scenes.map(({ s, start, dur, i }) => `<div id="s${i}" class="clip scene" data-start="${start.toFixed(3)}" data-duration="${dur.toFixed(3)}" data-track-index="1"><div class="inner">${sceneHtml(s)}</div></div>`).join("\n")}
 ${pages.map((p, i) => `<div id="c${i}" class="clip cap" data-start="${(p.start / 1000).toFixed(3)}" data-duration="${((p.end - p.start) / 1000).toFixed(3)}" data-track-index="2"><div>${p.words.map((w, j) => `<span id="c${i}w${j}">${esc(w.text)}</span>`).join("")}</div></div>`).join("\n")}
+${mascotHtml}
 ${voice ? `<audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="${total.toFixed(3)}" data-track-index="3"></audio>` : ""}
 </div>
 <script>
 const tl = gsap.timeline({ paused: true });
 ${tweens}
 ${pages.map((p, i) => p.words.map((w, j) => `tl.set("#c${i}w${j}", { color: "${C.gold}" }, ${(w.startMs / 1000).toFixed(3)}); tl.set("#c${i}w${j}", { color: "${C.text}" }, ${(w.endMs / 1000).toFixed(3)});`).join("\n")).join("\n")}
+${mascotTweens}
 window.__timelines = window.__timelines || {};
 window.__timelines["main"] = tl;
 tl.seek(0);

@@ -70,4 +70,6 @@ export type ShortProps = {
   /** Sound effects on cues from timeline.ts (default on) */
   sfx?: boolean;
   sfxVolume?: number;
+  /** Show Wick, the mascot (default on) */
+  mascot?: boolean;
 };

@@ -4,7 +4,7 @@ import { AbsoluteFill, useCurrentFrame, useVideoConfig } from "remotion";
 import { COLORS } from "../theme";
 
 /** Word-by-word captions in the Shorts safe band (above y=1330). */
-export const Captions: React.FC<{ captions: Caption[] }> = ({ captions }) => {
+export const Captions: React.FC<{ captions: Caption[]; withMascot?: boolean }> = ({ captions, withMascot }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const ms = (frame / fps) * 1000;
@@ -15,8 +15,8 @@ export const Captions: React.FC<{ captions: Caption[] }> = ({ captions }) => {
   const page = pages.find((p) => ms >= p.startMs && ms < p.startMs + p.durationMs);
   if (!page) return null;
   return (
-    <AbsoluteFill style={{ top: 1110, height: 220, bottom: "auto", display: "flex", alignItems: "center", justifyContent: "center", padding: "0 90px" }}>
-      <div style={{ fontSize: 66, fontWeight: 900, textAlign: "center", lineHeight: 1.15, whiteSpace: "pre-wrap", textShadow: "0 4px 18px rgba(0,0,0,0.8)" }}>
+    <AbsoluteFill style={{ top: 1110, height: 220, bottom: "auto", display: "flex", alignItems: "center", justifyContent: "center", padding: withMascot ? "0 90px 0 290px" : "0 90px" }}>
+      <div style={{ fontSize: withMascot ? 58 : 66, fontWeight: 900, textAlign: "center", lineHeight: 1.15, whiteSpace: "pre-wrap", textShadow: "0 4px 18px rgba(0,0,0,0.8)" }}>
         {page.tokens.map((t) => {
           const active = ms >= t.fromMs && ms < t.toMs;
           return (

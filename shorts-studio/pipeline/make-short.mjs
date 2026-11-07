@@ -16,7 +16,7 @@ const flag = (n) => args.includes(`--${n}`);
 const opt = (n) => args.find((a) => a.startsWith(`--${n}=`))?.split("=")[1];
 const jobFile = args.find((a) => !a.startsWith("--"));
 if (!jobFile) {
-  console.error("Usage: npm run make -- jobs/<id>.json [--engine=remotion|hyperframes] [--no-tts] [--no-whisper] [--no-sources] [--no-sfx]");
+  console.error("Usage: npm run make -- jobs/<id>.json [--engine=remotion|hyperframes] [--no-tts] [--no-whisper] [--no-sources] [--no-sfx] [--no-mascot]");
   process.exit(1);
 }
 
@@ -50,9 +50,9 @@ log("timeline", `${timeline.cues.length} cues synced to the ${captions ? "spoken
 const raw = path.join(ROOT, "out", `${job.id}.raw.mp4`);
 if (engine === "hyperframes") {
   const { renderHyperframes } = await import("./steps/hyperframes.mjs");
-  renderHyperframes({ job, sceneDurations: durs, timeline, voice, broll: sources.broll, captions, out: raw });
+  renderHyperframes({ job, sceneDurations: durs, timeline, mascot: p.mascot !== false && !flag("no-mascot"), voice, broll: sources.broll, captions, out: raw });
 } else {
-  const props = { script: job.script, sceneDurations: durs, sfx: sfxOn, sfxVolume: p.sfxVolume ?? 1, voiceSrc: rel(voice), brollSrc: rel(sources.broll), brollOpacity: p.broll?.opacity, captions };
+  const props = { script: job.script, sceneDurations: durs, sfx: sfxOn, sfxVolume: p.sfxVolume ?? 1, mascot: p.mascot !== false && !flag("no-mascot"), voiceSrc: rel(voice), brollSrc: rel(sources.broll), brollOpacity: p.broll?.opacity, captions };
   const propsFile = path.join(pub, "props.json");
   fs.writeFileSync(propsFile, JSON.stringify(props));
   log("remotion", "rendering ScriptShort");

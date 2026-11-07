@@ -13,7 +13,8 @@ import { COLORS, FONT } from "../theme";
 import { Captions } from "./Captions";
 import { estimateSeconds } from "./fit";
 import { AtContext, SceneView } from "./SceneViews";
-import { buildTimeline } from "./timeline";
+import { buildTimeline, estimateWords, type Word } from "./timeline";
+import { Mascot } from "./Mascot";
 import { useMemo } from "react";
 import type { Scene, ShortProps } from "./types";
 
@@ -64,6 +65,16 @@ export const ScriptShort: React.FC<ShortProps> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [props.script, props.captions, props.sceneDurations, props.sfxVolume],
   );
+  // Spoken words (global seconds): Whisper when available, else evenly spaced per scene
+  const words: Word[] = useMemo(
+    () =>
+      props.captions?.length
+        ? props.captions.map((c) => ({ text: c.text, start: c.startMs / 1000, end: c.endMs / 1000 }))
+        : timeline.scenes.flatMap((ts, i) =>
+            estimateWords(props.script.scenes[i].voiceover, ts.dur).map((w) => ({ ...w, start: w.start + ts.start, end: w.end + ts.start })),
+          ),
+    [props.captions, props.script, timeline],
+  );
   return (
     <AbsoluteFill
       style={{
@@ -95,7 +106,8 @@ export const ScriptShort: React.FC<ShortProps> = (props) => {
             </Sequence>
           ))
         : null}
-      {withCaptions ? <Captions captions={props.captions!} /> : null}
+      {props.mascot !== false ? <Mascot scenes={props.script.scenes} timeline={timeline} words={words} /> : null}
+      {withCaptions ? <Captions captions={props.captions!} withMascot={props.mascot !== false} /> : null}
     </AbsoluteFill>
   );
 };
