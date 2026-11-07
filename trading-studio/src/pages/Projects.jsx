@@ -49,6 +49,21 @@ export default function Projects() {
   const [filter, setFilter] = useState(query.get('filter') || 'all');
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState('updated');
+  const [selecting, setSelecting] = useState(false);
+  const [picked, setPicked] = useState(() => new Set());
+  const [bulkConfirm, setBulkConfirm] = useState(false);
+  const togglePick = (id) => setPicked((s) => { const n = new Set(s); n.has(id) ? n.delete(id) : n.add(id); return n; });
+  const stopSelecting = () => { setSelecting(false); setPicked(new Set()); };
+  const deletePicked = async () => {
+    const ids = [...picked];
+    let ok = 0;
+    for (const id of ids) {
+      try { await store.deleteDoc('projects', id); ok += 1; } catch (e) { store.toast(e.message, 'bad'); } // eslint-disable-line no-await-in-loop
+    }
+    store.toast(`Deleted ${ok} video${ok === 1 ? '' : 's'}`, ok === ids.length ? 'ok' : 'warn');
+    setBulkConfirm(false);
+    stopSelecting();
+  };
   const { actionsFor, dialogs } = useProjectActions();
   const { projects, characters } = store;
 
@@ -86,7 +101,21 @@ export default function Projects() {
           <h1>All explainer videos</h1>
           <p className="muted">Every project has its own workspace for script, scenes, voice, captions and visuals.</p>
         </div>
-        <Button variant="primary" icon="plus" onClick={async () => { try { await createProject(store); } catch (e) { store.toast(e.message, 'bad'); } }}>New video project</Button>
+        <div className="row gap-s wrap">
+          {selecting ? (
+            <>
+              <span className="small muted">{picked.size} selected</span>
+              <Button variant="ghost" onClick={() => setPicked(new Set(list.map((p) => p.id)))}>Select all shown</Button>
+              <Button variant="danger" icon="trash" disabled={!picked.size} onClick={() => setBulkConfirm(true)}>Delete selected</Button>
+              <Button onClick={stopSelecting}>Cancel</Button>
+            </>
+          ) : (
+            <>
+              <Button icon="check" onClick={() => setSelecting(true)}>Select videos</Button>
+              <Button variant="primary" icon="plus" onClick={async () => { try { await createProject(store); } catch (e) { store.toast(e.message, 'bad'); } }}>New video project</Button>
+            </>
+          )}
+        </div>
       </header>
 
       <div className="filter-bar">
@@ -103,7 +132,11 @@ export default function Projects() {
 
       {list.length ? (
         <div className="card-grid">
-          {list.map((p) => <ProjectCard key={p.id} project={p} characters={characters} onOpen={() => navigate(`/projects/${p.id}`)} actions={actionsFor(p)} />)}
+          {list.map((p) => (
+            <ProjectCard key={p.id} project={p} characters={characters} actions={selecting ? null : actionsFor(p)}
+              selected={selecting ? picked.has(p.id) : undefined}
+              onOpen={() => (selecting ? togglePick(p.id) : navigate(`/projects/${p.id}`))} />
+          ))}
         </div>
       ) : (
         <Empty icon="search" title="No projects match" action={filter !== 'all' || search ? <Button onClick={() => { setFilter('all'); setSearch(''); }}>Clear filters</Button> : null}>
@@ -111,6 +144,10 @@ export default function Projects() {
         </Empty>
       )}
       {dialogs}
+      <Confirm open={bulkConfirm} danger title={`Delete ${picked.size} video${picked.size === 1 ? '' : 's'}`} confirmLabel="Delete permanently" onClose={() => setBulkConfirm(false)} onConfirm={deletePicked}>
+        <p>These videos will be permanently deleted, including their scripts, scenes, chart examples and captions. Generated audio stays in the Asset Library.</p>
+        <ul className="small">{list.filter((p) => picked.has(p.id)).map((p) => <li key={p.id}>{p.title}</li>)}</ul>
+      </Confirm>
     </div>
   );
 }

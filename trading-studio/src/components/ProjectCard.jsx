@@ -22,14 +22,15 @@ export function Thumbnail({ project, character, compact }) {
   );
 }
 
-export default function ProjectCard({ project, characters, onOpen, actions }) {
+export default function ProjectCard({ project, characters, onOpen, actions, selected }) {
   const character = characters.find((c) => c.id === project.characterId);
   const ss = scriptStatus(project);
   const vs = voiceStatus(project);
   const gs = generationStatus(project, characters);
   const dur = projectDuration(project);
   return (
-    <article className="project-card panel" onClick={onOpen} tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && onOpen()}>
+    <article className={`project-card panel ${selected ? 'picked' : ''}`} onClick={onOpen} tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && onOpen()} aria-pressed={selected}>
+      {selected !== undefined && <span className={`pick-box ${selected ? 'on' : ''}`}>{selected && <Icon name="check" size={14} />}</span>}
       <Thumbnail project={project} character={character} />
       <div className="pc-body">
         <div className="row between start">
