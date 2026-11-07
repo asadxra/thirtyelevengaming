@@ -165,7 +165,7 @@ function Integrations() {
 
       <Panel title="Video rendering engine" actions={<Badge tone="muted" dot>Not connected</Badge>}>
         <p className="small">No rendering engine is connected, so the studio never renders video. “Generate Video” records your approval and shows the project as ready for generation.</p>
-        <p className="small muted">The planned pipeline: scene-by-scene rendering, character animation, code animations, backgrounds, voice & caption sync, music/SFX and final composition.</p>
+        <p className="small muted">The planned pipeline: scene-by-scene rendering, chart animations, backgrounds, voice & caption sync, music/SFX and final composition.</p>
       </Panel>
 
       {!store.integrations?.standalone && <Panel title="Security">
@@ -200,7 +200,6 @@ function Defaults() {
   return (
     <div className="settings-grid">
       <Panel title="New project defaults" subtitle="Applied when you create a project">
-        <Select label="Default character" value={d.characterId || ''} onChange={(e) => set({ characterId: e.target.value })} options={store.characters.map((c) => ({ value: c.id, label: `${c.name}${c.status === 'approved' ? '' : ' (draft)'}` }))} />
         <Select label="Default video format" value={d.format} onChange={(e) => set({ format: e.target.value })} options={Object.values(FORMATS).map((f) => ({ value: f.id, label: `${f.label} · ${f.ratio} · ${f.width}×${f.height}` }))} />
         <Select label="Default script writer" value={d.scriptEngine || 'local'} onChange={(e) => set({ scriptEngine: e.target.value })} options={[{ value: 'local', label: 'Local writer' }, { value: 'claude', label: 'Claude' }]} />
         <Select label="Default caption preset" value={d.captionPresetId || ''} onChange={(e) => set({ captionPresetId: e.target.value })} options={caps.map((p) => ({ value: p.id, label: p.name }))} />

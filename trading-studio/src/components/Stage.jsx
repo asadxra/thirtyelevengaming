@@ -2,7 +2,6 @@
 // (360×640 for Shorts, 640×360 for Landscape) and scales to fit its container,
 // so layout, character placement and caption sizes match the selected format.
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import CharacterRenderer from './CharacterRenderer.jsx';
 import VisualElement from './VisualElement.jsx';
 import { FORMATS } from '../../shared/defaults.js';
 import CandleChart from './CandleChart.jsx';
@@ -13,7 +12,7 @@ const ease = (k) => (k < 0.5 ? 2 * k * k : 1 - (-2 * k + 2) ** 2 / 2);
 // Where the chart and the character sit, per format.
 export const CHART_BOX = {
   shorts: { left: 3, top: 7, width: 94, height: 55 },
-  landscape: { left: 2.5, top: 5, width: 72, height: 80 },
+  landscape: { left: 3, top: 5, width: 94, height: 74 },
 };
 const CHAR_SPOT = {
   shorts: { left: { x: 22, y: 80 }, right: { x: 78, y: 80 }, center: { x: 50, y: 76 } },
@@ -149,14 +148,8 @@ export default function Stage({ project, scene, character, time = 0, showCaption
         {layers.map((v) => (
           <VisualElement key={v.id} type={v.type} props={v.props} selected={v.id === selectedVisualId} onClick={onSelectVisual ? (e) => { e.stopPropagation(); onSelectVisual(v.id); } : undefined} />
         ))}
+        {scene && !scene.chart && <div className="stage-title"><span>{project?.title}</span></div>}
         {scene?.chart && <div style={{ position: 'absolute', inset: 0, zIndex: 2 }}><ChartLayer project={project} scene={scene} sceneIdx={sceneIdx} time={time} format={fmt.id} W={W} H={H} selectedAnn={selectedAnn} onSelectAnn={onSelectAnn} /></div>}
-        {character && charLayout.visible !== false && (
-          <div className="stage-char" style={scene?.chart
-            ? { left: `${spot.x}%`, top: `${spot.y}%`, height: `${(fmt.id === 'shorts' ? 26 : 42) * (charLayout.size || 1)}%`, zIndex: 4 }
-            : { left: `${layout.charX}%`, top: `${layout.charY}%`, height: `${layout.charH * Math.min(1.2, charLayout.size || 1)}%`, zIndex: 4 }}>
-            <CharacterRenderer character={character} pose={scene?.pose} expression={scene?.expression} animate={animate} showProps={!scene?.chart} />
-          </div>
-        )}
         {caption && <div style={{ position: 'absolute', inset: 0, zIndex: 20, pointerEvents: 'none' }}><CaptionLine caption={caption} time={time} style={project.captions.style} format={fmt.id} /></div>}
         {showSafe && <div className="safe-area" />}
         <div className="stage-vignette" />

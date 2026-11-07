@@ -4,7 +4,6 @@ import { useRoute, navigate } from './lib/router.js';
 import { Icon } from './components/Icon.jsx';
 import { Button, Spinner, Toasts, Confirm, Prompt } from './components/ui.jsx';
 import Dashboard from './pages/Dashboard.jsx';
-import CharacterStudio from './pages/CharacterStudio.jsx';
 import ScriptStudio from './pages/ScriptStudio.jsx';
 import VoiceStudio from './pages/VoiceStudio.jsx';
 import Projects from './pages/Projects.jsx';
@@ -18,7 +17,6 @@ const NAV = [
   { id: 'dashboard', label: 'Dashboard', icon: 'dashboard' },
   { id: 'concepts', label: 'Concept Library', icon: 'layers' },
   { id: 'research', label: 'Chart Research', icon: 'chart' },
-  { id: 'characters', label: 'Character Design', icon: 'user' },
   { id: 'scripts', label: 'Script Studio', icon: 'script' },
   { id: 'voice', label: 'Voice Studio', icon: 'mic' },
   { id: 'projects', label: 'Video Library', icon: 'film' },
@@ -46,7 +44,6 @@ export default function App() {
     switch (section) {
       case 'concepts': page = <ConceptLibrary />; break;
       case 'research': page = <ChartResearch key={query.toString()} />; break;
-      case 'characters': page = <CharacterStudio id={parts[1]} />; break;
       case 'scripts': page = <ScriptStudio projectId={parts[1] || query.get('project')} />; break;
       case 'voice': page = <VoiceStudio projectId={parts[1] || query.get('project')} />; break;
       case 'projects': page = parts[1] ? <ProjectWorkspace id={parts[1]} tab={parts[2]} /> : <Projects />; break;

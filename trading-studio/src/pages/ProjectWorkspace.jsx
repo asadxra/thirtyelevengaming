@@ -13,7 +13,6 @@ import ChartEditor from '../components/ChartEditor.jsx';
 import ExamplesPanel from '../components/ExamplesPanel.jsx';
 import { CONCEPTS, CATEGORIES, conceptById } from '../../shared/concepts.js';
 import TimelinePlayer from '../components/TimelinePlayer.jsx';
-import CharacterRenderer from '../components/CharacterRenderer.jsx';
 import { useProjectActions } from './Projects.jsx';
 import { readiness, generationStatus, scriptStatus, voiceStatus, STATUS_LABEL, STATUS_TONE, projectDuration } from '../lib/status.js';
 import { FORMATS } from '../../shared/defaults.js';
@@ -102,7 +101,7 @@ function Overview({ project, update, character, onTab }) {
           <p className="small muted">{conceptById(project.conceptId, store.settings?.customConcepts || [])?.simple || 'The concept drives the script, the chart research and the annotations.'}</p>
           <p className="small"><b>{project.examples?.length || 0}</b> approved chart example{project.examples?.length === 1 ? '' : 's'} · market {project.market?.symbol} {project.market?.timeframe}</p>
         </Panel>
-        <Panel title="Video format" subtitle="Only YouTube formats are supported. Layout, character position and captions adapt automatically.">
+        <Panel title="Video format" subtitle="Only YouTube formats are supported. Chart layout and captions adapt automatically.">
           <div className="format-grid">
             {Object.values(FORMATS).map((f) => (
               <button key={f.id} className={`format-card ${project.format === f.id ? 'on' : ''}`} onClick={() => update({ format: f.id })}>
@@ -112,17 +111,6 @@ function Overview({ project, update, character, onTab }) {
                 <span className="small muted">{f.note}</span>
               </button>
             ))}
-          </div>
-        </Panel>
-        <Panel title="Character" actions={character && <Button size="sm" variant="ghost" onClick={() => navigate(`/characters/${character.id}`)}>Open in studio</Button>}>
-          <div className="row gap">
-            <div className="ov-char">{character ? <CharacterRenderer character={character} pose={character.animation?.default} /> : <Icon name="user" size={40} />}</div>
-            <div className="col gap-s grow">
-              <Select value={project.characterId || ''} onChange={(e) => update({ characterId: e.target.value || null })}
-                options={[{ value: '', label: 'No character' }, ...store.characters.map((c) => ({ value: c.id, label: `${c.name}${c.status === 'approved' ? '' : ' (draft)'}` }))]} />
-              {character && character.status !== 'approved' && <p className="small warn-text"><Icon name="alert" size={12} /> This character’s design isn’t approved yet.</p>}
-              <p className="small muted">The project always renders the saved character design — it can’t drift between scenes.</p>
-            </div>
           </div>
         </Panel>
         <Panel title="Readiness" subtitle={`${r.done}/${r.checks.length} complete`}>
@@ -166,7 +154,6 @@ function Overview({ project, update, character, onTab }) {
 
 const PIPELINE = [
   ['Scene-by-scene generation', 'Each timed scene is rendered independently so a single scene can be re-rendered.'],
-  ['Character animation', 'The approved character design is animated with each scene’s pose and expression.'],
   ['Chart animations', 'Real chart frames, camera moves and annotation reveals are rendered from the saved example data.'],
   ['Background generation', 'Environment and background descriptions become the scene backdrop.'],
   ['Voiceover synchronization', 'ElevenLabs clips are aligned to scene timestamps.'],

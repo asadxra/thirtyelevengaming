@@ -86,7 +86,7 @@ export default function VisualsEditor({ project, update, character }) {
           <div className="preview-wrap" onClick={() => setSelId(null)}>
             <Stage project={project} scene={scene} character={character} visuals={layers} selectedVisualId={selId} onSelectVisual={setSelId} showCaptions={false} />
           </div>
-          <p className="small muted">Click a layer in the preview to select it. Character placement adapts to the {project.format === 'shorts' ? '9:16 Shorts' : '16:9 Landscape'} format.</p>
+          <p className="small muted">Click a layer in the preview to select it. Layout adapts to the {project.format === 'shorts' ? '9:16 Shorts' : '16:9 Landscape'} format.</p>
         </Panel>
       </div>
 

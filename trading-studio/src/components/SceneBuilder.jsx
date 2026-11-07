@@ -136,7 +136,7 @@ export default function SceneBuilder({ project, update, character }) {
       </Panel>
 
       {preview && (
-        <Panel title="Timeline preview" subtitle="Composition, character poses, captions and any generated voice clips">
+        <Panel title="Timeline preview" subtitle="Chart, annotations, captions and any generated voice clips">
           <div className="preview-wrap"><TimelinePlayer project={project} character={character} startAt={previewAt} /></div>
         </Panel>
       )}
@@ -174,14 +174,11 @@ export default function SceneBuilder({ project, update, character }) {
                   <TimeField label="Start" value={s.start} onCommit={(v) => setTime(s, 'start', v)} />
                   <TimeField label="End" value={s.end} onCommit={(v) => setTime(s, 'end', v)} />
                   <Select label="Section" value={s.section} onChange={(e) => patchScene(s.id, { section: e.target.value })} options={SECTIONS.map((x) => ({ value: x, label: SECTION_LABELS[x] }))} />
-                  <Select label="Character pose / animation" value={s.pose} onChange={(e) => patchScene(s.id, { pose: e.target.value })} options={ANIMATIONS.map((a) => ({ value: a.id, label: a.label }))} />
-                  <Select label="Expression" value={s.expression} onChange={(e) => patchScene(s.id, { expression: e.target.value })} options={EXPRESSIONS} />
                 </div>
                 <ChartRef scene={s} project={project} onChange={(chart) => patchScene(s.id, { chart })} />
                 <TextArea label="Voiceover" autoGrow rows={2} value={s.voiceover} onChange={(e) => patchScene(s.id, { voiceover: e.target.value })}
                   hint={cs === 'stale' ? 'Voiceover text changed — regenerate this scene in Voice Studio.' : undefined} />
                 <div className="grid-2">
-                  <TextArea label="Character action" rows={2} value={s.characterAction} onChange={(e) => patchScene(s.id, { characterAction: e.target.value })} />
                   <TextArea label="Environment" rows={2} value={s.environment} onChange={(e) => patchScene(s.id, { environment: e.target.value })} />
                   <TextArea label="Animation" rows={2} value={s.animation} onChange={(e) => patchScene(s.id, { animation: e.target.value })} />
                   <TextArea label="Camera movement" rows={2} value={s.camera} onChange={(e) => patchScene(s.id, { camera: e.target.value })} />

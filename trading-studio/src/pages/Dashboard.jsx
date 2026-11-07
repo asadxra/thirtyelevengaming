@@ -5,7 +5,6 @@ import { createProject } from '../lib/actions.js';
 import { Button, Panel, Stat, Badge, Empty, timeAgo } from '../components/ui.jsx';
 import { Icon } from '../components/Icon.jsx';
 import ProjectCard from '../components/ProjectCard.jsx';
-import CharacterRenderer from '../components/CharacterRenderer.jsx';
 import { scriptStatus, generationStatus } from '../lib/status.js';
 
 const ACT_ICON = { project: 'film', script: 'script', character: 'user', asset: 'folder', settings: 'settings', preset: 'layers' };
@@ -18,7 +17,6 @@ export default function Dashboard() {
   const completed = live.filter((p) => scriptStatus(p) === 'completed').length;
   const ready = live.filter((p) => generationStatus(p, characters) === 'ready').length;
   const recent = [...live].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)).slice(0, 4);
-  const main = characters.find((c) => c.id === store.settings?.defaults?.characterId) || characters[0];
 
   const newProject = async () => {
     try { await createProject(store); } catch (e) { store.toast(e.message, 'bad'); }
@@ -63,25 +61,12 @@ export default function Dashboard() {
               <QuickBtn icon="layers" label="Concept library" onClick={() => navigate('/concepts')} />
               <QuickBtn icon="chart" label="Chart research" onClick={() => navigate('/research')} />
               <QuickBtn icon="script" label="Write a script" onClick={() => navigate('/scripts')} />
-              <QuickBtn icon="user" label="Design character" onClick={() => navigate(main ? `/characters/${main.id}` : '/characters')} />
               <QuickBtn icon="mic" label="Voice Studio" onClick={() => navigate('/voice')} />
               <QuickBtn icon="palette" label="Appearance" onClick={() => navigate('/settings/appearance')} />
 
             </div>
           </Panel>
 
-          {main && (
-            <Panel title="Main character" actions={<Badge tone={main.status === 'approved' ? 'ok' : 'warn'} dot>{main.status === 'approved' ? 'Approved' : 'Awaiting approval'}</Badge>}>
-              <div className="main-char" onClick={() => navigate(`/characters/${main.id}`)}>
-                <div className="main-char-art"><CharacterRenderer character={main} pose={main.animation?.default} /></div>
-                <div>
-                  <h4>{main.name}</h4>
-                  <p className="muted small clamp-3">{main.description || 'No description yet.'}</p>
-                  <Button size="sm" icon="edit">Open in studio</Button>
-                </div>
-              </div>
-            </Panel>
-          )}
         </div>
 
         <Panel title="Recent activity" className="span-3">

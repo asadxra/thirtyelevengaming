@@ -29,7 +29,6 @@ export function voiceStatus(p) {
 export function readiness(p, characters = []) {
   const character = characters.find((c) => c.id === p.characterId);
   const checks = [
-    { id: 'character', label: 'Approved character selected', ok: !!character && character.status === 'approved', hint: character ? 'Approve the character design in Character Design.' : 'Pick a character in the project overview.' },
     { id: 'examples', label: 'Real chart example approved', ok: (p.examples || []).some((e) => e.approved !== false), hint: 'Find and approve an example in Chart Research.' },
     { id: 'script', label: 'Script marked as completed', ok: scriptStatus(p) === 'completed', hint: 'Finish the script and click “Mark completed”.' },
     { id: 'scenes', label: 'Scenes built with timestamps', ok: (p.scenes || []).length > 0, hint: 'Build scenes from the script in the Scene Builder.' },

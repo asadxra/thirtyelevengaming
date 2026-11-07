@@ -151,13 +151,6 @@ export default function ChartEditor({ project, update, character }) {
           </Panel>
         )}
 
-        <Panel title="Character">
-          <Toggle label="Show character" checked={charLayout.visible !== false} onChange={(v) => setChar({ visible: v })} />
-          <div className="field"><span className="field-label">Position</span><Chips options={['left', 'center', 'right']} value={charLayout.position || 'right'} onChange={(v) => setChar({ position: v })} /></div>
-          <Slider label="Size" value={charLayout.size || 1} min={0.4} max={1.6} step={0.05} onChange={(v) => setChar({ size: v })} format={(v) => `${Math.round(v * 100)}%`} />
-          <Select label="Gesture / body language" value={scene.pose} onChange={(e) => patchScene({ pose: e.target.value })} options={ANIMATIONS.map((a) => ({ value: a.id, label: a.label }))} />
-          <Select label="Expression" value={scene.expression} onChange={(e) => patchScene({ expression: e.target.value })} options={EXPRESSIONS} />
-        </Panel>
 
         <Panel title="Scene look">
           <Select label="Background" value={scene.bgStyle || 'terminal'} onChange={(e) => patchScene({ bgStyle: e.target.value })} options={BG} />
