@@ -91,7 +91,7 @@ function BottomLabels({ labels }) {
   );
 }
 
-function ChartLayer({ project, scene, sceneIdx, time, format, W, H, selectedAnn, onSelectAnn, look }) {
+function ChartLayer({ project, scene, sceneIdx, time, format, W, H, selectedAnn, onSelectAnn, look, onCandleClick }) {
   const ex = (project.examples || []).find((e) => e.id === scene.chart?.exampleId);
   const bars = useMemo(() => exampleBars(ex), [ex]);
   if (!ex) return null;
@@ -131,7 +131,8 @@ function ChartLayer({ project, scene, sceneIdx, time, format, W, H, selectedAnn,
     <div className="stage-chart" style={style}>
       <CandleChart bars={bars} focus={focus} annotations={ex.annotations} visible={visible} fresh={fresh} faded={faded} progress={buildIn ? Math.max(0, progress - (buildIn.t < 1 ? 0.5 : 0)) : progress} palette={look.palette} buildIn={buildIn} axis={!look.clean} labelScale={format === 'shorts' ? 1.15 : 1.1}
         width={Math.round(bw * (format === 'shorts' ? 1 : 1.2))} height={Math.round(bh * (format === 'shorts' ? 1 : 1.2))} showVolume={format === 'landscape'} overlays={ex.overlays || []}
-        selectedId={selectedAnn} onSelect={onSelectAnn} compact={format === 'shorts'} />
+        selectedId={selectedAnn} onSelect={onSelectAnn} compact={format === 'shorts'}
+        hiddenBars={scene.chart.hiddenBars?.length ? new Set(scene.chart.hiddenBars) : null} onCandleClick={onCandleClick} />
       <div className="stage-source">{sourceLabel(ex)}{date ? ` · ${date}` : ''}</div>
     </div>
   );
@@ -219,7 +220,7 @@ export function CaptionLine({ caption, time, style, format = 'shorts', light = f
   );
 }
 
-export default function Stage({ project, scene, character, time = 0, showCaptions = true, captionsOverride, visuals, selectedVisualId, onSelectVisual, animate = true, className = '', showSafe = false, selectedAnn, onSelectAnn }) {
+export default function Stage({ project, scene, character, time = 0, showCaptions = true, captionsOverride, visuals, selectedVisualId, onSelectVisual, animate = true, className = '', showSafe = false, selectedAnn, onSelectAnn, onCandleClick }) {
   const fmt = FORMATS[project?.format] || FORMATS.shorts;
   const store = useStore();
   const look = videoStyle(project, store?.settings);
@@ -244,7 +245,7 @@ export default function Stage({ project, scene, character, time = 0, showCaption
           <VisualElement key={v.id} type={v.type} props={v.props} selected={v.id === selectedVisualId} onClick={onSelectVisual ? (e) => { e.stopPropagation(); onSelectVisual(v.id); } : undefined} />
         ))}
         {scene && !scene.chart && <div className="stage-title"><span>{project?.title}</span></div>}
-        {scene?.chart && <div style={{ position: 'absolute', inset: 0, zIndex: 2 }}><ChartLayer project={project} scene={scene} sceneIdx={sceneIdx} time={time} format={fmt.id} W={W} H={H} selectedAnn={selectedAnn} onSelectAnn={onSelectAnn} look={look} /></div>}
+        {scene?.chart && <div style={{ position: 'absolute', inset: 0, zIndex: 2 }}><ChartLayer project={project} scene={scene} sceneIdx={sceneIdx} time={time} format={fmt.id} W={W} H={H} selectedAnn={selectedAnn} onSelectAnn={onSelectAnn} look={look} onCandleClick={onCandleClick} /></div>}
         {caption && <div style={{ position: 'absolute', inset: 0, zIndex: 20, pointerEvents: 'none' }}><CaptionLine caption={caption} time={time} style={project.captions.style} format={fmt.id} light={light} clean={look.clean && look.vs.cleanCaptions !== false} /></div>}
         {showSafe && <div className="safe-area" />}
         <div style={{ position: 'absolute', inset: 0, zIndex: 22, pointerEvents: 'none' }}><BottomLabels labels={activeBottomLabels(project, scene, time)} /></div>

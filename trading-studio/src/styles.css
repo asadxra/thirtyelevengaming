@@ -729,3 +729,4 @@ input[type="range"] { width: 100%; accent-color: var(--primary); height: 18px; }
 .stage-clean .stage-chart { background: transparent; box-shadow: none; border-radius: 0; }
 .stage-clean .stage-source { background: transparent; color: #9ca3af; }
 .stage-clean .stage-title span { font-family: 'Montserrat', 'Poppins', Arial, sans-serif; font-weight: 800; }
+.edge-grid { display: grid; grid-template-columns: 52px 1fr 1fr; gap: 6px; align-items: center; }

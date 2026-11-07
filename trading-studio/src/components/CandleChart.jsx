@@ -9,7 +9,7 @@ export default function CandleChart({
   bars = [], focus, annotations = [], visible = null, fresh = null, progress = 1, selectedId, onSelect,
   width = 960, height = 540, interactive = false, onFocusChange, showSessions = true, showVolume = true,
   overlays = [], replayTo = null, sourceLabel = '', compact = false, className = '', axis = true,
-  palette = null, faded = null, labelScale = 1, embed = null, buildIn = null,
+  palette = null, faded = null, labelScale = 1, embed = null, buildIn = null, hiddenBars = null, onCandleClick = null, markedBars = null,
 }) {
   // Clean look (palette.clean): dashed grid, plain-text labels, zones with dashed edges.
   const clean = !!palette?.clean;
@@ -147,7 +147,7 @@ export default function CandleChart({
     if (p <= 0) return null;
     const color = an.color || ROLE_VAR(an.role);
     const sel = selectedId === an.id;
-    const common = { 'data-ann': an.id, onClick: onSelect ? (e) => { e.stopPropagation(); onSelect(an.id); } : undefined, style: { cursor: onSelect ? 'pointer' : 'default' }, className: `ann ann-${an.type} ${sel ? 'sel' : ''}` };
+    const common = { 'data-ann': an.id, onClick: onSelect ? (e) => { e.stopPropagation(); onSelect(an.id); } : undefined, style: onCandleClick ? { pointerEvents: 'none' } : { cursor: onSelect ? 'pointer' : 'default' }, className: `ann ann-${an.type} ${sel ? 'sel' : ''}` };
     const isFaded = faded && faded.has(an.id) && !isFresh(an.id);
     const op = (an.opacity ?? 1) * (isFaded ? 0.22 : 1);
     if (isFaded) an = { ...an, text: '' };
@@ -273,6 +273,10 @@ export default function CandleChart({
         {/* candles */}
         {bars.slice(a, lastShown + 1).map((q, k) => {
           const i = a + k;
+          if (hiddenBars && hiddenBars.has(i)) {
+            // Hidden in this scene: leave the slot empty (or a faint placeholder while editing).
+            return onCandleClick ? <rect key={i} x={x(i) - stepW * 0.4} y={padT} width={stepW * 0.8} height={plotH} fill="transparent" stroke={C('grid')} strokeDasharray="2 3" style={{ cursor: 'pointer' }} onClick={(e) => { e.stopPropagation(); onCandleClick(i); }} /> : null;
+          }
           const up = q.c >= q.o;
           const col = up ? C('bull') : C('bear');
           const bw = Math.max(1, stepW * 0.68);
@@ -285,7 +289,9 @@ export default function CandleChart({
             if (bi <= 0) return null;
           }
           return (
-            <g key={i} opacity={bi} transform={bi < 1 ? `translate(0 ${(1 - bi) * 10})` : undefined}>
+            <g key={i} opacity={bi} transform={bi < 1 ? `translate(0 ${(1 - bi) * 10})` : undefined}
+              onClick={onCandleClick ? (e) => { e.stopPropagation(); onCandleClick(i); } : undefined} style={onCandleClick ? { cursor: 'pointer' } : undefined}>
+              {markedBars && markedBars.has(i) && <rect x={x(i) - stepW * 0.5} y={padT} width={stepW} height={plotH} fill={C('highlight')} opacity=".18" />}
               <line x1={x(i)} x2={x(i)} y1={y(q.h)} y2={y(q.l)} stroke={(up ? palette?.bullWick : palette?.bearWick) || col} strokeWidth={Math.max(1, stepW * 0.1)} />
               <rect x={x(i) - bw / 2} y={yo} width={bw} height={Math.max(1, yc - yo)} fill={col} stroke={(up ? palette?.bullBorder : palette?.bearBorder) || 'none'} strokeWidth={(up ? palette?.bullBorder : palette?.bearBorder) ? Math.max(1, stepW * 0.08) : 0} />
             </g>

@@ -1,10 +1,11 @@
 import React, { useMemo, useState } from 'react';
 import { useStore } from '../lib/store.jsx';
-import { Button, Panel, Select, Slider, Toggle, Chips, Input, ColorInput, Badge, Empty, IconButton } from './ui.jsx';
+import { Button, Panel, Select, Slider, Toggle, Chips, Input, TextArea, ColorInput, Badge, Empty, IconButton } from './ui.jsx';
 import { Icon } from './Icon.jsx';
 import Stage, { DEFAULT_LAYOUT, videoStyle } from './Stage.jsx';
 import { CANDLE_PRESETS } from '../../shared/defaults.js';
-import { SECTION_LABELS, ANIMATIONS, EXPRESSIONS } from '../../shared/defaults.js';
+import { SECTION_LABELS, SECTIONS, ANIMATIONS, EXPRESSIONS } from '../../shared/defaults.js';
+import { blankScene, parseTime } from '../../shared/scenes.js';
 import { exampleBars, sourceLabel } from '../../shared/examples.js';
 import { fmtTime } from '../../shared/scenes.js';
 import { formatBarTime, fmtPrice } from '../../shared/market.js';
@@ -22,6 +23,7 @@ export default function ChartEditor({ project, update, character }) {
   const [sceneId, setSceneId] = useState(scenes.find((s) => s.chart)?.id || scenes[0]?.id);
   const [annId, setAnnId] = useState(null);
   const [offset, setOffset] = useState(1.5);
+  const [candleMode, setCandleMode] = useState(false);
   const scene = scenes.find((s) => s.id === sceneId) || scenes[0];
   const ex = (project.examples || []).find((e) => e.id === scene?.chart?.exampleId);
   const bars = useMemo(() => exampleBars(ex), [ex]);
@@ -78,14 +80,17 @@ export default function ChartEditor({ project, update, character }) {
       <div className="col gap">
         <Panel title={`Scene ${scenes.indexOf(scene) + 1} · ${SECTION_LABELS[scene.section] || ''}`} subtitle={scene.voiceover}>
           <div className={`preview-wrap bg-${scene.bgStyle || 'terminal'}`}>
-            <Stage project={project} scene={scene} character={character} time={time} selectedAnn={annId} onSelectAnn={setAnnId} />
+            <Stage project={project} scene={scene} character={character} time={time} selectedAnn={annId} onSelectAnn={setAnnId}
+              onCandleClick={candleMode && ex?.kind === 'historical' ? (i) => { const h = new Set(scene.chart.hiddenBars || []); h.has(i) ? h.delete(i) : h.add(i); patchChart({ hiddenBars: [...h].sort((a, b) => a - b) }); } : undefined} />
           </div>
           <Slider label="Preview time within scene" value={offset} min={0} max={Math.max(0.1, scene.end - scene.start)} step={0.05} onChange={setOffset} format={(v) => `${fmtTime(scene.start + v)}`} />
-          <p className="small muted">Click a chart annotation to edit it. Annotations listed under “Reveal in this scene” animate in at the start of the scene, in order.</p>
+          <p className="small muted">{candleMode ? 'Candle editing is on: click a candle to hide it in this scene, click its empty slot to bring it back.' : 'Click a chart annotation to edit it. Annotations listed under “Reveal in this scene” animate in at the start of the scene, in order.'}</p>
         </Panel>
       </div>
 
       <div className="col gap inspector">
+        <SceneDetails project={project} scene={scene} update={update} onSelect={(id) => { setSceneId(id); setAnnId(null); }} />
+        {ex?.kind === 'historical' && <CandlesPanel scene={scene} bars={bars} patchChart={patchChart} candleMode={candleMode} setCandleMode={setCandleMode} />}
         <Panel title="Chart">
           <Select label="Chart example" value={scene.chart?.exampleId || ''} onChange={(e) => {
             const nx = project.examples.find((x) => x.id === e.target.value);
@@ -302,5 +307,101 @@ function CandleColor({ value, fallback, onChange }) {
       {value && fallback !== undefined && <button type="button" className="link small" onClick={() => onChange(null)}>Same as body</button>}
       {bad && <span className="small bad-text">Use a code like #089981</span>}
     </div>
+  );
+}
+
+// Every editable detail of one scene, with scene management.
+function SceneDetails({ project, scene, update, onSelect }) {
+  const scenes = project.scenes || [];
+  const idx = scenes.findIndex((s) => s.id === scene.id);
+  const set = (patch) => update((p) => ({ scenes: p.scenes.map((s) => (s.id === scene.id ? { ...s, ...patch } : s)) }));
+  const [t, setT] = useState({ start: fmtTime(scene.start), end: fmtTime(scene.end) });
+  React.useEffect(() => setT({ start: fmtTime(scene.start), end: fmtTime(scene.end) }), [scene.id, scene.start, scene.end]);
+  const commitTime = (k) => {
+    const v = parseTime(t[k]);
+    if (!Number.isFinite(v) || v < 0 || (k === 'end' && v <= scene.start) || (k === 'start' && v >= scene.end)) { setT({ start: fmtTime(scene.start), end: fmtTime(scene.end) }); return; }
+    set({ [k]: +v.toFixed(2) });
+  };
+  const insertAfter = (copy) => {
+    const s = copy ? { ...scene, id: blankScene().id } : blankScene(scene.section, { chart: scene.chart ? { ...scene.chart, reveal: [] } : null });
+    s.start = scene.end; s.end = scene.end + (copy ? scene.end - scene.start : 4);
+    update((p) => { const a = [...p.scenes]; a.splice(idx + 1, 0, s); return { scenes: a }; });
+    onSelect(s.id);
+  };
+  const remove = () => {
+    if (scenes.length <= 1) return;
+    const next = scenes[idx + 1] || scenes[idx - 1];
+    update((p) => ({ scenes: p.scenes.filter((s) => s.id !== scene.id) }));
+    onSelect(next.id);
+  };
+  const move = (d) => update((p) => { const a = [...p.scenes]; const [x] = a.splice(idx, 1); a.splice(idx + d, 0, x); return { scenes: a }; });
+  return (
+    <Panel title={`Scene ${idx + 1} of ${scenes.length}`} actions={<>
+      <IconButton icon="left" title="Previous scene" disabled={idx === 0} onClick={() => onSelect(scenes[idx - 1].id)} />
+      <IconButton icon="right" title="Next scene" disabled={idx === scenes.length - 1} onClick={() => onSelect(scenes[idx + 1].id)} />
+    </>}>
+      <div className="grid-2">
+        <Input label="Start" className="mono" value={t.start} onChange={(e) => setT({ ...t, start: e.target.value })} onBlur={() => commitTime('start')} onKeyDown={(e) => e.key === 'Enter' && commitTime('start')} />
+        <Input label="End" className="mono" value={t.end} onChange={(e) => setT({ ...t, end: e.target.value })} onBlur={() => commitTime('end')} onKeyDown={(e) => e.key === 'Enter' && commitTime('end')} />
+      </div>
+      <Select label="Section" value={scene.section} onChange={(e) => set({ section: e.target.value })} options={SECTIONS.map((x) => ({ value: x, label: SECTION_LABELS[x] }))} />
+      <TextArea label="Voiceover" rows={3} value={scene.voiceover || ''} onChange={(e) => set({ voiceover: e.target.value })} hint="Changing it marks this scene’s voice clip as out of date." />
+      <TextArea label="Caption text" rows={2} value={scene.caption || ''} onChange={(e) => set({ caption: e.target.value })} hint="Regenerate captions in the Captions tab to apply." />
+      <TextArea label="Camera movement" rows={2} value={scene.camera || ''} onChange={(e) => set({ camera: e.target.value })} />
+      <TextArea label="Animation notes" rows={2} value={scene.animation || ''} onChange={(e) => set({ animation: e.target.value })} />
+      <TextArea label="On-screen text / overlay instructions" rows={2} value={scene.codeAnimation || ''} onChange={(e) => set({ codeAnimation: e.target.value })} />
+      <TextArea label="Background notes" rows={2} value={scene.background || ''} onChange={(e) => set({ background: e.target.value })} />
+      <div className="row gap-s wrap">
+        <Button size="sm" icon="plus" onClick={() => insertAfter(false)}>Add scene after</Button>
+        <Button size="sm" icon="copy" onClick={() => insertAfter(true)}>Duplicate</Button>
+        <IconButton icon="up" title="Move earlier" disabled={idx === 0} onClick={() => move(-1)} />
+        <IconButton icon="down" title="Move later" disabled={idx === scenes.length - 1} onClick={() => move(1)} />
+        <Button size="sm" variant="danger" icon="trash" disabled={scenes.length <= 1} onClick={remove}>Delete scene</Button>
+      </div>
+    </Panel>
+  );
+}
+
+// Per-scene candle selection. Candles always come from the example's real bars:
+// hiding removes them from this scene; adding shows more real bars around the moment.
+function CandlesPanel({ scene, bars, patchChart, candleMode, setCandleMode }) {
+  const [f0, f1] = (scene.chart.focus || [0, bars.length - 1]).map(Math.round);
+  const hidden = new Set(scene.chart.hiddenBars || []);
+  const shown = Math.max(0, f1 - f0 + 1 - [...hidden].filter((i) => i >= f0 && i <= f1).length);
+  const [from, setFrom] = useState(f0);
+  const [to, setTo] = useState(f1);
+  React.useEffect(() => { setFrom(f0); setTo(f1); }, [scene.id, f0, f1]);
+  const setFocus = (a, b) => patchChart({ focus: [Math.max(0, a), Math.min(bars.length - 1, b)] });
+  const hideRange = (on) => {
+    const h = new Set(hidden);
+    for (let i = Math.min(from, to); i <= Math.max(from, to); i++) (on ? h.add(i) : h.delete(i));
+    patchChart({ hiddenBars: [...h].sort((a, b) => a - b) });
+  };
+  const opts = bars.map((b, i) => ({ value: i, label: `${formatBarTime(b.t, false)}${hidden.has(i) ? ' (hidden)' : ''}` })).slice(Math.max(0, f0 - 30), Math.min(bars.length, f1 + 31));
+  return (
+    <Panel title="Candles in this scene" subtitle={`${shown} candle${shown === 1 ? '' : 's'} shown · ${hidden.size} hidden`}>
+      <Toggle label="Click candles to hide / show" hint="Then click candles in the preview" checked={candleMode} onChange={setCandleMode} />
+      <div className="field"><span className="field-label">Add or remove candles at the edges</span>
+        <div className="edge-grid">
+          <span className="small muted">Before</span>
+          <Button size="sm" icon="plus" disabled={f0 <= 0} onClick={() => setFocus(f0 - 5, f1)}>Add 5</Button>
+          <Button size="sm" disabled={f1 - f0 < 8} onClick={() => setFocus(f0 + 5, f1)}>Remove 5</Button>
+          <span className="small muted">After</span>
+          <Button size="sm" icon="plus" disabled={f1 >= bars.length - 1} onClick={() => setFocus(f0, f1 + 5)}>Add 5</Button>
+          <Button size="sm" disabled={f1 - f0 < 8} onClick={() => setFocus(f0, f1 - 5)}>Remove 5</Button>
+        </div>
+        {(f0 <= 0 || f1 >= bars.length - 1) && <span className="field-hint">No more real candles saved on that side of this example. Re-approve it from Chart Research with a wider range to add more.</span>}
+      </div>
+      <div className="grid-2">
+        <Select label="From candle" value={from} onChange={(e) => setFrom(Number(e.target.value))} options={opts} />
+        <Select label="To candle" value={to} onChange={(e) => setTo(Number(e.target.value))} options={opts} />
+      </div>
+      <div className="row gap-s wrap">
+        <Button size="sm" icon="eye" onClick={() => hideRange(true)}>Hide these</Button>
+        <Button size="sm" onClick={() => hideRange(false)}>Show these</Button>
+        <Button size="sm" variant="ghost" icon="refresh" disabled={!hidden.size} onClick={() => patchChart({ hiddenBars: [] })}>Show all</Button>
+      </div>
+      <p className="small muted">Candles are always the real market bars. Hiding one only removes it from this scene; nothing is invented or moved.</p>
+    </Panel>
   );
 }

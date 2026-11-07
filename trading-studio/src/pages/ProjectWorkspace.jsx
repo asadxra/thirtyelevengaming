@@ -26,7 +26,7 @@ const TABS = [
   { id: 'scenes', label: 'Scenes & timeline', icon: 'film' },
   { id: 'voice', label: 'Voiceover', icon: 'mic' },
   { id: 'captions', label: 'Captions', icon: 'type' },
-  { id: 'editor', label: 'Video editor', icon: 'edit' },
+  { id: 'editor', label: 'Scene editor', icon: 'edit' },
   { id: 'visuals', label: 'Overlays', icon: 'layers' },
   { id: 'thumbnail', label: 'Thumbnail', icon: 'image' },
   { id: 'generate', label: 'Generate', icon: 'zap' },
