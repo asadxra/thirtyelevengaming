@@ -120,8 +120,8 @@ export default function CharacterStudio({ id }) {
           {/* character list */}
           <div className="char-list">
             {characters.map((c) => (
-              <button key={c.id} className={`char-item ${c.id === draft.id ? 'active' : ''}`} onClick={() => {
-                if (dirty && !window.confirm('Discard unsaved changes to this character?')) return;
+              <button key={c.id} className={`char-item ${c.id === draft.id ? 'active' : ''}`} onClick={async () => {
+                if (dirty && !(await store.ask({ title: 'Unsaved changes', message: 'Discard unsaved changes to this character?', confirmLabel: 'Discard changes', danger: true }))) return;
                 navigate(`/characters/${c.id}`);
               }}>
                 <div className="char-item-art"><CharacterRenderer character={c} animate={false} showProps={false} /></div>

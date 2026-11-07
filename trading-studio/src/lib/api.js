@@ -1,5 +1,12 @@
-// Thin fetch wrapper. Errors carry the server's message so the UI can display it.
+// API client. In the self-hosted build it talks to the Node server; in the web (artifact)
+// build (VITE_STANDALONE) the same routes are served in the browser by localServer.js.
+export const STANDALONE = import.meta.env.VITE_STANDALONE === 'true';
+
 async function request(method, url, body, opts = {}) {
+  if (STANDALONE) {
+    const local = await import('./localServer.js');
+    return local.handle(method, url, opts.raw ? undefined : body, opts.extra);
+  }
   let res;
   try {
     res = await fetch(url, {
@@ -24,6 +31,12 @@ export const api = {
   upload: (file, tags = []) =>
     request('POST', '/api/upload', file, {
       raw: true,
+      extra: { file, tags },
       headers: { 'Content-Type': file.type || 'application/octet-stream', 'X-Filename': encodeURIComponent(file.name), 'X-Tags': tags.join(',') },
     }),
+  exportBackup: async () => {
+    if (STANDALONE) return (await import('./localServer.js')).exportBackup();
+    window.location.href = '/api/export';
+    return null;
+  },
 };

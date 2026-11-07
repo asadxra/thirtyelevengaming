@@ -17,8 +17,8 @@ export default function CaptionsEditor({ project, update, character }) {
   const setStyle = (patch) => setCap({ style: { ...style, ...patch } });
   const setItem = (id, patch, retimeWords) => setCap({ items: items.map((c) => (c.id === id ? (retimeWords ? retimeCaptionWords({ ...c, ...patch }) : { ...c, ...patch }) : c)) });
 
-  const generate = (mode = cap.mode) => {
-    if (items.length && !window.confirm('Replace the current captions with freshly generated ones? Manual caption edits will be lost (the script is not affected).')) return;
+  const generate = async (mode = cap.mode) => {
+    if (items.length && !(await store.ask({ title: 'Regenerate captions', message: 'Replace the current captions with freshly generated ones? Manual caption edits will be lost (the script is not affected).', confirmLabel: 'Replace captions' }))) return;
     const next = captionsFromScenes(project.scenes || [], mode);
     setCap({ items: next, mode, generatedAt: new Date().toISOString() });
     store.toast(`Generated ${next.length} captions from scene ${mode === 'word' ? 'text (word bursts)' : 'text (sentences)'}`, 'ok');
@@ -121,7 +121,7 @@ export default function CaptionsEditor({ project, update, character }) {
           <Toggle label="Uppercase" checked={style.uppercase} onChange={(v) => setStyle({ uppercase: v })} />
           <div className="row gap-s">
             <Button size="sm" variant="ghost" onClick={async () => {
-              const name = window.prompt('Preset name', 'My caption style');
+              const name = await store.askText({ title: 'Save caption preset', label: 'Preset name', initial: 'My caption style' });
               if (!name) return;
               try { await store.createDoc('presets', { kind: 'caption', name, data: style }); store.toast('Caption preset saved', 'ok'); } catch (e) { store.toast(e.message, 'bad'); }
             }}>Save as global preset</Button>

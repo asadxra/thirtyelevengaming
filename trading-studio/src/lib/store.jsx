@@ -14,6 +14,11 @@ export function StoreProvider({ children }) {
   const [state, setState] = useState({ loading: true, error: null, settings: null, projects: [], characters: [], assets: [], presets: [], activity: [], integrations: {} });
   const [saveState, setSaveState] = useState({}); // key "col:id" -> 'pending' | 'saving' | 'saved' | 'error'
   const [toasts, setToasts] = useState([]);
+  const [dialog, setDialog] = useState(null);
+  // In-page replacements for window.confirm / window.prompt (blocked inside claude.ai artifacts).
+  const ask = useCallback((opts) => new Promise((resolve) => setDialog({ kind: 'confirm', ...opts, resolve })), []);
+  const askText = useCallback((opts) => new Promise((resolve) => setDialog({ kind: 'prompt', ...opts, resolve })), []);
+  const closeDialog = useCallback((value) => { setDialog((d) => { d?.resolve(value); return null; }); }, []);
   const timers = useRef({});
   const pending = useRef({});
   const stateRef = useRef(state);
@@ -149,10 +154,10 @@ export function StoreProvider({ children }) {
   const addAssetLocal = useCallback((asset) => setState((s) => ({ ...s, assets: [asset, ...s.assets.filter((a) => a.id !== asset.id)] })), []);
 
   const value = useMemo(() => ({
-    ...state, saveState, toasts, toast, reload: load, refreshActivity,
+    ...state, saveState, toasts, toast, dialog, ask, askText, closeDialog, reload: load, refreshActivity,
     editDoc, flushDoc, createDoc, deleteDoc, duplicateDoc, replaceDoc, logActivity,
     updateSettings, uploadAsset, setIntegrations, addAssetLocal,
-  }), [state, saveState, toasts, toast, load, refreshActivity, editDoc, flushDoc, createDoc, deleteDoc, duplicateDoc, replaceDoc, logActivity, updateSettings, uploadAsset, setIntegrations, addAssetLocal]);
+  }), [state, saveState, toasts, toast, dialog, ask, askText, closeDialog, load, refreshActivity, editDoc, flushDoc, createDoc, deleteDoc, duplicateDoc, replaceDoc, logActivity, updateSettings, uploadAsset, setIntegrations, addAssetLocal]);
 
   return <StoreCtx.Provider value={value}>{children}</StoreCtx.Provider>;
 }

@@ -10,6 +10,7 @@
     "dev:client": "vite",
     "build": "vite build",
     "start": "NODE_ENV=production node server/index.js",
+    "build:web": "node scripts/build-artifact.js",
     "test": "node --test test/*.test.js"
   },
   "engines": {

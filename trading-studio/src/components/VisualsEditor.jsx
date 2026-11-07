@@ -109,7 +109,7 @@ export default function VisualsEditor({ project, update, character }) {
             <Select value="" onChange={(e) => { const [id, scope] = e.target.value.split('|'); const p = visualPresets.find((x) => x.id === id); if (p) applyPreset(p, scope === 'all'); }}
               options={[{ value: '', label: 'Apply visual preset…' }, ...visualPresets.flatMap((p) => [{ value: `${p.id}|one`, label: `${p.name} → this scene` }, { value: `${p.id}|all`, label: `${p.name} → all scenes` }])]} />
             <Button size="sm" variant="ghost" disabled={!layers.length} onClick={async () => {
-              const name = window.prompt('Preset name', 'My scene look');
+              const name = await store.askText({ title: 'Save visual preset', label: 'Preset name', initial: 'My scene look' });
               if (!name) return;
               try { await store.createDoc('presets', { kind: 'visual', name, data: layers.map((l) => ({ type: l.type, props: l.props })) }); store.toast('Visual preset saved', 'ok'); } catch (e) { store.toast(e.message, 'bad'); }
             }}>Save as preset</Button>

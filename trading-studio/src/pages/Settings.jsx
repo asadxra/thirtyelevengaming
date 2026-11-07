@@ -130,7 +130,9 @@ function Integrations() {
 
       <Panel title="Claude (AI script writer)" subtitle={`Model: ${claude.model || 'claude-opus-5-5'} · optional — the local writer works without it`}
         actions={claude.configured ? <Badge tone="ok" dot>Connected · {claude.source === 'environment' ? 'env variable' : 'stored on server'}</Badge> : <Badge tone="muted" dot>Not connected</Badge>}>
-        {claude.configured ? (
+        {claude.builtIn ? (
+          <p className="small">{claude.configured ? 'Script Studio writes with Claude through claude.ai — no API key needed. The first time you use it, claude.ai asks you to allow it.' : 'Claude isn’t available in this view. The local writer still works.'}</p>
+        ) : claude.configured ? (
           <div className="row gap-s">
             <p className="small grow">Script Studio can use Claude for generation, rewrites, tone changes, expand and shorten.</p>
             {claude.source === 'stored' && <Button variant="danger" icon="unlink" onClick={() => setConfirmOff('claude')}>Disconnect</Button>}
@@ -151,13 +153,13 @@ function Integrations() {
         <p className="small muted">The planned pipeline: scene-by-scene rendering, character animation, code animations, backgrounds, voice & caption sync, music/SFX and final composition.</p>
       </Panel>
 
-      <Panel title="Security">
+      {!store.integrations?.standalone && <Panel title="Security">
         <ul className="checklist">
           <li className="ok"><Icon name="lock" size={14} /><span>API keys are never included in the frontend bundle or returned by any API route.</span></li>
           <li className="ok"><Icon name="lock" size={14} /><span>Keys entered here are stored server-side in <code>data/secrets.json</code> (file mode 600, git-ignored).</span></li>
           <li className="ok"><Icon name="lock" size={14} /><span>Environment variables (<code>ELEVENLABS_API_KEY</code>, <code>ANTHROPIC_API_KEY</code>) take precedence.</span></li>
         </ul>
-      </Panel>
+      </Panel>}
 
       <Confirm open={!!confirmOff} danger title="Disconnect integration" confirmLabel="Disconnect" onClose={() => setConfirmOff(null)}
         message="The stored API key will be deleted from the server. Existing generated audio stays in your projects."
@@ -279,9 +281,11 @@ function Storage() {
         <Slider label="Script versions kept per project" value={s.keepScriptVersions ?? 15} min={3} max={50} step={1} onChange={(v) => set({ keepScriptVersions: v })} />
       </Panel>
       <Panel title="Data">
-        <p className="small muted">All projects, characters, presets and settings are stored in <code>data/db.json</code> on the studio server; uploads and voiceovers in <code>data/uploads/</code>.</p>
+        {store.integrations?.standalone
+          ? <p className="small muted">{store.integrations.storage === 'cloud' ? 'Projects, characters, presets and settings are saved to your private storage for this page on claude.ai, so they follow you to any device where you’re signed in.' : 'Cloud storage isn’t available in this view, so data is saved in this browser only.'} Uploaded images use the page’s asset store.</p>
+          : <p className="small muted">All projects, characters, presets and settings are stored in <code>data/db.json</code> on the studio server; uploads and voiceovers in <code>data/uploads/</code>.</p>}
         <div className="row gap-s wrap">
-          <a className="btn btn-default" href="/api/export" download><Icon name="download" size={16} /><span>Export backup (JSON)</span></a>
+          <Button icon="download" onClick={async () => { try { await api.exportBackup(); } catch (e) { if (e?.code !== 'declined') store.toast(e.message || 'Export failed', 'bad'); } }}>Export backup (JSON)</Button>
           <Button variant="danger" icon="trash" onClick={() => setReset(true)}>Reset to sample data</Button>
         </div>
         <p className="small muted">{store.projects.length} projects · {store.characters.length} characters · {store.assets.length} assets · {store.presets.length} presets</p>

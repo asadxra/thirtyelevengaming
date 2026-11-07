@@ -2,7 +2,7 @@ import React from 'react';
 import { useStore } from './lib/store.jsx';
 import { useRoute, navigate } from './lib/router.js';
 import { Icon } from './components/Icon.jsx';
-import { Button, Spinner, Toasts } from './components/ui.jsx';
+import { Button, Spinner, Toasts, Confirm, Prompt } from './components/ui.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import CharacterStudio from './pages/CharacterStudio.jsx';
 import ScriptStudio from './pages/ScriptStudio.jsx';
@@ -71,8 +71,8 @@ export default function App() {
           ))}
         </nav>
         <div className="sidebar-foot">
-          <IntegrationPill label="ElevenLabs" on={store.integrations?.elevenlabs?.configured} href="#/settings/integrations" />
-          <IntegrationPill label="Claude writer" on={store.integrations?.claude?.configured} href="#/settings/integrations" />
+          <IntegrationPill label="ElevenLabs" on={store.integrations?.elevenlabs?.configured} off={store.integrations?.elevenlabs?.unavailable ? 'Self-hosted only' : 'Connect'} href="#/settings/integrations" />
+          <IntegrationPill label="Claude writer" on={store.integrations?.claude?.configured} off={store.integrations?.claude?.builtIn ? 'Unavailable' : 'Connect'} href="#/settings/integrations" />
           <IntegrationPill label="Video renderer" on={false} off="Not connected" href="#/settings/integrations" />
           <button className="mode-toggle" onClick={() => store.updateSettings({ theme: { mode: mode === 'dark' ? 'light' : 'dark' } })}>
             <Icon name={mode === 'dark' ? 'sun' : 'moon'} size={15} /> {mode === 'dark' ? 'Light mode' : 'Dark mode'}
@@ -81,6 +81,10 @@ export default function App() {
       </aside>
       <main className="main">{page}</main>
       <Toasts toasts={store.toasts} />
+      <Confirm open={store.dialog?.kind === 'confirm'} title={store.dialog?.title || 'Are you sure?'} message={store.dialog?.message} confirmLabel={store.dialog?.confirmLabel || 'Continue'}
+        danger={store.dialog?.danger} onConfirm={() => store.closeDialog(true)} onClose={() => store.closeDialog(false)} />
+      <Prompt open={store.dialog?.kind === 'prompt'} title={store.dialog?.title || ''} label={store.dialog?.label || 'Name'} initial={store.dialog?.initial || ''}
+        confirmLabel={store.dialog?.confirmLabel || 'Save'} onSubmit={(v) => store.closeDialog(v)} onClose={() => store.closeDialog(null)} />
     </div>
   );
 }

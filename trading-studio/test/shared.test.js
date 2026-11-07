@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { buildScenes, retime, captionsFromScenes, parseTime, fmtTime, splitSentences, hashText } from '../shared/scenes.js';
-import { localGenerate, runScriptOp } from '../server/scriptwriter.js';
+import { localGenerate, runLocalOp } from '../shared/writer.js';
 import { SECTIONS } from '../shared/defaults.js';
 
 test('splitSentences keeps punctuation', () => {
@@ -39,9 +39,8 @@ test('hash changes with text (voice staleness)', () => {
 
 test('local script ops', async () => {
   const sections = localGenerate({ theme: 'Consistency', duration: 45 }, { seed: 3 });
-  const shorter = await runScriptOp({ op: 'shorten', sections });
+  const shorter = runLocalOp({ op: 'shorten', sections });
   assert.ok(shorter.sections.story.length <= sections.story.length);
-  const hook = await runScriptOp({ op: 'section', section: 'hook', inputs: { theme: 'Consistency', duration: 45 }, sections });
+  const hook = runLocalOp({ op: 'section', section: 'hook', inputs: { theme: 'Consistency', duration: 45 }, sections });
   assert.equal(hook.sections.story, sections.story);
-  await assert.rejects(runScriptOp({ engine: 'claude', op: 'generate' }), /not connected/);
 });

@@ -77,6 +77,17 @@ export function ElevenConnect({ eleven, compact }) {
       store.toast('ElevenLabs connected', 'ok');
     } catch (ex) { setErr(ex.message); } finally { setBusy(false); }
   };
+  if (eleven.status?.unavailable) {
+    return (
+      <div className={`connect-box ${compact ? 'compact' : ''}`}>
+        <div className="connect-icon"><Icon name="mic" size={24} /></div>
+        <div className="grow">
+          <h4>ElevenLabs needs the self-hosted studio</h4>
+          <p className="small muted">This web version can’t keep an ElevenLabs API key secret, so voice generation is turned off here. Everything else works: scenes, timing, captions and previews. To generate Quentin voiceovers, run the self-hosted studio from the <code>trading-studio</code> folder (see its README) and connect your key there.</p>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className={`connect-box ${compact ? 'compact' : ''}`}>
       <div className="connect-icon"><Icon name="mic" size={24} /></div>
@@ -258,7 +269,7 @@ export default function VoicePanel({ project, update }) {
             <div className="row gap-s wrap voice-actions">
               <Button variant="primary" icon="mic" disabled={!connected || !voice.voiceId || !!batch || !missing.length} onClick={() => runBatch(missing, 'Generate missing')}>Generate voiceover ({missing.length} missing)</Button>
               <Button icon="refresh" disabled={!connected || !voice.voiceId || !!batch || !stale.length} onClick={() => runBatch(stale, 'Regenerate changed')}>Regenerate changed scenes ({stale.length})</Button>
-              <Button variant="ghost" icon="refresh" disabled={!connected || !voice.voiceId || !!batch} onClick={() => window.confirm(`Regenerate all ${scenes.length} scenes? This uses ElevenLabs credits.`) && runBatch(scenes, 'Regenerate all')}>Regenerate all</Button>
+              <Button variant="ghost" icon="refresh" disabled={!connected || !voice.voiceId || !!batch} onClick={async () => (await store.ask({ title: 'Regenerate all scenes', message: `Regenerate all ${scenes.length} scenes? This uses ElevenLabs credits.`, confirmLabel: 'Regenerate all' })) && runBatch(scenes, 'Regenerate all')}>Regenerate all</Button>
               <Button variant="ghost" icon="clock" disabled={!Object.keys(durations).length} onClick={syncToAudio} title="Set each scene’s duration to its audio length">Sync timestamps to audio</Button>
               {batch && <span className="small accent-text"><span className="spinner" /> {batch.label}: {batch.done}/{batch.total}</span>}
             </div>
