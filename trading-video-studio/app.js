@@ -44,7 +44,7 @@ const REFDEF={
   lines:['If you started trading because you wanted to get rich quickly, you might already be making your first mistake.','Freedom. Escape. Money. Proving yourself. A better future. All valid reasons, but each one pulls you differently.','The motive shapes the method. Need it fast, and you size up, skip the stop and trade too much.','Money can be the reason you start. Discipline must be the reason you continue.','Don’t trade to escape your life. Trade to build a better version of it.']}};
 function refProject(style){const R=REFDEF[style];return{id:R.id,ref:true,title:R.title,style,format:'9:16',createdAt:Date.UTC(2026,10,8),status:'Reference',topic:'',message:'',category:'Trading motivation',tone:'',target:R.durs.reduce((a,b)=>a+b),
   voice:{...QUENTIN},scenes:R.lines.map((l,i)=>({id:R.id+'-'+i,kind:'ref',ref:i,narration:l,headline:l,sub:'',eyebrow:'',visual:'Reference scene',emotion:'',labels:[],motif:'auto',camera:'static',seed:i,duration:R.durs[i],transition:R.trans,media:null,voice:null,captionText:null,captionOffset:0})),
-  captions:{...state.settings.captions,enabled:false},music:{enabled:true,vol:.6,fadeIn:1.5,fadeOut:2.5,mode:'arc',duck:.35},sfx:{enabled:false,vol:.45},voiceVol:1,exports:[]}}
+  captions:{...state.settings.captions,enabled:false},music:{enabled:false,vol:.6,fadeIn:1.5,fadeOut:2.5,mode:'arc',duck:.35},sfx:{enabled:false,vol:.45},voiceVol:1,exports:[]}}
 let REFS={};function buildRefs(){REFS={glass:refProject('glass'),vector:refProject('vector')}}
 const allProjects=()=>[REFS.glass,REFS.vector,...state.projects];
 const getP=id=>allProjects().find(p=>p.id===(id||state.cur));
@@ -357,12 +357,12 @@ PAGES.voice=el=>{const p=needProject(el,'Voice studio');if(!p)return;const T=tim
   <div class="card"><div class="cardhead"><h2>Audio timeline</h2><div class="row"><button class="btn sm primary" data-act="mixPlay" data-solo="">Play full mix</button><span class="tc" id="mixTc">0:00.0 / ${fmtT(D)}</span></div></div>
     <div class="tracks">
       <div class="track"><div class="tctl"><b>Voiceovers</b><span class="muted">${ready}/${p.scenes.length} scenes</span><label class="small">Volume <input type="range" min="0" max="1.5" step=".05" data-pf="voiceVol" value="${p.voiceVol??1}"></label><button class="btn sm ghost" data-act="mixPlay" data-solo="voice">Solo</button></div><canvas data-track="voice"></canvas></div>
-      <div class="track"><div class="tctl"><b>Music</b><label class="small row"><input type="checkbox" data-pf="music.enabled" ${p.music.enabled?'checked':''}> On</label><label class="small">Volume <input type="range" min="0" max="1" step=".05" data-pf="music.vol" value="${p.music.vol}"></label><button class="btn sm ghost" data-act="mixPlay" data-solo="music">Solo</button></div><canvas data-track="music"></canvas></div>
+      
       <div class="track"><div class="tctl"><b>Sound effects</b><label class="small row"><input type="checkbox" data-pf="sfx.enabled" ${p.sfx.enabled?'checked':''}> On</label><label class="small">Volume <input type="range" min="0" max="1" step=".05" data-pf="sfx.vol" value="${p.sfx.vol}"></label><button class="btn sm ghost" data-act="mixPlay" data-solo="sfx">Solo</button></div><canvas data-track="sfx"></canvas></div>
     </div>
-    <div class="formgrid" style="margin-top:14px"><label class="field"><span>Music fade in (s)</span><input type="number" min="0" max="10" step=".5" data-pf="music.fadeIn" value="${p.music.fadeIn}"></label><label class="field"><span>Music fade out (s)</span><input type="number" min="0" max="10" step=".5" data-pf="music.fadeOut" value="${p.music.fadeOut}"></label>
-      <label class="field"><span>Music shape</span><select data-pf="music.mode">${opt('arc','Arc: intro, build, resolve',p.music.mode)}${opt('loop','Loop: steady phrase',p.music.mode)}</select></label><label class="field"><span>Music under voice</span><input type="range" min=".1" max="1" step=".05" data-pf="music.duck" value="${p.music.duck??.35}"></label></div>
-    <p class="small muted" style="margin-top:8px">Music is composed live for ${esc(styleName(p.style))} and dips automatically under every voiceover so the narration stays clear.</p></div></div>
+
+
+    <p class="small muted" style="margin-top:8px">Videos are voice-only: no background music is added.</p></div></div>
   <div class="card"><div class="cardhead"><h2>Scene voiceovers</h2><span class="small muted">Voice: ${esc(p.voice.name)}</span></div>
     ${p.scenes.length?T.map(({s,start},i)=>{const b=s.voice&&voiceBufs.get(s.voice.key),need=b?VOICE_LEAD+b.duration-(s.voice.trimStart||0)-(s.voice.trimEnd||0)+.45:0,stale=s.take&&s.take.text!==s.narration;
       return`<div class="vrow"><div class="num">${String(i+1).padStart(2,'0')}</div><div class="grid" style="gap:8px"><div class="small muted mono">${fmtT(start)} · scene ${s.duration.toFixed(1)} s${b?` · voice ${b.duration.toFixed(1)} s`:''}</div><div>${esc(s.narration)||'<span class="muted">No narration yet</span>'}</div>
@@ -422,7 +422,7 @@ async function encode(p,fmt,o,onProg,signal){const MB=await loadMB();const [W,H]
   if(!(await MB.canEncodeVideo('avc',{width:w,height:h})))throw new Error('This browser can’t encode H.264 video at '+w+'×'+h+'.');
   const out=new MB.Output({format:new MB.Mp4OutputFormat({fastStart:'in-memory'}),target:new MB.BufferTarget()});
   const vs=new MB.CanvasSource(cv,{codec:'avc',quality:Q,keyFrameInterval:2});out.addVideoTrack(vs,{frameRate:fps});
-  const wantAudio=p.music.enabled||p.scenes.some(x=>x.voice)||p.sfx.enabled;let as=null,acodec=null;
+  const wantAudio=p.scenes.some(x=>x.voice)||p.sfx.enabled;let as=null,acodec=null;
   if(wantAudio){acodec=(await MB.canEncodeAudio('aac'))?'aac':(await MB.canEncodeAudio('opus'))?'opus':null;if(acodec){as=new MB.AudioBufferSource({codec:acodec,bitrate:(+o.audioKbps||192)*1000});out.addAudioTrack(as)}}
   await out.start();exporting=true;
   try{if(as){onProg(0,'Mixing audio');const ab=await AUDIO.renderOffline(mixOpts(p,0,0,null));await as.add(ab);as.close()}
@@ -492,10 +492,8 @@ PAGES.prefs=el=>{const S=state.settings;
     <label class="field"><span>Caption animation</span><select data-set="captions.anim">${opt('pop','Pop in',S.captions.anim)}${opt('fade','Fade',S.captions.anim)}${opt('karaoke','Word by word',S.captions.anim)}${opt('none','None',S.captions.anim)}</select></label>
     <label class="field"><span>Captions on new videos</span><select data-set="captions.enabled">${opt('true','On',S.captions.enabled)}${opt('false','Off',S.captions.enabled)}</select></label></div></div>
   <div class="card"><h2>Audio, motion and export</h2><div class="formgrid" style="margin-top:14px">
-    <label class="field"><span>Music volume</span><input type="range" min="0" max="1" step=".05" data-set="audio.musicVol" value="${S.audio.musicVol}"></label>
-    <label class="field"><span>Music under voice</span><input type="range" min=".1" max="1" step=".05" data-set="audio.duck" value="${S.audio.duck}"></label>
+
     <label class="field"><span>Sound effects on new videos</span><select data-set="audio.sfx">${opt('false','Off',S.audio.sfx)}${opt('true','On',S.audio.sfx)}</select></label>
-    <label class="field"><span>Music shape</span><select data-set="audio.mode">${opt('arc','Arc',S.audio.mode)}${opt('loop','Loop',S.audio.mode)}</select></label>
     <label class="field"><span>Motion intensity</span><input type="range" min="0" max="1.6" step=".1" data-set="anim.motion" value="${S.anim.motion}"></label>
     <label class="field"><span>Transition length (s)</span><input type="number" min=".2" max="1.5" step=".1" data-set="anim.trans" value="${S.anim.trans}"></label>
     <label class="field"><span>Export resolution</span><select data-set="export.res">${opt('1080','Full HD',S.export.res)}${opt('720','HD 720p',S.export.res)}</select></label>

@@ -22,7 +22,7 @@ function build(ac,out,o){
     const off=Math.max(0,from-a);src.start(T(Math.max(a,from)),(v.trimStart||0)+off,dur-off);nodes.push(src)});
   /* ---------- music ---------- */
   const m=o.music||{};
-  if(m.enabled!==false&&!(solo&&solo!=='music')){
+  if(false){ /* no music: videos are voice-only */
     const st=STY[o.style]||STY.glass,beat=60/st.bpm,bar=beat*4,prog=m.mode==='loop'?st.prog:st.arcProg,r=rng(7),vol=m.vol??.6;
     const bus=ac.createGain();bus.connect(master);nodes.push(bus);
     const fi=m.fadeIn??1.5,fo=m.fadeOut??2.5,G=bus.gain,lvl=τ=>vol*Math.min(1,τ/Math.max(fi,.01),(total-τ)/Math.max(fo,.01));
