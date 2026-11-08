@@ -37,6 +37,11 @@ button,input,select,textarea{font:inherit;color:inherit}
 .links a[aria-current="page"]{color:var(--bg);background:var(--accent);box-shadow:0 0 20px rgba(var(--accent-rgb),.35)}
 .projpick{flex:none;display:flex;align-items:center;gap:8px}
 .projpick select{max-width:220px}
+.savestate{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:var(--muted);white-space:nowrap}
+.savestate::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok)}
+.savestate[data-st=busy]::before{background:var(--warn);box-shadow:0 0 8px var(--warn)}
+.savestate[data-st=err]::before{background:var(--bad);box-shadow:none}
+@media (max-width:700px){.savestate{font-size:0;gap:0}}
 
 /* page */
 main{position:relative;z-index:1;max-width:1360px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:34px 80px}
@@ -181,7 +186,7 @@ th{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacin
     <nav class="links" id="links" aria-label="Studio">
       <a href="#home">My videos</a><a href="#script">1 Write</a><a href="#scenes">2 Scenes</a><a href="#voice">3 Voice</a><a href="#preview">4 Watch</a><a href="#export">5 Export</a><a href="#styles">Looks</a><a href="#prefs">Settings</a>
     </nav>
-    <div class="projpick"><select id="projSel" aria-label="Open project"></select></div>
+    <div class="projpick"><span id="saveState" class="savestate" data-st="ok" aria-live="polite">Auto save on</span><select id="projSel" aria-label="Open project"></select></div>
   </div>
 </header>
 <main id="app"><div class="empty">Loading the studio…</div></main>

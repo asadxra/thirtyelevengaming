@@ -56,7 +56,19 @@ const saveTimers={};
 function lsWrite(){try{localStorage.setItem(LS,JSON.stringify({settings:state.settings,projects:state.projects.map(clean),cur:state.cur}))}catch(e){}}
 function clean(p){const o={};for(const k in p)if(!k.startsWith('_'))o[k]=k==='scenes'?p.scenes.map(s=>{const c={};for(const j in s)if(!j.startsWith('_'))c[j]=s[j];return c}):p[k];return o}
 function col(){return cap.db&&cap.uid?cap.db.collection('data/users/'+cap.uid):null}
-function saveProject(p){if(!p||p.ref)return;p.updatedAt=Date.now();lsWrite();clearTimeout(saveTimers[p.id]);saveTimers[p.id]=setTimeout(async()=>{const c=col();if(!c)return;try{await c.doc('p_'+p.id).set({data:JSON.stringify(clean(p)),updatedAt:p.updatedAt})}catch(e){console.warn('save failed',e)}},900)}
+/* ---------- auto save: every edit is written to this browser at once and to your account shortly after ---------- */
+const pendingSaves=new Map();let saveFails=0;
+function saveBadge(st,msg){const b=document.getElementById('saveState');if(!b)return;b.dataset.st=st;b.textContent=msg;b.title=st==='err'?'Your changes are safe in this browser; syncing to your account will retry.':'Auto save is on'}
+const savedMsg=()=>'Saved '+new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});
+async function pushProject(p){pendingSaves.delete(p.id);const c=col();if(!c){saveBadge('ok',savedMsg());return}
+  try{await c.doc('p_'+p.id).set({data:JSON.stringify(clean(p)),updatedAt:p.updatedAt});saveFails=0;if(!pendingSaves.size)saveBadge('ok',savedMsg())}
+  catch(e){console.warn('save failed',e);saveFails++;saveBadge('err','Saved in browser · sync retrying');pendingSaves.set(p.id,p);setTimeout(()=>{if(pendingSaves.has(p.id))pushProject(p)},Math.min(30000,2000*2**saveFails))}}
+function saveProject(p){if(!p||p.ref)return;p.updatedAt=Date.now();let ok=true;try{lsWrite()}catch(e){ok=false}saveBadge('busy','Saving…');pendingSaves.set(p.id,p);clearTimeout(saveTimers[p.id]);saveTimers[p.id]=setTimeout(()=>pushProject(p),900)}
+function flushSaves(){lsWrite();for(const [id,p] of pendingSaves){clearTimeout(saveTimers[id]);pushProject(p)}}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')flushSaves()});
+window.addEventListener('pagehide',flushSaves);
+window.addEventListener('beforeunload',e=>{lsWrite();if(pendingSaves.size&&col()){flushSaves()}});
+setInterval(()=>{if(pendingSaves.size)flushSaves()},30000);
 function saveSettings(){lsWrite();clearTimeout(saveTimers._s);saveTimers._s=setTimeout(async()=>{const c=col();if(!c)return;try{await c.doc('settings').set({data:JSON.stringify(state.settings)})}catch(e){}},700)}
 async function deleteStored(p){lsWrite();const c=col();if(c){try{await c.doc('p_'+p.id).delete()}catch(e){}}}
 function loadLocal(){try{const d=JSON.parse(localStorage.getItem(LS)||'null');if(d){state.settings=mergeSet(d.settings||{});state.projects=d.projects||[];state.cur=d.cur||null}}catch(e){}}
