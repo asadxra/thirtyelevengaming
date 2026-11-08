@@ -1,0 +1,46 @@
+{
+ "sets": [
+  {
+   "id": "demo-dark-side",
+   "title": "Nobody Talks About the Dark Side of Trading",
+   "style": "glass",
+   "items": [
+    {
+     "file": "hf/demo-dark-side/s1.mp4",
+     "scene": 1,
+     "idea": "chart",
+     "duration": 8,
+     "text": "Everyone wants to become a profitable trader. Nobody talks about what it costs."
+    },
+    {
+     "file": "hf/demo-dark-side/s2.mp4",
+     "scene": 2,
+     "idea": "clock",
+     "duration": 9,
+     "text": "Charts at 3 AM. Plans you keep cancelling. The work is real, and nobody around you can see it."
+    },
+    {
+     "file": "hf/demo-dark-side/s3.mp4",
+     "scene": 3,
+     "idea": "tiles",
+     "duration": 9,
+     "text": "Six losses in a row. Same plan. Same rules. A streak doesn\u2019t prove your plan is broken."
+    },
+    {
+     "file": "hf/demo-dark-side/s4.mp4",
+     "scene": 4,
+     "idea": "cycle",
+     "duration": 9,
+     "text": "Frustration funds the revenge trade. The revenge trade funds the doubt. Notice it. Name it. Step away."
+    },
+    {
+     "file": "hf/demo-dark-side/s5.mp4",
+     "scene": 5,
+     "idea": "zoom",
+     "duration": 10,
+     "text": "Zoom out. One day, the struggle that almost made you quit will become the reason you never give up."
+    }
+   ]
+  }
+ ]
+}

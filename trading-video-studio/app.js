@@ -249,6 +249,26 @@ PAGES.home=el=>{const ps=state.projects,counts=STATUSES.map(s=>[s,ps.filter(p=>p
   <p class="note">${cap.db&&cap.uid?'Projects and settings are saved to your Claude account. Voiceover audio and uploaded media are kept in this browser.':'Projects are saved in this browser. Voiceover audio and uploaded media are kept in this browser too.'}</p>`;
   el.querySelectorAll('canvas[data-thumb]').forEach(cv=>{const p=getP(cv.dataset.thumb);warm(p).then(()=>thumb(cv,p))})};
 
+/* ---------- HyperFrames illustrations: preview first, then apply ---------- */
+let hfLib=null,hfOpen=false,hfPrev=null;/* hfPrev: {sid,file,saved} while a preview is showing in the scene */
+async function hfLoad(){if(hfLib)return hfLib;try{const r=await fetch('hf/library.json',{cache:'no-store'});hfLib=r.ok?await r.json():{sets:[]}}catch(e){hfLib={sets:[]}}return hfLib}
+function hfPanel(p,s){if(!s||s.kind==='ref')return'';const prev=hfPrev&&hfPrev.sid===s.id;
+  return`<div class="hfbox"><div class="row"><b>HyperFrames illustrations</b><span class="small muted">Animated with HyperFrames from the script, in your theme.</span><span class="spacer"></span><button class="btn sm" data-act="hfToggle">${hfOpen?'Hide':'Browse'}</button></div>
+  ${prev?`<div class="okbox row" style="margin-top:10px"><span>Previewing <b>${esc(hfPrev.label)}</b> in this scene. Press Play scene to watch it.</span><span class="spacer"></span><button class="btn sm primary" data-act="hfApply">Apply to scene</button><button class="btn sm ghost" data-act="hfCancel">Cancel preview</button></div>`:''}
+  ${hfOpen?`<div class="hfgrid" id="hfGrid"><div class="small muted">Loading…</div></div>
+  <div class="row" style="margin-top:10px"><button class="btn sm ghost" data-act="hfCopy">Copy this video’s script for HyperFrames</button><span class="small muted">Paste it to Claude to get illustrations made for your own lines.</span></div>`:''}</div>`}
+function hfMount(el,p,s){if(!hfOpen||!s)return;hfLoad().then(lib=>{const g=el.querySelector('#hfGrid');if(!g)return;const items=[];
+  (lib.sets||[]).forEach(set=>set.items.forEach(it=>items.push({...it,set:set.id,title:set.title,style:set.style})));
+  items.sort((a,b)=>(b.style===p.style)-(a.style===p.style));
+  if(!items.length){g.innerHTML='<div class="empty">No HyperFrames illustrations yet. Copy your script below and send it to Claude.</div>';return}
+  g.innerHTML=items.map(it=>`<figure class="hfitem"><video src="${esc(it.file)}" muted loop playsinline autoplay preload="metadata"></video><figcaption><b>${esc(it.idea)}</b> · ${it.duration}s${it.style!==p.style?' · other theme':''}<span class="small muted">${esc(it.text.slice(0,70))}…</span></figcaption><button class="btn sm" data-act="hfPreview" data-file="${esc(it.file)}" data-label="${esc(it.idea+' — scene '+it.scene)}">Preview in scene</button></figure>`).join('')})}
+async function hfStartPreview(p,s,file,label){if(hfPrev)hfRevert(p,true);toast('Loading preview…');const r=await fetch(file);if(!r.ok){toast('Couldn’t load that illustration');return}const blob=await r.blob();
+  const key='hfprev_'+file.replace(/\W+/g,'_');mem.set(key,blob);hfPrev={sid:s.id,file,label,blob,key,saved:s.media};s.media={key,type:'video/mp4',name:'HyperFrames '+label.slice(0,26)};mediaEls.delete(key);await loadMedia(s.media);resolve(p);rerender()}
+function hfRevert(p,quiet){if(!hfPrev)return;const s=p&&p.scenes.find(x=>x.id===hfPrev.sid);if(s){s.media=hfPrev.saved||null;resolve(p)}mem.delete(hfPrev.key);hfPrev=null;if(!quiet){players.forEach(x=>x.dirty=true)}}
+async function hfApply(p){if(!hfPrev)return;const s=p.scenes.find(x=>x.id===hfPrev.sid);if(!s)return;if(hfPrev.saved)IDB.del(hfPrev.saved.key);const key='m_'+s.id+'_'+uid();await IDB.put(key,hfPrev.blob);mem.delete(hfPrev.key);
+  s.media={key,type:'video/mp4',name:'HyperFrames '+hfPrev.label.slice(0,26)};hfPrev=null;await loadMedia(s.media);resolve(p);touch(p);rerender();toast('Illustration applied to the scene')}
+window.addEventListener('hashchange',()=>{if(hfPrev){hfRevert(getP(),true)}});
+
 /* ---------- PAGE: Style Library ---------- */
 const PAL_NAMES={glass:{ink:'Background',deep:'Deep shade',porc:'Text',blue:'Blue',aqua:'Aqua',lav:'Lavender',peach:'Highlight',loss:'Loss red',muted:'Muted'},
   vector:{IV:'Background',P2:'Paper',INK:'Ink / text',CB:'Blue',TL:'Teal',CR:'Coral',AM:'Amber',PE:'Periwinkle',SK:'Skin',SL:'Slate'}};
@@ -358,8 +378,9 @@ PAGES.scenes=el=>{const p=getP();if(!p){needProject(el,'Scene editor');return}re
       ${vb&&need>s.duration+.05?`<div class="warnbox" style="margin-top:14px">The voiceover needs ${need.toFixed(1)} s but the scene is ${s.duration.toFixed(1)} s. <button class="btn sm" data-act="fitVoice">Extend scene to ${need.toFixed(1)} s</button></div>`:''}
       ${!lock&&!isRef?`<div class="row" style="margin-top:16px"><button class="btn" data-act="newVisual">New visual</button><button class="btn" data-act="newAnim">New animation</button>
         <label class="btn ghost">${s.media?'Replace':'Use'} my image or video<input type="file" accept="image/*,video/*" data-sceneupload="${s.id}" hidden></label>${s.media?`<button class="btn ghost" data-act="rmMedia">Remove ${esc(s.media.name)}</button>`:''}</div>
-        <p class="small muted" style="margin-top:10px">New visual redraws this scene’s illustration with a fresh layout and colours. New animation picks a different camera move and transition. Other scenes are never touched.</p>`:''}
+        <p class="small muted" style="margin-top:10px">New visual redraws this scene’s illustration with a fresh layout and colours. New animation picks a different camera move and transition. Other scenes are never touched.</p>${hfPanel(p,s)}`:''}
     </div></div>`:''}`;
+  hfMount(el,p,s);
   el.querySelectorAll('canvas[data-sthumb]').forEach(cv=>{const x=p.scenes.find(z=>z.id===cv.dataset.sthumb),i=p.scenes.indexOf(x),st0=T[i].start;thumb(cv,p,st0+x.duration*.62)});
   if(s){warm(p);const cv=el.querySelector('#scv'),pl=new Player(cv,{get:()=>p,fmt:()=>p.format,range:()=>{const q=times(p).find(x=>x.s.id===selScene);return q?[q.start,q.end]:[0,0]},loop:true,audio:true,start:tt.start+s.duration*.62,
     onTime:t=>{const q=times(p).find(x=>x.s.id===selScene);if(!q)return;const sc=document.getElementById('scScrub'),tc=document.getElementById('scTc');if(sc)sc.value=Math.round((t-q.start)/q.s.duration*1000);if(tc)tc.textContent=fmtT(t-q.start)+' / '+fmtT(q.s.duration)},
@@ -615,6 +636,11 @@ document.addEventListener('click',async e=>{const b=e.target.closest('[data-act]
   case'askSceneDel':confirmSceneDel=s.id;rerender();break;case'cancelSceneDel':confirmSceneDel=null;rerender();break;
   case'delScene':{const i=p.scenes.indexOf(s);if(s.voice)IDB.del(s.voice.key);if(s.media)IDB.del(s.media.key);p.scenes.splice(i,1);selScene=p.scenes[Math.max(0,i-1)]?.id;confirmSceneDel=null;resolve(p);touch(p);rerender();break}
   case'moveScene':{const i=p.scenes.indexOf(s),j=i+(+b.dataset.d);if(j<0||j>=p.scenes.length)break;[p.scenes[i],p.scenes[j]]=[p.scenes[j],p.scenes[i]];resolve(p);touch(p);rerender();break}
+  case'hfToggle':hfOpen=!hfOpen;rerender();break;
+  case'hfPreview':{const sc=p.scenes.find(x=>x.id===selScene);if(sc)await hfStartPreview(p,sc,b.dataset.file,b.dataset.label);break}
+  case'hfCancel':hfRevert(p);rerender();toast('Preview cancelled — scene unchanged');break;
+  case'hfApply':await hfApply(p);break;
+  case'hfCopy':{const txt=JSON.stringify({title:p.title,style:p.style,scenes:p.scenes.map((x,i)=>({id:'s'+(i+1),duration:x.duration,text:x.narration}))},null,1);try{await navigator.clipboard.writeText(txt);toast('Script copied — paste it to Claude')}catch(e){prompt('Copy this and paste it to Claude:',txt)}break}
   case'newVisual':{s.seed=rseed();resolve(p);touch(p);rerender();toast('New visual for this scene');break}
   case'newAnim':{const opts=CAMS.filter(c=>c!==s.camera);s.camera=opts[rseed()%opts.length];const tr=Object.keys(TRANS).filter(t=>t!=='cut'&&t!==s.transition);s.transition=tr[rseed()%tr.length];touch(p);rerender();toast(`Camera: ${s.camera} · transition: ${TRANS[s.transition]}`);break}
   case'rmMedia':{IDB.del(s.media.key);s.media=null;resolve(p);touch(p);rerender();break}

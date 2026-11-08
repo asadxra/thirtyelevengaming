@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=1080, height=1080">
+<script src="gsap.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}html,body{width:1080px;height:1080px;overflow:hidden;background:#15243C}
+#root{position:relative;width:1080px;height:1080px;overflow:hidden;background:radial-gradient(circle at 30% 20%,#15243C 0%,#0A1120 100%)}
+svg{position:absolute;inset:0;width:1080px;height:1080px}
+.lab{font:700 34px "Inter",sans-serif;letter-spacing:2px}.big{font:800 52px "Inter",sans-serif}.huge{font:800 190px "Inter Display","Inter",sans-serif;letter-spacing:-6px}
+</style></head><body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="10" data-width="1080" data-height="1080">
+<svg id="art" class="clip" data-start="0" data-duration="10" data-track-index="0" viewBox="0 0 1080 1080"><g id="cam"><line x1="108" y1="0" x2="108" y2="1080" stroke="#F2F7FF" stroke-width="1" opacity=".06"/><line x1="0" y1="108" x2="1080" y2="108" stroke="#F2F7FF" stroke-width="1" opacity=".06"/><line x1="216" y1="0" x2="216" y2="1080" stroke="#F2F7FF" stroke-width="1" opacity=".06"/><line x1="0" y1="216" x2="1080" y2="216" stroke="#F2F7FF" stroke-width="1" opacity=".06"/><line x1="324" y1="0" x2="324" y2="1080" stroke="#F2F7FF" stroke-width="1" opacity=".06"/><line x1="0" y1="324" x2="1080" y2="324" stroke="#F2F7FF" stroke-width="1" opacity=".06"/><line x1="432" y1="0" x2="432" y2="1080" stroke="#F2F7FF" stroke-width="1" opacity=".06"/><line x1="0" y1="432" x2="1080" y2="432" stroke="#F2F7FF" stroke-width="1" opacity=".06"/><line x1="540" y1="0" x2="540" y2="1080" stroke="#F2F7FF" stroke-width="1" opacity=".06"/><line x1="0" y1="540" x2="1080" y2="540" stroke="#F2F7FF" stroke-width="1" opacity=".06"/><line x1="648" y1="0" x2="648" y2="1080" stroke="#F2F7FF" stroke-width="1" opacity=".06"/><line x1="0" y1="648" x2="1080" y2="648" stroke="#F2F7FF" stroke-width="1" opacity=".06"/><line x1="756" y1="0" x2="756" y2="1080" stroke="#F2F7FF" stroke-width="1" opacity=".06"/><line x1="0" y1="756" x2="1080" y2="756" stroke="#F2F7FF" stroke-width="1" opacity=".06"/><line x1="864" y1="0" x2="864" y2="1080" stroke="#F2F7FF" stroke-width="1" opacity=".06"/><line x1="0" y1="864" x2="1080" y2="864" stroke="#F2F7FF" stroke-width="1" opacity=".06"/><line x1="972" y1="0" x2="972" y2="1080" stroke="#F2F7FF" stroke-width="1" opacity=".06"/><line x1="0" y1="972" x2="1080" y2="972" stroke="#F2F7FF" stroke-width="1" opacity=".06"/><g id="world"><polyline points="80,877.4 95.33333333333333,808.5 110.66666666666667,754.0 126,737.0 141.33333333333334,785.6 156.66666666666666,727.0 172,721.6 187.33333333333331,803.7 202.66666666666669,793.6 218,740.2 233.33333333333331,665.1 248.66666666666666,762.5 264,747.8 279.33333333333337,635.8 294.66666666666663,635.1 310,665.6 325.33333333333337,654.6 340.6666666666667,602.7 356,646.1 371.3333333333333,680.6 386.66666666666663,570.7 402,567.9 417.3333333333333,651.2 432.6666666666667,637.5 448,555.2 463.33333333333337,595.8 478.6666666666667,599.5 494,517.5 509.3333333333333,527.7 524.6666666666667,548.3 540,567.9 555.3333333333334,466.5 570.6666666666667,487.0 586,506.4 601.3333333333334,519.2 616.6666666666667,446.9 632,425.0 647.3333333333334,465.9 662.6666666666666,419.6 678,414.8 693.3333333333333,435.2 708.6666666666666,429.1 724,371.1 739.3333333333334,377.2 754.6666666666666,405.9 770,342.2 785.3333333333334,364.3 800.6666666666666,381.2 816,361.0 831.3333333333334,329.0 846.6666666666667,311.9 862,336.2 877.3333333333334,291.7 892.6666666666666,315.7 908,285.7 923.3333333333333,307.7 938.6666666666666,259.2 954,259.1 969.3333333333334,245.8 984.6666666666666,222.0 1000,241.4" fill="none" stroke="#65D9D3" stroke-width="7" stroke-linejoin="round"/>
+        <circle id="you" cx="356" cy="646.1" r="16" fill="#FFC7AB"/>
+        <text x="382" y="696.1" class="lab" fill="#FFC7AB">YOU</text>
+        <g id="flag" transform="translate(980,121.4)"><line x1="0" y1="0" x2="0" y2="120" stroke="#F2F7FF" stroke-width="6"/><path d="M0 0 L90 25 L0 50Z" fill="#FFC7AB"/></g></g>
+        <text id="cap" x="540" y="1010" text-anchor="middle" class="lab" fill="#8B98B0">ZOOM OUT</text></g></svg>
+</div>
+<script>
+const D=10;const tl=gsap.timeline({paused:true});
+tl.fromTo('#cam',{rotation:-0.30,x:-26.3},{rotation:0,x:0,svgOrigin:'540 540',duration:D,ease:'sine.inOut'},0);
+const you=document.getElementById('you'),cx=+you.getAttribute('cx'),cy=+you.getAttribute('cy');
+        tl.fromTo('#world',{scale:3.4,transformOrigin:cx+'px '+cy+'px'},{scale:1,duration:D*.7,ease:'power3.inOut'},.3);
+        tl.from('#flag',{scaleY:0,transformOrigin:'0% 100%',duration:.6,ease:'back.out(2)'},D*.7);
+        tl.from('#cap',{opacity:0,y:30,duration:.6},D*.5);
+        tl.to('#you',{attr:{r:22},duration:.6,yoyo:true,repeat:Math.max(1,Math.floor(D/1.2)),ease:'sine.inOut'},0);
+window.__timelines=window.__timelines||{};window.__timelines["main"]=tl;tl.seek(0);
+</script></body></html>

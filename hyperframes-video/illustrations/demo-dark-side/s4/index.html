@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=1080, height=1080">
+<script src="gsap.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}html,body{width:1080px;height:1080px;overflow:hidden;background:#15243C}
+#root{position:relative;width:1080px;height:1080px;overflow:hidden;background:radial-gradient(circle at 30% 20%,#15243C 0%,#0A1120 100%)}
+svg{position:absolute;inset:0;width:1080px;height:1080px}
+.lab{font:700 34px "Inter",sans-serif;letter-spacing:2px}.big{font:800 52px "Inter",sans-serif}.huge{font:800 190px "Inter Display","Inter",sans-serif;letter-spacing:-6px}
+</style></head><body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="9" data-width="1080" data-height="1080">
+<svg id="art" class="clip" data-start="0" data-duration="9" data-track-index="0" viewBox="0 0 1080 1080"><g id="cam"><circle id="ring" cx="540" cy="540" r="300" fill="none" stroke="#8B98B0" stroke-width="5" stroke-dasharray="14 18" opacity=".7"/><g class="nd" transform="translate(540,240)"><circle r="112" fill="#FF8B7B"/><text y="9.799999999999999" text-anchor="middle" style="font:800 28px Inter,sans-serif;letter-spacing:1px" fill="#0A1120">FRUSTRATION</text></g><g class="nd" transform="translate(840,540)"><circle r="112" fill="#FFC7AB"/><text y="11.899999999999999" text-anchor="middle" style="font:800 34px Inter,sans-serif;letter-spacing:1px" fill="#0A1120">REVENGE</text></g><g class="nd" transform="translate(540,840)"><circle r="112" fill="#B8ABFF"/><text y="11.899999999999999" text-anchor="middle" style="font:800 34px Inter,sans-serif;letter-spacing:1px" fill="#0A1120">DOUBT</text></g><g class="nd" transform="translate(240,540)"><circle r="112" fill="#65D9D3"/><text y="11.899999999999999" text-anchor="middle" style="font:800 34px Inter,sans-serif;letter-spacing:1px" fill="#0A1120">PAUSE</text></g>
+        <circle id="dot" cx="540" cy="240" r="22" fill="#F2F7FF"/></g></svg>
+</div>
+<script>
+const D=9;const tl=gsap.timeline({paused:true});
+tl.fromTo('#cam',{rotation:-1.40,x:37.3},{rotation:0,x:0,svgOrigin:'540 540',duration:D,ease:'sine.inOut'},0);
+tl.from('#ring',{scale:.6,opacity:0,transformOrigin:'540px 540px',duration:.8,ease:'power3.out'},.1);
+        tl.from('.nd',{scale:0,transformOrigin:'50% 50%',duration:.55,stagger:.3,ease:'back.out(2.4)'},.4);
+        tl.to('#dot',{rotation:360*2,svgOrigin:'540 540',duration:D-1.6,ease:'none'},1.2);
+        tl.to('.nd',{scale:1.1,transformOrigin:'50% 50%',duration:.35,yoyo:true,repeat:1,stagger:{each:(D-2)/8,repeat:0}},1.6);
+window.__timelines=window.__timelines||{};window.__timelines["main"]=tl;tl.seek(0);
+</script></body></html>
