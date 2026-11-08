@@ -103,7 +103,7 @@ function newScene(p,o={}){const text=o.narration||'';return{id:uid(),kind:'motif
 function times(p){let t=0;return p.scenes.map((s,i)=>{const st=t;t+=s.duration;return{s,i,start:st,end:t}})}
 const total=p=>p.scenes.reduce((a,s)=>a+(+s.duration||0),0);
 function resolve(p){let prev=null;const used=new Set();p.scenes.forEach(s=>{if(s.kind==='ref'){s._m='ref';return}
-  let m=s.media?'media':s.motif!=='auto'?s.motif:K.pickMotif(baseOf(p.style),`${s.narration} ${s.headline} ${s.visual}`,prev,s.seed);
+  let m=(s.media||s.gen||s._genPrev)?'media':s.motif!=='auto'?s.motif:K.pickMotif(baseOf(p.style),`${s.narration} ${s.headline} ${s.visual}`,prev,s.seed);
   s._m=m;const sig=m+':'+s.seed;if(used.has(sig))s.seed=(s.seed+7919)%1e6;used.add(m+':'+s.seed);prev=m})}
 function touch(p,status){if(p.ref)return;if(status)p.status=status;else if(p.status!=='Generating'){const allV=p.scenes.length&&p.scenes.every(s=>s.voice);p.status=allV?'Ready to Export':p.scenes.length?'Editing':'Draft'}saveProject(p);syncNav()}
 
@@ -120,7 +120,7 @@ async function warm(p){if(!p)return;await Promise.all(p.scenes.flatMap(s=>[loadM
 const bufs=new Map();function buf(n,w,h){let c=bufs.get(n);if(!c){c=document.createElement('canvas');bufs.set(n,c)}if(c.width!==w||c.height!==h){c.width=w;c.height=h}return c}
 function dims(fmt){return fmt==='16:9'?[1920,1080]:[1080,1920]}
 function specFor(p,s){if(s.kind==='ref')return{kind:'ref',ref:s.ref};return{kind:'motif',motif:s._m||'word',headline:s.headline,sub:s.sub,eyebrow:s.eyebrow,labels:s.labelsAuto&&s._m!=='word'?[]:s.labels,seed:s.seed,camera:s.camera,motionAmt:state.settings.anim.motion}}
-function drawScene(ctx,p,s,lp,W,H){const st=(STY[p.style]||STY.glass),media=s.media?mediaEls.get(s.media.key)?.el:null,sc=ctx.canvas.width/W;
+function drawScene(ctx,p,s,lp,W,H){const st=(STY[p.style]||STY.glass),gs=s._genPrev||(!s.media&&s.gen),media=gs&&(s._genPrev||!s.media)?genCanvas(s,gs,lp*s.duration,themeOf(p)):s.media?mediaEls.get(s.media.key)?.el:null,sc=ctx.canvas.width/W;
   if(s._m===undefined)resolve(p);
   if(media&&media.tagName==='VIDEO'&&!exporting&&media.duration){const want=(lp*s.duration)%media.duration;if(Math.abs(media.currentTime-want)>.25)media.currentTime=want}
   if(s.kind==='ref'&&W>H){ctx.save();ctx.setTransform(sc,0,0,sc,0,0);st.backdrop(ctx,W,H);ctx.restore();
@@ -260,6 +260,70 @@ PAGES.home=el=>{const ps=state.projects,counts=STATUSES.map(s=>[s,ps.filter(p=>p
         `<button class="btn sm primary" data-act="open" data-id="${p.id}" data-to="${p.scenes.length?'scenes':'script'}">Open</button><button class="btn sm" data-act="dupProj" data-id="${p.id}">Duplicate</button><button class="btn sm ghost" data-act="askDel" data-id="${p.id}">Delete</button>`}</div></div></article>`).join('')}</div>`:`<div class="empty">No projects with this status yet.</div>`}</div>
   <p class="note">${cap.db&&cap.uid?'Projects and settings are saved to your Claude account. Voiceover audio and uploaded media are kept in this browser.':'Projects are saved in this browser. Voiceover audio and uploaded media are kept in this browser too.'}</p>`;
   el.querySelectorAll('canvas[data-thumb]').forEach(cv=>{const p=getP(cv.dataset.thumb);warm(p).then(()=>thumb(cv,p))})};
+
+/* ---------- Generated illustrations: Claude designs an animated scene from the script; drawn in the theme's colours ---------- */
+function themeOf(p){const pl=(STY[p.style]||STY.glass)._pal||{},bs=baseOf(p.style);return bs==='glass'?{bg:pl.deep,bg2:pl.ink,ink:pl.porc,mute:pl.muted,a:pl.aqua,b:pl.blue,c:pl.lav,hi:pl.peach,bad:pl.loss}:{bg:pl.IV,bg2:pl.P2,ink:pl.INK,mute:pl.SL,a:pl.TL,b:pl.CB,c:pl.PE,hi:pl.CR,bad:pl.CR}}
+const GEN_EASE={linear:t=>t,in:t=>t*t*t,out:t=>1-Math.pow(1-t,3),inout:t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2,back:t=>{const c=1.7;return 1+(c+1)*Math.pow(t-1,3)+c*Math.pow(t-1,2)},elastic:t=>t===0||t===1?t:Math.pow(2,-10*t)*Math.sin((t*10-.75)*2*Math.PI/3)+1,bounce:t=>{const n=7.5625,d=2.75;if(t<1/d)return n*t*t;if(t<2/d)return n*(t-=1.5/d)*t+.75;if(t<2.5/d)return n*(t-=2.25/d)*t+.9375;return n*(t-=2.625/d)*t+.984375}};
+const num=(v,d=0)=>{v=+v;return isFinite(v)?v:d};
+function genCol(T,c){return T[c]||(/^#[0-9a-f]{3,8}$/i.test(c||'')?c:null)}
+function genVal(el,prop,t,base){let v=base;(el.anim||[]).forEach(a=>{if(a.prop!==prop)return;const st=num(a.start),du=Math.max(.01,num(a.dur,.6)),k=K.clamp((t-st)/du),f=(GEN_EASE[a.ease]||GEN_EASE.out)(k);if(t>=st||v===base)v=num(a.from,base)+(num(a.to,base)-num(a.from,base))*(t<st?0:f)});
+  (el.loop||[]).forEach(l=>{if(l.prop===prop&&t>=num(l.start))v+=num(l.amp)*Math.sin((t-num(l.start))/Math.max(.2,num(l.period,2))*2*Math.PI)});return v}
+function polyLen(pts){let L=0;for(let i=1;i<pts.length;i++)L+=Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]);return L}
+function drawGen(c,spec,t,T){c.save();c.fillStyle=genCol(T,spec.bg)||T.bg;c.fillRect(0,0,1000,1000);
+  for(const el of (spec.elements||[]).slice(0,80)){const op=K.clamp(genVal(el,'opacity',t,num(el.opacity,1)));if(op<=0.001)continue;
+    const x=genVal(el,'x',t,num(el.x)),y=genVal(el,'y',t,num(el.y)),sc=genVal(el,'scale',t,1),rot=genVal(el,'rotate',t,0),dr=K.clamp(genVal(el,'draw',t,1));
+    c.save();c.globalAlpha=op;c.translate(x,y);c.rotate(rot*Math.PI/180);c.scale(sc,sc);
+    const fill=genCol(T,el.fill),stroke=genCol(T,el.stroke),lw=num(el.lw,4);c.lineWidth=lw;c.lineCap='round';c.lineJoin='round';if(stroke)c.strokeStyle=stroke;if(fill)c.fillStyle=fill;
+    const ty=el.type;
+    if(ty==='rect'){const w=num(el.w,100),h=num(el.h,100);K.rr(c,-w/2,-h/2,w,h,num(el.r,0));if(fill)c.fill();if(stroke)c.stroke()}
+    else if(ty==='circle'){c.beginPath();c.arc(0,0,Math.max(0,num(el.r,40)),0,Math.PI*2*(el.draw!==undefined||(el.anim||[]).some(a=>a.prop==='draw')?dr:1));if(fill)c.fill();if(stroke)c.stroke()}
+    else if(ty==='line'||ty==='poly'){const pts=ty==='line'?[[0,0],[num(el.x2)-num(el.x),num(el.y2)-num(el.y)]]:(el.points||[]).slice(0,200).map(q=>[num(q[0]),num(q[1])]);if(pts.length>1){const L=polyLen(pts);c.setLineDash([L*dr,L+1]);c.beginPath();c.moveTo(...pts[0]);pts.slice(1).forEach(q=>c.lineTo(...q));if(el.closed&&dr>=1){c.closePath();if(fill)c.fill()}c.strokeStyle=stroke||fill||T.ink;c.stroke()}}
+    else if(ty==='path'&&el.d){try{const P=new Path2D(String(el.d).slice(0,4000));if(dr<1){c.beginPath();c.rect(-2000,-2000,2000+dr*3000,4000);c.clip()}if(fill)c.fill(P);if(stroke)c.stroke(P)}catch(e){}}
+    else if(ty==='text'){let txt=String(el.text??'').slice(0,40);const cu=(el.anim||[]).find(a=>a.prop==='count');if(cu){const v=genVal(el,'count',t,num(cu.from));txt=(el.prefix||'')+Math.round(v).toLocaleString('en-US')+(el.suffix||'')}
+      const fs=K.clamp(num(el.size,48),10,260);c.font=`${num(el.weight,800)} ${fs}px ${STY.glass.caption.font}`;c.textAlign=el.align||'center';c.textBaseline='middle';c.fillStyle=fill||T.ink;if(el.caps)txt=txt.toUpperCase();c.fillText(txt,0,0)}
+    c.restore()}
+  c.restore()}
+function genCanvas(s,spec,t,T){const cv=buf('gen_'+s.id,1000,1000),c=cv.getContext('2d');c.setTransform(1,0,0,1,0,0);drawGen(c,spec,t,T);return cv}
+function cleanSpec(j){if(!j||!Array.isArray(j.elements))throw new Error('The design came back empty');return{bg:j.bg||'bg',idea:String(j.idea||'Custom').slice(0,40),elements:j.elements.slice(0,80)}}
+const GEN_FORMAT=`Return ONLY JSON: {"idea":"2-4 word name","bg":"bg","elements":[...]}
+Canvas is 1000x1000, origin top-left. Elements draw in order (later = on top). Each element:
+{"type":"rect"|"circle"|"line"|"poly"|"path"|"text", "x":centre x,"y":centre y,
+ rect:"w","h","r"(corner radius); circle:"r"; line:"x2","y2"(absolute end); poly:"points":[[dx,dy],...] relative to x,y,"closed":bool; path:"d" SVG path relative to x,y; text:"text","size","weight","align","caps",
+ "fill","stroke": a theme token "bg","bg2","ink","mute","a","b","c","hi","bad" (use tokens, not hex), "lw": stroke width, "opacity",
+ "anim":[{"prop":"x"|"y"|"scale"|"rotate"|"opacity"|"draw"|"count","from":n,"to":n,"start":seconds,"dur":seconds,"ease":"out"|"in"|"inout"|"back"|"elastic"|"bounce"|"linear"}],
+ "loop":[{"prop":"y"|"x"|"scale"|"rotate","amp":n,"period":seconds,"start":seconds}] }
+"draw" 0→1 reveals lines/polys/paths/circles progressively. "count" counts a number up inside a text element (use "prefix"/"suffix").
+Rules: 12-45 elements. Keep everything inside 60..940. Text short (1-3 words), size 30-120, never more than 4 text elements, no full sentences (captions are added separately).
+Make it a clear visual metaphor for the line, built from simple shapes, with a strong focal point. Stagger entrances through the first 60% of the scene, then keep subtle loop motion so it never freezes. Use contrast: "ink" or "hi" on "bg"/"bg2".`;
+async function genIllustration(p,s,variant){const T=themeOf(p),others=p.scenes.filter(x=>x!==s&&x.gen).map(x=>x.gen.idea).join(', ');
+  const prompt=`Design an animated illustration for one scene of a short vertical trading video.
+Scene line (spoken): "${s.narration}"
+${s.visual?`Visual direction: ${s.visual}\n`:''}Scene length: ${s.duration.toFixed(1)} seconds. Theme mood: ${baseOf(p.style)==='glass'?'dark, cinematic, glowing':'bright, flat, editorial'}.
+${others?`Other scenes already use: ${others}. Make this one clearly different.\n`:''}${variant?`Variation #${variant}: try a different metaphor and layout than the obvious one.\n`:''}
+${GEN_FORMAT}`;
+  const r=await cap.sample(prompt,{modelTier:'default',cache:false});return cleanSpec(parseJSON(r.text))}
+/* Offline fallback: a few procedural designs when Claude isn't reachable. */
+function localSpec(s,variant){const R=K.rng(K.hash(s.id+s.narration)+variant*977),pick=Math.floor(R()*3),D=s.duration,words=K.extractLabels(s.narration);const els=[];
+  if(pick===0){let y=650;const pts=[];for(let i=0;i<24;i++){y+=(i<10?1:-1.5)*(15+R()*30);pts.push([i*36,Math.max(-400,Math.min(150,y-650))])}els.push({type:'poly',x:90,y:650,points:pts,stroke:'a',lw:8,anim:[{prop:'draw',from:0,to:1,start:.2,dur:D*.6,ease:'inout'}]});els.push({type:'rect',x:760,y:200,w:300,h:90,r:45,fill:'hi',anim:[{prop:'scale',from:0,to:1,start:D*.6,dur:.6,ease:'back'}],loop:[{prop:'y',amp:10,period:2,start:D*.7}]},{type:'text',x:760,y:200,text:words[0]||'Growth',size:40,fill:'bg2',caps:true,anim:[{prop:'opacity',from:0,to:1,start:D*.65,dur:.4}]})}
+  else if(pick===1){for(let i=0;i<6;i++)els.push({type:'rect',x:230+(i%3)*270,y:380+Math.floor(i/3)*260,w:230,h:220,r:28,fill:i===5?'a':'bad',anim:[{prop:'scale',from:0,to:1,start:.3+i*D*.08,dur:.5,ease:'back'}]},{type:'text',x:230+(i%3)*270,y:380+Math.floor(i/3)*260,text:i===5?'+R':'-1R',size:64,fill:'bg2',anim:[{prop:'opacity',from:0,to:1,start:.4+i*D*.08,dur:.3}]})}
+  else{els.push({type:'circle',x:500,y:500,r:110,fill:'b',anim:[{prop:'scale',from:0,to:1,start:.1,dur:.7,ease:'back'}],loop:[{prop:'scale',amp:.05,period:1.6,start:1}]});[220,330,420].forEach((rr,i)=>{els.push({type:'circle',x:500,y:500,r:rr,stroke:'mute',lw:3,anim:[{prop:'draw',from:0,to:1,start:.3+i*.3,dur:1}]});els.push({type:'circle',x:500+rr,y:500,r:40-i*6,fill:['a','hi','c'][i],anim:[{prop:'opacity',from:0,to:1,start:.8+i*.3,dur:.4}]})});words.slice(0,1).forEach(w=>els.push({type:'text',x:500,y:500,text:w,size:44,fill:'bg2',caps:true}))}
+  return{bg:'bg',idea:['Rising line','Tile streak','Orbit'][pick],elements:els}}
+let genState=null;/* {sid,spec,busy,err,inScene} */
+function genPanel(p,s){if(!s||s.kind==='ref')return'';const g=genState&&genState.sid===s.id?genState:null;
+  return`<div class="hfbox genbox"><div class="row"><b>✨ Generate an illustration from the script</b><span class="spacer"></span>${s.gen?`<span class="chip st-Exported"><i></i>Using: ${esc(s.gen.idea)}</span>`:''}</div>
+  <p class="small muted" style="margin:6px 0 10px">Claude designs a new animated illustration for this line in your style’s colours. You’ll see a preview first; nothing changes until you press Apply.</p>
+  ${g&&g.busy?`<div class="row"><span class="small">Designing an illustration…</span></div>`:g&&g.err?`<div class="errbox">${esc(g.err)}</div>`:''}
+  ${g&&g.spec&&!g.busy?`<div class="genprev"><canvas id="genCv" width="600" height="600"></canvas><div class="grid" style="gap:8px;align-content:start"><b>${esc(g.spec.idea)}</b><span class="small muted">Preview loops the scene’s ${s.duration.toFixed(1)} s.</span>
+    <label class="small row"><input type="checkbox" data-act="genInScene" ${g.inScene?'checked':''}> Show it in the scene player too</label>
+    <div class="row"><button class="btn primary" data-act="genApply">Apply to scene</button><button class="btn" data-act="genMake" data-v="1">Try another</button><button class="btn ghost" data-act="genCancel">Discard</button></div></div></div>`:
+    `<div class="row"><button class="btn primary" data-act="genMake" ${g&&g.busy?'disabled':''}>✨ Generate illustration</button>${s.gen?`<button class="btn ghost" data-act="genRemove">Remove generated illustration</button>`:''}</div>`}</div>`}
+let genRAF=0;function genMount(el,p,s){cancelAnimationFrame(genRAF);const cv=el.querySelector('#genCv');if(!cv||!genState||!genState.spec)return;const T=themeOf(p),c=cv.getContext('2d'),t0=performance.now();
+  const tick=now=>{if(!document.body.contains(cv))return;const t=((now-t0)/1000)%s.duration;c.setTransform(.6,0,0,.6,0,0);drawGen(c,genState.spec,t,T);genRAF=requestAnimationFrame(tick)};genRAF=requestAnimationFrame(tick)}
+async function genMake(p,s,variant){if(s._genPrev)delete s._genPrev;genState={sid:s.id,busy:true};rerender();
+  try{const spec=cap.sample?await genIllustration(p,s,variant):localSpec(s,variant|0);genState={sid:s.id,spec,inScene:true};s._genPrev=spec;if(!cap.sample)toast('Claude isn’t reachable here, so this is a built-in design')}
+  catch(e){genState={sid:s.id,err:e.code==='not_granted'?'Claude access was declined for this page.':'Couldn’t design an illustration: '+(e.message||e.code)+'. Try again.'}}
+  resolve(p);players.forEach(x=>x.dirty=true);rerender()}
+window.addEventListener('hashchange',()=>{const p=getP();if(p)p.scenes.forEach(x=>{delete x._genPrev});genState=null});
 
 /* ---------- HyperFrames illustrations: preview first, then apply ---------- */
 let hfLib=null,hfOpen=false,hfPrev=null;/* hfPrev: {sid,file,saved} while a preview is showing in the scene */
@@ -415,9 +479,9 @@ PAGES.scenes=el=>{const p=getP();if(!p){needProject(el,'Scene editor');return}re
       ${vb&&need>s.duration+.05?`<div class="warnbox" style="margin-top:14px">The voiceover needs ${need.toFixed(1)} s but the scene is ${s.duration.toFixed(1)} s. <button class="btn sm" data-act="fitVoice">Extend scene to ${need.toFixed(1)} s</button></div>`:''}
       ${!lock&&!isRef?`<div class="row" style="margin-top:16px"><button class="btn" data-act="newVisual">New visual</button><button class="btn" data-act="newAnim">New animation</button>
         <label class="btn ghost">${s.media?'Replace':'Use'} my image or video<input type="file" accept="image/*,video/*" data-sceneupload="${s.id}" hidden></label>${s.media?`<button class="btn ghost" data-act="rmMedia">Remove ${esc(s.media.name)}</button>`:''}</div>
-        <p class="small muted" style="margin-top:10px">New visual redraws this scene’s illustration with a fresh layout and colours. New animation picks a different camera move and transition. Other scenes are never touched.</p>${hfPanel(p,s)}`:''}
+        <p class="small muted" style="margin-top:10px">New visual redraws this scene’s illustration with a fresh layout and colours. New animation picks a different camera move and transition. Other scenes are never touched.</p>${genPanel(p,s)}${hfPanel(p,s)}`:''}
     </div></div>`:''}`;
-  hfMount(el,p,s);
+  hfMount(el,p,s);genMount(el,p,s);
   el.querySelectorAll('canvas[data-sthumb]').forEach(cv=>{const x=p.scenes.find(z=>z.id===cv.dataset.sthumb),i=p.scenes.indexOf(x),st0=T[i].start;thumb(cv,p,st0+x.duration*.62)});
   if(s){warm(p);const cv=el.querySelector('#scv'),pl=new Player(cv,{get:()=>p,fmt:()=>p.format,range:()=>{const q=times(p).find(x=>x.s.id===selScene);return q?[q.start,q.end]:[0,0]},loop:true,audio:true,start:tt.start+s.duration*.62,
     onTime:t=>{const q=times(p).find(x=>x.s.id===selScene);if(!q)return;const sc=document.getElementById('scScrub'),tc=document.getElementById('scTc');if(sc)sc.value=Math.round((t-q.start)/q.s.duration*1000);if(tc)tc.textContent=fmtT(t-q.start)+' / '+fmtT(q.s.duration)},
@@ -673,6 +737,11 @@ document.addEventListener('click',async e=>{const b=e.target.closest('[data-act]
   case'askSceneDel':confirmSceneDel=s.id;rerender();break;case'cancelSceneDel':confirmSceneDel=null;rerender();break;
   case'delScene':{const i=p.scenes.indexOf(s);if(s.voice)IDB.del(s.voice.key);if(s.media)IDB.del(s.media.key);p.scenes.splice(i,1);selScene=p.scenes[Math.max(0,i-1)]?.id;confirmSceneDel=null;resolve(p);touch(p);rerender();break}
   case'moveScene':{const i=p.scenes.indexOf(s),j=i+(+b.dataset.d);if(j<0||j>=p.scenes.length)break;[p.scenes[i],p.scenes[j]]=[p.scenes[j],p.scenes[i]];resolve(p);touch(p);rerender();break}
+  case'genMake':{const sc=p.scenes.find(x=>x.id===selScene);if(sc)await genMake(p,sc,b.dataset.v?Math.floor(Math.random()*9)+1:0);break}
+  case'genApply':{const sc=p.scenes.find(x=>x.id===selScene);if(sc&&genState&&genState.spec){if(sc.media){IDB.del(sc.media.key);sc.media=null}sc.gen=genState.spec;delete sc._genPrev;genState=null;resolve(p);touch(p);rerender();toast('Illustration applied to the scene')}break}
+  case'genCancel':{const sc=p.scenes.find(x=>x.id===selScene);if(sc)delete sc._genPrev;genState=null;resolve(p);rerender();toast('Discarded — scene unchanged');break}
+  case'genRemove':{const sc=p.scenes.find(x=>x.id===selScene);if(sc){delete sc.gen;resolve(p);touch(p);rerender()}break}
+  case'genInScene':{const sc=p.scenes.find(x=>x.id===selScene);if(sc&&genState&&genState.spec){genState.inScene=b.checked;if(b.checked)sc._genPrev=genState.spec;else delete sc._genPrev;resolve(p);players.forEach(x=>x.dirty=true)}return}
   case'hfToggle':hfOpen=!hfOpen;rerender();break;
   case'hfPreview':{const sc=p.scenes.find(x=>x.id===selScene);if(sc)await hfStartPreview(p,sc,b.dataset.file,b.dataset.label);break}
   case'hfCancel':hfRevert(p);rerender();toast('Preview cancelled — scene unchanged');break;
