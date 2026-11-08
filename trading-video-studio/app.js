@@ -117,7 +117,20 @@ function drawScene(ctx,p,s,lp,W,H){const st=STY[p.style],media=s.media?mediaEls.
     ctx.strokeStyle=p.style==='glass'?'rgba(242,247,255,.18)':'rgba(23,34,53,.2)';ctx.lineWidth=3;K.rr(ctx,x,y,pw,ph,28);ctx.stroke();
     const cc=st.caption;ctx.font=`500 24px ${p.style==='glass'?'"JetBrains Mono"':'"IBM Plex Mono"'},monospace`;ctx.fillStyle=cc.hi;if('letterSpacing'in ctx)ctx.letterSpacing='4px';ctx.fillText(p.title.toUpperCase().slice(0,48),120,250);if('letterSpacing'in ctx)ctx.letterSpacing='0px';
     K.block(ctx,{text:s.headline,x:120,y:300,size:66,font:`800 66px ${cc.font}`,color:cc.color,maxW:W-pw-360,reveal:K.S(lp,.02,.3)});ctx.restore();return}
-  st.draw(ctx,specFor(p,s),lp,W,H,sc,media)}
+  drawAnimated(ctx,st,p,s,lp,W,H,sc,media)}
+/* Per-scene animation: speed, entrance and idle motion, layered on the selected theme's own illustration. */
+const ANIM_SPEED={slow:.7,normal:1,fast:1.45,snappy:2};
+const ANIM_ENTER={none:'As designed',zoom:'Zoom in',rise:'Slide up',side:'Slide in from side',drop:'Drop and bounce',spin:'Twist in',blur:'Focus in'};
+const ANIM_IDLE={none:'Still',breathe:'Breathe',float:'Float',sway:'Sway',pulse:'Beat pulse'};
+function drawAnimated(ctx,st,p,s,lp,W,H,sc,media){const a=s.anim||{},sp=ANIM_SPEED[a.speed]||1,en=a.enter||'none',idle=a.idle||'none',t=lp*s.duration;
+  const lp2=K.clamp(lp*sp);const e=K.clamp(t/.7),eo=K.eo(e),eb=K.eb(e);
+  if(en==='none'&&idle==='none'){st.draw(ctx,specFor(p,s),lp2,W,H,sc,media);return}
+  const off=buf('anim',ctx.canvas.width,ctx.canvas.height),oc=off.getContext('2d');oc.setTransform(1,0,0,1,0,0);oc.clearRect(0,0,off.width,off.height);st.draw(oc,specFor(p,s),lp2,W,H,sc,media);
+  const cw=ctx.canvas.width,ch=ctx.canvas.height;let k=1,dx=0,dy=0,r=0,al=1,bl=0;
+  if(en==='zoom'){k=.82+.18*eo;al=eo}else if(en==='rise'){dy=ch*.12*(1-eo);al=eo}else if(en==='side'){dx=cw*.35*(1-eo)*(s.seed%2?1:-1)}else if(en==='drop'){dy=-ch*.25*(1-eb)}else if(en==='spin'){r=(1-eo)*-.18;k=.88+.12*eo;al=eo}else if(en==='blur'){bl=(1-eo)*18*sc;k=1.06-.06*eo}
+  const tt=t*2*Math.PI;if(idle==='breathe')k*=1+.018*Math.sin(tt/3.2);else if(idle==='float')dy+=ch*.008*Math.sin(tt/2.6);else if(idle==='sway')r+=.012*Math.sin(tt/3.4);else if(idle==='pulse'){const ph=(t*1.6)%1;k*=1+.025*Math.exp(-ph*6)}
+  ctx.save();ctx.setTransform(sc,0,0,sc,0,0);if(st.backdrop)st.backdrop(ctx,W,H);else{ctx.fillStyle=st.palette[0];ctx.fillRect(0,0,W,H)}ctx.setTransform(1,0,0,1,0,0);/* theme background stays put under the moving layer */
+  ctx.translate(cw/2+dx,ch/2+dy);ctx.rotate(r);ctx.scale(k,k);ctx.translate(-cw/2,-ch/2);ctx.globalAlpha=al;if(bl&&'filter'in ctx)ctx.filter=`blur(${bl}px)`;ctx.drawImage(off,0,0);ctx.restore()}
 let exporting=false;
 function composite(ctx,A,B,k,kind,style,idx){const w=ctx.canvas.width,h=ctx.canvas.height;ctx.save();ctx.setTransform(1,0,0,1,0,0);
   if(kind==='push'){const e=K.eio(k);ctx.drawImage(A,-w*e,0);ctx.drawImage(B,w*(1-e),0)}
@@ -334,6 +347,11 @@ PAGES.scenes=el=>{const p=getP();if(!p){needProject(el,'Scene editor');return}re
       <label class="field full"><span>Visual description</span><textarea rows="2" data-sf="visual" data-sid="${s.id}">${esc(s.visual)}</textarea></label>
       <label class="field"><span>Illustration</span><select data-sf="motif" data-sid="${s.id}" ${s.media?'disabled':''}>${opt('auto',`Auto from narration (${s._m})`,s.motif)}${st.motifs.map(m=>opt(m,m,s.motif)).join('')}</select></label>
       <label class="field"><span>Camera move</span><select data-sf="camera" data-sid="${s.id}">${CAMS.map(c=>opt(c,c,s.camera)).join('')}</select></label>`}
+      ${s.kind==='ref'?'':`<div class="full animbox"><b class="small">Animation for this scene</b><span class="small muted">Uses the colours and look of ${esc(styleName(p.style))}.</span>
+        <div class="formgrid" style="margin-top:8px"><label class="field"><span>Entrance</span><select data-sanim="enter" data-sid="${s.id}">${Object.entries(ANIM_ENTER).map(([k,v])=>opt(k,v,(s.anim||{}).enter||'none')).join('')}</select></label>
+        <label class="field"><span>Speed</span><select data-sanim="speed" data-sid="${s.id}">${[['slow','Slow and calm'],['normal','Normal'],['fast','Fast'],['snappy','Very snappy']].map(([k,v])=>opt(k,v,(s.anim||{}).speed||'normal')).join('')}</select></label>
+        <label class="field"><span>Movement while on screen</span><select data-sanim="idle" data-sid="${s.id}">${Object.entries(ANIM_IDLE).map(([k,v])=>opt(k,v,(s.anim||{}).idle||'none')).join('')}</select></label>
+        <div class="field"><span>Quick pick</span><button class="btn sm" data-act="animShuffle" data-sid="${s.id}">🎲 Surprise me</button></div></div></div>`}
       <label class="field"><span>Transition in</span><select data-sf="transition" data-sid="${s.id}" ${lock?'disabled':''}>${Object.entries(TRANS).map(([k,v])=>opt(k,v,s.transition)).join('')}</select></label>
       <label class="field"><span>Duration (s)</span><input type="number" min="1.5" max="60" step=".1" data-sf="duration" data-sid="${s.id}" value="${s.duration}" ${lock?'disabled':''}></label>
       ${!isRef?`<label class="field"><span>Emotion</span><input type="text" data-sf="emotion" data-sid="${s.id}" value="${esc(s.emotion)}"></label>`:''}</div>
@@ -552,6 +570,7 @@ document.addEventListener('input',e=>{const el=e.target,p=getP();
     s[f]=v;resolve(p);touch(p);clearTimeout(typingT);typingT=setTimeout(()=>refreshSceneThumb(p,s),250);return}
   if(el.dataset.vf&&p&&!p.ref){const s=p.scenes.find(x=>x.id===el.dataset.sid);if(!s||!s.voice)return;s.voice[el.dataset.vf]=Math.max(0,+el.value||0);touch(p);const cv=document.querySelector(`canvas[data-wave="${s.id}"]`);if(cv)AUDIO.waveform(cv,voiceBufs.get(s.voice.key),getComputedStyle(document.documentElement).getPropertyValue('--accent').trim(),null,s.voice.trimStart,s.voice.trimEnd);drawTracks(p,0);return}
   if(el.dataset.tag&&p&&!p.ref){p.tag=tagOf(p);p.tag[el.dataset.tag]=coerce(el,p.tag[el.dataset.tag]);touch(p);players.forEach(x=>x.dirty=true);return}
+  if(el.dataset.sanim&&p&&!p.ref){const sc=p.scenes.find(x=>x.id===el.dataset.sid);if(sc){sc.anim={...(sc.anim||{}),[el.dataset.sanim]:el.value};touch(p);players.forEach(x=>x.dirty=true);if(typeof refreshSceneThumb==='function')refreshSceneThumb(p,sc)}return}
   if(el.dataset.cap&&p&&!p.ref){p.captions[el.dataset.cap]=coerce(el,p.captions[el.dataset.cap]);touch(p);players.forEach(x=>x.dirty=true);return}
   if(el.dataset.capsf&&p&&!p.ref){const s=p.scenes.find(x=>x.id===el.dataset.sid);if(!s)return;if(el.dataset.capsf==='captionText')s.captionText=el.value.trim()?el.value:null;else s.captionOffset=+el.value||0;touch(p);players.forEach(x=>x.dirty=true);return}
   if(el.dataset.set){const old=getPath(state.settings,el.dataset.set);setPath(state.settings,el.dataset.set,coerce(el,old));if(el.dataset.set==='accent')applyAccent();saveSettings();players.forEach(x=>x.dirty=true);return}
@@ -617,6 +636,7 @@ document.addEventListener('click',async e=>{const b=e.target.closest('[data-act]
   case'pvFull':{const sc=$('#pvScreen');try{await sc.requestFullscreen()}catch(err){toast('Fullscreen isn’t available here')}break}
   case'pvRefresh':{resolve(p);await warm(p);players.forEach(x=>x.dirty=true);toast('Preview refreshed');break}
   case'capHiReset':p.captions.hiColor='';touch(p);rerender();break;
+  case'animShuffle':{const sc=p.scenes.find(x=>x.id===b.dataset.sid);if(sc){const pick=o=>{const k=Object.keys(o);return k[Math.floor(Math.random()*k.length)]};sc.anim={enter:pick(ANIM_ENTER),speed:pick(ANIM_SPEED),idle:pick(ANIM_IDLE)};touch(p);rerender()}break}
   case'capReset':p.captions[b.dataset.k]='';touch(p);rerender();break;
   case'expStart':{const fm=expState.fmts==='both'?['9:16','16:9']:[expState.fmts],base=expState.base??slug(p.title),names=fm.map(f=>`${base}-${f==='9:16'?'shorts':'landscape'}.mp4`);
     const taken=names.filter(n=>(p.exports||[]).some(x=>x.name===n)||expState.results.some(x=>x.name===n));if(taken.length){expState.ask={names:taken,fm,base};rerender();break}runExport(p,fm,state.settings.export,base);break}
