@@ -127,13 +127,15 @@ function capChunks(p,cur){const s=cur.s,txt=(s.captionText??s.narration)||'';con
   const wt=ws.map(x=>x.w.length+3),sum=wt.reduce((a,b)=>a+b,0);let acc=0;ws.forEach((x,i)=>{x.t0=st+span*acc/sum;acc+=wt[i];x.t1=st+span*acc/sum});
   const n=Math.max(1,+p.captions.words||4),out=[];let c=[];ws.forEach((x,i)=>{c.push(x);if(c.length>=n||/[.!?…,]$/.test(x.w)&&c.length>=2||i===ws.length-1){out.push({w:c,t0:c[0].t0,t1:c[c.length-1].t1});c=[]}});return out}
 function drawCaptions(ctx,p,cur,t,W,H){const ch=capChunks(p,cur);const k=ch.find(c=>t>=c.t0&&t<c.t1+.12);if(!k)return;const st=STY[p.style].caption,cp=p.captions,L=K.layout(W,H),sc=ctx.canvas.width/W;
-  const size=+cp.size||58,y=cp.pos==='center'?H*.5:cp.pos==='upper'?(L.land?H*.2:H*.3):L.cap.y,hi=cp.hiColor||st.hi;
-  ctx.save();ctx.setTransform(sc,0,0,sc,0,0);ctx.font=`800 ${size}px ${st.font}`;if('fontStretch'in ctx)ctx.fontStretch='normal';ctx.textBaseline='middle';
-  const lines=[];let line=[],lw=0;const sp=ctx.measureText(' ').width;k.w.forEach(x=>{const ww=ctx.measureText(x.w).width;if(line.length&&lw+sp+ww>L.cap.w){lines.push({ws:line,w:lw});line=[];lw=0}line.push({...x,ww});lw+=(line.length>1?sp:0)+ww});if(line.length)lines.push({ws:line,w:lw});
+  const size=+cp.size||58,y=cp.pos==='center'?H*.5:cp.pos==='upper'?(L.land?H*.2:H*.3):L.cap.y,hi=cp.hiColor||st.hi,font=CAP_FONTS[cp.font]||st.font,col=cp.color||st.color,bg=cp.bg||'box',up=!!cp.caps,wt=cp.weight||800;
+  const boxFill=cp.boxColor?K.rgba(cp.boxColor,cp.boxOpacity??.7):st.box;
+  ctx.save();ctx.setTransform(sc,0,0,sc,0,0);ctx.font=`${wt} ${size}px ${font}`;if('fontStretch'in ctx)ctx.fontStretch='normal';ctx.textBaseline='middle';
+  const lines=[];let line=[],lw=0;const sp=ctx.measureText(' ').width;k.w.map(x=>up?{...x,w:x.w.toUpperCase()}:x).forEach(x=>{const ww=ctx.measureText(x.w).width;if(line.length&&lw+sp+ww>L.cap.w){lines.push({ws:line,w:lw});line=[];lw=0}line.push({...x,ww});lw+=(line.length>1?sp:0)+ww});if(line.length)lines.push({ws:line,w:lw});
   const age=t-k.t0,a=cp.anim==='fade'?K.clamp(age/.18):1,s=cp.anim==='pop'?.86+.14*K.eb(K.clamp(age/.2)):1,lh=size*1.28,top=y-lines.length*lh/2;
   ctx.globalAlpha=a;ctx.translate(L.cap.x,y);ctx.scale(s,s);ctx.translate(-L.cap.x,-y);
-  lines.forEach((ln,li)=>{const ly=top+li*lh+lh/2,x0=L.cap.x-ln.w/2;ctx.fillStyle=st.box;K.rr(ctx,x0-size*.4,ly-lh/2+4,ln.w+size*.8,lh-8,size*.32);ctx.fill();let x=x0;
-    ln.ws.forEach(w=>{const active=cp.anim==='karaoke'?t>=w.t0:true;ctx.fillStyle=w.hi?hi:(cp.anim==='karaoke'&&!active?(p.style==='glass'?'rgba(242,247,255,.45)':'rgba(23,34,53,.4)'):st.color);ctx.fillText(w.w,x,ly);x+=w.ww+sp})});ctx.restore()}
+  lines.forEach((ln,li)=>{const ly=top+li*lh+lh/2,x0=L.cap.x-ln.w/2;if(bg==='box'){ctx.fillStyle=boxFill;K.rr(ctx,x0-size*.4,ly-lh/2+4,ln.w+size*.8,lh-8,size*.32);ctx.fill()}ctx.shadowColor='transparent';if(bg==='shadow'){ctx.shadowColor='rgba(0,0,0,.75)';ctx.shadowBlur=size*.35;ctx.shadowOffsetY=size*.06}let x=x0;
+    ln.ws.forEach(w=>{const active=cp.anim==='karaoke'?t>=w.t0:true;ctx.fillStyle=w.hi?hi:(cp.anim==='karaoke'&&!active?(p.style==='glass'?'rgba(242,247,255,.45)':'rgba(23,34,53,.4)'):col);if(bg==='outline'){ctx.lineJoin='round';ctx.lineWidth=size*.16;ctx.strokeStyle=cp.boxColor||'#000000';const f=ctx.fillStyle;ctx.strokeText(w.w,x,ly);ctx.fillStyle=f}ctx.fillText(w.w,x,ly);x+=w.ww+sp})});ctx.restore()}
+const CAP_FONTS={bricolage:'"Bricolage Grotesque",sans-serif',archivo:'"Archivo",sans-serif',unbounded:'"Unbounded",sans-serif',manrope:'"Manrope",sans-serif',newsreader:'"Newsreader",Georgia,serif',mono:'"IBM Plex Mono",monospace'};
 
 /* ---------- audio context + mix options ---------- */
 let AC=null;function ac(){if(!AC){AC=new (window.AudioContext||window.webkitAudioContext)()}if(AC.state==='suspended')AC.resume();return AC}
@@ -403,7 +405,14 @@ PAGES.preview=el=>{const p=getP();if(!p){needProject(el,'Video preview');return}
       <label class="field"><span>Position</span><select data-cap="pos">${opt('lower','Lower third',cp.pos)}${opt('center','Centre',cp.pos)}${opt('upper','Upper',cp.pos)}</select></label>
       <label class="field"><span>Animation</span><select data-cap="anim">${opt('pop','Pop in',cp.anim)}${opt('fade','Fade',cp.anim)}${opt('karaoke','Word by word',cp.anim)}${opt('none','None',cp.anim)}</select></label>
       <label class="field"><span>Highlight words</span><input type="text" data-cap="hi" value="${esc(cp.hi)}" placeholder="discipline, patience"></label>
-      <label class="field"><span>Highlight colour</span><div class="row"><input type="color" data-cap="hiColor" value="${cp.hiColor||STY[p.style].caption.hi}"><button class="btn sm ghost" data-act="capHiReset">Style default</button></div></label></div>
+      <label class="field"><span>Highlight colour</span><div class="row"><input type="color" data-cap="hiColor" value="${cp.hiColor||STY[p.style].caption.hi}"><button class="btn sm ghost" data-act="capHiReset">Style default</button></div></label>
+      <label class="field"><span>Font</span><select data-cap="font">${opt('','Style default',cp.font||'')}${opt('bricolage','Bricolage (rounded bold)',cp.font)}${opt('archivo','Archivo (editorial)',cp.font)}${opt('unbounded','Unbounded (wide)',cp.font)}${opt('manrope','Manrope (clean)',cp.font)}${opt('newsreader','Newsreader (serif)',cp.font)}${opt('mono','Mono (typewriter)',cp.font)}</select></label>
+      <label class="field"><span>Weight</span><select data-cap="weight">${opt('800','Extra bold',cp.weight||800)}${opt('700','Bold',cp.weight||800)}${opt('500','Regular',cp.weight||800)}</select></label>
+      <label class="field"><span>Text colour</span><div class="row"><input type="color" data-cap="color" value="${cp.color||STY[p.style].caption.color}"><button class="btn sm ghost" data-act="capReset" data-k="color">Style default</button></div></label>
+      <label class="field"><span>Background</span><select data-cap="bg">${opt('box','Box behind text',cp.bg||'box')}${opt('outline','Outline around letters',cp.bg||'box')}${opt('shadow','Soft shadow',cp.bg||'box')}${opt('none','Nothing',cp.bg||'box')}</select></label>
+      <label class="field"><span>Box / outline colour</span><div class="row"><input type="color" data-cap="boxColor" value="${cp.boxColor||(p.style==='glass'?'#0A1120':'#F6F5EE')}"><button class="btn sm ghost" data-act="capReset" data-k="boxColor">Style default</button></div></label>
+      <label class="field"><span>Box opacity</span><input type="range" min="0" max="1" step=".05" data-cap="boxOpacity" value="${cp.boxOpacity??.7}"></label>
+      <label class="field"><span>Letters</span><label class="small row"><input type="checkbox" data-cap="caps" ${cp.caps?'checked':''}> ALL CAPS</label></label></div>
       <p class="small muted">Captions follow each scene’s voiceover, word by word. Wrap a word in *asterisks* in the caption text to highlight just that instance. Timing shifts move a scene’s captions earlier or later.</p>
       <div class="tablewrap"><table><thead><tr><th>#</th><th>Caption text</th><th>Shift (s)</th></tr></thead><tbody>${T.map(({s},i)=>`<tr><td class="mono">${i+1}</td><td><textarea rows="2" data-capsf="captionText" data-sid="${s.id}" placeholder="${esc(s.narration)}">${esc(s.captionText??'')}</textarea></td><td style="width:90px"><input type="number" step=".1" data-capsf="captionOffset" data-sid="${s.id}" value="${s.captionOffset||0}"></td></tr>`).join('')}</tbody></table></div></fieldset></div></div>`;
   warm(p).then(()=>players.forEach(x=>x.dirty=true));
@@ -576,6 +585,7 @@ document.addEventListener('click',async e=>{const b=e.target.closest('[data-act]
   case'pvFull':{const sc=$('#pvScreen');try{await sc.requestFullscreen()}catch(err){toast('Fullscreen isn’t available here')}break}
   case'pvRefresh':{resolve(p);await warm(p);players.forEach(x=>x.dirty=true);toast('Preview refreshed');break}
   case'capHiReset':p.captions.hiColor='';touch(p);rerender();break;
+  case'capReset':p.captions[b.dataset.k]='';touch(p);rerender();break;
   case'expStart':{const fm=expState.fmts==='both'?['9:16','16:9']:[expState.fmts],base=expState.base??slug(p.title),names=fm.map(f=>`${base}-${f==='9:16'?'shorts':'landscape'}.mp4`);
     const taken=names.filter(n=>(p.exports||[]).some(x=>x.name===n)||expState.results.some(x=>x.name===n));if(taken.length){expState.ask={names:taken,fm,base};rerender();break}runExport(p,fm,state.settings.export,base);break}
   case'expGo':{const a=expState.ask;expState.ask=null;let base=a.base;if(b.dataset.mode==='rename'){let k=2;const used=n=>(p.exports||[]).some(x=>x.name===n)||expState.results.some(x=>x.name===n);while(a.fm.some(f=>used(`${a.base}-${k}-${f==='9:16'?'shorts':'landscape'}.mp4`)))k++;base=`${a.base}-${k}`}runExport(p,a.fm,state.settings.export,base);break}
