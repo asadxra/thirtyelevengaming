@@ -1,8 +1,8 @@
 import { applyPalette, GIFEncoder, quantize } from 'gifenc';
 import JSZip from 'jszip';
 import { ArrayBufferTarget as Mp4Target, Muxer as Mp4Muxer } from 'mp4-muxer';
-import { ArrayBufferTarget as WebmTarget, Muxer as WebmMuxer } from 'webm-muxer';
 import type { AssetBundle, FormatDef } from '../engine/schema';
+import { buildAlphaWebM } from './webmAlpha';
 import { drawFrame, frameSVG, makeCanvas, type RenderSource, sourceDuration } from './frames';
 
 export type Progress = (p: number, label?: string) => void;
@@ -78,37 +78,61 @@ export async function exportMP4(job: RenderJob): Promise<RenderResult> {
   return { blob: new Blob([target.buffer], { type: 'video/mp4' }), ext: 'mp4', mime: 'video/mp4', note: avc ? `H.264 ${cfg.codec}` : 'VP9 in MP4 (H.264 encoder unavailable in this browser)' };
 }
 
-/** Transparent-background WebM (VP9 + alpha). */
+/**
+ * Transparent-background WebM (VP9 + alpha), frame-exact.
+ * Colour and alpha are encoded by two VP9 encoders; alpha is stored as BlockAdditional.
+ */
 export async function exportTransparentWebM(job: RenderJob): Promise<RenderResult> {
   const { width: W, height: H } = job.format;
   const w = Math.round(W / 2) * 2, h = Math.round(H / 2) * 2;
-  if (webCodecsAvailable()) {
-    const cfg = await pickConfig([
-      { codec: 'vp09.00.41.08', width: w, height: h, bitrate: Math.round(w * h * job.fps * 0.25), framerate: job.fps, alpha: 'keep' } as VideoEncoderConfig,
-      { codec: 'vp8', width: w, height: h, bitrate: Math.round(w * h * job.fps * 0.25), framerate: job.fps, alpha: 'keep' } as VideoEncoderConfig,
-    ]);
-    if (cfg) {
-      const target = new WebmTarget();
-      const muxer = new WebmMuxer({ target, video: { codec: cfg.codec.startsWith('vp8') ? 'V_VP8' : 'V_VP9', width: w, height: h, frameRate: job.fps, alpha: true }, firstTimestampBehavior: 'offset' });
-      let err: unknown = null;
-      const enc = new VideoEncoder({ output: (chunk, meta) => muxer.addVideoChunk(chunk, meta), error: (e) => { err = e; } });
-      enc.configure(cfg);
-      const dur = 1e6 / job.fps;
-      for await (const f of frames(job, true)) {
-        if (err) throw err;
-        const vf = new VideoFrame(f.canvas, { timestamp: Math.round(f.i * dur), duration: Math.round(dur), alpha: 'keep' });
-        enc.encode(vf, { keyFrame: f.i % (job.fps * 2) === 0 });
-        vf.close();
-        while (enc.encodeQueueSize > 6) await new Promise((r) => setTimeout(r, 2));
-      }
-      await enc.flush();
-      enc.close();
-      if (err) throw err;
-      muxer.finalize();
-      return { blob: new Blob([target.buffer], { type: 'video/webm' }), ext: 'webm', mime: 'video/webm', note: `Transparent ${cfg.codec}` };
+  if (!webCodecsAvailable()) return exportRealtime(job, true);
+  const bitrate = Math.round(w * h * job.fps * 0.25);
+  const cfg = await pickConfig(['vp09.00.41.08', 'vp09.00.40.08', 'vp09.00.31.08'].map((codec) => ({ codec, width: w, height: h, bitrate, framerate: job.fps } as VideoEncoderConfig)));
+  if (!cfg) return exportRealtime(job, true);
+  const color: Uint8Array[] = [], alpha: Uint8Array[] = [], keys: boolean[] = [];
+  let err: unknown = null;
+  const take = (arr: Uint8Array[], isColor: boolean) => (chunk: EncodedVideoChunk) => {
+    const b = new Uint8Array(chunk.byteLength);
+    chunk.copyTo(b);
+    arr.push(b);
+    if (isColor) keys.push(chunk.type === 'key');
+  };
+  const encC = new VideoEncoder({ output: take(color, true), error: (e) => { err = e; } });
+  const encA = new VideoEncoder({ output: take(alpha, false), error: (e) => { err = e; } });
+  encC.configure(cfg);
+  encA.configure({ ...cfg, bitrate: Math.round(bitrate / 2) });
+  const { canvas: ac, ctx: actx } = makeCanvas(w, h);
+  const dur = 1e6 / job.fps;
+  for await (const f of frames(job, true)) {
+    if (err) throw err;
+    const key = f.i % (job.fps * 2) === 0;
+    const img = f.ctx.getImageData(0, 0, w, h);
+    const d = img.data;
+    // colour: un-premultiply onto black so edges keep their true colour
+    const col = actx.createImageData(w, h);
+    const alp = new ImageData(w, h);
+    const cd = col.data, ad = alp.data;
+    for (let i = 0; i < d.length; i += 4) {
+      const a = d[i + 3];
+      cd[i] = d[i]; cd[i + 1] = d[i + 1]; cd[i + 2] = d[i + 2]; cd[i + 3] = 255;
+      ad[i] = ad[i + 1] = ad[i + 2] = a; ad[i + 3] = 255;
     }
+    actx.putImageData(col, 0, 0);
+    const vc = new VideoFrame(ac, { timestamp: Math.round(f.i * dur), duration: Math.round(dur), alpha: 'discard' });
+    encC.encode(vc, { keyFrame: key });
+    vc.close();
+    actx.putImageData(alp, 0, 0);
+    const va = new VideoFrame(ac, { timestamp: Math.round(f.i * dur), duration: Math.round(dur), alpha: 'discard' });
+    encA.encode(va, { keyFrame: key });
+    va.close();
+    while (encC.encodeQueueSize > 4 || encA.encodeQueueSize > 4) await new Promise((r) => setTimeout(r, 2));
   }
-  return exportRealtime(job, true);
+  await encC.flush(); await encA.flush();
+  encC.close(); encA.close();
+  if (err) throw err;
+  const n = Math.min(color.length, alpha.length);
+  const out = Array.from({ length: n }, (_, i) => ({ color: color[i], alpha: alpha[i], key: keys[i], timestampMs: (i * 1000) / job.fps }));
+  return { blob: buildAlphaWebM(out, w, h, job.fps), ext: 'webm', mime: 'video/webm', note: `VP9 + alpha (${cfg.codec}), ${n} frames` };
 }
 
 /** Fallback: MediaRecorder, paced in real time (used when WebCodecs is missing). */
@@ -163,10 +187,20 @@ export async function exportPNGSequence(job: RenderJob, transparent = false, zip
   const dir = z.folder(folder)!;
   const n = frameCount(job);
   const pad = String(n).length < 4 ? 4 : String(n).length;
+  // PNG encoding runs off the main thread: keep several frames encoding while the next renders
+  const POOL = 6;
+  const pool = Array.from({ length: POOL }, () => makeCanvas(1, 1));
+  const inflight: Promise<void>[] = [];
   for await (const f of frames(job, transparent)) {
-    const blob = await new Promise<Blob>((res, rej) => f.canvas.toBlob((b) => (b ? res(b) : rej(new Error('png failed'))), 'image/png'));
-    dir.file(`frame_${String(f.i).padStart(pad, '0')}.png`, blob);
+    const slot = pool[f.i % POOL];
+    if (inflight.length >= POOL) await inflight.shift();
+    slot.canvas.width = f.w; slot.canvas.height = f.h;
+    slot.ctx.clearRect(0, 0, f.w, f.h);
+    slot.ctx.drawImage(f.canvas, 0, 0);
+    const name = `frame_${String(f.i).padStart(pad, '0')}.png`;
+    inflight.push(new Promise<void>((res, rej) => slot.canvas.toBlob((b) => { if (!b) return rej(new Error('png failed')); dir.file(name, b); res(); }, 'image/png')));
   }
+  await Promise.all(inflight);
   dir.file('README.txt', `PNG sequence\nframes: ${n}\nfps: ${job.fps}\nsize: ${job.format.width}x${job.format.height}\ntransparent: ${transparent}\nframe_N.png is time N/${job.fps} s\n`);
   if (zip) return { blob: new Blob(), ext: 'zip', mime: 'application/zip', zip: z };
   const blob = await z.generateAsync({ type: 'blob', compression: 'STORE' });

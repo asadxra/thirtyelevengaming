@@ -29,9 +29,9 @@ export function SceneThumb({ scene, scenes, format = LANDSCAPE, className, autop
 }
 
 /** Generic SVG preview box (fit content into a viewBox). */
-export function SvgBox({ w, h, children, className, checker }: { w: number; h: number; children: React.ReactNode; className?: string; checker?: boolean }) {
+export function SvgBox({ w, h, children, className, checker, light }: { w: number; h: number; children: React.ReactNode; className?: string; checker?: boolean; light?: boolean }) {
   return (
-    <div className={cx('relative overflow-hidden rounded-lg', checker ? 'checker' : 'bg-ink-950', className)}>
+    <div className={cx('relative overflow-hidden rounded-lg', checker ? 'checker' : light ? 'bg-gradient-to-b from-slate-200 to-slate-300' : 'bg-ink-950', className)}>
       <svg viewBox={`${-w / 2} ${-h / 2} ${w} ${h}`} className="w-full h-full block" preserveAspectRatio="xMidYMid meet">{children}</svg>
     </div>
   );

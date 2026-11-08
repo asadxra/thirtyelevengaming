@@ -82,7 +82,9 @@ export function evaluateElement(el: SceneElement, t: number, formatId: string): 
 
   // entrance
   const ai = el.animIn;
-  if (ai && ai.type !== 'none') {
+  // kinetic text animates per word/letter inside the renderer instead of as a block
+  const kineticText = el.type === 'text' && el.props.kinetic !== 'none' && !['none', 'typewriter', 'draw', 'wipe'].includes(ai?.type);
+  if (ai && ai.type !== 'none' && !kineticText) {
     const delay = ai.delay ?? 0;
     const raw = clamp((local - delay) / Math.max(ai.duration, 1e-4));
     const p = ease(ai.easing, raw);
