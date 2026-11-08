@@ -167,9 +167,19 @@ function syncNav(){const sel=$('#projSel'),cur=state.cur;sel.innerHTML=`<optgrou
 $('#projSel').addEventListener('change',e=>{state.cur=e.target.value;lsWrite();route()});
 const PAGES={};let page='home';
 function route(){const r=(location.hash||'#home').slice(1);page=PAGES[r]?r:'home';stopPlayers();document.querySelectorAll('#links a').forEach(a=>a.setAttribute('aria-current',a.getAttribute('href')==='#'+page?'page':'false'));
-  if(!getP())state.cur=REFS.glass.id;syncNav();app.innerHTML='';const el=document.createElement('div');el.className='page';app.appendChild(el);PAGES[page](el);window.scrollTo({top:0})}
-function rerender(){const y=window.scrollY;stopPlayers();app.innerHTML='';const el=document.createElement('div');el.className='page';el.style.animation='none';app.appendChild(el);PAGES[page](el);window.scrollTo({top:y})}
+  if(!getP())state.cur=REFS.glass.id;syncNav();app.innerHTML='';const el=document.createElement('div');el.className='page';app.appendChild(el);PAGES[page](el);guide(el);window.scrollTo({top:0})}
+function rerender(){const y=window.scrollY;stopPlayers();app.innerHTML='';const el=document.createElement('div');el.className='page';el.style.animation='none';app.appendChild(el);PAGES[page](el);guide(el);window.scrollTo({top:y})}
 window.addEventListener('hashchange',route);
+/* ---------- friendly step guide ---------- */
+const STEPS=[['script','Write','Write or generate what the narrator says'],['scenes','Scenes','Check the visuals for each line'],['voice','Voice','Add a voiceover to every scene'],['preview','Watch','Play it through before you export'],['export','Export','Save your MP4 file']];
+function stepDone(p,k){if(!p||p.ref)return false;const n=p.scenes.length;return k==='script'?n>0:k==='scenes'?n>0&&['Editing','Ready to Export','Exported'].includes(p.status)||n>0&&p.scenes.some(s=>s.voice):k==='voice'?n>0&&p.scenes.every(s=>s.voice):k==='preview'?['Ready to Export','Exported'].includes(p.status):k==='export'?p.status==='Exported':false}
+function guide(el){const i=STEPS.findIndex(x=>x[0]===page);const p=getP();if(i<0||!p||p.ref)return;
+  const bar=document.createElement('nav');bar.className='stepbar';bar.setAttribute('aria-label','Steps');
+  bar.innerHTML=`<div class="stepname"><span class="dim small">Working on</span><b>${esc(p.title)}</b></div><ol>${STEPS.map(([k,l],j)=>`<li><a href="#${k}" class="${j===i?'now':''} ${stepDone(p,k)?'done':''}"${j===i?' aria-current="step"':''}><span class="sn">${stepDone(p,k)&&j!==i?'✓':j+1}</span>${l}</a></li>`).join('')}</ol>`;
+  el.prepend(bar);
+  const nx=STEPS[i+1],pv=STEPS[i-1],foot=document.createElement('div');foot.className='nextbar';
+  foot.innerHTML=`${pv?`<a class="btn ghost" href="#${pv[0]}">← ${pv[1]}</a>`:'<span></span>'}<div class="nexttip"><b>Step ${i+1} of 5 · ${STEPS[i][1]}</b><span class="muted small">${STEPS[i][2]}</span></div>${nx?`<a class="btn primary big" href="#${nx[0]}">Next: ${nx[1]} →</a>`:`<a class="btn primary big" href="#home">Back to my videos</a>`}`;
+  el.appendChild(foot)}
 const go=h=>{if(location.hash==='#'+h)route();else location.hash=h};
 function applyAccent(){const a=state.settings.accent||'#65D9D3',n=parseInt(a.slice(1),16);document.documentElement.style.setProperty('--accent',a);document.documentElement.style.setProperty('--accent-rgb',`${n>>16},${n>>8&255},${n&255}`)}
 const chip=st=>`<span class="chip st-${String(st).replace(/\s/g,'')}"><i></i>${esc(st)}</span>`;
@@ -182,15 +192,19 @@ function needProject(el,what){const p=getP();if(p&&!p.ref)return p;el.innerHTML=
 let libFilter='All',newForm=false,confirmDel=null;
 PAGES.home=el=>{const ps=state.projects,counts=STATUSES.map(s=>[s,ps.filter(p=>p.status===s).length]);
   const list=[REFS.glass,REFS.vector,...ps].filter(p=>libFilter==='All'||p.status===libFilter||(libFilter==='Reference'&&p.ref));
-  el.innerHTML=`${hero('Production studio','Your trading videos, start to finish.','Pick one of your two styles, write or generate the script, voice it with Quentin, check it in Shorts and Landscape, then export real MP4 files.',`<button class="btn primary" data-act="toggleNew">New video</button>`)}
+  el.innerHTML=`${hero('Welcome back','Make a trading video in 5 easy steps.','Start a new video, then follow the steps at the top of each page. Your work saves automatically.',`<button class="btn primary big" data-act="toggleNew">+ Start a new video</button>`)}
+  ${(()=>{const last=[...ps].sort((a,b)=>(b.updatedAt||b.createdAt)-(a.updatedAt||a.createdAt))[0];const howto=`<ol class="howto">${STEPS.map(([k,l,d],j)=>`<li><span class="sn">${j+1}</span><div><b>${l}</b><span class="muted small">${d}</span></div></li>`).join('')}</ol>`;
+    if(!last)return`<div class="card glow"><div class="cardhead"><h2>How it works</h2></div>${howto}<p class="note" style="margin-top:14px">New here? Watch one of the two example films below to see what you can make.</p></div>`;
+    const nxt=STEPS.find(([k])=>!stepDone(last,k))||STEPS[4];
+    return`<div class="card glow"><div class="cardhead"><div><div class="kicker">Continue where you left off</div><h2 style="margin-top:6px">${esc(last.title)}</h2></div><button class="btn primary big" data-act="open" data-id="${last.id}" data-to="${nxt[0]}">Continue: ${nxt[1]} →</button></div>${howto.replace('<ol class="howto">','<ol class="howto compact">')}</div>`})()}
   ${newForm?`<div class="card glow"><div class="cardhead"><h2>New video</h2><button class="btn ghost sm" data-act="toggleNew">Cancel</button></div>
     <div class="grid g4"><label class="field"><span>Title</span><input type="text" id="nfTitle" placeholder="e.g. The day I stopped revenge trading"></label>
     <label class="field"><span>Style</span><select id="nfStyle">${opt('glass',styleName('glass'),state.settings.defaultStyle)}${opt('vector',styleName('vector'),state.settings.defaultStyle)}</select></label>
     <label class="field"><span>Format</span><select id="nfFmt">${opt('9:16','Shorts 9:16',state.settings.defaultFormat)}${opt('16:9','Landscape 16:9',state.settings.defaultFormat)}</select></label>
     <label class="field"><span>Target length (s)</span><input type="number" id="nfDur" min="15" max="180" value="${state.settings.defaultDuration}"></label></div>
-    <div class="row" style="margin-top:14px"><button class="btn primary" data-act="createProj">Create and open Script Studio</button></div></div>`:''}
+    <div class="row" style="margin-top:14px"><button class="btn primary big" data-act="createProj">Create video and start writing →</button></div></div>`:''}
   <div class="grid g4">${[['Projects',ps.length],['In progress',ps.filter(p=>['Script Ready','Editing','Generating'].includes(p.status)).length],['Ready to export',ps.filter(p=>p.status==='Ready to Export').length],['Exported',ps.filter(p=>p.status==='Exported').length]].map(([l,v])=>`<div class="card"><div class="kicker" style="color:var(--muted)">${l}</div><div style="font-family:var(--disp);font-size:38px;font-weight:800;margin-top:4px">${v}</div></div>`).join('')}</div>
-  <div class="card"><div class="cardhead"><h2>Project library</h2>${segBtns('lib',[['All','All'],['Reference','Reference'],...STATUSES.map(s=>[s,s])],libFilter)}</div>
+  <div class="card"><div class="cardhead"><h2>My videos</h2>${segBtns('lib',[['All','All'],['Reference','Reference'],...STATUSES.map(s=>[s,s])],libFilter)}</div>
     ${list.length?`<div class="projects">${list.map(p=>`<article class="pcard"><div class="pthumb"><canvas data-thumb="${p.id}" data-scale=".2"></canvas></div><div class="pbody">
       <div class="row">${chip(p.status)}<span class="chip">${esc(styleName(p.style).split('—')[0].trim())}</span></div><h3>${esc(p.title)}</h3>
       <div class="meta"><span>${new Date(p.createdAt).toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'})}</span><span>${fmtD(total(p))}</span><span>${p.format}</span><span>${p.scenes.length} scenes</span></div>
