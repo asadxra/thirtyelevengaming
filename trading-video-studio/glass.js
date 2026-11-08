@@ -1,7 +1,7 @@
 /* STYLE 01 — Cinematic liquid glass. WebGL refraction over Canvas-drawn backdrops. */
 (function(){
 const K=KIT,{clamp,lerp,S,O,B,eo}=K;
-const C={ink:'#0A1120',deep:'#15243C',porc:'#F2F7FF',blue:'#599CFF',aqua:'#65D9D3',lav:'#B8ABFF',peach:'#FFC7AB',loss:'#FF8B7B',white:'#FFFFFF',muted:'#8B98B0'};
+const C=K.pal('glass',{ink:'#0A1120',deep:'#15243C',porc:'#F2F7FF',blue:'#599CFF',aqua:'#65D9D3',lav:'#B8ABFF',peach:'#FFC7AB',loss:'#FF8B7B',white:'#FFFFFF',muted:'#8B98B0'});
 const DISP='"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif',SER='"Newsreader",Georgia,serif',MONO='"JetBrains Mono",ui-monospace,Menlo,monospace';
 const rgba=K.rgba;
 

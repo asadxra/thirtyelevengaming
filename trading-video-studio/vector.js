@@ -1,7 +1,7 @@
 /* STYLE 02 — Premium flat-vector editorial. Canvas 2D Bezier illustration. */
 (function(){
 const K=KIT,{clamp,lerp,S,O,B,eo,eb}=K;
-const INK='#172235',IV='#F6F5EE',CB='#4667FF',TL='#16B99A',CR='#FF765E',AM='#FFC65C',PE='#A3A5F4',SL='#73819A',SK='#E9A688',P2='#ECEADF';
+const {INK,IV,CB,TL,CR,AM,PE,SL,SK,P2}=K.pal('vector',{INK:'#172235',IV:'#F6F5EE',CB:'#4667FF',TL:'#16B99A',CR:'#FF765E',AM:'#FFC65C',PE:'#A3A5F4',SL:'#73819A',SK:'#E9A688',P2:'#ECEADF'});
 const DISP='"Archivo","Helvetica Neue",Arial,sans-serif',MONO='"IBM Plex Mono",ui-monospace,Menlo,monospace';
 const rr=K.rr;
 function font(c,w,size,fam=DISP,stretch='semi-expanded'){c.font=`${w} ${size}px ${fam}`;if('fontStretch'in c)c.fontStretch=fam===DISP?stretch:'normal'}

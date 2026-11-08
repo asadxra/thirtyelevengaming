@@ -215,13 +215,20 @@ PAGES.home=el=>{const ps=state.projects,counts=STATUSES.map(s=>[s,ps.filter(p=>p
   el.querySelectorAll('canvas[data-thumb]').forEach(cv=>{const p=getP(cv.dataset.thumb);warm(p).then(()=>thumb(cv,p))})};
 
 /* ---------- PAGE: Style Library ---------- */
+const PAL_NAMES={glass:{ink:'Background',deep:'Deep shade',porc:'Text',blue:'Blue',aqua:'Aqua',lav:'Lavender',peach:'Highlight',loss:'Loss red',muted:'Muted'},
+  vector:{IV:'Background',P2:'Paper',INK:'Ink / text',CB:'Blue',TL:'Teal',CR:'Coral',AM:'Amber',PE:'Periwinkle',SK:'Skin',SL:'Slate'}};
+STY.glass._pal=K.pal('glass',K.palDefaults.glass);STY.vector._pal=K.pal('vector',K.palDefaults.vector);
+document.addEventListener('change',e=>{const t=e.target;if(!t.dataset||!t.dataset.pal)return;K.palSet(t.dataset.pal,t.dataset.k,t.value);sessionStorage.setItem('tvs.toast','Colours updated');location.reload()});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-palreset]');if(!b)return;K.palReset(b.dataset.palreset);sessionStorage.setItem('tvs.toast','Colours reset');location.reload()});
+setTimeout(()=>{try{const m=sessionStorage.getItem('tvs.toast');if(m){sessionStorage.removeItem('tvs.toast');toast(m)}}catch(e){}},400);
 PAGES.styles=el=>{el.innerHTML=hero('Style library','Two styles. One look per video.','Each style is a reusable profile built from your two reference films. Every scene in a video uses the style chosen for that video, and the two never mix.')+
   ['glass','vector'].map(id=>{const st=STY[id],def=state.settings.defaultStyle===id;return`<section class="card glow"><div class="stylecard">
     <div class="grid" style="gap:10px"><div class="screen portrait"><canvas data-styleplay="${id}"></canvas></div><div class="row"><button class="btn sm" data-act="stylePlay" data-id="${id}">Pause</button><button class="btn sm primary" data-act="open" data-id="ref-${id}" data-to="preview">Watch full film</button></div></div>
     <div class="grid" style="gap:16px">
       <div class="row"><span class="kicker">${id==='glass'?'Reference video 1':'Reference video 2'}</span>${def?'<span class="chip st-Exported"><i></i>Default style</span>':''}</div>
       <label class="field"><span>Style name</span><input type="text" data-stylename="${id}" value="${esc(styleName(id))}"></label>
-      <div class="row"><span class="small muted">Palette</span><div class="swatches">${st.palette.map(c=>`<i style="background:${c}"></i>`).join('')}</div></div>
+      <div class="grid" style="gap:8px"><div class="row"><b class="small">Colours</b><span class="small muted">Click a colour to change it. Every video in this style updates.</span><span class="spacer"></span><button class="btn sm ghost" data-palreset="${id}">Reset colours</button></div>
+        <div class="palgrid">${Object.entries(PAL_NAMES[id]).map(([k,l])=>{const v=STY[id]._pal[k];return`<label class="palsw" title="${l}"><input type="color" data-pal="${id}" data-k="${k}" value="${v}"><span>${l}</span></label>`}).join('')}</div></div>
       <dl class="traits">${Object.entries(st.traits).map(([k,v])=>`<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join('')}<div><dt>Scene kit</dt><dd>${st.motifs.map(m=>`<span class="chip" style="margin:0 4px 4px 0">${m}</span>`).join('')}</dd></div></dl>
       <div class="row"><button class="btn primary" data-act="newWithStyle" data-id="${id}">New video in this style</button>${def?'':`<button class="btn" data-act="setDefStyle" data-id="${id}">Make default</button>`}
         <label class="btn ghost">Attach the original recording<input type="file" accept="video/*" data-refupload="${id}" hidden></label></div>
