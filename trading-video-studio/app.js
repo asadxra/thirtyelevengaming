@@ -3,7 +3,8 @@
 const K=KIT,STY={glass:STYLE_GLASS,vector:STYLE_VECTOR};
 STY.glass.base='glass';STY.vector.base='vector';
 const baseOf=id=>(STY[id]&&STY[id].base)||'glass';
-const styleIds=()=>Object.keys(STY);
+const allStyleIds=()=>Object.keys(STY);
+const styleIds=()=>{const h=new Set((state.settings&&state.settings.hiddenStyles)||[]);const v=allStyleIds().filter(i=>!h.has(i));return v.length?v:['glass']};
 /* Custom styles: built from one of the two engines with their own palette, caption font and default motion. */
 const ENGINE_SRC={};
 async function buildCustom(rec){try{const base=rec.base==='vector'?'vector':'glass';ENGINE_SRC[base]=ENGINE_SRC[base]||await (await fetch(base+'.js')).text();
@@ -93,7 +94,7 @@ async function loadRemote(){const c=col();if(!c)return false;
 /* ---------- model ---------- */
 const words=t=>String(t||'').trim().split(/\s+/).filter(Boolean).length;
 const estDur=t=>Math.max(3,Math.round((words(t)/2.5+1)*10)/10);
-function newProject(o={}){const s=state.settings;return{id:uid(),title:o.title||'Untitled video',topic:'',message:'',category:'Trading motivation',tone:'Calm, honest, hopeful',style:o.style||s.defaultStyle,format:o.format||s.defaultFormat,target:o.target||s.defaultDuration,
+function newProject(o={}){const s=state.settings;if(o.style&&!STY[o.style])o.style=styleIds()[0];return{id:uid(),title:o.title||'Untitled video',topic:'',message:'',category:'Trading motivation',tone:'Calm, honest, hopeful',style:o.style||s.defaultStyle,format:o.format||s.defaultFormat,target:o.target||s.defaultDuration,
   createdAt:Date.now(),updatedAt:Date.now(),status:'Draft',voice:{...s.voice},scenes:[],captions:{...s.captions},
   music:{enabled:true,vol:s.audio.musicVol,fadeIn:s.audio.fadeIn,fadeOut:s.audio.fadeOut,mode:s.audio.mode,duck:s.audio.duck},sfx:{enabled:s.audio.sfx,vol:s.audio.sfxVol},voiceVol:s.audio.voiceVol,exports:[]}}
 function newScene(p,o={}){const text=o.narration||'';return{id:uid(),kind:'motif',narration:text,headline:o.headline??K.headlineFrom(text),sub:o.sub||'',eyebrow:o.eyebrow||'',visual:o.visual||'',emotion:o.emotion||'',
@@ -293,7 +294,7 @@ const PRESET_NAMES={midnight:'Midnight (like Style 01)',ember:'Ember',forest:'Fo
 let nsOpen=false,nsBase='glass';
 function nextStyleNum(){return 3+(state.settings.customStyles||[]).length}
 function newStyleCard(){const n=String(nextStyleNum()).padStart(2,'0');
-  if(!nsOpen)return`<div class="card glow row"><div><h2>Create your own style</h2><p class="small muted" style="margin:4px 0 0">Pick the shapes, colours, caption font and motion. It becomes Style ${n} and works everywhere the others do.</p></div><span class="spacer"></span><button class="btn primary big" data-act="nsOpen">+ New style</button></div>`;
+  if(!nsOpen)return`<div class="card glow row"><div><h2>Create your own style</h2><p class="small muted" style="margin:4px 0 0">Pick the shapes, colours, caption font and motion. It becomes Style ${n} and works everywhere the others do.</p></div><span class="spacer"></span>${(state.settings.hiddenStyles||[]).length?'<button class="btn ghost" data-act="restoreStyles">Restore deleted built-in styles</button>':''}<button class="btn primary big" data-act="nsOpen">+ New style</button></div>`;
   return`<div class="card glow"><div class="cardhead"><h2>New style · Style ${n}</h2><button class="btn ghost sm" data-act="nsOpen">Cancel</button></div><div class="formgrid">
     <label class="field full"><span>Style name</span><input type="text" id="nsName" value="Style ${n} — My style"></label>
     <label class="field"><span>Shapes and illustration kit</span><select id="nsBase" data-act-change="nsBase">${opt('glass','Glass: refractive lenses, dark and cinematic',nsBase)}${opt('vector','Flat vector: bold editorial drawings',nsBase)}</select></label>
@@ -322,7 +323,7 @@ PAGES.styles=el=>{el.innerHTML=hero('Style library','Your styles. One look per v
         <div class="palgrid">${Object.entries(PAL_NAMES[base]).map(([k,l])=>{const v=STY[id]._pal[k];return`<label class="palsw" title="${l}"><input type="color" data-pal="${id}" data-k="${k}" value="${v}"><span>${l}</span></label>`}).join('')}</div></div>
       <dl class="traits">${Object.entries(st.traits).map(([k,v])=>`<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join('')}<div><dt>Scene kit</dt><dd>${st.motifs.map(m=>`<span class="chip" style="margin:0 4px 4px 0">${m}</span>`).join('')}</dd></div></dl>
       <div class="row"><button class="btn primary" data-act="newWithStyle" data-id="${id}">New video in this style</button>${def?'':`<button class="btn" data-act="setDefStyle" data-id="${id}">Make default</button>`}
-        ${st.custom?`<button class="btn ghost danger" data-act="delStyle" data-id="${id}">Delete style</button>`:`<label class="btn ghost">Attach the original recording<input type="file" accept="video/*" data-refupload="${id}" hidden></label>`}</div>
+        ${st.custom?'':`<label class="btn ghost">Attach the original recording<input type="file" accept="video/*" data-refupload="${id}" hidden></label>`}${styleIds().length>1?`<button class="btn ghost danger" data-act="delStyle" data-id="${id}">Delete style</button>`:''}</div>
       <div data-refvid="${id}"></div></div></div></section>`}).join('');
   styleIds().forEach(id=>{const cv=el.querySelector(`[data-styleplay="${id}"]`),p=STY[id].custom?{...REFS[baseOf(id)],style:id}:REFS[id];const pl=new Player(cv,{get:()=>p,fmt:()=>'9:16',loop:true,audio:false,scale:.34,captions:()=>false});pl.play();cv._pl=pl;
     IDB.get('refvid_'+id).then(b=>{if(!b)return;const box=el.querySelector(`[data-refvid="${id}"]`);const v=document.createElement('video');v.src=URL.createObjectURL(b);v.controls=true;v.playsInline=true;v.style.cssText='width:100%;max-height:320px;border-radius:12px;background:#000';box.innerHTML='<div class="small muted" style="margin-bottom:6px">Attached original recording</div>';box.appendChild(v)})})};
@@ -679,8 +680,14 @@ document.addEventListener('click',async e=>{const b=e.target.closest('[data-act]
   case'hfCopy':{const pl=(STY[p.style]||STY.glass)._pal||{},bs=baseOf(p.style),theme=bs==='glass'?{bg:pl.deep,bg2:pl.ink,ink:pl.porc,mute:pl.muted,a:pl.aqua,b:pl.blue,c:pl.lav,hi:pl.peach,bad:pl.loss}:{bg:pl.IV,bg2:pl.P2,ink:pl.INK,mute:pl.SL,a:pl.TL,b:pl.CB,c:pl.PE,hi:pl.CR,bad:pl.CR};const txt=JSON.stringify({title:p.title,style:bs,styleName:styleName(p.style),theme,scenes:p.scenes.map((x,i)=>({id:'s'+(i+1),duration:x.duration,text:x.narration}))},null,1);try{await navigator.clipboard.writeText(txt);toast('Script copied — paste it to Claude')}catch(e){prompt('Copy this and paste it to Claude:',txt)}break}
   case'nsOpen':nsOpen=!nsOpen;rerender();break;
   case'nsCreate':await createStyle();break;
-  case'delStyle':{const id=b.dataset.id,used=state.projects.filter(x=>x.style===id).length;if(!confirm(`Delete ${styleName(id)}?${used?` ${used} video(s) use it and will switch to ${styleName(baseOf(id))}.`:''}`))break;
-    const base=baseOf(id);state.projects.forEach(x=>{if(x.style===id){x.style=base;resolve(x);saveProject(x)}});state.settings.customStyles=(state.settings.customStyles||[]).filter(r=>r.id!==id);delete STY[id];delete state.settings.styleNames[id];if(state.settings.defaultStyle===id)state.settings.defaultStyle='glass';saveSettings();rerender();toast('Style deleted');break}
+  case'delStyle':{const id=b.dataset.id,left=styleIds().filter(x=>x!==id);if(!left.length){toast('Keep at least one style');break}
+    const to=left.find(x=>baseOf(x)===baseOf(id))||left[0],used=state.projects.filter(x=>x.style===id).length;
+    if(!confirm(`Delete ${styleName(id)}?${used?` ${used} video(s) use it and will switch to ${styleName(to)}.`:''}${STY[id].custom?'':' You can bring built-in styles back later.'}`))break;
+    state.projects.forEach(x=>{if(x.style===id){x.style=to;resolve(x);saveProject(x)}});
+    if(STY[id].custom){state.settings.customStyles=(state.settings.customStyles||[]).filter(r=>r.id!==id);delete STY[id];delete state.settings.styleNames[id]}
+    else state.settings.hiddenStyles=[...new Set([...(state.settings.hiddenStyles||[]),id])];
+    if(!styleIds().includes(state.settings.defaultStyle))state.settings.defaultStyle=styleIds()[0];saveSettings();rerender();toast('Style deleted');break}
+  case'restoreStyles':state.settings.hiddenStyles=[];saveSettings();rerender();toast('Built-in styles restored');break;
   case'newVisual':{s.seed=rseed();resolve(p);touch(p);rerender();toast('New visual for this scene');break}
   case'newAnim':{const opts=CAMS.filter(c=>c!==s.camera);s.camera=opts[rseed()%opts.length];const tr=Object.keys(TRANS).filter(t=>t!=='cut'&&t!==s.transition);s.transition=tr[rseed()%tr.length];touch(p);rerender();toast(`Camera: ${s.camera} · transition: ${TRANS[s.transition]}`);break}
   case'rmMedia':{IDB.del(s.media.key);s.media=null;resolve(p);touch(p);rerender();break}
