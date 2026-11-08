@@ -240,7 +240,7 @@ PAGES.styles=el=>{el.innerHTML=hero('Style library','Two styles. One look per vi
 let scriptMode='generate',streamText='',genError='',ownText='';
 const MOTIF_DESC={glass:{night:'a lone glowing dot separating from a circle of friends over a night city',ledger:'a list of personal costs magnified by a sliding glass bar',streak:'a row of loss tiles and a falling equity line (only for losing streaks)',loop:'a four-node emotional cycle with orbiting glass droplets',shield:'an account protected by concentric rule rings deflecting threats',zoomout:'a long-term curve; the lens pulls back from one dip to the whole climb',rise:'a rising staircase of bars toward a goal flag',split:'a crowd on one side and one person on the other',word:'one giant keyword swept by a lens'},
   vector:{desk:'the character alone at a laptop at night, clock on the wall',signpost:'a signpost with up to five labelled boards and the character pointing',compare:'two coin jars: one drains through a crack, one fills steadily',rocket:'a two-stage rocket; the labelled booster burns out, the banded upper stage continues',house:'a house built from labelled bricks; an exit door becomes its front door',phone:'a phone with a get-rich-quick arrow, coins and a tag',stairs:'the character climbing labelled steps to a flag',scale:'a balance scale weighing two labels until level',word:'one big keyword with morphing flat shapes'}};
-function scriptBrief(p){return`Video title: ${p.title}\nTopic: ${p.topic||'(not given)'}\nMain message: ${p.message||'(not given)'}\nCategory: ${p.category}\nTone and emotional direction: ${p.tone}\nFormat: ${p.format==='9:16'?'vertical Shorts/Reels':'landscape YouTube'}\nVisual style: ${styleName(p.style)}`}
+function scriptBrief(p){return`Video title: ${p.title}\nTopic: ${p.topic||'(not given)'}\nMain message: ${p.message||'(not given)'}\nTone and emotional direction: ${p.tone}\nFormat: ${p.format==='9:16'?'vertical Shorts/Reels':'landscape YouTube'}\nVisual style: ${styleName(p.style)}`}
 function motifList(p){return Object.entries(MOTIF_DESC[p.style]).map(([k,v])=>`- ${k}: ${v}`).join('\n')}
 const RULES=`Rules:
 - Written for the ear: short spoken sentences, contractions, natural rhythm. No lists, headings, hashtags or emojis.
@@ -273,8 +273,8 @@ PAGES.script=el=>{const p=needProject(el,'Script studio');if(!p)return;const bus
     <div class="formgrid"><label class="field full"><span>Video title</span><input type="text" data-pf="title" value="${esc(p.title)}"></label>
     <label class="field full"><span>Topic</span><input type="text" data-pf="topic" value="${esc(p.topic)}" placeholder="e.g. Why most prop firm challenges fail in week one"></label>
     <label class="field full"><span>Main message</span><textarea data-pf="message" rows="2" placeholder="The one idea viewers should leave with">${esc(p.message)}</textarea></label>
-    <label class="field"><span>Category</span><select data-pf="category">${CATS.map(c=>opt(c,c,p.category)).join('')}</select></label>
-    <label class="field"><span>Tone and emotion</span><input type="text" data-pf="tone" value="${esc(p.tone)}"></label>
+    
+    <label class="field full"><span>Tone and emotion</span><input type="text" data-pf="tone" value="${esc(p.tone)}"></label>
     <label class="field"><span>Visual style</span><select data-act-change="style">${['glass','vector'].map(s=>opt(s,styleName(s),p.style)).join('')}</select></label>
     <label class="field"><span>Format</span><select data-pf="format">${opt('9:16','Shorts 9:16',p.format)}${opt('16:9','Landscape 16:9',p.format)}</select></label>
     <label class="field"><span>Desired duration (s)</span><input type="number" min="15" max="180" data-pf="target" value="${p.target}"></label></div>
