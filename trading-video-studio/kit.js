@@ -66,7 +66,7 @@ K.headlineFrom=text=>{const s=String(text).split(/(?<=[.!?…])\s+/)[0]||'';cons
 /* Editable palettes: per-style colour overrides kept in this browser. */
 K.PAL_KEY='tvs.palette';
 K.palAll=()=>{try{return JSON.parse(localStorage.getItem(K.PAL_KEY)||'{}')||{}}catch(e){return{}}};
-K.pal=(style,def)=>{const o=K.palAll()[style]||{},r={...def};K.palDefaults=K.palDefaults||{};K.palDefaults[style]={...def};for(const k in o)if(k in def&&/^#[0-9a-f]{6}$/i.test(o[k]))r[k]=o[k];return r};
+K.palExtra={};K.pal=(style,def)=>{const o={...(K.palExtra[style]||{}),...(K.palAll()[style]||{})},r={...def};K.palDefaults=K.palDefaults||{};K.palDefaults[style]={...def};for(const k in o)if(k in def&&/^#[0-9a-f]{6}$/i.test(o[k]))r[k]=o[k];return r};
 K.palSet=(style,key,val)=>{const a=K.palAll();a[style]=a[style]||{};if(val==null)delete a[style][key];else a[style][key]=val;try{localStorage.setItem(K.PAL_KEY,JSON.stringify(a))}catch(e){}};
 K.palReset=style=>{const a=K.palAll();delete a[style];try{localStorage.setItem(K.PAL_KEY,JSON.stringify(a))}catch(e){}};
 window.KIT=K;

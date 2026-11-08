@@ -1,7 +1,7 @@
 /* STYLE 02 — Premium flat-vector editorial. Canvas 2D Bezier illustration. */
 (function(){
 const K=KIT,{clamp,lerp,S,O,B,eo,eb}=K;
-const {INK,IV,CB,TL,CR,AM,PE,SL,SK,P2}=K.pal('vector',{INK:'#172235',IV:'#F6F5EE',CB:'#4667FF',TL:'#16B99A',CR:'#FF765E',AM:'#FFC65C',PE:'#A3A5F4',SL:'#73819A',SK:'#E9A688',P2:'#ECEADF'});
+const {INK,IV,CB,TL,CR,AM,PE,SL,SK,P2}=K.pal(K.buildAs||'vector',{INK:'#172235',IV:'#F6F5EE',CB:'#4667FF',TL:'#16B99A',CR:'#FF765E',AM:'#FFC65C',PE:'#A3A5F4',SL:'#73819A',SK:'#E9A688',P2:'#ECEADF'});
 const DISP='"Archivo","Helvetica Neue",Arial,sans-serif',MONO='"IBM Plex Mono",ui-monospace,Menlo,monospace';
 const rr=K.rr;
 function font(c,w,size,fam=DISP,stretch='semi-expanded'){c.font=`${w} ${size}px ${fam}`;if('fontStretch'in c)c.fontStretch=fam===DISP?stretch:'normal'}
@@ -216,7 +216,7 @@ function draw(ctx,spec,p,W,H,scale,media){ctx.save();ctx.setTransform(ctx.canvas
   ctx.restore()}
 function backdrop(c,W,H){c.fillStyle=IV;c.fillRect(0,0,W,H);c.fillStyle='rgba(70,103,255,.1)';c.beginPath();c.arc(W*.25,H*.6,H*.5,0,7);c.fill()}
 
-window.STYLE_VECTOR={id:'vector',draw,backdrop,refCount:REF.length,motifs:Object.keys(M).filter(m=>m!=='media'),
+window[K.buildAs?'__BUILT':'STYLE_VECTOR']={id:'vector',draw,backdrop,refCount:REF.length,motifs:Object.keys(M).filter(m=>m!=='media'),
   fonts:[`800 60px "Archivo"`,`900 60px "Archivo"`,`750 30px "Archivo"`,`600 20px "IBM Plex Mono"`,`500 20px "IBM Plex Mono"`],
   palette:[INK,IV,CB,TL,CR,AM,PE],caption:{font:DISP,color:INK,hi:CR,box:'rgba(246,245,238,.9)'},
   traits:{Palette:'Midnight ink on soft ivory; cobalt, teal, coral, amber and periwinkle used as solid flat fills.',Type:'Archivo heavy and semi-expanded for headlines, IBM Plex Mono for labels and counters.',Illustration:'Hand-built Bezier objects with internal detail: phone, signpost boards with icons, rockets, bricks, jars, a hooded character.',Motion:'Overshoot pops, unfolding boards, tumbling stages, masked headline reveals; objects hand off into the next idea.',Camera:'Gentle 2D push-ins and pans; flat, no perspective.',Atmosphere:'Bright, confident, editorial. Night scenes flip to ink with periwinkle stars.'}};

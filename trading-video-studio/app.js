@@ -1,6 +1,17 @@
 /* Trading Video Studio — app shell, state, renderer, player, pages, export. */
 (()=>{
 const K=KIT,STY={glass:STYLE_GLASS,vector:STYLE_VECTOR};
+STY.glass.base='glass';STY.vector.base='vector';
+const baseOf=id=>(STY[id]&&STY[id].base)||'glass';
+const styleIds=()=>Object.keys(STY);
+/* Custom styles: built from one of the two engines with their own palette, caption font and default motion. */
+const ENGINE_SRC={};
+async function buildCustom(rec){try{const base=rec.base==='vector'?'vector':'glass';ENGINE_SRC[base]=ENGINE_SRC[base]||await (await fetch(base+'.js')).text();
+  K.palExtra[rec.id]=rec.palette||{};K.buildAs=rec.id;window.__BUILT=null;new Function(ENGINE_SRC[base])();const st=window.__BUILT;K.buildAs=null;if(!st)return;
+  st.id=rec.id;st.base=base;st.custom=true;if(rec.capFont&&CAP_FONTS[rec.capFont])st.caption={...st.caption,font:CAP_FONTS[rec.capFont]};
+  st.defSpeed=rec.motion==='calm'?'slow':rec.motion==='punchy'?'fast':null;st.traits={...st.traits,Palette:'Your own colours',Motion:rec.motion==='calm'?'Calm and slow':rec.motion==='punchy'?'Punchy and fast':st.traits.Motion};
+  STY[rec.id]=st;st._pal=K.pal(rec.id,K.palDefaults[base])}catch(e){console.warn('custom style failed',rec.id,e);K.buildAs=null}}
+async function buildAllCustom(){for(const r of state.settings.customStyles||[])await buildCustom(r)}
 const $=s=>document.querySelector(s),app=$('#app');
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const uid=()=>Math.random().toString(36).slice(2,9)+Date.now().toString(36).slice(-5);
@@ -86,12 +97,12 @@ function newProject(o={}){const s=state.settings;return{id:uid(),title:o.title||
   createdAt:Date.now(),updatedAt:Date.now(),status:'Draft',voice:{...s.voice},scenes:[],captions:{...s.captions},
   music:{enabled:true,vol:s.audio.musicVol,fadeIn:s.audio.fadeIn,fadeOut:s.audio.fadeOut,mode:s.audio.mode,duck:s.audio.duck},sfx:{enabled:s.audio.sfx,vol:s.audio.sfxVol},voiceVol:s.audio.voiceVol,exports:[]}}
 function newScene(p,o={}){const text=o.narration||'';return{id:uid(),kind:'motif',narration:text,headline:o.headline??K.headlineFrom(text),sub:o.sub||'',eyebrow:o.eyebrow||'',visual:o.visual||'',emotion:o.emotion||'',
-  labels:o.labels&&o.labels.length?o.labels.slice(0,5):K.extractLabels(text),labelsAuto:!(o.labels&&o.labels.length),motif:o.motif&&STY[p.style].motifs.includes(o.motif)?o.motif:'auto',camera:CAMS.includes(o.camera)?o.camera:CAMS[rseed()%5],seed:rseed(),
-  duration:Math.max(o.duration||0,estDur(text)),transition:o.transition||(p.style==='glass'?'lens':'wipe'),media:null,voice:null,captionText:null,captionOffset:0,role:o.role||'body'}}
+  labels:o.labels&&o.labels.length?o.labels.slice(0,5):K.extractLabels(text),labelsAuto:!(o.labels&&o.labels.length),motif:o.motif&&(STY[p.style]||STY.glass).motifs.includes(o.motif)?o.motif:'auto',camera:CAMS.includes(o.camera)?o.camera:CAMS[rseed()%5],seed:rseed(),
+  duration:Math.max(o.duration||0,estDur(text)),transition:o.transition||(baseOf(p.style)==='glass'?'lens':'wipe'),media:null,voice:null,captionText:null,captionOffset:0,role:o.role||'body'}}
 function times(p){let t=0;return p.scenes.map((s,i)=>{const st=t;t+=s.duration;return{s,i,start:st,end:t}})}
 const total=p=>p.scenes.reduce((a,s)=>a+(+s.duration||0),0);
 function resolve(p){let prev=null;const used=new Set();p.scenes.forEach(s=>{if(s.kind==='ref'){s._m='ref';return}
-  let m=s.media?'media':s.motif!=='auto'?s.motif:K.pickMotif(p.style,`${s.narration} ${s.headline} ${s.visual}`,prev,s.seed);
+  let m=s.media?'media':s.motif!=='auto'?s.motif:K.pickMotif(baseOf(p.style),`${s.narration} ${s.headline} ${s.visual}`,prev,s.seed);
   s._m=m;const sig=m+':'+s.seed;if(used.has(sig))s.seed=(s.seed+7919)%1e6;used.add(m+':'+s.seed);prev=m})}
 function touch(p,status){if(p.ref)return;if(status)p.status=status;else if(p.status!=='Generating'){const allV=p.scenes.length&&p.scenes.every(s=>s.voice);p.status=allV?'Ready to Export':p.scenes.length?'Editing':'Draft'}saveProject(p);syncNav()}
 
@@ -108,23 +119,23 @@ async function warm(p){if(!p)return;await Promise.all(p.scenes.flatMap(s=>[loadM
 const bufs=new Map();function buf(n,w,h){let c=bufs.get(n);if(!c){c=document.createElement('canvas');bufs.set(n,c)}if(c.width!==w||c.height!==h){c.width=w;c.height=h}return c}
 function dims(fmt){return fmt==='16:9'?[1920,1080]:[1080,1920]}
 function specFor(p,s){if(s.kind==='ref')return{kind:'ref',ref:s.ref};return{kind:'motif',motif:s._m||'word',headline:s.headline,sub:s.sub,eyebrow:s.eyebrow,labels:s.labelsAuto&&s._m!=='word'?[]:s.labels,seed:s.seed,camera:s.camera,motionAmt:state.settings.anim.motion}}
-function drawScene(ctx,p,s,lp,W,H){const st=STY[p.style],media=s.media?mediaEls.get(s.media.key)?.el:null,sc=ctx.canvas.width/W;
+function drawScene(ctx,p,s,lp,W,H){const st=(STY[p.style]||STY.glass),media=s.media?mediaEls.get(s.media.key)?.el:null,sc=ctx.canvas.width/W;
   if(s._m===undefined)resolve(p);
   if(media&&media.tagName==='VIDEO'&&!exporting&&media.duration){const want=(lp*s.duration)%media.duration;if(Math.abs(media.currentTime-want)>.25)media.currentTime=want}
   if(s.kind==='ref'&&W>H){ctx.save();ctx.setTransform(sc,0,0,sc,0,0);st.backdrop(ctx,W,H);ctx.restore();
     const ph=H-90,pw=Math.round(ph*9/16),pc=buf('refpanel',Math.round(pw*sc),Math.round(ph*sc));st.draw(pc.getContext('2d'),{kind:'ref',ref:s.ref},lp,1080,1920,pc.width/1080,null);
     ctx.save();ctx.setTransform(sc,0,0,sc,0,0);const x=W-pw-120,y=45;ctx.save();K.rr(ctx,x,y,pw,ph,28);ctx.clip();ctx.drawImage(pc,x,y,pw,ph);ctx.restore();
-    ctx.strokeStyle=p.style==='glass'?'rgba(242,247,255,.18)':'rgba(23,34,53,.2)';ctx.lineWidth=3;K.rr(ctx,x,y,pw,ph,28);ctx.stroke();
-    const cc=st.caption;ctx.font=`500 24px ${p.style==='glass'?'"JetBrains Mono"':'"IBM Plex Mono"'},monospace`;ctx.fillStyle=cc.hi;if('letterSpacing'in ctx)ctx.letterSpacing='4px';ctx.fillText(p.title.toUpperCase().slice(0,48),120,250);if('letterSpacing'in ctx)ctx.letterSpacing='0px';
+    ctx.strokeStyle=baseOf(p.style)==='glass'?'rgba(242,247,255,.18)':'rgba(23,34,53,.2)';ctx.lineWidth=3;K.rr(ctx,x,y,pw,ph,28);ctx.stroke();
+    const cc=st.caption;ctx.font=`500 24px ${baseOf(p.style)==='glass'?'"JetBrains Mono"':'"IBM Plex Mono"'},monospace`;ctx.fillStyle=cc.hi;if('letterSpacing'in ctx)ctx.letterSpacing='4px';ctx.fillText(p.title.toUpperCase().slice(0,48),120,250);if('letterSpacing'in ctx)ctx.letterSpacing='0px';
     K.block(ctx,{text:s.headline,x:120,y:300,size:66,font:`800 66px ${cc.font}`,color:cc.color,maxW:W-pw-360,reveal:K.S(lp,.02,.3)});ctx.restore();return}
   drawAnimated(ctx,st,p,s,lp,W,H,sc,media)}
 /* Per-scene animation: speed, entrance and idle motion, layered on the selected theme's own illustration. */
 const ANIM_SPEED={slow:.7,normal:1,fast:1.45,snappy:2};
 const ANIM_ENTER={none:'As designed',zoom:'Zoom in',rise:'Slide up',side:'Slide in from side',drop:'Drop and bounce',spin:'Twist in',blur:'Focus in'};
 const ANIM_IDLE={none:'Still',breathe:'Breathe',float:'Float',sway:'Sway',pulse:'Beat pulse'};
-function drawAnimated(ctx,st,p,s,lp,W,H,sc,media){const a=s.anim||{},sp=ANIM_SPEED[a.speed]||1,en=a.enter||'none',idle=a.idle||'none',t=lp*s.duration;
+function drawAnimated(ctx,st,p,s,lp,W,H,sc,media){const a=s.anim||{},sp=ANIM_SPEED[a.speed||st.defSpeed]||1,en=a.enter||'none',idle=a.idle||'none',t=lp*s.duration;
   const lp2=K.clamp(lp*sp);const e=K.clamp(t/.7),eo=K.eo(e),eb=K.eb(e);
-  if(en==='none'&&idle==='none'){st.draw(ctx,specFor(p,s),lp2,W,H,sc,media);return}
+  if(en==='none'&&idle==='none'&&!st.defSpeed){st.draw(ctx,specFor(p,s),lp2,W,H,sc,media);return}
   const off=buf('anim',ctx.canvas.width,ctx.canvas.height),oc=off.getContext('2d');oc.setTransform(1,0,0,1,0,0);oc.clearRect(0,0,off.width,off.height);st.draw(oc,specFor(p,s),lp2,W,H,sc,media);
   const cw=ctx.canvas.width,ch=ctx.canvas.height;let k=1,dx=0,dy=0,r=0,al=1,bl=0;
   if(en==='zoom'){k=.82+.18*eo;al=eo}else if(en==='rise'){dy=ch*.12*(1-eo);al=eo}else if(en==='side'){dx=cw*.35*(1-eo)*(s.seed%2?1:-1)}else if(en==='drop'){dy=-ch*.25*(1-eb)}else if(en==='spin'){r=(1-eo)*-.18;k=.88+.12*eo;al=eo}else if(en==='blur'){bl=(1-eo)*18*sc;k=1.06-.06*eo}
@@ -149,7 +160,7 @@ function renderFrame(ctx,p,t,fmt,opt={}){const [W,H]=dims(fmt),T=times(p);
 /* On-screen tag: shown for the whole length of the video. */
 const TAG_DEF={enabled:false,text:'',pos:'top-right',size:34,color:'#FFFFFF',bg:'pill',bgColor:'#000000',opacity:.55,font:''};
 const tagOf=p=>({...TAG_DEF,...(p.tag||{})});
-function drawTag(ctx,p,W,H){const g=tagOf(p);if(!g.enabled||!String(g.text).trim())return;const sc=ctx.canvas.width/W,size=+g.size||34,font=CAP_FONTS[g.font]||STY[p.style].caption.font,m=W>H?60:56;
+function drawTag(ctx,p,W,H){const g=tagOf(p);if(!g.enabled||!String(g.text).trim())return;const sc=ctx.canvas.width/W,size=+g.size||34,font=CAP_FONTS[g.font]||(STY[p.style]||STY.glass).caption.font,m=W>H?60:56;
   ctx.save();ctx.setTransform(sc,0,0,sc,0,0);ctx.font=`800 ${size}px ${font}`;ctx.textBaseline='middle';const tw=ctx.measureText(g.text).width,padX=size*.6,bw=tw+padX*2,bh=size*1.7;
   const [v,h]=g.pos.split('-');const x=h==='left'?m:h==='right'?W-m-bw:(W-bw)/2,y=v==='top'?(W>H?m:110):H-m-bh-(W>H?0:40);
   if(g.bg==='pill'){ctx.fillStyle=K.rgba(g.bgColor,g.opacity);K.rr(ctx,x,y,bw,bh,bh/2);ctx.fill()}else if(g.bg==='shadow'){ctx.shadowColor='rgba(0,0,0,.7)';ctx.shadowBlur=size*.4}
@@ -159,7 +170,7 @@ function capChunks(p,cur){const s=cur.s,txt=(s.captionText??s.narration)||'';con
   const vb=s.voice?voiceBufs.get(s.voice.key):null,span=vb?Math.max(.5,vb.duration-(s.voice.trimStart||0)-(s.voice.trimEnd||0)):s.duration*.9,st=cur.start+(vb?VOICE_LEAD:s.duration*.04)+(+s.captionOffset||0);
   const wt=ws.map(x=>x.w.length+3),sum=wt.reduce((a,b)=>a+b,0);let acc=0;ws.forEach((x,i)=>{x.t0=st+span*acc/sum;acc+=wt[i];x.t1=st+span*acc/sum});
   const n=Math.max(1,+p.captions.words||4),out=[];let c=[];ws.forEach((x,i)=>{c.push(x);if(c.length>=n||/[.!?…,]$/.test(x.w)&&c.length>=2||i===ws.length-1){out.push({w:c,t0:c[0].t0,t1:c[c.length-1].t1});c=[]}});return out}
-function drawCaptions(ctx,p,cur,t,W,H){const ch=capChunks(p,cur);const k=ch.find(c=>t>=c.t0&&t<c.t1+.12);if(!k)return;const st=STY[p.style].caption,cp=p.captions,L=K.layout(W,H),sc=ctx.canvas.width/W;
+function drawCaptions(ctx,p,cur,t,W,H){const ch=capChunks(p,cur);const k=ch.find(c=>t>=c.t0&&t<c.t1+.12);if(!k)return;const st=(STY[p.style]||STY.glass).caption,cp=p.captions,L=K.layout(W,H),sc=ctx.canvas.width/W;
   const size=+cp.size||58,y=cp.pos==='center'?H*.5:cp.pos==='upper'?(L.land?H*.2:H*.3):L.cap.y,hi=cp.hiColor||st.hi,font=CAP_FONTS[cp.font]||st.font,col=cp.color||st.color,bg=cp.bg||'box',up=!!cp.caps,wt=cp.weight||800;
   const boxFill=cp.boxColor?K.rgba(cp.boxColor,cp.boxOpacity??.7):st.box;
   ctx.save();ctx.setTransform(sc,0,0,sc,0,0);ctx.font=`${wt} ${size}px ${font}`;if('fontStretch'in ctx)ctx.fontStretch='normal';ctx.textBaseline='middle';
@@ -167,7 +178,7 @@ function drawCaptions(ctx,p,cur,t,W,H){const ch=capChunks(p,cur);const k=ch.find
   const age=t-k.t0,a=cp.anim==='fade'?K.clamp(age/.18):1,s=cp.anim==='pop'?.86+.14*K.eb(K.clamp(age/.2)):1,lh=size*1.28,top=y-lines.length*lh/2;
   ctx.globalAlpha=a;ctx.translate(L.cap.x,y);ctx.scale(s,s);ctx.translate(-L.cap.x,-y);
   lines.forEach((ln,li)=>{const ly=top+li*lh+lh/2,x0=L.cap.x-ln.w/2;if(bg==='box'){ctx.fillStyle=boxFill;K.rr(ctx,x0-size*.4,ly-lh/2+4,ln.w+size*.8,lh-8,size*.32);ctx.fill()}ctx.shadowColor='transparent';if(bg==='shadow'){ctx.shadowColor='rgba(0,0,0,.75)';ctx.shadowBlur=size*.35;ctx.shadowOffsetY=size*.06}let x=x0;
-    ln.ws.forEach(w=>{const active=cp.anim==='karaoke'?t>=w.t0:true;ctx.fillStyle=w.hi?hi:(cp.anim==='karaoke'&&!active?(p.style==='glass'?'rgba(242,247,255,.45)':'rgba(23,34,53,.4)'):col);if(bg==='outline'){ctx.lineJoin='round';ctx.lineWidth=size*.16;ctx.strokeStyle=cp.boxColor||'#000000';const f=ctx.fillStyle;ctx.strokeText(w.w,x,ly);ctx.fillStyle=f}ctx.fillText(w.w,x,ly);x+=w.ww+sp})});ctx.restore()}
+    ln.ws.forEach(w=>{const active=cp.anim==='karaoke'?t>=w.t0:true;ctx.fillStyle=w.hi?hi:(cp.anim==='karaoke'&&!active?(baseOf(p.style)==='glass'?'rgba(242,247,255,.45)':'rgba(23,34,53,.4)'):col);if(bg==='outline'){ctx.lineJoin='round';ctx.lineWidth=size*.16;ctx.strokeStyle=cp.boxColor||'#000000';const f=ctx.fillStyle;ctx.strokeText(w.w,x,ly);ctx.fillStyle=f}ctx.fillText(w.w,x,ly);x+=w.ww+sp})});ctx.restore()}
 const CAP_FONTS={bricolage:'"Bricolage Grotesque",sans-serif',archivo:'"Archivo",sans-serif',unbounded:'"Unbounded",sans-serif',manrope:'"Manrope",sans-serif',newsreader:'"Newsreader",Georgia,serif',mono:'"IBM Plex Mono",monospace'};
 
 /* ---------- audio context + mix options ---------- */
@@ -234,7 +245,7 @@ PAGES.home=el=>{const ps=state.projects,counts=STATUSES.map(s=>[s,ps.filter(p=>p
     return`<div class="card glow"><div class="cardhead"><div><div class="kicker">Continue where you left off</div><h2 style="margin-top:6px">${esc(last.title)}</h2></div><button class="btn primary big" data-act="open" data-id="${last.id}" data-to="${nxt[0]}">Continue: ${nxt[1]} →</button></div>${howto.replace('<ol class="howto">','<ol class="howto compact">')}</div>`})()}
   ${newForm?`<div class="card glow"><div class="cardhead"><h2>New video</h2><button class="btn ghost sm" data-act="toggleNew">Cancel</button></div>
     <div class="grid g4"><label class="field"><span>Title</span><input type="text" id="nfTitle" placeholder="e.g. The day I stopped revenge trading"></label>
-    <label class="field"><span>Style</span><select id="nfStyle">${opt('glass',styleName('glass'),state.settings.defaultStyle)}${opt('vector',styleName('vector'),state.settings.defaultStyle)}</select></label>
+    <label class="field"><span>Style</span><select id="nfStyle">${styleIds().map(id=>opt(id,styleName(id),state.settings.defaultStyle)).join('')}</select></label>
     <label class="field"><span>Format</span><select id="nfFmt">${opt('9:16','Shorts 9:16',state.settings.defaultFormat)}${opt('16:9','Landscape 16:9',state.settings.defaultFormat)}</select></label>
     <label class="field"><span>Target length (s)</span><input type="number" id="nfDur" min="15" max="180" value="${state.settings.defaultDuration}"></label></div>
     <div class="row" style="margin-top:14px"><button class="btn primary big" data-act="createProj">Create video and start writing →</button></div></div>`:''}
@@ -270,25 +281,50 @@ async function hfApply(p){if(!hfPrev)return;const s=p.scenes.find(x=>x.id===hfPr
 window.addEventListener('hashchange',()=>{if(hfPrev){hfRevert(getP(),true)}});
 
 /* ---------- PAGE: Style Library ---------- */
+const PRESETS={glass:{midnight:{},ember:{ink:'#140B0A',deep:'#2A1512',porc:'#FFF3EC',blue:'#FF8A5B',aqua:'#FFC15E',lav:'#E07A9B',peach:'#FFE3A3',loss:'#FF5C5C',muted:'#B49A92'},
+  forest:{ink:'#07130F',deep:'#10261E',porc:'#EFFFF7',blue:'#3DDC97',aqua:'#9BE564',lav:'#7FD1C7',peach:'#F4E285',loss:'#FF7A6B',muted:'#8FAFA2'},
+  royal:{ink:'#0C0820',deep:'#1D1440',porc:'#F5F0FF',blue:'#8B5CF6',aqua:'#22D3EE',lav:'#C4B5FD',peach:'#F9A8D4',loss:'#FB7185',muted:'#9C93C0'},
+  mono:{ink:'#0B0B0C',deep:'#1C1C1F',porc:'#FFFFFF',blue:'#D4D4D8',aqua:'#FAFAFA',lav:'#A1A1AA',peach:'#FDE047',loss:'#F87171',muted:'#8A8A93'}},
+ vector:{ivory:{},sunset:{IV:'#FFF4E8',P2:'#FFE6CF',INK:'#2B1B17',CB:'#FF6B35',TL:'#F7C548',CR:'#D7263D',AM:'#FFB627',PE:'#8E7DBE',SK:'#E9A688',SL:'#8A7A73'},
+  mint:{IV:'#EEFBF5',P2:'#DDF4EA',INK:'#12332B',CB:'#1F8A70',TL:'#3DDC97',CR:'#FF7B54',AM:'#FFD166',PE:'#7BDFF2',SK:'#E9A688',SL:'#6B8A80'},
+  candy:{IV:'#FFF0F6',P2:'#FFE0EE',INK:'#2D1838',CB:'#7B2FF7',TL:'#00C2A8',CR:'#FF4D8D',AM:'#FFC93C',PE:'#B8A4FF',SK:'#F1B79A',SL:'#8E7A99'},
+  newsprint:{IV:'#F4F1EA',P2:'#E7E2D6',INK:'#111111',CB:'#1E1E1E',TL:'#4A4A4A',CR:'#E63946',AM:'#F1C40F',PE:'#9A9A9A',SK:'#D9B8A0',SL:'#6E6E6E'}}};
+const PRESET_NAMES={midnight:'Midnight (like Style 01)',ember:'Ember',forest:'Forest',royal:'Royal neon',mono:'Monochrome + yellow',ivory:'Ivory (like Style 02)',sunset:'Sunset',mint:'Mint',candy:'Candy',newsprint:'Newsprint + red'};
+let nsOpen=false,nsBase='glass';
+function nextStyleNum(){return 3+(state.settings.customStyles||[]).length}
+function newStyleCard(){const n=String(nextStyleNum()).padStart(2,'0');
+  if(!nsOpen)return`<div class="card glow row"><div><h2>Create your own style</h2><p class="small muted" style="margin:4px 0 0">Pick the shapes, colours, caption font and motion. It becomes Style ${n} and works everywhere the others do.</p></div><span class="spacer"></span><button class="btn primary big" data-act="nsOpen">+ New style</button></div>`;
+  return`<div class="card glow"><div class="cardhead"><h2>New style · Style ${n}</h2><button class="btn ghost sm" data-act="nsOpen">Cancel</button></div><div class="formgrid">
+    <label class="field full"><span>Style name</span><input type="text" id="nsName" value="Style ${n} — My style"></label>
+    <label class="field"><span>Shapes and illustration kit</span><select id="nsBase" data-act-change="nsBase">${opt('glass','Glass: refractive lenses, dark and cinematic',nsBase)}${opt('vector','Flat vector: bold editorial drawings',nsBase)}</select></label>
+    <label class="field"><span>Starting colours</span><select id="nsPreset">${Object.keys(PRESETS[nsBase]).map(k=>opt(k,PRESET_NAMES[k],'')).join('')}</select></label>
+    <label class="field"><span>Caption font</span><select id="nsFont">${opt('','Same as shapes',' ')}${Object.keys(CAP_FONTS).map(k=>opt(k,k[0].toUpperCase()+k.slice(1),'')).join('')}</select></label>
+    <label class="field"><span>Motion feel</span><select id="nsMotion">${opt('normal','Balanced','normal')}${opt('calm','Calm and slow','')}${opt('punchy','Punchy and fast','')}</select></label></div>
+    <p class="small muted" style="margin-top:10px">You can fine-tune every colour after creating it.</p>
+    <div class="row" style="margin-top:12px"><button class="btn primary big" data-act="nsCreate">Create Style ${n}</button></div></div>`}
+async function createStyle(){const n=nextStyleNum(),id='s'+n+'_'+uid().slice(0,4),base=$('#nsBase').value,preset=$('#nsPreset').value;
+  const rec={id,base,preset,palette:{...PRESETS[base][preset]},capFont:$('#nsFont').value,motion:$('#nsMotion').value};
+  state.settings.customStyles=[...(state.settings.customStyles||[]),rec];state.settings.styleNames[id]=$('#nsName').value.trim()||`Style ${String(n).padStart(2,'0')}`;
+  await buildCustom(rec);saveSettings();nsOpen=false;rerender();toast(styleName(id)+' created');setTimeout(()=>document.querySelector(`[data-styleplay="${id}"]`)?.scrollIntoView({behavior:'smooth',block:'center'}),200)}
 const PAL_NAMES={glass:{ink:'Background',deep:'Deep shade',porc:'Text',blue:'Blue',aqua:'Aqua',lav:'Lavender',peach:'Highlight',loss:'Loss red',muted:'Muted'},
   vector:{IV:'Background',P2:'Paper',INK:'Ink / text',CB:'Blue',TL:'Teal',CR:'Coral',AM:'Amber',PE:'Periwinkle',SK:'Skin',SL:'Slate'}};
 STY.glass._pal=K.pal('glass',K.palDefaults.glass);STY.vector._pal=K.pal('vector',K.palDefaults.vector);
-document.addEventListener('change',e=>{const t=e.target;if(!t.dataset||!t.dataset.pal)return;K.palSet(t.dataset.pal,t.dataset.k,t.value);sessionStorage.setItem('tvs.toast','Colours updated');location.reload()});
-document.addEventListener('click',e=>{const b=e.target.closest('[data-palreset]');if(!b)return;K.palReset(b.dataset.palreset);sessionStorage.setItem('tvs.toast','Colours reset');location.reload()});
+document.addEventListener('change',async e=>{const t=e.target;if(!t.dataset||!t.dataset.pal)return;const rec=(state.settings.customStyles||[]).find(r=>r.id===t.dataset.pal);if(rec){rec.palette={...(rec.palette||{}),[t.dataset.k]:t.value};saveSettings();await buildCustom(rec);rerender();toast('Colours updated');return}K.palSet(t.dataset.pal,t.dataset.k,t.value);sessionStorage.setItem('tvs.toast','Colours updated');location.reload()});
+document.addEventListener('click',async e=>{const b=e.target.closest('[data-palreset]');if(!b)return;const rec=(state.settings.customStyles||[]).find(r=>r.id===b.dataset.palreset);if(rec){rec.palette={...(PRESETS[rec.base][rec.preset]||{})};saveSettings();await buildCustom(rec);rerender();toast('Colours reset');return}K.palReset(b.dataset.palreset);sessionStorage.setItem('tvs.toast','Colours reset');location.reload()});
 setTimeout(()=>{try{const m=sessionStorage.getItem('tvs.toast');if(m){sessionStorage.removeItem('tvs.toast');toast(m)}}catch(e){}},400);
-PAGES.styles=el=>{el.innerHTML=hero('Style library','Two styles. One look per video.','Each style is a reusable profile built from your two reference films. Every scene in a video uses the style chosen for that video, and the two never mix.')+
-  ['glass','vector'].map(id=>{const st=STY[id],def=state.settings.defaultStyle===id;return`<section class="card glow"><div class="stylecard">
-    <div class="grid" style="gap:10px"><div class="screen portrait"><canvas data-styleplay="${id}"></canvas></div><div class="row"><button class="btn sm" data-act="stylePlay" data-id="${id}">Pause</button><button class="btn sm primary" data-act="open" data-id="ref-${id}" data-to="preview">Watch full film</button></div></div>
+PAGES.styles=el=>{el.innerHTML=hero('Style library','Your styles. One look per video.','Start from the two built-in styles or create your own from scratch. Every scene in a video uses the style chosen for that video.')+
+  newStyleCard()+styleIds().map(id=>{const st=STY[id],def=state.settings.defaultStyle===id,base=baseOf(id);return`<section class="card glow"><div class="stylecard">
+    <div class="grid" style="gap:10px"><div class="screen portrait"><canvas data-styleplay="${id}"></canvas></div><div class="row"><button class="btn sm" data-act="stylePlay" data-id="${id}">Pause</button>${st.custom?'':`<button class="btn sm primary" data-act="open" data-id="ref-${id}" data-to="preview">Watch full film</button>`}</div></div>
     <div class="grid" style="gap:16px">
-      <div class="row"><span class="kicker">${id==='glass'?'Reference video 1':'Reference video 2'}</span>${def?'<span class="chip st-Exported"><i></i>Default style</span>':''}</div>
+      <div class="row"><span class="kicker">${st.custom?'Your own style · built on '+(base==='glass'?'Liquid Glass':'Flat Vector')+' shapes':id==='glass'?'Reference video 1':'Reference video 2'}</span>${def?'<span class="chip st-Exported"><i></i>Default style</span>':''}</div>
       <label class="field"><span>Style name</span><input type="text" data-stylename="${id}" value="${esc(styleName(id))}"></label>
       <div class="grid" style="gap:8px"><div class="row"><b class="small">Colours</b><span class="small muted">Click a colour to change it. Every video in this style updates.</span><span class="spacer"></span><button class="btn sm ghost" data-palreset="${id}">Reset colours</button></div>
-        <div class="palgrid">${Object.entries(PAL_NAMES[id]).map(([k,l])=>{const v=STY[id]._pal[k];return`<label class="palsw" title="${l}"><input type="color" data-pal="${id}" data-k="${k}" value="${v}"><span>${l}</span></label>`}).join('')}</div></div>
+        <div class="palgrid">${Object.entries(PAL_NAMES[base]).map(([k,l])=>{const v=STY[id]._pal[k];return`<label class="palsw" title="${l}"><input type="color" data-pal="${id}" data-k="${k}" value="${v}"><span>${l}</span></label>`}).join('')}</div></div>
       <dl class="traits">${Object.entries(st.traits).map(([k,v])=>`<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join('')}<div><dt>Scene kit</dt><dd>${st.motifs.map(m=>`<span class="chip" style="margin:0 4px 4px 0">${m}</span>`).join('')}</dd></div></dl>
       <div class="row"><button class="btn primary" data-act="newWithStyle" data-id="${id}">New video in this style</button>${def?'':`<button class="btn" data-act="setDefStyle" data-id="${id}">Make default</button>`}
-        <label class="btn ghost">Attach the original recording<input type="file" accept="video/*" data-refupload="${id}" hidden></label></div>
+        ${st.custom?`<button class="btn ghost danger" data-act="delStyle" data-id="${id}">Delete style</button>`:`<label class="btn ghost">Attach the original recording<input type="file" accept="video/*" data-refupload="${id}" hidden></label>`}</div>
       <div data-refvid="${id}"></div></div></div></section>`}).join('');
-  ['glass','vector'].forEach(id=>{const cv=el.querySelector(`[data-styleplay="${id}"]`),p=REFS[id];const pl=new Player(cv,{get:()=>p,fmt:()=>'9:16',loop:true,audio:false,scale:.34,captions:()=>false});pl.play();cv._pl=pl;
+  styleIds().forEach(id=>{const cv=el.querySelector(`[data-styleplay="${id}"]`),p=STY[id].custom?{...REFS[baseOf(id)],style:id}:REFS[id];const pl=new Player(cv,{get:()=>p,fmt:()=>'9:16',loop:true,audio:false,scale:.34,captions:()=>false});pl.play();cv._pl=pl;
     IDB.get('refvid_'+id).then(b=>{if(!b)return;const box=el.querySelector(`[data-refvid="${id}"]`);const v=document.createElement('video');v.src=URL.createObjectURL(b);v.controls=true;v.playsInline=true;v.style.cssText='width:100%;max-height:320px;border-radius:12px;background:#000';box.innerHTML='<div class="small muted" style="margin-bottom:6px">Attached original recording</div>';box.appendChild(v)})})};
 
 /* ---------- PAGE: Script Studio ---------- */
@@ -296,7 +332,7 @@ let scriptMode='generate',streamText='',genError='',ownText='';
 const MOTIF_DESC={glass:{night:'a lone glowing dot separating from a circle of friends over a night city',ledger:'a list of personal costs magnified by a sliding glass bar',streak:'a row of loss tiles and a falling equity line (only for losing streaks)',loop:'a four-node emotional cycle with orbiting glass droplets',shield:'an account protected by concentric rule rings deflecting threats',zoomout:'a long-term curve; the lens pulls back from one dip to the whole climb',rise:'a rising staircase of bars toward a goal flag',split:'a crowd on one side and one person on the other',word:'one giant keyword swept by a lens'},
   vector:{desk:'the character alone at a laptop at night, clock on the wall',signpost:'a signpost with up to five labelled boards and the character pointing',compare:'two coin jars: one drains through a crack, one fills steadily',rocket:'a two-stage rocket; the labelled booster burns out, the banded upper stage continues',house:'a house built from labelled bricks; an exit door becomes its front door',phone:'a phone with a get-rich-quick arrow, coins and a tag',stairs:'the character climbing labelled steps to a flag',scale:'a balance scale weighing two labels until level',word:'one big keyword with morphing flat shapes'}};
 function scriptBrief(p){return`Video title: ${p.title}\nTopic: ${p.topic||'(not given)'}\nMain message: ${p.message||'(not given)'}\nTone and emotional direction: ${p.tone}\nFormat: ${p.format==='9:16'?'vertical Shorts/Reels':'landscape YouTube'}\nVisual style: ${styleName(p.style)}`}
-function motifList(p){return Object.entries(MOTIF_DESC[p.style]).map(([k,v])=>`- ${k}: ${v}`).join('\n')}
+function motifList(p){return Object.entries(MOTIF_DESC[baseOf(p.style)]).map(([k,v])=>`- ${k}: ${v}`).join('\n')}
 const RULES=`Rules:
 - Written for the ear: short spoken sentences, contractions, natural rhythm. No lists, headings, hashtags or emojis.
 - Never invent statistics, percentages, win rates, prices, account balances or results. No financial promises or guarantees.
@@ -330,7 +366,7 @@ PAGES.script=el=>{const p=needProject(el,'Script studio');if(!p)return;const bus
     <label class="field full"><span>Main message</span><textarea data-pf="message" rows="2" placeholder="The one idea viewers should leave with">${esc(p.message)}</textarea></label>
     
     <label class="field full"><span>Tone and emotion</span><input type="text" data-pf="tone" value="${esc(p.tone)}"></label>
-    <label class="field"><span>Visual style</span><select data-act-change="style">${['glass','vector'].map(s=>opt(s,styleName(s),p.style)).join('')}</select></label>
+    <label class="field"><span>Visual style</span><select data-act-change="style">${styleIds().map(s=>opt(s,styleName(s),p.style)).join('')}</select></label>
     <label class="field"><span>Format</span><select data-pf="format">${opt('9:16','Shorts 9:16',p.format)}${opt('16:9','Landscape 16:9',p.format)}</select></label>
     <label class="field"><span>Desired duration (s)</span><input type="number" min="15" max="180" data-pf="target" value="${p.target}"></label></div>
     ${scriptMode==='generate'?`<div class="row" style="margin-top:16px"><button class="btn primary" data-act="genScript" ${busy||!cap.ready?'disabled':''}>${busy&&state.genBusy.what==='all'?'Writing…':p.scenes.length?'Regenerate whole script':'Generate script'}</button>${p.scenes.length?'<span class="small muted">Replaces every scene and its voiceover.</span>':''}</div>
@@ -347,7 +383,7 @@ PAGES.script=el=>{const p=needProject(el,'Script studio');if(!p)return;const bus
 
 /* ---------- PAGE: Scene Editor ---------- */
 let selScene=null,confirmSceneDel=null;
-PAGES.scenes=el=>{const p=getP();if(!p){needProject(el,'Scene editor');return}resolve(p);if(!p.scenes.find(s=>s.id===selScene))selScene=p.scenes[0]?.id;const s=p.scenes.find(x=>x.id===selScene),T=times(p),tt=T.find(x=>x.s===s),lock=p.ref,isRef=s&&s.kind==='ref',st=STY[p.style];
+PAGES.scenes=el=>{const p=getP();if(!p){needProject(el,'Scene editor');return}resolve(p);if(!p.scenes.find(s=>s.id===selScene))selScene=p.scenes[0]?.id;const s=p.scenes.find(x=>x.id===selScene),T=times(p),tt=T.find(x=>x.s===s),lock=p.ref,isRef=s&&s.kind==='ref',st=(STY[p.style]||STY.glass);
   const vb=s&&s.voice?voiceBufs.get(s.voice.key):null,need=vb?Math.round((VOICE_LEAD+vb.duration-(s.voice.trimStart||0)-(s.voice.trimEnd||0)+.45)*10)/10:0;
   el.innerHTML=`${hero('Scene editor',esc(p.title),`${p.scenes.length} scenes · ${fmtT(total(p))} · ${esc(styleName(p.style))}`,lock?`<button class="btn primary" data-act="dupRef">Duplicate to edit</button>`:`<button class="btn" data-act="addScene">Add scene</button><button class="btn primary" data-act="go" data-to="preview">Preview video</button>`)}
   ${lock?'<div class="note">Reference films are locked. Duplicate this one to edit its scenes, captions or voiceover.</div>':''}
@@ -475,12 +511,12 @@ PAGES.preview=el=>{const p=getP();if(!p){needProject(el,'Video preview');return}
       <label class="field"><span>Position</span><select data-cap="pos">${opt('lower','Lower third',cp.pos)}${opt('center','Centre',cp.pos)}${opt('upper','Upper',cp.pos)}</select></label>
       <label class="field"><span>Animation</span><select data-cap="anim">${opt('pop','Pop in',cp.anim)}${opt('fade','Fade',cp.anim)}${opt('karaoke','Word by word',cp.anim)}${opt('none','None',cp.anim)}</select></label>
       <label class="field"><span>Highlight words</span><input type="text" data-cap="hi" value="${esc(cp.hi)}" placeholder="discipline, patience"></label>
-      <label class="field"><span>Highlight colour</span><div class="row"><input type="color" data-cap="hiColor" value="${cp.hiColor||STY[p.style].caption.hi}"><button class="btn sm ghost" data-act="capHiReset">Style default</button></div></label>
+      <label class="field"><span>Highlight colour</span><div class="row"><input type="color" data-cap="hiColor" value="${cp.hiColor||(STY[p.style]||STY.glass).caption.hi}"><button class="btn sm ghost" data-act="capHiReset">Style default</button></div></label>
       <label class="field"><span>Font</span><select data-cap="font">${opt('','Style default',cp.font||'')}${opt('bricolage','Bricolage (rounded bold)',cp.font)}${opt('archivo','Archivo (editorial)',cp.font)}${opt('unbounded','Unbounded (wide)',cp.font)}${opt('manrope','Manrope (clean)',cp.font)}${opt('newsreader','Newsreader (serif)',cp.font)}${opt('mono','Mono (typewriter)',cp.font)}</select></label>
       <label class="field"><span>Weight</span><select data-cap="weight">${opt('800','Extra bold',cp.weight||800)}${opt('700','Bold',cp.weight||800)}${opt('500','Regular',cp.weight||800)}</select></label>
-      <label class="field"><span>Text colour</span><div class="row"><input type="color" data-cap="color" value="${cp.color||STY[p.style].caption.color}"><button class="btn sm ghost" data-act="capReset" data-k="color">Style default</button></div></label>
+      <label class="field"><span>Text colour</span><div class="row"><input type="color" data-cap="color" value="${cp.color||(STY[p.style]||STY.glass).caption.color}"><button class="btn sm ghost" data-act="capReset" data-k="color">Style default</button></div></label>
       <label class="field"><span>Background</span><select data-cap="bg">${opt('box','Box behind text',cp.bg||'box')}${opt('outline','Outline around letters',cp.bg||'box')}${opt('shadow','Soft shadow',cp.bg||'box')}${opt('none','Nothing',cp.bg||'box')}</select></label>
-      <label class="field"><span>Box / outline colour</span><div class="row"><input type="color" data-cap="boxColor" value="${cp.boxColor||(p.style==='glass'?'#0A1120':'#F6F5EE')}"><button class="btn sm ghost" data-act="capReset" data-k="boxColor">Style default</button></div></label>
+      <label class="field"><span>Box / outline colour</span><div class="row"><input type="color" data-cap="boxColor" value="${cp.boxColor||(baseOf(p.style)==='glass'?'#0A1120':'#F6F5EE')}"><button class="btn sm ghost" data-act="capReset" data-k="boxColor">Style default</button></div></label>
       <label class="field"><span>Box opacity</span><input type="range" min="0" max="1" step=".05" data-cap="boxOpacity" value="${cp.boxOpacity??.7}"></label>
       <label class="field"><span>Letters</span><label class="small row"><input type="checkbox" data-cap="caps" ${cp.caps?'checked':''}> ALL CAPS</label></label></div>
       <p class="small muted">Captions follow each scene’s voiceover, word by word. Wrap a word in *asterisks* in the caption text to highlight just that instance. Timing shifts move a scene’s captions earlier or later.</p>
@@ -562,7 +598,7 @@ PAGES.prefs=el=>{const S=state.settings;
   <div class="card"><h2>Look</h2><div style="display:grid;gap:14px;margin-top:14px"><div class="field"><span>Neon accent</span><div class="row">${ACCENTS.map(a=>`<button type="button" class="btn sm" data-act="accent" data-v="${a}" style="width:34px;height:34px;padding:0;background:${a};border-color:${a===S.accent?'#fff':'transparent'}" aria-label="Accent ${a}"></button>`).join('')}<input type="color" data-set="accent" value="${S.accent}"></div></div>
     <label class="field"><span>Style 01 name</span><input type="text" data-stylename="glass" value="${esc(styleName('glass'))}"></label><label class="field"><span>Style 02 name</span><input type="text" data-stylename="vector" value="${esc(styleName('vector'))}"></label></div></div>
   <div class="card"><h2>New video defaults</h2><div class="formgrid" style="margin-top:14px">
-    <label class="field"><span>Style</span><select data-set="defaultStyle">${['glass','vector'].map(s=>opt(s,styleName(s),S.defaultStyle)).join('')}</select></label>
+    <label class="field"><span>Style</span><select data-set="defaultStyle">${styleIds().map(s=>opt(s,styleName(s),S.defaultStyle)).join('')}</select></label>
     <label class="field"><span>Format</span><select data-set="defaultFormat">${opt('9:16','Shorts 9:16',S.defaultFormat)}${opt('16:9','Landscape 16:9',S.defaultFormat)}</select></label>
     <label class="field"><span>Length (s)</span><input type="number" min="15" max="180" data-set="defaultDuration" value="${S.defaultDuration}"></label>
     <label class="field"><span>Voice</span><input type="text" value="${esc(S.voice.name)}" disabled></label>
@@ -598,9 +634,9 @@ document.addEventListener('input',e=>{const el=e.target,p=getP();
   if(el.dataset.stylename){state.settings.styleNames[el.dataset.stylename]=el.value||(el.dataset.stylename==='glass'?'Style 01':'Style 02');saveSettings();return}
   if(el.id==='ownText'){ownText=el.value}
   if(el.id==='vSearch'){voiceSearch=el.value}});
-document.addEventListener('change',async e=>{const el=e.target,p=getP(),ac0=el.dataset.actChange;
+document.addEventListener('change',async e=>{const el=e.target,p=getP(),ac0=el.dataset.actChange;if(ac0==='nsBase'){nsBase=el.value;const nm=$('#nsName')?.value;rerender();if(nm&&$('#nsName'))$('#nsName').value=nm;return}
   if(el.dataset.sf==='motif'||el.dataset.sf==='transition'||el.dataset.sf==='duration'){rerender();return}
-  if(ac0==='style'&&p&&!p.ref){if(p.scenes.some(s=>s.kind==='ref')){toast('This project uses reference scenes, so its style is fixed');el.value=p.style;return}p.style=el.value;p.scenes.forEach(s=>{if(!STY[p.style].motifs.includes(s.motif))s.motif='auto';if(['lens','wipe'].includes(s.transition))s.transition=p.style==='glass'?'lens':'wipe'});resolve(p);touch(p);toast('Whole video switched to '+styleName(p.style));return}
+  if(ac0==='style'&&p&&!p.ref){if(p.scenes.some(s=>s.kind==='ref')){toast('This project uses reference scenes, so its style is fixed');el.value=p.style;return}p.style=el.value;p.scenes.forEach(s=>{if(!(STY[p.style]||STY.glass).motifs.includes(s.motif))s.motif='auto';if(['lens','wipe'].includes(s.transition))s.transition=baseOf(p.style)==='glass'?'lens':'wipe'});resolve(p);touch(p);toast('Whole video switched to '+styleName(p.style));return}
   if(ac0==='voice'&&p&&!p.ref){const v=(voiceList||[]).find(x=>x.id===el.value);if(v)p.voice={id:v.id,name:v.name};touch(p);rerender();return}
   if(ac0==='pvCaps'&&p&&!p.ref){p.captions.enabled=el.checked;touch(p);players.forEach(x=>x.dirty=true);return}
   if(ac0==='pvAudio'){pvAudio=el.checked;players.forEach(x=>{x.audio=pvAudio;if(!pvAudio)x.stopAudio();else if(x.playing){x.stopAudio();x.startAudio()}});return}
@@ -640,7 +676,11 @@ document.addEventListener('click',async e=>{const b=e.target.closest('[data-act]
   case'hfPreview':{const sc=p.scenes.find(x=>x.id===selScene);if(sc)await hfStartPreview(p,sc,b.dataset.file,b.dataset.label);break}
   case'hfCancel':hfRevert(p);rerender();toast('Preview cancelled — scene unchanged');break;
   case'hfApply':await hfApply(p);break;
-  case'hfCopy':{const txt=JSON.stringify({title:p.title,style:p.style,scenes:p.scenes.map((x,i)=>({id:'s'+(i+1),duration:x.duration,text:x.narration}))},null,1);try{await navigator.clipboard.writeText(txt);toast('Script copied — paste it to Claude')}catch(e){prompt('Copy this and paste it to Claude:',txt)}break}
+  case'hfCopy':{const pl=(STY[p.style]||STY.glass)._pal||{},bs=baseOf(p.style),theme=bs==='glass'?{bg:pl.deep,bg2:pl.ink,ink:pl.porc,mute:pl.muted,a:pl.aqua,b:pl.blue,c:pl.lav,hi:pl.peach,bad:pl.loss}:{bg:pl.IV,bg2:pl.P2,ink:pl.INK,mute:pl.SL,a:pl.TL,b:pl.CB,c:pl.PE,hi:pl.CR,bad:pl.CR};const txt=JSON.stringify({title:p.title,style:bs,styleName:styleName(p.style),theme,scenes:p.scenes.map((x,i)=>({id:'s'+(i+1),duration:x.duration,text:x.narration}))},null,1);try{await navigator.clipboard.writeText(txt);toast('Script copied — paste it to Claude')}catch(e){prompt('Copy this and paste it to Claude:',txt)}break}
+  case'nsOpen':nsOpen=!nsOpen;rerender();break;
+  case'nsCreate':await createStyle();break;
+  case'delStyle':{const id=b.dataset.id,used=state.projects.filter(x=>x.style===id).length;if(!confirm(`Delete ${styleName(id)}?${used?` ${used} video(s) use it and will switch to ${styleName(baseOf(id))}.`:''}`))break;
+    const base=baseOf(id);state.projects.forEach(x=>{if(x.style===id){x.style=base;resolve(x);saveProject(x)}});state.settings.customStyles=(state.settings.customStyles||[]).filter(r=>r.id!==id);delete STY[id];delete state.settings.styleNames[id];if(state.settings.defaultStyle===id)state.settings.defaultStyle='glass';saveSettings();rerender();toast('Style deleted');break}
   case'newVisual':{s.seed=rseed();resolve(p);touch(p);rerender();toast('New visual for this scene');break}
   case'newAnim':{const opts=CAMS.filter(c=>c!==s.camera);s.camera=opts[rseed()%opts.length];const tr=Object.keys(TRANS).filter(t=>t!=='cut'&&t!==s.transition);s.transition=tr[rseed()%tr.length];touch(p);rerender();toast(`Camera: ${s.camera} · transition: ${TRANS[s.transition]}`);break}
   case'rmMedia':{IDB.del(s.media.key);s.media=null;resolve(p);touch(p);rerender();break}
@@ -676,10 +716,10 @@ document.addEventListener('click',async e=>{const b=e.target.closest('[data-act]
 });
 
 /* ---------- boot ---------- */
-(async()=>{loadLocal();buildRefs();applyAccent();if(!state.cur)state.cur=state.projects[0]?.id||REFS.glass.id;
+(async()=>{loadLocal();await buildAllCustom();buildRefs();applyAccent();if(!state.cur)state.cur=state.projects[0]?.id||REFS.glass.id;
   const fonts=[...STY.glass.fonts,...STY.vector.fonts,'800 40px "Unbounded"'];await Promise.race([Promise.all(fonts.map(f=>document.fonts.load(f))),new Promise(r=>setTimeout(r,2500))]).catch(()=>{});
   route();requestAnimationFrame(loop);
-  await initCaps();if(cap.db&&cap.uid){const ok=await loadRemote();if(ok){buildRefs();applyAccent();if(!getP())state.cur=REFS.glass.id}}
+  await initCaps();if(cap.db&&cap.uid){const ok=await loadRemote();if(ok){await buildAllCustom();buildRefs();applyAccent();if(!getP())state.cur=REFS.glass.id}}
   if(['home','prefs','script'].includes(page)||cap.db)rerender();
   window.renderAt=(t,fmt)=>{const p=getP(),[W,H]=dims(fmt||p.format),c=document.createElement('canvas');c.width=W/2;c.height=H/2;renderFrame(c.getContext('2d'),p,t,fmt||p.format);return c}})();
 })();

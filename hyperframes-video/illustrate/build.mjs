@@ -199,7 +199,8 @@ window.__timelines=window.__timelines||{};window.__timelines["main"]=tl;tl.seek(
 const [, , inFile, outDir] = process.argv;
 if (!inFile || !outDir) { console.error('Usage: node illustrate/build.mjs <scenes.json> <outDir>'); process.exit(1); }
 const spec = JSON.parse(fs.readFileSync(inFile, 'utf8'));
-const T = THEMES[spec.style] || THEMES.glass;
+const T = { ...(THEMES[spec.style] || THEMES.glass) };
+for (const [k, v] of Object.entries(spec.theme || {})) if (/^#[0-9a-f]{6}$/i.test(v || '')) T[k] = v;
 let prev = null; const used = []; const manifest = [];
 for (const [i, s] of spec.scenes.entries()) {
   const seed = hash(s.id + s.text);

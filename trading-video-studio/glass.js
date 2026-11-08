@@ -1,7 +1,7 @@
 /* STYLE 01 — Cinematic liquid glass. WebGL refraction over Canvas-drawn backdrops. */
 (function(){
 const K=KIT,{clamp,lerp,S,O,B,eo}=K;
-const C=K.pal('glass',{ink:'#0A1120',deep:'#15243C',porc:'#F2F7FF',blue:'#599CFF',aqua:'#65D9D3',lav:'#B8ABFF',peach:'#FFC7AB',loss:'#FF8B7B',white:'#FFFFFF',muted:'#8B98B0'});
+const C=K.pal(K.buildAs||'glass',{ink:'#0A1120',deep:'#15243C',porc:'#F2F7FF',blue:'#599CFF',aqua:'#65D9D3',lav:'#B8ABFF',peach:'#FFC7AB',loss:'#FF8B7B',white:'#FFFFFF',muted:'#8B98B0'});
 const DISP='"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif',SER='"Newsreader",Georgia,serif',MONO='"JetBrains Mono",ui-monospace,Menlo,monospace';
 const rgba=K.rgba;
 
@@ -252,7 +252,7 @@ function draw(ctx,spec,p,W,H,scale,media){
 }
 function backdrop(c,W,H){base(c,W,H,W*.3,H*.5,C.aqua,.12)}
 
-window.STYLE_GLASS={id:'glass',draw,backdrop,refCount:REF.length,motifs:Object.keys(M).filter(m=>m!=='media'),
+window[K.buildAs?'__BUILT':'STYLE_GLASS']={id:'glass',draw,backdrop,refCount:REF.length,motifs:Object.keys(M).filter(m=>m!=='media'),
   fonts:[`700 72px "Bricolage Grotesque"`,`800 72px "Bricolage Grotesque"`,`italic 500 60px "Newsreader"`,`500 26px "JetBrains Mono"`],
   palette:[C.ink,C.deep,C.porc,C.blue,C.aqua,C.lav,C.peach],caption:{font:DISP,color:C.porc,hi:C.peach,box:'rgba(10,17,32,.62)'},
   traits:{Palette:'Midnight graphite and deep blue with porcelain type; aqua, lavender and peach accents only on what matters.',Type:'Bricolage Grotesque headlines, Newsreader italic for the emotional line, JetBrains Mono labels.',Material:'Real refractive glass: lenses bend, magnify and split the backdrop, with bevel highlights, edge dispersion and cast shadows.',Motion:'Slow deliberate lens travel; merges and splits carry meaning; masked line-by-line headline reveals.',Camera:'Restrained push-ins and a signature pull-back reveal.',Atmosphere:'Nocturnal, quiet, honest. Thin grids and data lines give the glass something to bend.'}};
