@@ -132,7 +132,15 @@ function renderFrame(ctx,p,t,fmt,opt={}){const [W,H]=dims(fmt),T=times(p);
   if(i>0&&cur.s.transition!=='cut'&&into<tr&&opt.transitions!==false){const cw=ctx.canvas.width,ch=ctx.canvas.height,A=buf('A',cw,ch),B=buf('B',cw,ch);
     drawScene(A.getContext('2d'),p,T[i-1].s,1,W,H);drawScene(B.getContext('2d'),p,cur.s,lp,W,H);composite(ctx,A,B,into/tr,cur.s.transition,p.style,i)}
   else drawScene(ctx,p,cur.s,lp,W,H);
-  if(opt.captions!==false&&p.captions&&p.captions.enabled)drawCaptions(ctx,p,cur,t,W,H)}
+  if(opt.captions!==false&&p.captions&&p.captions.enabled)drawCaptions(ctx,p,cur,t,W,H);drawTag(ctx,p,W,H)}
+/* On-screen tag: shown for the whole length of the video. */
+const TAG_DEF={enabled:false,text:'',pos:'top-right',size:34,color:'#FFFFFF',bg:'pill',bgColor:'#000000',opacity:.55,font:''};
+const tagOf=p=>({...TAG_DEF,...(p.tag||{})});
+function drawTag(ctx,p,W,H){const g=tagOf(p);if(!g.enabled||!String(g.text).trim())return;const sc=ctx.canvas.width/W,size=+g.size||34,font=CAP_FONTS[g.font]||STY[p.style].caption.font,m=W>H?60:56;
+  ctx.save();ctx.setTransform(sc,0,0,sc,0,0);ctx.font=`800 ${size}px ${font}`;ctx.textBaseline='middle';const tw=ctx.measureText(g.text).width,padX=size*.6,bw=tw+padX*2,bh=size*1.7;
+  const [v,h]=g.pos.split('-');const x=h==='left'?m:h==='right'?W-m-bw:(W-bw)/2,y=v==='top'?(W>H?m:110):H-m-bh-(W>H?0:40);
+  if(g.bg==='pill'){ctx.fillStyle=K.rgba(g.bgColor,g.opacity);K.rr(ctx,x,y,bw,bh,bh/2);ctx.fill()}else if(g.bg==='shadow'){ctx.shadowColor='rgba(0,0,0,.7)';ctx.shadowBlur=size*.4}
+  ctx.fillStyle=g.color;ctx.textAlign='left';ctx.fillText(g.text,x+padX,y+bh/2+1);ctx.restore()}
 function capChunks(p,cur){const s=cur.s,txt=(s.captionText??s.narration)||'';const hiw=(p.captions.hi||'').split(',').map(x=>x.trim().toLowerCase()).filter(Boolean);
   const ws=txt.split(/\s+/).filter(Boolean).map(w=>{const star=/\*/.test(w),c=w.replace(/\*/g,'');return{w:c,hi:star||hiw.includes(c.toLowerCase().replace(/[^\w’']/g,''))}});if(!ws.length)return[];
   const vb=s.voice?voiceBufs.get(s.voice.key):null,span=vb?Math.max(.5,vb.duration-(s.voice.trimStart||0)-(s.voice.trimEnd||0)):s.duration*.9,st=cur.start+(vb?VOICE_LEAD:s.duration*.04)+(+s.captionOffset||0);
@@ -410,6 +418,17 @@ PAGES.preview=el=>{const p=getP();if(!p){needProject(el,'Video preview');return}
     <div class="row" style="margin-top:10px"><label class="small row"><input type="checkbox" data-act-change="pvCaps" ${cp.enabled?'checked':''} ${lock?'disabled':''}> Captions</label><label class="small row"><input type="checkbox" data-act-change="pvAudio" ${pvAudio?'checked':''}> Sound</label><span class="spacer"></span><button class="btn sm ghost" data-act="pvFull">Fullscreen</button><button class="btn sm ghost" data-act="pvRefresh">Refresh</button></div>
     <div class="row" style="margin-top:12px;gap:6px">${T.map((x,i)=>`<button class="btn sm ghost" data-act="pvJump" data-t="${x.start}" title="${esc(x.s.headline)}">${String(i+1).padStart(2,'0')}</button>`).join('')}</div>
     ${!lock?`<p class="small muted" style="margin-top:10px">To replace a scene, open it in the Scene Editor; the preview updates as soon as you come back.</p>`:''}</div>
+  <div class="card"><div class="cardhead"><h2>Tag</h2><span class="small muted">Shows for the whole video</span></div>${(()=>{const g=tagOf(p);return`
+    <fieldset ${lock?'disabled':''} style="border:0;padding:0;margin:0;display:grid;gap:14px"><div class="formgrid">
+      <label class="field full"><span>Tag text</span><input type="text" data-tag="text" value="${esc(g.text)}" placeholder="e.g. @thirtyeleven or Not financial advice"></label>
+      <label class="field"><span>Show tag</span><label class="small row"><input type="checkbox" data-tag="enabled" ${g.enabled?'checked':''}> On for the whole video</label></label>
+      <label class="field"><span>Position</span><select data-tag="pos">${[['top-left','Top left'],['top-center','Top centre'],['top-right','Top right'],['bottom-left','Bottom left'],['bottom-center','Bottom centre'],['bottom-right','Bottom right']].map(([v,l])=>opt(v,l,g.pos)).join('')}</select></label>
+      <label class="field"><span>Size</span><input type="range" min="18" max="72" data-tag="size" value="${g.size}"></label>
+      <label class="field"><span>Font</span><select data-tag="font">${opt('','Same as captions style',g.font)}${opt('bricolage','Bricolage',g.font)}${opt('archivo','Archivo',g.font)}${opt('unbounded','Unbounded',g.font)}${opt('manrope','Manrope',g.font)}${opt('newsreader','Newsreader',g.font)}${opt('mono','Mono',g.font)}</select></label>
+      <label class="field"><span>Text colour</span><input type="color" data-tag="color" value="${g.color}"></label>
+      <label class="field"><span>Background</span><select data-tag="bg">${opt('pill','Rounded pill',g.bg)}${opt('shadow','Soft shadow',g.bg)}${opt('none','Nothing',g.bg)}</select></label>
+      <label class="field"><span>Pill colour</span><input type="color" data-tag="bgColor" value="${g.bgColor}"></label>
+      <label class="field"><span>Pill opacity</span><input type="range" min="0" max="1" step=".05" data-tag="opacity" value="${g.opacity}"></label></div></fieldset>`})()}</div>
   <div class="card"><div class="cardhead"><h2>Captions</h2>${lock?'<span class="small muted">Locked on reference films</span>':''}</div>
     <fieldset ${lock?'disabled':''} style="border:0;padding:0;margin:0;display:grid;gap:14px"><div class="formgrid">
       <label class="field"><span>Size</span><input type="range" min="36" max="96" data-cap="size" value="${cp.size}"></label>
@@ -532,6 +551,7 @@ document.addEventListener('input',e=>{const el=e.target,p=getP();
     if(f==='labels'){v=String(el.value).split(',').map(x=>x.trim()).filter(Boolean).slice(0,5);s.labelsAuto=false}if(f==='duration')v=Math.max(1.5,Math.min(60,+v||s.duration));
     s[f]=v;resolve(p);touch(p);clearTimeout(typingT);typingT=setTimeout(()=>refreshSceneThumb(p,s),250);return}
   if(el.dataset.vf&&p&&!p.ref){const s=p.scenes.find(x=>x.id===el.dataset.sid);if(!s||!s.voice)return;s.voice[el.dataset.vf]=Math.max(0,+el.value||0);touch(p);const cv=document.querySelector(`canvas[data-wave="${s.id}"]`);if(cv)AUDIO.waveform(cv,voiceBufs.get(s.voice.key),getComputedStyle(document.documentElement).getPropertyValue('--accent').trim(),null,s.voice.trimStart,s.voice.trimEnd);drawTracks(p,0);return}
+  if(el.dataset.tag&&p&&!p.ref){p.tag=tagOf(p);p.tag[el.dataset.tag]=coerce(el,p.tag[el.dataset.tag]);touch(p);players.forEach(x=>x.dirty=true);return}
   if(el.dataset.cap&&p&&!p.ref){p.captions[el.dataset.cap]=coerce(el,p.captions[el.dataset.cap]);touch(p);players.forEach(x=>x.dirty=true);return}
   if(el.dataset.capsf&&p&&!p.ref){const s=p.scenes.find(x=>x.id===el.dataset.sid);if(!s)return;if(el.dataset.capsf==='captionText')s.captionText=el.value.trim()?el.value:null;else s.captionOffset=+el.value||0;touch(p);players.forEach(x=>x.dirty=true);return}
   if(el.dataset.set){const old=getPath(state.settings,el.dataset.set);setPath(state.settings,el.dataset.set,coerce(el,old));if(el.dataset.set==='accent')applyAccent();saveSettings();players.forEach(x=>x.dirty=true);return}
