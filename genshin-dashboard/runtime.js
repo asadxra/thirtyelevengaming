@@ -2,7 +2,7 @@
  * Standalone runtime for the Genshin Instagram dashboard.
  *
  * The page was originally built as a claude.ai dashboard artifact, which gave it
- * two globals: `dash` (datasets, calculations, redraw hooks) and `claude.use()`
+ * two globals: `dash` (datasets, calculations, redraw hooks) and `gxUse()`
  * (a shared database, the viewer's id, and file uploads). This file provides
  * local stand-ins for both so the page runs as a plain static site:
  *   - datasets load from ./data/*
@@ -155,7 +155,7 @@
     colors: ['#5b6cf0', '#22b8a7', '#f59e42', '#e2589b', '#8b5cf6', '#3fa7f0', '#9bc53d', '#f2c14e']
   };
 
-  /* ---------- local database (stand-in for claude.use('db')) ---------- */
+  /* ---------- local database (stand-in for gxUse('db')) ---------- */
   var DB_KEY = 'gx-db-v1';
   var USER_ID = 'local';
   var docs = null;          // path -> data
@@ -265,7 +265,7 @@
     collection: function (path) { return collRef(String(path).replace(/^\/+/, '')); }
   };
 
-  /* ---------- uploaded images (stand-in for claude.use('assets')) ---------- */
+  /* ---------- uploaded images (stand-in for gxUse('assets')) ---------- */
   var memBlobs = {};
   var ASSET_PREFIX = 'gx-asset-';
 
@@ -293,8 +293,7 @@
 
   var user = { id: function () { return Promise.resolve(USER_ID); }, name: function () { return Promise.resolve('You'); } };
 
-  window.claude = window.claude || {};
-  window.claude.use = function (name) {
+  window.gxUse = function (name) {
     if (name === 'db') return openDb().then(function () { return db; });
     if (name === 'user') return Promise.resolve(user);
     if (name === 'assets') return Promise.resolve(assets);
