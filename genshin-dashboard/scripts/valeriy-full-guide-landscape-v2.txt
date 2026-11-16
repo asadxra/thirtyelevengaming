@@ -1,0 +1,318 @@
+[LANDSCAPE 16:9 FULL CHARACTER GUIDE: VALERIY (VERSION 2). Estimated narration: about 12 minutes 27 seconds. Eight chapters. Every part has a [Start ...] and [End ...] trigger. Kit numbers come from version 7.2 data and can still change. Weapon, artifact, stat and team picks come from GenshinBuilds, u7buy and GameWith, checked November 2026.]
+
+[0s-77s CHAPTER 1: HOOK & WHO VALERIY IS]
+[Start Hook]
+Your Electro carry keeps getting knocked around, your team buffs fall off halfway through the rotation, and you are tired of slotting a healer just to survive. Valeriy fixes all three, and he is a 4-star. In the next few minutes you will learn exactly how to build him, which weapon to use if you do not own a single 5-star sword, and the three teams where he really shines.
+[End Hook]
+
+[Start Who Is Valeriy]
+Valeriy is a 4-star Electro Sword character who arrived in version 7.2 on November 4th. He is a shield support. That means his job is not to deal the most damage himself. His job is to keep your main damage dealer safe and make them hit harder.
+
+He does that in two ways. His Elemental Skill puts a long Electro shield on your active character, and that shield gets stronger the more Attack he has. And his kit hands out Attack-based buffs that boost Electro damage, especially in Stellar-Conduct teams.
+
+If Stellar-Conduct is new to you, here is the short version. When someone in your team triggers Superconduct inside a Polestar Field, the reaction becomes Stellar-Conduct. Valeriy makes that Electro damage stronger. That is why he fits so naturally next to Mitya, Odette and Cyno.
+[End Who Is Valeriy]
+
+[77s-121s CHAPTER 1: PULL OR SKIP, THE QUICK ANSWER]
+[Start Pull Value]
+Before we go deep, here is the quick answer for anyone deciding whether to pull or build him.
+
+Build him if you play Mitya or Cyno, or if you want a shield for Clorinde. He makes those teams safer and stronger, and because he is a 4-star, his gear is cheap and easy to farm.
+
+Skip him if you have no Electro damage dealer and no plan to get one, because his buffs need Electro damage to matter. And skip him if you need a healer. He shields, he does not heal.
+
+Valeriy is brand new, so some rankings can still move once more players test him. Everything in this guide was checked in November 2026.
+[End Pull Value]
+
+[121s-202s CHAPTER 2: HOW HIS KIT WORKS]
+[Start Kit]
+To build him well, you need to understand one resource: Impact Momentum. Almost everything in his kit fills it up or spends it.
+
+[Start Normal Attack]
+His Normal Attack is a three-hit sword combo. His Charged Attack leaps up and slams the ground. When he holds 40 or more Impact Momentum, that slam becomes a special Charged Attack that spends all of his momentum for a much bigger hit.
+[End Normal Attack]
+
+[Start Elemental Skill]
+His Elemental Skill deals Electro damage around him, gives him 40 Impact Momentum, and creates the Supercharged Shield. The shield scales with his Attack and absorbs Electro damage at 250 percent efficiency. More Attack, sturdier shield. Keep that in mind, because it shapes every build choice later.
+[End Elemental Skill]
+
+[Start Elemental Burst]
+His Elemental Burst deals Electro damage, then fires a Thunderburst Shell that breaks into a barrage. While it rains down, every time a nearby teammate hits an enemy with Electro, Valeriy gains 5 Impact Momentum, up to 80 per Burst. In other words, Electro teammates charge his big slam for him.
+[End Elemental Burst]
+
+[Start Passives]
+Two passives matter. First, every point of Impact Momentum he spends raises his Offensive Directive damage bonus, by 0.9 percent of his Attack inside Stellar-Conduct and 0.3 percent outside it. Second, he enters the Stellar-Conduct state while he stands in a Polestar Field. So once again, Attack is the stat that powers everything.
+[End Passives]
+[End Kit]
+
+[202s-240s CHAPTER 2: TALENT PRIORITY]
+[Start Talent Priority]
+The two guides I checked agree on the last talent, but not on the first. So here are both views.
+
+[Start Elemental Skill 1]
+Elemental Skill. u7buy puts it first, because it makes his Attack-scaling shield. Level it to 9 or higher.
+[End Elemental Skill 1]
+
+[Start Normal Attack 2]
+Normal Attack. GenshinBuilds puts it first, because it boosts his Offensive Directive buffs and his Charged Attack. Level it to 9 or higher as well.
+[End Normal Attack 2]
+
+[Start Elemental Burst 3]
+Elemental Burst comes last in both guides. It mostly adds his own damage, so level 1 to 6 is enough.
+[End Elemental Burst 3]
+
+My advice: raise Skill and Normal Attack together, and leave the Burst alone until both are done.
+[End Talent Priority]
+
+[240s-328s CHAPTER 3: CONSTELLATIONS]
+[Start Constellations]
+Constellations come from pulling extra copies of Valeriy. You do not need any of them. He works well at Constellation 0. But since he is a 4-star, you will pick up copies naturally, so it helps to know which ones matter.
+
+[Start Constellation 1]
+Constellation 1 helps his Energy. After his special Charged Attack he gets 6 Energy back, and more if he spent extra momentum, up to 15 Energy once every 15 seconds. The first Skill of each fight also fills his momentum faster.
+[End Constellation 1]
+
+[Start Constellation 2]
+Constellation 2 is the big one. For 18 seconds after his Skill, nearby teammates gain 100 Elemental Mastery, and spare momentum turns into extra shield strength. If you aim for any constellation, aim for this one.
+[End Constellation 2]
+
+[Start Constellation 3 and 5]
+Constellations 3 and 5 add three levels to his Normal Attack and his Elemental Skill. Simple, but useful, because those are his two most important talents.
+[End Constellation 3 and 5]
+
+[Start Constellation 4]
+Constellation 4 raises his momentum limit and charges it 30 percent faster, so his special Charged Attack hits harder.
+[End Constellation 4]
+
+[Start Constellation 6]
+Constellation 6 is his strongest. It adds 100 percent damage to his special Charged Attack and Thunderburst Shells, gives enemies he hits 10 percent more Electro Crit Rate against them, and adds 40 percent Crit Damage to Stellar-Conduct damage on those enemies.
+[End Constellation 6]
+
+The takeaway: Constellation 0 is fine, Constellation 2 is the best value, and Constellation 6 is a bonus. These numbers come from version 7.2 data, so double check them in game.
+[End Constellations]
+
+[328s-474s CHAPTER 4: BEST WEAPONS]
+[Start Weapons Intro]
+Remember, Attack powers his shield and his buffs. So the best weapons for Valeriy give either a lot of Attack, or the Energy Recharge he needs to use his Burst. Here are twelve options, from best to situational.
+[End Weapons Intro]
+
+[Start Summit Shaper]
+Number one, Summit Shaper. Both guides call it his best. It has the highest base Attack, 608, a 49.6 percent Attack substat, and a Shield Strength bonus that makes his shield even tougher. The only catch is that it has no Energy Recharge.
+[End Summit Shaper]
+
+[Start Finale of the Deep]
+Number two, Finale of the Deep. This is the best 4-star for him, and you can craft it, so anyone can get it. 565 base Attack and 27.6 percent Attack. Like Summit Shaper, it gives no Energy Recharge, so pair it with a team that feeds him particles.
+[End Finale of the Deep]
+
+[Start Favonius Sword]
+Number three, Favonius Sword. The best pick for team utility. 61.3 percent Energy Recharge, plus Energy Particles for the whole team. His shield is a little weaker with it, but your rotations get smoother.
+[End Favonius Sword]
+
+[Start Aquila Favonia]
+Number four, Aquila Favonia. A 5-star with high base Attack. You will not use its passive much, but as a pure Attack stick it works very well.
+[End Aquila Favonia]
+
+[Start Fleuve Cendre Ferryman]
+Number five, Fleuve Cendre Ferryman, the fishing sword. 45.9 percent Energy Recharge and 510 base Attack make it a strong free option if you struggle with Energy.
+[End Fleuve Cendre Ferryman]
+
+[Start Sapwood Blade]
+Number six, Sapwood Blade. A balance of Attack and Energy Recharge. Its passive needs Dendro reactions, so in most of his teams you are using it for the stats.
+[End Sapwood Blade]
+
+[Start Skyward Blade]
+Number seven, Skyward Blade. An Energy Recharge option when he must use his Burst every rotation.
+[End Skyward Blade]
+
+[Start Calamity of Eshu and Moonweaver's Dawn]
+Numbers eight and nine, Calamity of Eshu and Moonweaver's Dawn. Both have 565 base Attack and 27.6 percent Attack. Their passives do little for a support, so treat them as stat sticks.
+[End Calamity of Eshu and Moonweaver's Dawn]
+
+[Start Sacrificial Sword]
+Number ten, Sacrificial Sword. Energy Recharge with a chance to reset his Skill, which means more shields. The trade-off is lower Attack.
+[End Sacrificial Sword]
+
+[Start Mistsplitter and Azurelight]
+And numbers eleven and twelve, Mistsplitter Reforged and Azurelight. Players use them because they own them, but they are made for damage dealers, not a shield support. Only use them if they are already sitting in your inventory.
+[End Mistsplitter and Azurelight]
+
+[Start Weapon Summary]
+So, the short version. If you have Summit Shaper, use it. If not, craft Finale of the Deep. And if your Burst is never ready, switch to Favonius Sword or the free fishing sword.
+[End Weapon Summary]
+
+[474s-532s CHAPTER 5: BEST ARTIFACTS]
+[Start Artifacts Intro]
+For artifacts, the guides disagree on the top pick, so here are four options and when to use each.
+[End Artifacts Intro]
+
+[Start A Day Carved From Rising Winds]
+A Day Carved From Rising Winds, 4-piece. GenshinBuilds calls it his best set. It is an Attack set, and Attack is exactly what his shield and buffs scale with.
+[End A Day Carved From Rising Winds]
+
+[Start Heart of the Furnace]
+Heart of the Furnace, 4-piece. Best for Stellar-Conduct teams without a Stellar support like Odette. The 2-piece gives 18 percent Attack. The 4-piece gives another 12 percent Attack after Stellar Glimmer triggers and raises nearby teammates' Stellar Glimmer damage by 50 percent. The team bonus does not stack, so only one character should wear it.
+[End Heart of the Furnace]
+
+[Start Noblesse Oblige]
+Noblesse Oblige, 4-piece. The classic support set. His Burst gives the whole team 20 percent Attack for 12 seconds. Use it when someone like Odette already wears Heart of the Furnace.
+[End Noblesse Oblige]
+
+[Start Budget Mix]
+And while you farm, Gladiator's Finale 2-piece plus Shimenawa's Reminiscence 2-piece. That is 36 percent Attack from pieces you probably already have.
+[End Budget Mix]
+
+[532s-571s CHAPTER 5: MAIN STATS & SUBSTATS]
+[Start Main Stats]
+Main stats are simple. Attack percent on all three: Sands, Goblet and Circlet. The one exception: if you cannot use his Burst every rotation, put Energy Recharge on the Sands instead.
+[End Main Stats]
+
+[Start Substats]
+For substats, go Attack percent first, then Energy Recharge, then flat Attack. Crit Rate only matters if you use Favonius Sword, so it can trigger its Energy Particles. GenshinBuilds ranks flat Attack above Energy Recharge, so if your Energy is already fine, follow that order.
+[End Substats]
+
+[Start Stat Targets]
+Your targets: 2,500 to 2,800 Attack or more. At least 150 percent Energy Recharge, and 160 to 180 percent only if you need his 60-Energy Burst every single rotation.
+[End Stat Targets]
+
+[571s-655s CHAPTER 6: BEST TEAMS]
+[Start Teams Intro]
+Now the best part. Six teams, starting with the strongest.
+[End Teams Intro]
+
+[Start Team 1]
+[Start Team Comp]
+[Start Mitya DPS]
+Team one, Mitya Stellar-Conduct: Mitya,
+[Start Valeriy Support]
+Valeriy,
+[Start Odette Sub DPS]
+Odette,
+[Start Sucrose Support]
+and Sucrose. GenshinBuilds rates it SS and u7buy calls it the strongest. Mitya deals damage on the field, Odette enables the reaction, Valeriy shields and buffs, and Sucrose adds Elemental Mastery, groups enemies and lowers their resistance.
+[End Mitya DPS]
+[End Valeriy Support]
+[End Odette Sub DPS]
+[End Sucrose Support]
+[End Team Comp]
+[End Team 1]
+
+[Start Team 2]
+[Start Team Comp]
+[Start Cyno DPS]
+Team two, Cyno Stellar-Conduct: Cyno,
+[Start Mitya Sub DPS]
+Mitya,
+[Start Odette Sub DPS]
+Odette,
+[Start Valeriy Support]
+and Valeriy. Also rated SS. Cyno infuses his attacks with Electro, Mitya adds Electro off the field, Odette converts the reactions, and Valeriy boosts that Electro damage while keeping Cyno safe.
+[End Cyno DPS]
+[End Mitya Sub DPS]
+[End Odette Sub DPS]
+[End Valeriy Support]
+[End Team Comp]
+[End Team 2]
+
+[Start Team 3]
+[Start Team Comp]
+[Start Cyno DPS]
+Team three, Cyno with Sucrose: Cyno,
+[Start Valeriy Support]
+Valeriy,
+[Start Odette Sub DPS]
+Odette,
+[Start Sucrose Support]
+and Sucrose. Valeriy's long shield is perfect for Cyno's long rotations, and Sucrose adds Elemental Mastery.
+[End Cyno DPS]
+[End Valeriy Support]
+[End Odette Sub DPS]
+[End Sucrose Support]
+[End Team Comp]
+[End Team 3]
+
+[Start Team 4]
+[Start Team Comp]
+[Start Mitya DPS]
+Team four, budget Mitya: Mitya,
+[Start Valeriy Support]
+Valeriy,
+[Start Cryo Traveler Support]
+Cryo Traveler,
+[Start Sucrose Support]
+and Sucrose. The Traveler replaces Odette and keeps Stellar-Conduct going, and Valeriy's shield means you do not need a healer.
+[End Mitya DPS]
+[End Valeriy Support]
+[End Cryo Traveler Support]
+[End Sucrose Support]
+[End Team Comp]
+[End Team 4]
+
+[Start Team 5]
+[Start Team Comp]
+[Start Mitya DPS]
+Team five, the all 4-star version: Mitya,
+[Start Valeriy Support]
+Valeriy,
+[Start Diona Support]
+Diona,
+[Start Sucrose Support]
+and Sucrose. Two shields keep Mitya safe while Stellar-Conduct keeps running.
+[End Mitya DPS]
+[End Valeriy Support]
+[End Diona Support]
+[End Sucrose Support]
+[End Team Comp]
+[End Team 5]
+
+[Start Team 6]
+[Start Team Comp]
+[Start Clorinde DPS]
+Team six, Overloaded Clorinde: Clorinde,
+[Start Valeriy Support]
+Valeriy,
+[Start Durin Support]
+Durin,
+[Start Chevreuse Support]
+and Chevreuse. Clorinde gets interrupted easily, so his shield is a big help, and his Offensive Directive adds damage to her Electro hits. Durin and Chevreuse lower Pyro and Electro resistance. Remember that Chevreuse only works when the whole team is Pyro or Electro. This team is best against big enemies and bosses.
+[End Clorinde DPS]
+[End Valeriy Support]
+[End Durin Support]
+[End Chevreuse Support]
+[End Team Comp]
+[End Team 6]
+
+[655s-686s CHAPTER 7: QUICK ROTATION TIPS]
+[Start Rotation Tips]
+A few habits make him much better.
+
+Use his Skill first, so your carry gets the shield before the fight heats up. Then use his Burst when your Electro teammates are about to attack, because their hits charge his momentum. Finally, once he has 40 momentum or more, swap in for his special Charged Attack to cash it in.
+
+And do not stay on him for long. He is a support. Shield, buff, and get your main damage dealer back on the field.
+[End Rotation Tips]
+
+[686s-747s CHAPTER 8: RECAP & VERDICT]
+[Start Recap]
+Let's recap the whole build in one breath.
+
+[Start Summit Shaper]
+Weapon: Summit Shaper,
+[End Summit Shaper]
+[Start Finale of the Deep]
+or the craftable Finale of the Deep.
+[End Finale of the Deep]
+[Start A Day Carved From Rising Winds]
+Artifacts: A Day Carved From Rising Winds,
+[End A Day Carved From Rising Winds]
+[Start Noblesse Oblige]
+or Noblesse Oblige for team Attack.
+[End Noblesse Oblige]
+Main stats: Attack percent everywhere, Energy Recharge Sands if needed. Talents: Skill and Normal Attack to 9, Burst last. Team: Mitya, Valeriy, Odette and Sucrose.
+[End Recap]
+
+[Start Verdict]
+So, is he worth it? If you run Mitya, Cyno or Clorinde, yes. He is one of the easiest supports in the game to build, and his shield frees up a slot you would otherwise spend on a healer. If you do not have an Electro carry, save your resources for now.
+[End Verdict]
+
+[Start Outro]
+Which team are you running Valeriy in? Tell me in the comments, and if you found a weapon that works better for you, share it so everyone can try it. If this guide saved you some resin, like the video and subscribe so you catch the next one. See you in the next guide.
+[End Outro]
