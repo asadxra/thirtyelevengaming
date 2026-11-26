@@ -1,0 +1,84 @@
+<title>Daily Bias Explained</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+:root{--bg:#0b0d12;--chart:#131722;--grid:#1e222d;--axis:#2a2e39;--text:#d1d4dc;--muted:#787b86;--up:#26a69a;--down:#ef5350;--blue:#2962ff;--gold:#f7b500;color-scheme:dark}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,"Trebuchet MS",Roboto,Ubuntu,sans-serif;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px}
+.wrap{max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+canvas{width:100%;max-width:100%;aspect-ratio:16/9;border-radius:6px;display:block;background:var(--chart)}
+.bar{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+button{background:var(--blue);color:#fff;border:0;border-radius:4px;padding:8px 16px;font:600 14px inherit;cursor:pointer}
+button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+input[type=range]{flex:1;min-width:160px;accent-color:var(--blue)}
+#tc{font-variant-numeric:tabular-nums;color:var(--muted);min-width:80px}
+</style>
+<div class="wrap">
+<canvas id="c" width="1280" height="720"></canvas>
+<div class="bar"><button id="pp">Pause</button><input id="scrub" type="range" min="0" max="30" step="0.01" value="0" aria-label="Timeline"><span id="tc">0.0 / 30s</span></div>
+</div>
+<script>
+const W=1280,H=720,D=30,cv=document.getElementById('c'),x=cv.getContext('2d');
+const C={chart:'#131722',grid:'#1e222d',axis:'#2a2e39',text:'#d1d4dc',muted:'#787b86',up:'#26a69a',down:'#ef5350',blue:'#2962ff',gold:'#f7b500'};
+// deterministic data
+let s=7;const r=()=>(s=(s*16807)%2147483647)/2147483647;
+const K=[];let p=1.0820;
+for(let i=0;i<30;i++){const drift=i<14?-0.0009:0.0006;const o=p,c=o+drift+(r()-0.5)*0.0042;const h=Math.max(o,c)+r()*0.0018,l=Math.min(o,c)-r()*0.0018;K.push({o,h,l,c});p=c}
+const prev=K[29];
+const Y={o:prev.c,l:prev.c-0.0012,h:prev.h+0.0046,c:prev.h+0.0034};K.push(Y);
+const PDH=prev.h,PDL=prev.l;
+const swingHi=Math.max(...K.slice(0,14).map(k=>k.h));
+const target=Math.max(swingHi,Y.h+0.0030);
+// today path: open -> dip to PDH retest -> rally to target
+function today(t){const o=Y.c,dip=PDH+0.0002;let path=[[0,o],[.3,dip],[.45,dip+.0012],[.55,dip+.0004],[1,target]];let v=o;for(let i=1;i<path.length;i++){const[a,va]=path[i-1],[b,vb]=path[i];if(t<=b){const u=(t-a)/(b-a);v=va+(vb-va)*(u*u*(3-2*u));break}}let lo=o,hi=o;const n=60;for(let i=0;i<=n*t;i++){const tt=i/n;let vv=o;for(let j=1;j<path.length;j++){const[a,va]=path[j-1],[b,vb]=path[j];if(tt<=b){const u=(tt-a)/(b-a);vv=va+(vb-va)*(u*u*(3-2*u));break}}lo=Math.min(lo,vv);hi=Math.max(hi,vv)}return{o,h:hi+.0003,l:lo-.0003,c:v}}
+const all=K.concat([{o:0,h:target+.001,l:0,c:0}]);
+const minP=Math.min(...K.map(k=>k.l))-.001,maxP=target+.0025;
+const L=20,R=W-90,T=70,B=H-60,N=36,cw=(R-L)/N;
+const py=v=>T+(maxP-v)/(maxP-minP)*(B-T),px=i=>L+cw*(i+.5);
+const ease=u=>u<0?0:u>1?1:1-Math.pow(1-u,3),seg=(t,a,b)=>Math.min(1,Math.max(0,(t-a)/(b-a)));
+function candle(i,k,a=1){x.globalAlpha=a;const col=k.c>=k.o?C.up:C.down;x.strokeStyle=x.fillStyle=col;x.lineWidth=1.5;x.beginPath();x.moveTo(px(i),py(k.h));x.lineTo(px(i),py(k.l));x.stroke();const y1=py(Math.max(k.o,k.c)),y2=py(Math.min(k.o,k.c));x.fillRect(px(i)-cw*.35,y1,cw*.7,Math.max(1.5,y2-y1));x.globalAlpha=1}
+function hline(v,col,label,a,dash){x.globalAlpha=a;x.strokeStyle=col;x.lineWidth=1.5;x.setLineDash(dash?[6,5]:[]);x.beginPath();x.moveTo(L,py(v));x.lineTo(R,py(v));x.stroke();x.setLineDash([]);x.fillStyle=col;x.fillRect(R,py(v)-11,90,22);x.fillStyle='#fff';x.font='600 13px Trebuchet MS';x.textAlign='center';x.fillText(v.toFixed(5),R+45,py(v)+5);x.textAlign='left';x.font='600 14px Trebuchet MS';const tw=x.measureText(label).width;x.fillStyle=col;x.fillRect(L+8,py(v)-24,tw+12,20);x.fillStyle='#fff';x.fillText(label,L+14,py(v)-9);x.globalAlpha=1}
+function pill(txt,cx,cy,bg,a,size=20){x.globalAlpha=a;x.font=`700 ${size}px Trebuchet MS`;const w=x.measureText(txt).width+32,h=size+20;x.fillStyle=bg;x.beginPath();x.roundRect(cx-w/2,cy-h/2,w,h,8);x.fill();x.fillStyle='#fff';x.textAlign='center';x.fillText(txt,cx,cy+size*.35);x.textAlign='left';x.globalAlpha=1}
+function caption(txt,a){if(!txt)return;x.globalAlpha=a;x.font='600 24px Trebuchet MS';const w=x.measureText(txt).width+40;x.fillStyle='rgba(0,0,0,.72)';x.beginPath();x.roundRect(W/2-w/2,B-64,w,46,8);x.fill();x.fillStyle='#fff';x.textAlign='center';x.fillText(txt,W/2,B-33);x.textAlign='left';x.globalAlpha=1}
+const caps=[[0,4,''],[4,10,'Start with the daily chart'],[10,14.5,"Mark yesterday's High and Low"],[14.5,19,'Daily candle CLOSES above the previous high'],[19,23,'Bias is bullish: buy the pullback into PDH'],[23,26.5,'Price runs to the buy-side liquidity'],[26.5,30,'']];
+function frame(t){
+x.fillStyle=C.chart;x.fillRect(0,0,W,H);
+// grid
+x.strokeStyle=C.grid;x.lineWidth=1;for(let i=0;i<=8;i++){const y=T+(B-T)*i/8;x.beginPath();x.moveTo(L,y);x.lineTo(R,y);x.stroke();x.fillStyle=C.muted;x.font='13px Trebuchet MS';x.fillText((maxP-(maxP-minP)*i/8).toFixed(5),R+10,y+4)}
+for(let i=0;i<N;i+=5){x.beginPath();x.moveTo(px(i),T);x.lineTo(px(i),B);x.stroke();x.fillStyle=C.muted;x.fillText(['Oct','','','Nov','',''][0]&&('Oct '+(i+1)),px(i)-18,B+22)}
+x.strokeStyle=C.axis;x.beginPath();x.moveTo(R,T-30);x.lineTo(R,B);x.lineTo(L,B);x.stroke();
+// header
+x.fillStyle=C.text;x.font='700 20px Trebuchet MS';x.fillText('EURUSD',L+8,32);x.fillStyle=C.muted;x.font='16px Trebuchet MS';x.fillText('· 1D · FX',L+92,32);
+// candles
+const nShow=Math.floor(30*ease(seg(t,3.5,10)));for(let i=0;i<Math.min(30,nShow+1);i++){const a=i<nShow?1:(30*ease(seg(t,3.5,10)))%1;candle(i,K[i],a)}
+const last=nShow>0?K[Math.min(29,nShow-1)]:K[0];
+// PDH/PDL
+const lv=ease(seg(t,10,11.5));if(lv>0){x.globalAlpha=.12*lv;x.fillStyle=C.gold;x.fillRect(px(29)-cw*.6,T,cw*1.2,B-T);x.globalAlpha=1;hline(PDH,C.blue,'PDH  Previous Day High',lv);hline(PDL,'#9c27b0','PDL  Previous Day Low',lv)}
+// yesterday candle growing
+let shown=last;const yg=ease(seg(t,14.5,17.5));if(yg>0){const k={o:Y.o,c:Y.o+(Y.c-Y.o)*yg,h:Math.max(Y.o,Y.o+(Y.h-Y.o)*yg),l:Y.o-(Y.o-Y.l)*Math.min(1,yg*3)};candle(30,k);shown=k}
+const bb=ease(seg(t,17.3,18));if(bb>0){pill('▲ BULLISH DAILY BIAS',px(30)-40,py(Y.h)-60,C.up,bb,22)}
+// today
+const tg=seg(t,19,26);if(tg>0){const k=today(tg);candle(31,k);shown=k;
+ const tl=ease(seg(t,19,20));hline(target,C.gold,'Buy-side liquidity (target)',tl,true);
+ const ar=ease(seg(t,20.5,21.5));if(ar>0){x.globalAlpha=ar;x.strokeStyle=C.up;x.lineWidth=3;x.beginPath();x.moveTo(px(33),py(PDH));x.lineTo(px(33),py(target)+14);x.stroke();x.fillStyle=C.up;x.beginPath();x.moveTo(px(33)-10,py(target)+18);x.lineTo(px(33)+10,py(target)+18);x.lineTo(px(33),py(target)+2);x.fill();x.globalAlpha=1}
+ if(tg>.25&&tg<.62)pill('Retest = entry',px(31)+90,py(PDH)+40,C.blue,Math.min(1,(tg-.25)*10),16)}
+// OHLC readout
+const col=shown.c>=shown.o?C.up:C.down;x.font='15px Trebuchet MS';let ox=L+180;for(const[k,v]of[['O',shown.o],['H',shown.h],['L',shown.l],['C',shown.c]]){x.fillStyle=C.muted;x.fillText(k,ox,32);x.fillStyle=col;x.fillText(v.toFixed(5),ox+14,32);ox+=96}
+// live price tag
+x.fillStyle=col;x.fillRect(R,py(shown.c)-11,90,22);x.fillStyle='#fff';x.font='600 13px Trebuchet MS';x.textAlign='center';x.fillText(shown.c.toFixed(5),R+45,py(shown.c)+5);x.textAlign='left';
+// captions
+for(const[a,b,txt]of caps)if(t>=a&&t<b)caption(txt,Math.min(1,(t-a)*4,(b-t)*4));
+// title
+const ti=Math.min(1,t*3,(4-t)*2);if(t<4){x.globalAlpha=Math.max(0,ti)*.88;x.fillStyle='#0b0d12';x.fillRect(0,0,W,H);x.globalAlpha=Math.max(0,ti);x.textAlign='center';x.fillStyle=C.gold;x.font='700 22px Trebuchet MS';x.fillText('TRADING IN 30 SECONDS',W/2,H/2-70);x.fillStyle='#fff';x.font='800 72px Trebuchet MS';x.fillText('What is Daily Bias?',W/2,H/2+10);x.fillStyle=C.muted;x.font='24px Trebuchet MS';x.fillText("Know today's direction before you trade",W/2,H/2+60);x.textAlign='left';x.globalAlpha=1}
+// outro
+const oi=ease(seg(t,26.5,27.3));if(oi>0){x.globalAlpha=oi*.92;x.fillStyle='#0b0d12';x.fillRect(0,0,W,H);x.globalAlpha=oi;x.textAlign='center';x.fillStyle='#fff';x.font='800 48px Trebuchet MS';x.fillText('Daily Bias Rule',W/2,170);
+ x.font='600 28px Trebuchet MS';x.fillStyle=C.up;x.fillText('▲ Close above PDH  →  Bullish: look for buys',W/2,270);x.fillStyle=C.down;x.fillText('▼ Close below PDL  →  Bearish: look for sells',W/2,330);x.fillStyle=C.muted;x.fillText('Closes inside the range  →  No bias, wait',W/2,390);
+ x.fillStyle=C.gold;x.font='700 26px Trebuchet MS';x.fillText('Trade with the bias, not against it.',W/2,480);x.fillStyle=C.muted;x.font='18px Trebuchet MS';x.fillText('Educational only. Not financial advice.',W/2,560);x.textAlign='left';x.globalAlpha=1}
+}
+window.renderAt=frame;
+let t0=performance.now(),paused=false,cur=0;const pp=document.getElementById('pp'),sc=document.getElementById('scrub'),tc=document.getElementById('tc');
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function loop(now){if(!paused){cur=((now-t0)/1000)%D}frame(cur);sc.value=cur;tc.textContent=cur.toFixed(1)+' / 30s';requestAnimationFrame(loop)}
+if(reduce){paused=true;cur=26;pp.textContent='Play'}
+if(!window.__noLoop)requestAnimationFrame(loop);
+pp.onclick=()=>{paused=!paused;pp.textContent=paused?'Play':'Pause';t0=performance.now()-cur*1000};
+sc.oninput=()=>{cur=+sc.value;t0=performance.now()-cur*1000};
+</script>
