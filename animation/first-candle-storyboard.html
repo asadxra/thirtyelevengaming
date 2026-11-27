@@ -1,0 +1,115 @@
+<title>First Candle Storyboard</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: dark studio wall, series arc strip on top, then a grid of 9:16 storyboard panels with notes under each */
+:root{
+  --bg:#10131f; --panel:#181c2c; --line:#2a3048; --fg:#eef0f7; --muted:#9aa1bb;
+  --teal:#6fd8c0; --gold:#ffd34d; --green:#3ddc84; --red:#ff5d6c;
+  --display:'Bebas Neue','Oswald',Impact,sans-serif; --body:'Inter',system-ui,sans-serif;
+  color-scheme:dark;
+}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);line-height:1.5}
+.wrap{max-width:1200px;margin:0 auto;padding-block:40px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:40px}
+h1,h2,h3{font-family:var(--display);font-weight:400;letter-spacing:.02em;margin:0;text-wrap:balance}
+h1{font-size:clamp(48px,9vw,96px);line-height:.9}
+h1 span{color:var(--gold)}
+h2{font-size:36px}
+.lede{color:var(--muted);max-width:62ch;margin:12px 0 0}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.chip{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--line);border-radius:99px;padding:4px 12px;color:var(--muted)}
+.arc{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.ep{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.ep.now{border-color:var(--gold)}
+.ep b{font-family:var(--display);font-size:13px;letter-spacing:.1em;color:var(--muted);font-weight:400}
+.ep h3{font-size:24px}
+.ep p{margin:0;font-size:13px;color:var(--muted)}
+.bal{font-family:var(--display);font-size:18px;font-variant-numeric:tabular-nums}
+.up{color:var(--green)} .down{color:var(--red)}
+.board{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:24px}
+.shot{display:flex;flex-direction:column;gap:10px;min-width:0}
+.shot svg{width:100%;max-width:100%;aspect-ratio:9/16;border-radius:10px;display:block;border:1px solid var(--line)}
+.hd{display:flex;justify-content:space-between;align-items:baseline}
+.hd span{font-family:var(--display);font-size:22px}
+.hd small{color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums}
+.vo{margin:0;font-size:14px}
+.vo::before{content:"YOU (VO) ";font-family:var(--display);color:var(--gold);letter-spacing:.06em}
+.act{margin:0;font-size:13px;color:var(--muted)}
+.note{color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:16px;max-width:70ch}
+@media (max-width:420px){.board{grid-template-columns:1fr 1fr;gap:14px}.vo{font-size:13px}}
+</style>
+
+<div class="wrap">
+<header>
+  <h1>FIRST <span>CANDLE</span></h1>
+  <p class="lede">A short animated series in the round-head cartoon style. You narrate the story of Theo, a guy who finds trading at 2 AM and learns everything the hard way. Each episode is 30 to 40 seconds, vertical, and ends on a cliffhanger.</p>
+  <div class="meta"><span class="chip">9:16 vertical</span><span class="chip">6 episodes</span><span class="chip">~35s each</span><span class="chip">Voiceover: you</span></div>
+</header>
+
+<section>
+  <h2>Series arc</h2>
+  <div class="arc" id="arc"></div>
+</section>
+
+<section>
+  <h2>Episode 1 · The Video</h2>
+  <p class="lede">Eight shots, about 36 seconds. The running balance badge appears in shot 6 and stays on screen for the rest of the series.</p>
+  <div class="board" id="board" style="margin-top:20px"></div>
+</section>
+
+<p class="note">Theo's balance is the series' running counter, like the "felt held" score in the reference video. Episode 6 can end with an on-screen line such as "This is a story, not financial advice" so the lesson lands without reading as a tip.</p>
+</div>
+
+<script>
+const eps=[
+ ["EP 1","The Video","2 AM scroll. A stranger with a sports car says he made $4,000 before breakfast. Theo downloads the app.","$50","up"],
+ ["EP 2","First Win","His first trade goes green. +$22. He tells everyone he's a trader now.","$72","up"],
+ ["EP 3","All In","He moves his rent money in and finds the leverage button.","$1,200","up"],
+ ["EP 4","The Red Candle","One candle. Sixty percent gone while he was in the shower.","$480","down"],
+ ["EP 5","Revenge Trade","He tries to win it all back in one move. It goes worse.","$90","down"],
+ ["EP 6","The Journal","He starts over small: a notebook, a plan, 1% risk. Slower, and still standing.","$90","up"],
+];
+document.getElementById('arc').innerHTML=eps.map((e,i)=>`<div class="ep${i==0?' now':''}"><b>${e[0]}</b><h3>${e[1]}</h3><p>${e[2]}</p><span class="bal ${e[4]}">BALANCE ${e[3]}</span></div>`).join('');
+
+/* ---------- drawing helpers (viewBox 360x640) ---------- */
+const C={teal:'#6fd8c0',white:'#f4f4f4',ink:'#11141f',gold:'#ffd34d',green:'#3ddc84',red:'#ff5d6c'};
+function guy(x,y,s,o={}){ // round-head stick figure, y = feet
+  const c=o.color||C.teal, hy=y-170*s, sw=11*s;
+  let eyes;
+  if(o.eyes=='dollar') eyes=`<text x="${x-17*s}" y="${hy+8*s}" font-size="${26*s}" fill="${C.green}" text-anchor="middle" font-family="Bebas Neue,Impact">$</text><text x="${x+17*s}" y="${hy+8*s}" font-size="${26*s}" fill="${C.green}" text-anchor="middle" font-family="Bebas Neue,Impact">$</text>`;
+  else if(o.eyes=='wide') eyes=`<circle cx="${x-16*s}" cy="${hy}" r="${8*s}" fill="#fff" stroke="${C.ink}" stroke-width="${3*s}"/><circle cx="${x+16*s}" cy="${hy}" r="${8*s}" fill="#fff" stroke="${C.ink}" stroke-width="${3*s}"/><circle cx="${x-16*s}" cy="${hy}" r="${3*s}" fill="${C.ink}"/><circle cx="${x+16*s}" cy="${hy}" r="${3*s}" fill="${C.ink}"/>`;
+  else if(o.eyes=='happy') eyes=`<path d="M${x-24*s} ${hy+2*s} q8 -10 16 0 M${x+8*s} ${hy+2*s} q8 -10 16 0" stroke="${C.ink}" stroke-width="${4*s}" fill="none" stroke-linecap="round"/>`;
+  else eyes=`<circle cx="${x-16*s}" cy="${hy}" r="${5*s}" fill="${C.ink}"/><circle cx="${x+16*s}" cy="${hy}" r="${5*s}" fill="${C.ink}"/>`;
+  const m=o.mouth=='o'?`<ellipse cx="${x}" cy="${hy+24*s}" rx="${6*s}" ry="${8*s}" fill="${C.ink}"/>`:o.mouth=='flat'?`<path d="M${x-10*s} ${hy+24*s} h${20*s}" stroke="${C.ink}" stroke-width="${4*s}" stroke-linecap="round"/>`:`<path d="M${x-14*s} ${hy+20*s} q${14*s} ${14*s} ${28*s} 0" stroke="${C.ink}" stroke-width="${4*s}" fill="none" stroke-linecap="round"/>`;
+  const arms=o.arms=='up'?`M${x} ${y-110*s} l${-36*s} ${-40*s} M${x} ${y-110*s} l${36*s} ${-40*s}`:o.arms=='phone'?`M${x} ${y-110*s} l${-22*s} ${30*s} l${18*s} ${-10*s} M${x} ${y-110*s} l${22*s} ${30*s} l${-14*s} ${-12*s}`:`M${x} ${y-110*s} l${-30*s} ${40*s} M${x} ${y-110*s} l${30*s} ${40*s}`;
+  return `<ellipse cx="${x}" cy="${y+2}" rx="${34*s}" ry="${5*s}" fill="#000" opacity=".3"/>
+  <g stroke="${c}" stroke-width="${sw}" stroke-linecap="round" fill="none"><path d="M${x} ${hy+40*s} V${y-55*s} M${x} ${y-55*s} l${-14*s} ${55*s} M${x} ${y-55*s} l${14*s} ${55*s} ${arms}"/></g>
+  <circle cx="${x}" cy="${hy}" r="${46*s}" fill="${c}"/>${eyes}${m}${o.extra||''}`;
+}
+const room=(sky1,sky2,glow)=>`<rect width="360" height="640" fill="#1b2140"/><rect x="34" y="150" width="110" height="110" rx="6" fill="#2c3660"/><rect x="40" y="156" width="98" height="98" fill="url(#g${sky1.slice(1)})"/><defs><linearGradient id="g${sky1.slice(1)}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${sky1}"/><stop offset="1" stop-color="${sky2}"/></linearGradient></defs><rect x="86" y="156" width="6" height="98" fill="#2c3660"/><rect x="40" y="202" width="98" height="6" fill="#2c3660"/><rect y="520" width="360" height="120" fill="#141a30"/>${glow?`<circle cx="${glow[0]}" cy="${glow[1]}" r="150" fill="#7fd6ff" opacity=".12"/>`:''}`;
+const cap=(t,hi)=>`<text x="180" y="86" text-anchor="middle" font-family="Bebas Neue,Impact" font-size="40" fill="#fff">${t}${hi?` <tspan fill="${C.gold}">${hi}</tspan>`:''}</text>`;
+const bubble=(x,y,t,tx,ty)=>{const w=t.length*14+36;return `<path d="M${x-10} ${y+40} L${tx} ${ty} L${x+12} ${y+40}" fill="#fff" stroke="${C.ink}" stroke-width="4" stroke-linejoin="round"/><rect x="${x-w/2}" y="${y}" width="${w}" height="44" rx="22" fill="#fff" stroke="${C.ink}" stroke-width="4"/><text x="${x}" y="${y+32}" text-anchor="middle" font-family="Bebas Neue,Impact" font-size="28" fill="${C.ink}">${t}</text>`};
+const badge=(v,col)=>`<rect x="94" y="108" width="172" height="40" rx="20" fill="${C.ink}" stroke="${col}" stroke-width="3"/><text x="180" y="137" text-anchor="middle" font-family="Bebas Neue,Impact" font-size="28" fill="${col}">BALANCE ${v}</text>`;
+const phone=(x,y,w,h,inner)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="22" fill="${C.ink}"/><rect x="${x+8}" y="${y+8}" width="${w-16}" height="${h-16}" rx="16" fill="#0e1a2c"/>${inner}`;
+const candles=(x0,y0,data)=>data.map((d,i)=>{const [o,c]=d,col=c<o?C.green:C.red,top=Math.min(o,c);return `<line x1="${x0+i*22+7}" y1="${top-10}" x2="${x0+i*22+7}" y2="${Math.max(o,c)+10}" stroke="${col}" stroke-width="2"/><rect x="${x0+i*22}" y="${y0+top}" width="14" height="${Math.max(4,Math.abs(c-o))}" fill="${col}"/>`}).join('');
+
+const shots=[
+ ["Shot 1","0:00–0:04",room('#0a0d2a','#1a1640',[250,470])+cap('2:11','AM')+`<rect x="40" y="440" width="290" height="90" rx="14" fill="#3a3f70"/><rect x="60" y="420" width="80" height="34" rx="12" fill="#e7e9f5"/>`+guy(200,470,.75,{arms:'phone',eyes:'normal',mouth:'flat'})+`<rect x="222" y="385" width="26" height="40" rx="5" fill="${C.ink}"/><rect x="225" y="388" width="20" height="34" rx="3" fill="#7fd6ff"/>`,
+  "This is Theo. It's 2 AM, he has work in five hours, and he's still scrolling.","Night bedroom. Theo lies in bed lit only by his phone. Slow push in. Clock ticks."],
+ ["Shot 2","0:04–0:09",`<rect width="360" height="640" fill="#0b0d16"/>`+phone(50,60,260,520,`<rect x="66" y="80" width="228" height="300" rx="10" fill="#d7e2ff"/><rect x="90" y="250" width="180" height="70" rx="26" fill="${C.red}"/><circle cx="125" cy="322" r="18" fill="${C.ink}"/><circle cx="235" cy="322" r="18" fill="${C.ink}"/>`+guy(180,248,.5,{color:'#f2b27a',eyes:'happy',arms:'up',extra:`<rect x="160" y="140" width="40" height="10" rx="4" fill="${C.ink}"/>`})+`<text x="180" y="430" text-anchor="middle" font-family="Bebas Neue,Impact" font-size="34" fill="#fff">"I MADE <tspan fill="${C.green}">$4,000</tspan></text><text x="180" y="466" text-anchor="middle" font-family="Bebas Neue,Impact" font-size="34" fill="#fff">BEFORE BREAKFAST"</text><text x="180" y="520" text-anchor="middle" font-family="Inter,sans-serif" font-size="14" fill="#9aa1bb">♥ 1.2M · link in bio</text>`),
+  "Then the algorithm shows him a guy who says he made four thousand dollars before breakfast.","Phone fills the frame. Sunglasses guy, sports car, video playing. Upbeat music sting."],
+ ["Shot 3","0:09–0:13",room('#0a0d2a','#1a1640',[180,400])+cap('WAIT.','THAT WORKS?')+guy(180,520,1.1,{eyes:'dollar',mouth:'o'})+`<g fill="${C.gold}" font-family="Bebas Neue,Impact" font-size="28"><text x="60" y="300">$</text><text x="290" y="270">$</text><text x="300" y="400">$</text><text x="50" y="420">$</text></g>`,
+  "And Theo thinks: wait. That's a thing you can do?","Close-up. Eyes flip into dollar signs with a ka-ching sound. Floating $ symbols."],
+ ["Shot 4","0:13–0:17",`<rect width="360" height="640" fill="#0b0d16"/>`+phone(50,60,260,520,`<text x="180" y="200" text-anchor="middle" font-family="Bebas Neue,Impact" font-size="40" fill="#fff">TRADE<tspan fill="${C.green}">NOW</tspan></text><text x="180" y="240" text-anchor="middle" font-family="Inter,sans-serif" font-size="15" fill="#9aa1bb">Sign up in 30 seconds</text><rect x="80" y="300" width="200" height="16" rx="8" fill="#263049"/><rect x="80" y="300" width="150" height="16" rx="8" fill="${C.green}"/><text x="180" y="350" text-anchor="middle" font-family="Inter,sans-serif" font-size="14" fill="#9aa1bb">Installing… 75%</text><rect x="90" y="430" width="180" height="56" rx="28" fill="${C.green}"/><text x="180" y="467" text-anchor="middle" font-family="Bebas Neue,Impact" font-size="28" fill="${C.ink}">GET STARTED</text>`),
+  "Ninety seconds later he has a trading app. He did not read the terms.","App store, install bar fills fast, terms page scrolls by in a blur, thumb taps Accept."],
+ ["Shot 5","0:17–0:22",room('#0a0d2a','#1a1640',[220,420])+`<rect x="150" y="160" width="190" height="230" rx="12" fill="${C.ink}"/>`+candles(166,0,[[300,280],[285,300],[298,262],[265,250],[252,268],[266,230],[232,215]])+guy(90,520,.85,{eyes:'normal',mouth:'flat'})+bubble(160,110,'WHAT\'S A CANDLE?',100,330),
+  "He opens his first chart. It looks like a city skyline made of birthday candles.","Chart zooms in on the screen. Theo tilts his head. A question mark pops over him."],
+ ["Shot 6","0:22–0:27",room('#0a0d2a','#1a1640',[180,400])+badge('$50',C.gold)+guy(180,520,1,{eyes:'happy',arms:'up'})+`<rect x="130" y="200" width="100" height="50" rx="6" fill="#4caf6e" transform="rotate(-12 180 225)"/><text x="180" y="236" text-anchor="middle" font-family="Bebas Neue,Impact" font-size="30" fill="#e8ffe9" transform="rotate(-12 180 225)">$50</text>`,
+  "He deposits fifty dollars. Grocery money. It's fine. It's an investment.","Balance badge drops in from the top and stays there for the whole series. Bill floats into the phone."],
+ ["Shot 7","0:27–0:31",`<rect width="360" height="640" fill="#0b0d16"/>`+badge('$50',C.gold)+phone(50,170,260,420,`<rect x="80" y="230" width="200" height="150" rx="8" fill="#14223a"/>`+candles(92,0,[[340,320],[322,335],[336,305],[306,298]])+`<rect x="72" y="430" width="100" height="56" rx="14" fill="${C.green}"/><text x="122" y="467" text-anchor="middle" font-family="Bebas Neue,Impact" font-size="30" fill="${C.ink}">BUY</text><rect x="188" y="430" width="100" height="56" rx="14" fill="${C.red}" opacity=".5"/><text x="238" y="467" text-anchor="middle" font-family="Bebas Neue,Impact" font-size="30" fill="${C.ink}">SELL</text><circle cx="122" cy="470" r="34" fill="none" stroke="#fff" stroke-width="4" opacity=".7"/>`),
+  "He has no plan. He has no idea what he's buying. He presses Buy anyway.","Extreme close-up of the Buy button. Everything freezes. Heartbeat sound. Tap ripple."],
+ ["Shot 8","0:31–0:36",room('#2a1f4a','#ff9a6b',[180,400])+badge('$53',C.green)+guy(180,520,1.05,{eyes:'wide',arms:'up',mouth:'o'})+bubble(180,210,"I'M A TRADER.",180,300)+`<text x="180" y="600" text-anchor="middle" font-family="Bebas Neue,Impact" font-size="26" fill="${C.gold}">NEXT: FIRST WIN</text>`,
+  "Three dollars up. Theo has never felt more powerful. This is going to be a problem.","Badge ticks $50 → $53 in green. Theo jumps. Freeze frame, title card for Episode 2."],
+];
+document.getElementById('board').innerHTML=shots.map(s=>`<article class="shot"><svg viewBox="0 0 360 640" role="img" aria-label="${s[0]} sketch">${s[2]}</svg><div class="hd"><span>${s[0]}</span><small>${s[1]}</small></div><p class="vo">${s[3]}</p><p class="act">${s[4]}</p></article>`).join('');
+</script>
