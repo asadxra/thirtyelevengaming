@@ -1,0 +1,94 @@
+<title>Kaeri Red Hoodie</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600&display=swap">
+<style>
+/* Layout: white comic-panel cards in a row, thick ink outlines like the reference, one expression toggle */
+:root{--bg:#f3efe8;--card:#ffffff;--ink:#141414;--muted:#5d5a55;--red:#d62f2f;--line:#ddd6cb;
+--display:'Bebas Neue',Impact,sans-serif;--body:'Inter',system-ui,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17161a;--card:#fbfaf7;--muted:#b4afa8;--line:#2c2a30;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#17161a;--card:#fbfaf7;--muted:#b4afa8;--line:#2c2a30;color-scheme:dark}
+body{background:var(--bg);color:var(--fg,inherit);font-family:var(--body)}
+.wrap{max-width:1200px;margin:0 auto;padding-block:36px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:20px;color:var(--muted)}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(44px,8vw,80px);margin:0;line-height:.9;color:var(--red)}
+.lede{margin:8px 0 0;max-width:62ch}
+.moods{display:flex;gap:8px;flex-wrap:wrap}
+.moods button{font:600 14px var(--body);background:transparent;color:inherit;border:2px solid var(--line);border-radius:99px;padding:8px 16px;cursor:pointer}
+.moods button[aria-pressed=true]{background:var(--red);color:#fff;border-color:var(--red)}
+.moods button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}
+.card{background:var(--card);border:3px solid var(--ink);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;min-width:0;color:var(--ink)}
+.card svg{width:100%;aspect-ratio:3/4;display:block}
+.info{padding:10px 14px 16px;border-top:3px solid var(--ink);display:flex;flex-direction:column;gap:4px}
+.info b{font-family:var(--display);font-weight:400;font-size:24px}
+.info b small{color:var(--red);font-size:16px;margin-right:6px}
+.info p{margin:0;font-size:13px;line-height:1.45;color:#4a4742}
+.bob{animation:bob 2s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 100%}
+.blink{animation:blink 4s infinite;transform-box:fill-box;transform-origin:center}
+.wag{animation:wag 1.2s ease-in-out infinite;transform-box:fill-box;transform-origin:20% 80%}
+@keyframes bob{50%{transform:translateY(-5px)}}
+@keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+@keyframes wag{50%{transform:rotate(-6deg)}}
+[data-mood=hyped] .bob{animation-duration:.6s}
+.m{display:none}
+[data-mood=serious] .m-serious,[data-mood=happy] .m-happy,[data-mood=hyped] .m-hyped,[data-mood=shocked] .m-shocked{display:inline}
+@media (prefers-reduced-motion:reduce){.bob,.blink,.wag{animation:none}}
+</style>
+<div class="wrap" id="root" data-mood="serious">
+<header><h1>KAERI · RED HOODIE</h1>
+<p class="lede">Five takes on your reference: white face, hood up, thick ink outlines and cartoon gloves, now in red. Each one has a different pose and a small design twist. The buttons change the face on all five.</p></header>
+<div class="moods" role="group" aria-label="Expression">
+<button data-m="serious" aria-pressed="true">Serious</button><button data-m="happy" aria-pressed="false">Happy</button><button data-m="hyped" aria-pressed="false">Hyped</button><button data-m="shocked" aria-pressed="false">Shocked</button></div>
+<div class="grid" id="g"></div>
+</div>
+<script>
+const K='#141414';
+const M=(m,s)=>`<g class="m m-${m}">${s}</g>`;
+const arm=(d,c)=>`<path d="${d}" stroke="${K}" stroke-width="34" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="${d}" stroke="${c}" stroke-width="24" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`;
+const fist=(x,y,r=19)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="#fff" stroke="${K}" stroke-width="5"/><path d="M${x-r*.5} ${y-r*.2}q${r*.5} ${r*.35} ${r} 0M${x-r*.5} ${y+r*.25}q${r*.5} ${r*.35} ${r} 0" stroke="${K}" stroke-width="3" fill="none"/>`;
+// index finger points sideways toward the camera/center, never straight up
+const point=(x,y)=>`<g class="wag"><path d="M${x-10} ${y-14}h-40a10 10 0 0 0 0 20h40" fill="#fff" stroke="${K}" stroke-width="5" stroke-linejoin="round"/><circle cx="${x}" cy="${y}" r="24" fill="#fff" stroke="${K}" stroke-width="5"/><path d="M${x-12} ${y+8}q12 6 24 0M${x-12} ${y+16}q12 5 22 0" stroke="${K}" stroke-width="3" fill="none"/></g>`;
+// sideways fist with a short thumb on the left edge
+const thumb=(x,y)=>`<rect x="${x-24}" y="${y-14}" width="46" height="36" rx="16" fill="#fff" stroke="${K}" stroke-width="5"/><path d="M${x-22} ${y-6}q-2-26 8-30q10-2 10 8l-2 22" fill="#fff" stroke="${K}" stroke-width="5" stroke-linejoin="round"/><path d="M${x-2} ${y-2}h20M${x-2} ${y+8}h20" stroke="${K}" stroke-width="3"/>`;
+function face(){
+ const brow=(d)=>`<path d="${d}" stroke="${K}" stroke-width="5" stroke-linecap="round" fill="none"/>`;
+ return M('serious',`<g class="blink"><ellipse cx="132" cy="150" rx="6" ry="9" fill="${K}"/><ellipse cx="168" cy="150" rx="6" ry="9" fill="${K}"/></g>`+brow('M156 128l22-8')+`<path d="M136 182q14-4 28 0" stroke="${K}" stroke-width="5" fill="none" stroke-linecap="round"/>`)+
+  M('happy',`<g class="blink"><ellipse cx="132" cy="150" rx="6" ry="9" fill="${K}"/><ellipse cx="168" cy="150" rx="6" ry="9" fill="${K}"/></g>`+`<path d="M132 176q18 16 36 0" stroke="${K}" stroke-width="5" fill="none" stroke-linecap="round"/>`)+
+  M('hyped',brow('M122 152q10-12 20 0M158 152q10-12 20 0')+brow('M124 128l16 4M176 128l-16 4')+`<path d="M128 172q22 32 44 0z" fill="${K}"/><path d="M140 186q10 6 20 0" stroke="#e24a4a" stroke-width="5" fill="none"/>`)+
+  M('shocked',`<circle cx="132" cy="148" r="12" fill="#fff" stroke="${K}" stroke-width="4"/><circle cx="168" cy="148" r="12" fill="#fff" stroke="${K}" stroke-width="4"/><circle cx="132" cy="148" r="3.5" fill="${K}"/><circle cx="168" cy="148" r="3.5" fill="${K}"/>`+brow('M120 124l18-6M180 124l-18-6')+`<ellipse cx="150" cy="186" rx="9" ry="12" fill="${K}"/><path d="M196 120q8 14 0 20q-8-6 0-20z" fill="#7fc8ff" stroke="${K}" stroke-width="2"/>`);
+}
+function kaeri(o){
+ const c=o.red, d=o.shade;
+ return `<svg viewBox="0 0 300 400"><rect width="300" height="400" fill="#fff"/>${o.bgx||''}
+ <g class="bob">
+  <path d="M92 248q58-26 116 0l22 112h-160z" fill="${c}" stroke="${K}" stroke-width="6" stroke-linejoin="round"/>
+  ${o.zip?`<path d="M150 236v124" stroke="${K}" stroke-width="5"/><path d="M150 236v124" stroke="#bbb" stroke-width="2" stroke-dasharray="3 4"/>`:`<path d="M112 322q38-14 76 0l4 38h-84z" fill="${d}" stroke="${K}" stroke-width="5" stroke-linejoin="round"/>`}
+  ${o.logo||''}
+  <g stroke="${K}" stroke-width="4" fill="none"><path d="M140 244q-4 20 -2 44"/><path d="M160 244q4 20 2 44"/></g><circle cx="138" cy="292" r="4" fill="${o.tips||K}" stroke="${K}" stroke-width="2"/><circle cx="162" cy="292" r="4" fill="${o.tips||K}" stroke="${K}" stroke-width="2"/>
+  ${o.arms}
+  <path d="M150 48c66 0 92 60 88 120c-3 46-28 72-60 82h-56c-32-10-57-36-60-82c-4-60 22-120 88-120z" fill="${c}" stroke="${K}" stroke-width="6" stroke-linejoin="round"/>
+  <ellipse cx="150" cy="156" rx="64" ry="74" fill="${d}"/>
+  <ellipse cx="150" cy="154" rx="52" ry="60" fill="#fff" stroke="${K}" stroke-width="5"/>
+  ${face()}${o.head||''}
+  ${o.front||''}
+ </g>
+ <path d="M20 362h260" stroke="${K}" stroke-width="7" stroke-linecap="round"/>${o.desk||''}</svg>`;
+}
+const V=[
+ ["1","The Point","Straight from your reference: hood up, pointing at the viewer. Perfect for a \"you've done this too\" opening.",
+  {red:'#d62f2f',shade:'#a81f22',arms:arm('M104 268q-20 50 10 88','#d62f2f')+fist(122,352,17)+arm('M196 262q34-6 44-24','#d62f2f'),front:point(246,240)}],
+ ["2","Headphones","Gaming headphones over the hood and a phone in hand, checking the chart. Fits your gaming brand.",
+  {red:'#e0352b',shade:'#b02420',head:`<path d="M84 140q0-96 66-96q66 0 66 96" stroke="${K}" stroke-width="9" fill="none"/><rect x="70" y="122" width="28" height="52" rx="12" fill="#2b2b2b" stroke="${K}" stroke-width="4"/><rect x="202" y="122" width="28" height="52" rx="12" fill="#2b2b2b" stroke="${K}" stroke-width="4"/>`,
+   arms:arm('M104 268q-20 50 10 88','#e0352b')+fist(122,352,17)+arm('M198 266q30 30 2 66','#e0352b'),front:`<rect x="176" y="292" width="40" height="64" rx="8" fill="#222" stroke="${K}" stroke-width="5" transform="rotate(-12 196 324)"/><polyline points="186,334 194,322 200,328 210,306" stroke="#3ddc84" stroke-width="4" fill="none" transform="rotate(-12 196 324)"/>`+fist(196,338,17)}],
+ ["3","Candle Logo","A darker crimson hoodie with a green candlestick logo on the chest. Arms crossed, unimpressed. Instantly a trading character.",
+  {red:'#a8182a',shade:'#7c0f1e',tips:'#fff',logo:`<rect x="168" y="276" width="14" height="30" fill="#3ddc84" stroke="${K}" stroke-width="3"/><path d="M175 266v10M175 306v10" stroke="${K}" stroke-width="3"/>`,
+   arms:arm('M100 270q-6 50 40 46h40','#a8182a')+arm('M200 270q6 50-40 46h-30','#a8182a')+fist(184,312,16)+fist(118,318,16)}],
+ ["4","Panic Mode","Bright red with white drawstrings, both gloves on the cheeks. Built for the red-candle episodes. Try it with Shocked.",
+  {red:'#ff3b30',shade:'#c9241b',tips:'#fff',arms:arm('M104 262q-30 -20 -8 -86','#ff3b30')+arm('M196 262q30 -20 8 -86','#ff3b30'),front:fist(100,170,20)+fist(200,170,20)}],
+ ["5","Zip-Up Win","A zip-up hoodie with a thumbs-up and a little green chart behind. The \"first win\" pose. Try it with Hyped.",
+  {red:'#d62f2f',shade:'#a81f22',zip:1,bgx:`<polyline points="20,300 60,280 90,292 130,240 170,250 210,190 260,160" stroke="#3ddc84" stroke-width="6" fill="none" opacity=".35"/><path d="M246 152l16 6l-6 16" stroke="#3ddc84" stroke-width="6" fill="none" opacity=".35"/>`,
+   arms:arm('M104 268q-20 50 10 88','#d62f2f')+fist(122,352,17)+arm('M198 264q36 -10 36 -60','#d62f2f'),front:thumb(234,200)}],
+];
+document.getElementById('g').innerHTML=V.map(([n,name,desc,o])=>`<article class="card">${kaeri(o)}<div class="info"><b><small>${n}</small>${name}</b><p>${desc}</p></div></article>`).join('');
+const root=document.getElementById('root');
+document.querySelectorAll('.moods button').forEach(b=>b.addEventListener('click',()=>{root.dataset.mood=b.dataset.m;document.querySelectorAll('.moods button').forEach(x=>x.setAttribute('aria-pressed',x===b))}));
+</script>
