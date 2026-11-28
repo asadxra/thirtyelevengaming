@@ -1,0 +1,126 @@
+<title>Kaeri Variations</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600&display=swap">
+<style>
+/* Layout: two labeled rows (Flat Round, Chibi Anime), five stage cards each, one mood toggle for all */
+:root{--bg:#10131f;--card:#181c2c;--line:#2a3048;--fg:#eef0f7;--muted:#9aa1bb;--gold:#ffd34d;
+--display:'Bebas Neue',Impact,sans-serif;--body:'Inter',system-ui,sans-serif;color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body)}
+.wrap{max-width:1200px;margin:0 auto;padding-block:36px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:24px}
+h1,h2{font-family:var(--display);font-weight:400;margin:0;line-height:.95}
+h1{font-size:clamp(44px,8vw,80px)} h1 span{color:var(--gold)} h2{font-size:34px}
+.lede{color:var(--muted);margin:8px 0 0;max-width:60ch}
+.moods{display:flex;gap:8px;flex-wrap:wrap;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding-block:10px;z-index:2}
+.moods button{font:600 14px var(--body);background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:99px;padding:8px 16px;cursor:pointer}
+.moods button[aria-pressed=true]{background:var(--gold);color:#11141f;border-color:var(--gold)}
+.moods button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-top:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.card svg{width:100%;aspect-ratio:3/4;display:block}
+.info{padding:12px 14px 16px;display:flex;flex-direction:column;gap:4px}
+.info b{font-family:var(--display);font-weight:400;font-size:24px}
+.info b small{color:var(--gold);font-size:16px;margin-right:6px}
+.info p{margin:0;color:var(--muted);font-size:13px;line-height:1.45}
+.bob{animation:bob 1.6s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 100%}
+.blink{animation:blink 4s infinite;transform-box:fill-box;transform-origin:center}
+@keyframes bob{50%{transform:translateY(-8px)}}
+@keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+[data-mood=hyped] .bob{animation-duration:.6s}
+.m{display:none}
+[data-mood=happy] .m-happy,[data-mood=hyped] .m-hyped,[data-mood=shocked] .m-shocked{display:inline}
+@media (prefers-reduced-motion:reduce){.bob,.blink{animation:none}}
+</style>
+<div class="wrap" id="root" data-mood="happy">
+<header><h1>KAERI <span>VARIATIONS</span></h1>
+<p class="lede">Five takes on each of your two favorites. Use the buttons to see every version happy, hyped after a win, or shocked by a red candle. Pick a letter, like A3 or B5.</p></header>
+<div class="moods" role="group" aria-label="Expression">
+<button data-m="happy" aria-pressed="true">Happy</button><button data-m="hyped" aria-pressed="false">Hyped</button><button data-m="shocked" aria-pressed="false">Shocked</button></div>
+<section><h2>A · Flat Round</h2><div class="grid" id="ga"></div></section>
+<section><h2>B · Chibi Anime</h2><div class="grid" id="gb"></div></section>
+</div>
+<script>
+const M=(m,s)=>`<g class="m m-${m}">${s}</g>`;
+/* ---------- A: flat round ---------- */
+function flat(o){
+ const c=o.skin,cx=150,hy=160;
+ const eyes=M('happy',`<g class="blink"><circle cx="128" cy="${hy-8}" r="7" fill="#11141f"/><circle cx="172" cy="${hy-8}" r="7" fill="#11141f"/></g>`)+
+  M('hyped',`<g fill="${o.dollar||'#11141f'}" font-family="Bebas Neue,Impact" font-size="34" text-anchor="middle"><text x="128" y="${hy+4}">$</text><text x="172" y="${hy+4}">$</text></g>`)+
+  M('shocked',`<circle cx="128" cy="${hy-10}" r="13" fill="#fff" stroke="#11141f" stroke-width="4"/><circle cx="172" cy="${hy-10}" r="13" fill="#fff" stroke="#11141f" stroke-width="4"/><circle cx="128" cy="${hy-10}" r="4" fill="#11141f"/><circle cx="172" cy="${hy-10}" r="4" fill="#11141f"/>`);
+ const mouth=M('happy',`<path d="M130 ${hy+20}q20 16 40 0" stroke="#11141f" stroke-width="5" fill="none" stroke-linecap="round"/>`)+
+  M('hyped',`<path d="M126 ${hy+16}q24 30 48 0z" fill="#11141f"/>`)+M('shocked',`<ellipse cx="150" cy="${hy+26}" rx="9" ry="13" fill="#11141f"/>`);
+ const limb=(d,col)=>`<path d="${d}" stroke="${col}" stroke-width="14" stroke-linecap="round" fill="none"/>`;
+ const arms=M('happy',limb('M150 250l-35 40M150 250l35 40',o.sleeve||c))+M('hyped',limb('M150 250l-40-45M150 250l40-45',o.sleeve||c))+M('shocked',limb('M150 250l-34 6l-14-36M150 250l34 6l14-36',o.sleeve||c));
+ return `<svg viewBox="0 0 300 400"><rect width="300" height="400" fill="${o.bg}"/><circle cx="150" cy="200" r="120" fill="${o.bg2}"/>${o.backdrop||''}
+ <g class="bob">${limb('M150 290v20M150 310l-20 58M150 310l20 58',o.legs||c)}${o.shoes||''}
+ <rect x="116" y="215" width="68" height="${o.torsoH||70}" rx="16" fill="${o.top}"/>${o.topDetail||''}${arms}
+ ${o.behindHead||''}<circle cx="${cx}" cy="${hy}" r="62" fill="${c}"/>${o.hair||''}${eyes}${o.overEyes||''}${mouth}${o.cheeks?`<circle cx="112" cy="${hy+12}" r="9" fill="#ff8fa3" opacity=".55"/><circle cx="188" cy="${hy+12}" r="9" fill="#ff8fa3" opacity=".55"/>`:''}${o.hat||''}
+ </g><ellipse cx="150" cy="372" rx="45" ry="6" fill="#000" opacity=".3"/></svg>`;
+}
+const A=[
+ ["A1","Classic Teal","The original: teal head, navy hoodie, no extras. The cleanest and quickest to animate.",
+  {skin:'#6fd8c0',bg:'#1d2440',bg2:'#26305a',top:'#3a4580'}],
+ ["A2","Hoodie + Tuft","A hair tuft and the hood up behind the head. Small details that make Kaeri recognizable in a thumbnail.",
+  {skin:'#6fd8c0',bg:'#1d2440',bg2:'#26305a',top:'#ff7a45',sleeve:'#ff7a45',cheeks:1,behindHead:'<path d="M84 170q-6-90 66-92q72 2 66 92z" fill="#ff7a45"/>',hair:'<path d="M140 100q4-26 22-30q-6 16 6 22q-14-2-28 8z" fill="#11141f"/>',topDetail:'<path d="M140 222v30M160 222v30" stroke="#fff" stroke-width="3"/>'}],
+ ["A3","Cap + Headphones","Backwards cap and gaming headphones. The most gamer of the five.",
+  {skin:'#ffcf9e',bg:'#13202e',bg2:'#1b3045',top:'#1f2a44',dollar:'#3ddc84',legs:'#1f2a44',
+   hat:'<path d="M92 128q4-48 58-50q54 2 58 50z" fill="#3ddc84"/><rect x="188" y="118" width="38" height="12" rx="6" fill="#2fb06a"/><path d="M82 160q0-82 68-82q68 0 68 82" stroke="#11141f" stroke-width="8" fill="none"/><rect x="74" y="140" width="22" height="40" rx="10" fill="#11141f"/><rect x="204" y="140" width="22" height="40" rx="10" fill="#11141f"/>',
+   shoes:'<g fill="#fff"><rect x="110" y="360" width="28" height="12" rx="5"/><rect x="162" y="360" width="28" height="12" rx="5"/></g>'}],
+ ["A4","Beanie + Glasses","Round glasses and a knit beanie. The nerdy chart-studier look, great for the learning episodes.",
+  {skin:'#c8a2ff',bg:'#1e1733',bg2:'#2b2148',top:'#ffd34d',sleeve:'#ffd34d',
+   overEyes:'<g fill="none" stroke="#11141f" stroke-width="4"><circle cx="128" cy="150" r="18"/><circle cx="172" cy="150" r="18"/><path d="M146 150h8"/></g>',
+   hat:'<path d="M90 130q2-56 60-58q58 2 60 58z" fill="#e5484d"/><rect x="86" y="122" width="128" height="16" rx="8" fill="#b83238"/><circle cx="150" cy="70" r="12" fill="#e5484d"/>'}],
+ ["A5","Suit-Up Pro","Slick hair, white shirt and a green tie. The \"I'm a real trader now\" version for when Kaeri gets cocky.",
+  {skin:'#6fd8c0',bg:'#0f2a22',bg2:'#15392e',top:'#20232f',sleeve:'#20232f',legs:'#20232f',dollar:'#ffd34d',
+   topDetail:'<path d="M138 216h24l-12 18z" fill="#fff"/><path d="M146 230h8l4 30l-8 8l-8-8z" fill="#3ddc84"/>',
+   hair:'<path d="M90 140q-4-60 60-64q60 0 62 40q-30-22-70-10q-30 10-52 34z" fill="#11141f"/>',
+   shoes:'<g fill="#11141f"><rect x="110" y="360" width="28" height="12" rx="5"/><rect x="162" y="360" width="28" height="12" rx="5"/></g>'}],
+];
+/* ---------- B: chibi ---------- */
+function chibi(o){
+ const hy=135;
+ const eyes=M('happy',`<g class="blink"><ellipse cx="122" cy="${hy+10}" rx="13" ry="18" fill="${o.iris}"/><ellipse cx="178" cy="${hy+10}" rx="13" ry="18" fill="${o.iris}"/><circle cx="126" cy="${hy+4}" r="5" fill="#fff"/><circle cx="182" cy="${hy+4}" r="5" fill="#fff"/><circle cx="118" cy="${hy+18}" r="2.5" fill="#fff"/><circle cx="174" cy="${hy+18}" r="2.5" fill="#fff"/></g>`)+
+  M('hyped',`<path d="M106 ${hy+5}l16 8l-16 8M194 ${hy+5}l-16 8l16 8" stroke="#11141f" stroke-width="5" fill="none" stroke-linejoin="round"/><g fill="#ffd34d"><path d="M66 90l5 10l10 2l-8 6l2 10l-9-5l-9 5l2-10l-8-6l10-2z"/><path d="M232 84l4 8l8 2l-6 5l2 8l-8-4l-7 4l2-8l-6-5l8-2z"/></g>`)+
+  M('shocked',`<circle cx="122" cy="${hy+10}" r="15" fill="#fff" stroke="#11141f" stroke-width="3"/><circle cx="178" cy="${hy+10}" r="15" fill="#fff" stroke="#11141f" stroke-width="3"/><circle cx="122" cy="${hy+10}" r="3" fill="#11141f"/><circle cx="178" cy="${hy+10}" r="3" fill="#11141f"/><path d="M212 100q8 14 0 22q-8-8 0-22z" fill="#7fd6ff"/>`);
+ const mouth=M('happy',`<path d="M140 ${hy+43}q10 8 20 0" stroke="#11141f" stroke-width="4" fill="none" stroke-linecap="round"/>`)+
+  M('hyped',`<path d="M134 ${hy+37}q16 26 32 0z" fill="#8a1f2b"/>`)+M('shocked',`<path d="M140 ${hy+47}q10-10 20 0" stroke="#11141f" stroke-width="4" fill="none" stroke-linecap="round"/>`);
+ const arm=(x,y,r,cx)=>`<rect x="${x}" y="${y}" width="22" height="60" rx="11" fill="${o.jacket}" transform="rotate(${r} ${cx} 215)"/>`;
+ const arms=M('happy',arm(84,215,0,95)+arm(194,215,0,205))+M('hyped',arm(80,158,-25,91)+arm(198,158,25,209))+M('shocked',arm(95,160,-10,106)+arm(183,160,10,194));
+ return `<svg viewBox="0 0 300 400"><defs><linearGradient id="g${o.id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${o.bg[0]}"/><stop offset="1" stop-color="${o.bg[1]}"/></linearGradient></defs>
+ <rect width="300" height="400" fill="url(#g${o.id})"/><polyline points="30,330 70,300 100,315 140,260 180,280 220,210 270,190" fill="none" stroke="${o.line||'#3ddc84'}" stroke-width="4" opacity=".3"/>
+ <g class="bob"><rect x="120" y="270" width="22" height="70" rx="10" fill="${o.pants}"/><rect x="158" y="270" width="22" height="70" rx="10" fill="${o.pants}"/>
+ <rect x="112" y="335" width="36" height="16" rx="8" fill="${o.shoe}"/><rect x="152" y="335" width="36" height="16" rx="8" fill="${o.shoe}"/>
+ <path d="M105 210q45-20 90 0v75h-90z" fill="${o.jacket}"/>${o.jacketDetail||''}${arms}
+ ${o.backHair||''}<ellipse cx="150" cy="${hy}" rx="78" ry="74" fill="#ffdcc2"/>${o.hair}${eyes}${o.overEyes||''}
+ <ellipse cx="108" cy="${hy+33}" rx="10" ry="6" fill="#ff9aa8" opacity=".6"/><ellipse cx="192" cy="${hy+33}" rx="10" ry="6" fill="#ff9aa8" opacity=".6"/>${mouth}${o.top||''}</g></svg>`;
+}
+const spiky=c=>`<path d="M68 130q-4-80 82-82q86 2 82 82l-14-30l-10 22l-14-38l-16 26l-14-34l-14 30l-14-28l-12 34l-12-24l-12 30z" fill="${c}"/>`;
+const B=[
+ ["B1","Original Spiky","Dark spiky hair with a teal streak and a red jacket. Bold and classic shonen hero.",
+  {id:1,bg:['#2b1d4f','#0f1a33'],iris:'#2d6cdf',jacket:'#e5484d',pants:'#2b2f45',shoe:'#fff',hair:spiky('#1b1e33')+'<path d="M150 48l14 40l-10-6z" fill="#6fd8c0"/>',jacketDetail:'<path d="M140 205h20v80h-20z" fill="#11141f" opacity=".25"/>'}],
+ ["B2","Hoodie Gamer","Messy hair, oversized hoodie and headphones around the neck. Cozy streamer energy.",
+  {id:2,bg:['#16243b','#0c1220'],iris:'#3ddc84',jacket:'#6c5ce7',pants:'#1f2235',shoe:'#3ddc84',
+   hair:'<path d="M70 132q-6-86 80-86q86 0 80 86q-14-22-30-26q4 16-6 22q-10-24-44-28q-12 18-34 20q4-12-2-20q-30 10-44 32z" fill="#4a2f22"/>',
+   jacketDetail:'<path d="M108 212q42 30 84 0" stroke="#11141f" stroke-width="12" fill="none"/><rect x="100" y="203" width="20" height="22" rx="8" fill="#11141f"/><rect x="180" y="203" width="20" height="22" rx="8" fill="#11141f"/><path d="M138 230v30M162 230v30" stroke="#fff" stroke-width="3"/>'}],
+ ["B3","Glasses + Long Hair","Long tied-back hair and round glasses. Calm and clever, the strategist type.",
+  {id:3,bg:['#2a1630','#120b1f'],iris:'#a35cff',jacket:'#f2f2f2',pants:'#33354a',shoe:'#a35cff',line:'#a35cff',
+   backHair:'<path d="M180 120q60 40 40 150q-20-10-24-40q20-60-30-90z" fill="#2b1b3a"/>',
+   hair:'<path d="M70 135q-6-90 80-90q86 0 80 90q-24-40-60-46q-30 30-100 46z" fill="#2b1b3a"/>',
+   overEyes:'<g fill="none" stroke="#11141f" stroke-width="4"><circle cx="122" cy="145" r="22"/><circle cx="178" cy="145" r="22"/><path d="M144 145h12"/></g>',
+   jacketDetail:'<path d="M140 210h20l-10 70z" fill="#1f2235"/>'}],
+ ["B4","Beanie Bomber","Green bomber jacket and a slouchy beanie over swept bangs. Streetwear trader.",
+  {id:4,bg:['#14332a','#0a1a15'],iris:'#e8a31a',jacket:'#2f6b4f',pants:'#1c1f2b',shoe:'#e8a31a',line:'#e8a31a',
+   hair:'<path d="M74 150q-2-30 16-46l40 12l-20 22l40-26l30 20l-10-24l40 14q14 14 14 30q-20-40-80-40q-50 0-70 38z" fill="#6b3a1e"/>',
+   top:'<path d="M70 110q0-70 80-72q80 2 80 72z" fill="#e5484d"/><rect x="66" y="100" width="168" height="18" rx="9" fill="#b83238"/>',
+   jacketDetail:'<rect x="105" y="270" width="90" height="12" fill="#244f3b"/><path d="M150 205v75" stroke="#e8a31a" stroke-width="4"/>'}],
+ ["B5","Cyber Visor","White hair and a glowing visor pushed up on the head, with a techwear jacket. Futuristic, and pairs well with neon effects.",
+  {id:5,bg:['#071b2c','#04070f'],iris:'#2ef2ff',jacket:'#11141f',pants:'#2a2f45',shoe:'#2ef2ff',line:'#2ef2ff',
+   hair:spiky('#e9ecf5'),
+   top:'<rect x="82" y="84" width="136" height="26" rx="13" fill="#2ef2ff" opacity=".85"/><rect x="82" y="84" width="136" height="26" rx="13" fill="none" stroke="#bffaff" stroke-width="2"/>',
+   jacketDetail:'<path d="M110 230h80M110 250h80" stroke="#2ef2ff" stroke-width="2" opacity=".7"/><path d="M150 205v75" stroke="#2ef2ff" stroke-width="3"/>'}],
+];
+const card=([code,name,desc,o],fn)=>`<article class="card">${fn(o)}<div class="info"><b><small>${code}</small>${name}</b><p>${desc}</p></div></article>`;
+document.getElementById('ga').innerHTML=A.map(a=>card(a,flat)).join('');
+document.getElementById('gb').innerHTML=B.map(b=>card(b,chibi)).join('');
+const root=document.getElementById('root');
+document.querySelectorAll('.moods button').forEach(b=>b.addEventListener('click',()=>{root.dataset.mood=b.dataset.m;document.querySelectorAll('.moods button').forEach(x=>x.setAttribute('aria-pressed',x===b))}));
+</script>
