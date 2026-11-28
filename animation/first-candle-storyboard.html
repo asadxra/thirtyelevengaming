@@ -42,7 +42,7 @@ h2{font-size:36px}
 <div class="wrap">
 <header>
   <h1>FIRST <span>CANDLE</span></h1>
-  <p class="lede">A short animated series in the round-head cartoon style. You narrate the story of Theo, a guy who finds trading at 2 AM and learns everything the hard way. Each episode is 30 to 40 seconds, vertical, and ends on a cliffhanger.</p>
+  <p class="lede">A short animated series in the round-head cartoon style. You narrate the story of Kaeri, a guy who finds trading at 2 AM and learns everything the hard way. Each episode is 30 to 40 seconds, vertical, and ends on a cliffhanger.</p>
   <div class="meta"><span class="chip">9:16 vertical</span><span class="chip">6 episodes</span><span class="chip">~35s each</span><span class="chip">Voiceover: you</span></div>
 </header>
 
@@ -57,12 +57,12 @@ h2{font-size:36px}
   <div class="board" id="board" style="margin-top:20px"></div>
 </section>
 
-<p class="note">Theo's balance is the series' running counter, like the "felt held" score in the reference video. Episode 6 can end with an on-screen line such as "This is a story, not financial advice" so the lesson lands without reading as a tip.</p>
+<p class="note">Kaeri's balance is the series' running counter, like the "felt held" score in the reference video. Episode 6 can end with an on-screen line such as "This is a story, not financial advice" so the lesson lands without reading as a tip.</p>
 </div>
 
 <script>
 const eps=[
- ["EP 1","The Video","2 AM scroll. A stranger with a sports car says he made $4,000 before breakfast. Theo downloads the app.","$50","up"],
+ ["EP 1","The Video","2 AM scroll. A stranger with a sports car says he made $4,000 before breakfast. Kaeri downloads the app.","$50","up"],
  ["EP 2","First Win","His first trade goes green. +$22. He tells everyone he's a trader now.","$72","up"],
  ["EP 3","All In","He moves his rent money in and finds the leverage button.","$1,200","up"],
  ["EP 4","The Red Candle","One candle. Sixty percent gone while he was in the shower.","$480","down"],
@@ -95,21 +95,21 @@ const candles=(x0,y0,data)=>data.map((d,i)=>{const [o,c]=d,col=c<o?C.green:C.red
 
 const shots=[
  ["Shot 1","0:00–0:04",room('#0a0d2a','#1a1640',[250,470])+cap('2:11','AM')+`<rect x="40" y="440" width="290" height="90" rx="14" fill="#3a3f70"/><rect x="60" y="420" width="80" height="34" rx="12" fill="#e7e9f5"/>`+guy(200,470,.75,{arms:'phone',eyes:'normal',mouth:'flat'})+`<rect x="222" y="385" width="26" height="40" rx="5" fill="${C.ink}"/><rect x="225" y="388" width="20" height="34" rx="3" fill="#7fd6ff"/>`,
-  "This is Theo. It's 2 AM, he has work in five hours, and he's still scrolling.","Night bedroom. Theo lies in bed lit only by his phone. Slow push in. Clock ticks."],
+  "This is Kaeri. It's 2 AM, he has work in five hours, and he's still scrolling.","Night bedroom. Kaeri lies in bed lit only by his phone. Slow push in. Clock ticks."],
  ["Shot 2","0:04–0:09",`<rect width="360" height="640" fill="#0b0d16"/>`+phone(50,60,260,520,`<rect x="66" y="80" width="228" height="300" rx="10" fill="#d7e2ff"/><rect x="90" y="250" width="180" height="70" rx="26" fill="${C.red}"/><circle cx="125" cy="322" r="18" fill="${C.ink}"/><circle cx="235" cy="322" r="18" fill="${C.ink}"/>`+guy(180,248,.5,{color:'#f2b27a',eyes:'happy',arms:'up',extra:`<rect x="160" y="140" width="40" height="10" rx="4" fill="${C.ink}"/>`})+`<text x="180" y="430" text-anchor="middle" font-family="Bebas Neue,Impact" font-size="34" fill="#fff">"I MADE <tspan fill="${C.green}">$4,000</tspan></text><text x="180" y="466" text-anchor="middle" font-family="Bebas Neue,Impact" font-size="34" fill="#fff">BEFORE BREAKFAST"</text><text x="180" y="520" text-anchor="middle" font-family="Inter,sans-serif" font-size="14" fill="#9aa1bb">♥ 1.2M · link in bio</text>`),
   "Then the algorithm shows him a guy who says he made four thousand dollars before breakfast.","Phone fills the frame. Sunglasses guy, sports car, video playing. Upbeat music sting."],
  ["Shot 3","0:09–0:13",room('#0a0d2a','#1a1640',[180,400])+cap('WAIT.','THAT WORKS?')+guy(180,520,1.1,{eyes:'dollar',mouth:'o'})+`<g fill="${C.gold}" font-family="Bebas Neue,Impact" font-size="28"><text x="60" y="300">$</text><text x="290" y="270">$</text><text x="300" y="400">$</text><text x="50" y="420">$</text></g>`,
-  "And Theo thinks: wait. That's a thing you can do?","Close-up. Eyes flip into dollar signs with a ka-ching sound. Floating $ symbols."],
+  "And Kaeri thinks: wait. That's a thing you can do?","Close-up. Eyes flip into dollar signs with a ka-ching sound. Floating $ symbols."],
  ["Shot 4","0:13–0:17",`<rect width="360" height="640" fill="#0b0d16"/>`+phone(50,60,260,520,`<text x="180" y="200" text-anchor="middle" font-family="Bebas Neue,Impact" font-size="40" fill="#fff">TRADE<tspan fill="${C.green}">NOW</tspan></text><text x="180" y="240" text-anchor="middle" font-family="Inter,sans-serif" font-size="15" fill="#9aa1bb">Sign up in 30 seconds</text><rect x="80" y="300" width="200" height="16" rx="8" fill="#263049"/><rect x="80" y="300" width="150" height="16" rx="8" fill="${C.green}"/><text x="180" y="350" text-anchor="middle" font-family="Inter,sans-serif" font-size="14" fill="#9aa1bb">Installing… 75%</text><rect x="90" y="430" width="180" height="56" rx="28" fill="${C.green}"/><text x="180" y="467" text-anchor="middle" font-family="Bebas Neue,Impact" font-size="28" fill="${C.ink}">GET STARTED</text>`),
   "Ninety seconds later he has a trading app. He did not read the terms.","App store, install bar fills fast, terms page scrolls by in a blur, thumb taps Accept."],
  ["Shot 5","0:17–0:22",room('#0a0d2a','#1a1640',[220,420])+`<rect x="150" y="160" width="190" height="230" rx="12" fill="${C.ink}"/>`+candles(166,0,[[300,280],[285,300],[298,262],[265,250],[252,268],[266,230],[232,215]])+guy(90,520,.85,{eyes:'normal',mouth:'flat'})+bubble(160,110,'WHAT\'S A CANDLE?',100,330),
-  "He opens his first chart. It looks like a city skyline made of birthday candles.","Chart zooms in on the screen. Theo tilts his head. A question mark pops over him."],
+  "He opens his first chart. It looks like a city skyline made of birthday candles.","Chart zooms in on the screen. Kaeri tilts his head. A question mark pops over him."],
  ["Shot 6","0:22–0:27",room('#0a0d2a','#1a1640',[180,400])+badge('$50',C.gold)+guy(180,520,1,{eyes:'happy',arms:'up'})+`<rect x="130" y="200" width="100" height="50" rx="6" fill="#4caf6e" transform="rotate(-12 180 225)"/><text x="180" y="236" text-anchor="middle" font-family="Bebas Neue,Impact" font-size="30" fill="#e8ffe9" transform="rotate(-12 180 225)">$50</text>`,
   "He deposits fifty dollars. Grocery money. It's fine. It's an investment.","Balance badge drops in from the top and stays there for the whole series. Bill floats into the phone."],
  ["Shot 7","0:27–0:31",`<rect width="360" height="640" fill="#0b0d16"/>`+badge('$50',C.gold)+phone(50,170,260,420,`<rect x="80" y="230" width="200" height="150" rx="8" fill="#14223a"/>`+candles(92,0,[[340,320],[322,335],[336,305],[306,298]])+`<rect x="72" y="430" width="100" height="56" rx="14" fill="${C.green}"/><text x="122" y="467" text-anchor="middle" font-family="Bebas Neue,Impact" font-size="30" fill="${C.ink}">BUY</text><rect x="188" y="430" width="100" height="56" rx="14" fill="${C.red}" opacity=".5"/><text x="238" y="467" text-anchor="middle" font-family="Bebas Neue,Impact" font-size="30" fill="${C.ink}">SELL</text><circle cx="122" cy="470" r="34" fill="none" stroke="#fff" stroke-width="4" opacity=".7"/>`),
   "He has no plan. He has no idea what he's buying. He presses Buy anyway.","Extreme close-up of the Buy button. Everything freezes. Heartbeat sound. Tap ripple."],
  ["Shot 8","0:31–0:36",room('#2a1f4a','#ff9a6b',[180,400])+badge('$53',C.green)+guy(180,520,1.05,{eyes:'wide',arms:'up',mouth:'o'})+bubble(180,210,"I'M A TRADER.",180,300)+`<text x="180" y="600" text-anchor="middle" font-family="Bebas Neue,Impact" font-size="26" fill="${C.gold}">NEXT: FIRST WIN</text>`,
-  "Three dollars up. Theo has never felt more powerful. This is going to be a problem.","Badge ticks $50 → $53 in green. Theo jumps. Freeze frame, title card for Episode 2."],
+  "Three dollars up. Kaeri has never felt more powerful. This is going to be a problem.","Badge ticks $50 → $53 in green. Kaeri jumps. Freeze frame, title card for Episode 2."],
 ];
 document.getElementById('board').innerHTML=shots.map(s=>`<article class="shot"><svg viewBox="0 0 360 640" role="img" aria-label="${s[0]} sketch">${s[2]}</svg><div class="hd"><span>${s[0]}</span><small>${s[1]}</small></div><p class="vo">${s[3]}</p><p class="act">${s[4]}</p></article>`).join('');
 </script>
