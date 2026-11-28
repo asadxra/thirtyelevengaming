@@ -34,7 +34,7 @@ h1 span{color:var(--gold)}
 <div class="wrap" id="root" data-mood="happy">
 <header>
   <h1>MEET <span>KAERI</span></h1>
-  <p class="lede">Five styles for the same new trader. They all move, and the buttons switch every character's expression at once, so you can see how each style handles emotion. Pick one, or mix two.</p>
+  <p class="lede">Ten styles for the same new trader. They all move, and the buttons switch every character's expression at once, so you can see how each style handles emotion. Pick one, or mix two.</p>
 </header>
 <div class="moods" role="group" aria-label="Expression">
   <button data-m="happy" aria-pressed="true">Happy</button>
@@ -152,10 +152,115 @@ h1 span{color:var(--gold)}
 </g><ellipse cx="150" cy="345" rx="80" ry="8" fill="#000" opacity=".35"/></svg>
 <div class="info"><b><small>5</small>Soft Blob</b><p>A squishy, cute mascot with no limbs to animate. Easy to make into stickers and merch, with a calmer, cozy vibe.</p></div></article>
 
+<!-- 6 PIXEL ART (built by script) -->
+<article class="card"><svg id="pix" viewBox="0 0 300 400" role="img" aria-label="Pixel art style"></svg>
+<div class="info"><b><small>6</small>8-Bit Pixel</b><p>A retro game sprite. Instantly says "gaming" and suits level-up and game-over moments in the story.</p></div></article>
+
+<!-- 7 PAPER CUTOUT -->
+<article class="card"><svg viewBox="0 0 300 400" role="img" aria-label="Paper cutout style">
+<defs><filter id="ps" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="3" dy="5" stdDeviation="2" flood-opacity=".35"/></filter>
+<pattern id="kraft" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="#c9a77c"/><circle cx="2" cy="3" r=".8" fill="#b8956a"/></pattern></defs>
+<rect width="300" height="400" fill="url(#kraft)"/>
+<path d="M20 330l60-40l40 20l50-70l40 30l70-90" stroke="#2e7d4f" stroke-width="10" fill="none" stroke-linejoin="round" filter="url(#ps)" opacity=".7"/>
+<g class="bob" filter="url(#ps)">
+ <path d="M122 285l-6 70h26l4-70zM154 285l4 70h26l-6-70z" fill="#274060"/>
+ <path d="M104 205q46-18 92 0l6 85h-104z" fill="#f2b134"/><path d="M132 205h36l-18 30z" fill="#fff"/>
+ <g class="m m-happy" fill="#f2b134"><path d="M104 210l-22 60l18 4l16-50z"/><path d="M196 210l22 60l-18 4l-16-50z"/></g>
+ <g class="m m-hyped" fill="#f2b134"><path d="M104 214l-30-60l16-6l26 54z"/><path d="M196 214l30-60l-16-6l-26 54z"/></g>
+ <g class="m m-shocked" fill="#f2b134"><path d="M106 212l-10-70l18-2l8 66z"/><path d="M194 212l10-70l-18-2l-8 66z"/></g>
+ <path d="M150 70q66 4 64 70q-4 64-64 66q-60-2-64-66q-2-66 64-70z" fill="#f4d3b5"/>
+ <path d="M86 130q-6-70 70-66q60 2 58 60q-30-30-70-24q-30 6-58 30z" fill="#3b2418"/>
+ <g class="m m-happy blink"><circle cx="128" cy="140" r="8" fill="#1d1d1d"/><circle cx="172" cy="140" r="8" fill="#1d1d1d"/></g>
+ <g class="m m-hyped"><path d="M116 142l12-12l12 12M160 142l12-12l12 12" stroke="#1d1d1d" stroke-width="6" fill="none"/></g>
+ <g class="m m-shocked"><circle cx="128" cy="138" r="14" fill="#fff"/><circle cx="172" cy="138" r="14" fill="#fff"/><circle cx="128" cy="138" r="5" fill="#1d1d1d"/><circle cx="172" cy="138" r="5" fill="#1d1d1d"/></g>
+ <circle cx="112" cy="166" r="9" fill="#e98a8a" opacity=".7"/><circle cx="188" cy="166" r="9" fill="#e98a8a" opacity=".7"/>
+ <path class="m m-happy" d="M136 172q14 12 28 0z" fill="#9c2f2f"/>
+ <path class="m m-hyped" d="M130 166q20 30 40 0z" fill="#9c2f2f"/>
+ <path class="m m-shocked" d="M140 178h20v10h-20z" fill="#9c2f2f"/>
+</g></svg>
+<div class="info"><b><small>7</small>Paper Cutout</b><p>Shapes cut from colored paper on kraft card, with real drop shadows. Handmade and warm, like a craft stop-motion.</p></div></article>
+
+<!-- 8 MARKER DOODLE -->
+<article class="card"><svg viewBox="0 0 300 400" role="img" aria-label="Marker doodle style">
+<defs><filter id="wob"><feTurbulence baseFrequency=".03" numOctaves="2" seed="4"/><feDisplacementMap in="SourceGraphic" scale="5"/></filter>
+<pattern id="lined" width="300" height="24" patternUnits="userSpaceOnUse"><rect width="300" height="24" fill="#fbfbf6"/><line x1="0" y1="23" x2="300" y2="23" stroke="#b9d3ee"/></pattern></defs>
+<rect width="300" height="400" fill="url(#lined)"/><line x1="40" y1="0" x2="40" y2="400" stroke="#f3a5a5" stroke-width="2"/>
+<g class="bob" filter="url(#wob)" stroke="#1f2a5a" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+ <path d="M150 215v80M150 295l-25 60M150 295l25 60"/>
+ <path class="m m-happy" d="M150 240l-40 35M150 240l40 35"/><path class="m m-hyped" d="M150 240l-45-50M150 240l45-50"/><path class="m m-shocked" d="M150 240l-35-10l-5-40M150 240l35-10l5-40"/>
+ <circle cx="150" cy="150" r="62" fill="#fff"/>
+ <path d="M96 120q20-50 60-40q-10-20 20-20q-4 14 14 18q20 20 4 40" />
+ <path d="M150 84l6 -20l8 18" stroke="#2fa36b"/>
+ <g class="m m-happy blink"><circle cx="128" cy="148" r="5" fill="#1f2a5a"/><circle cx="172" cy="148" r="5" fill="#1f2a5a"/></g>
+ <g class="m m-hyped" stroke="#2fa36b"><path d="M120 140v20M116 144q8-6 12 0q-8 6 0 10q-6 6-12 0M168 140v20M164 144q8-6 12 0q-8 6 0 10q-6 6-12 0"/></g>
+ <g class="m m-shocked"><circle cx="128" cy="146" r="12"/><circle cx="172" cy="146" r="12"/><path d="M200 100l6 16M214 110l-2 14"/></g>
+ <path class="m m-happy" d="M130 176q20 18 40 0"/>
+ <path class="m m-hyped" d="M126 172q24 34 48 0z"/>
+ <path class="m m-shocked" d="M136 186q7-8 14 0q7 8 14 0"/>
+ <path d="M230 90l10 -10M236 104l14 -2" stroke="#e8a31a"/>
+</g></svg>
+<div class="info"><b><small>8</small>Notebook Doodle</b><p>Wobbly marker lines on lined paper, like it was drawn in class. Feels personal and funny, and cheap to make.</p></div></article>
+
+<!-- 9 NEON LINE -->
+<article class="card"><svg viewBox="0 0 300 400" role="img" aria-label="Neon line style">
+<defs><filter id="glw" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+<rect width="300" height="400" fill="#07060f"/>
+<g stroke="#2a1d5c" stroke-width="1"><path d="M0 330h300M0 350h300M0 375h300M150 320l-150 80M150 320l150 80M150 320v80M150 320l-70 80M150 320l70 80"/></g>
+<g class="bob" filter="url(#glw)" fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+ <g stroke="#ff3ea5"><path d="M150 215v75M150 290l-22 50M150 290l22 50"/>
+  <path class="m m-happy" d="M150 235l-38 30M150 235l38 30"/><path class="m m-hyped" d="M150 235l-40-48M150 235l40-48"/><path class="m m-shocked" d="M150 235l-34-6l-4-38M150 235l34-6l4-38"/>
+  <path d="M118 205h64l8 30h-80z"/></g>
+ <g stroke="#2ef2ff"><circle cx="150" cy="148" r="56"/><path d="M98 128q20-40 52-34q34-6 52 34"/><path d="M110 140h80"/>
+  <rect x="112" y="132" width="34" height="18" rx="6"/><rect x="154" y="132" width="34" height="18" rx="6"/></g>
+ <g stroke="#2ef2ff"><path class="m m-happy" d="M132 176q18 14 36 0"/><path class="m m-hyped" d="M128 172q22 28 44 0z"/><ellipse class="m m-shocked" cx="150" cy="182" rx="8" ry="11"/></g>
+ <g class="m m-hyped" stroke="#7dff6b"><path d="M60 260l20-30l15 15l25-40"/><path d="M110 205h10v10"/></g>
+ <g class="m m-shocked" stroke="#ff4b4b"><path d="M220 200l20 30l15-15l25 40"/><path d="M272 255h8v-10"/></g>
+</g></svg>
+<div class="info"><b><small>9</small>Neon Line</b><p>Glowing outlines on a synthwave grid, with a visor and a chart that lights up green or red. Night-trading energy.</p></div></article>
+
+<!-- 10 BULL MASCOT -->
+<article class="card"><svg viewBox="0 0 300 400" role="img" aria-label="Bull mascot style">
+<rect width="300" height="400" fill="#123524"/><circle cx="150" cy="190" r="120" fill="#174a31"/>
+<g class="bob">
+ <rect x="122" y="280" width="24" height="64" rx="10" fill="#6b3f22"/><rect x="154" y="280" width="24" height="64" rx="10" fill="#6b3f22"/>
+ <rect x="116" y="336" width="34" height="16" rx="5" fill="#222"/><rect x="150" y="336" width="34" height="16" rx="5" fill="#222"/>
+ <path d="M106 210q44-16 88 0l6 80h-100z" fill="#20232f"/><path d="M142 208h16l4 40l-12 10l-12-10z" fill="#3ddc84"/>
+ <g class="m m-happy" fill="#20232f"><rect x="84" y="215" width="22" height="60" rx="11"/><rect x="194" y="215" width="22" height="60" rx="11"/></g>
+ <g class="m m-hyped" fill="#20232f"><rect x="84" y="158" width="22" height="60" rx="11" transform="rotate(-20 95 215)"/><rect x="194" y="158" width="22" height="60" rx="11" transform="rotate(20 205 215)"/></g>
+ <g class="m m-shocked" fill="#20232f"><rect x="96" y="160" width="22" height="56" rx="11" transform="rotate(-8 107 215)"/><rect x="182" y="160" width="22" height="56" rx="11" transform="rotate(8 193 215)"/></g>
+ <path d="M92 104q-40-10-46-50q30 30 60 28zM208 104q40-10 46-50q-30 30-60 28z" fill="#f1e4c3"/>
+ <ellipse cx="88" cy="128" rx="20" ry="12" fill="#8a5330"/><ellipse cx="212" cy="128" rx="20" ry="12" fill="#8a5330"/>
+ <ellipse cx="150" cy="140" rx="62" ry="64" fill="#8a5330"/>
+ <ellipse cx="150" cy="180" rx="42" ry="28" fill="#d9a07a"/><ellipse cx="136" cy="180" rx="6" ry="8" fill="#5a3320"/><ellipse cx="164" cy="180" rx="6" ry="8" fill="#5a3320"/>
+ <path d="M140 196q10 8 20 0" stroke="#ffd34d" stroke-width="5" fill="none"/>
+ <g class="m m-happy blink"><circle cx="126" cy="132" r="8" fill="#1a1a1a"/><circle cx="174" cy="132" r="8" fill="#1a1a1a"/><circle cx="129" cy="129" r="3" fill="#fff"/><circle cx="177" cy="129" r="3" fill="#fff"/></g>
+ <g class="m m-hyped"><path d="M114 134q12-14 24 0M162 134q12-14 24 0" stroke="#1a1a1a" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M110 82q-6-10 4-14M190 82q6-10-4-14" stroke="#fff" stroke-width="4" fill="none" opacity=".7"/></g>
+ <g class="m m-shocked"><circle cx="126" cy="130" r="13" fill="#fff"/><circle cx="174" cy="130" r="13" fill="#fff"/><circle cx="126" cy="130" r="4" fill="#1a1a1a"/><circle cx="174" cy="130" r="4" fill="#1a1a1a"/><path d="M110 106l30 8M190 106l-30 8" stroke="#1a1a1a" stroke-width="5" stroke-linecap="round"/></g>
+</g></svg>
+<div class="info"><b><small>10</small>Bull Mascot</b><p>Kaeri as a young bull in a hoodie, a nod to the "bull market". A strong brand mascot; a bear rival could show up later.</p></div></article>
+
 </div>
 </div>
 <script>
 const root=document.getElementById('root');
+// 8-bit sprite: 12 cols x 16 rows, 18px pixels. Rows 0-5 face changes by mood.
+(function(){
+ const P={'.':null,k:'#1b1b2f',s:'#f5c39b',h:'#2b2b55',t:'#3ddcbf',r:'#e5484d',d:'#a4303a',b:'#3a4a8a',w:'#ffffff',g:'#3ddc84',y:'#ffd34d'};
+ const top=['...hhhhhh...','..hhhhhhhh..','..hhthhhhhh.','.hssssssssh.'];
+ const faces={happy:['.hskssskssh.','.hssssssssh.','.hsskkkkssh.','..ssssssss..'],
+  hyped:['.hsgsssgssh.','.hsgsssgssh.','.hskkkkkksh.','..sskkkkss..'],
+  shocked:['.hwkssswksh.','.hwwssswwsh.','.hsssksssh..','..ssskksss..']};
+ const body={happy:['...rrrrrr...','..rrrrrrrr..','.srrrddrrrs.','.srrrddrrrs.','..rrrrrrrr..','...bbbbbb...','...bb..bb...','...bb..bb...','..kkk..kkk..'],
+  hyped:['s..rrrrrr..s','.srrrrrrrrs.','..rrrddrrr..','..rrrddrrr..','..rrrrrrrr..','...bbbbbb...','...bb..bb...','...bb..bb...','..kkk..kkk..'],
+  shocked:['.s.rrrrrr.s.','.srrrrrrrrs.','..rrrddrrr..','..rrrddrrr..','..rrrrrrrr..','...bbbbbb...','...bb..bb...','...bb..bb...','..kkk..kkk..']};
+ const px=18,x0=150-6*px,y0=60;
+ const grid=rows=>rows.map((row,y)=>[...row].map((c,x)=>P[c]?`<rect x="${x0+x*px}" y="${y0+y*px}" width="${px}" height="${px}" fill="${P[c]}"/>`:'').join('')).join('');
+ let out=`<rect width="300" height="400" fill="#5c94fc"/><rect y="350" width="300" height="50" fill="#c84c0c"/><g fill="#e09c5c">${[0,1,2,3,4,5,6,7,8,9].map(i=>`<rect x="${i*32}" y="350" width="30" height="14"/>`).join('')}</g><g fill="#fff" opacity=".9"><rect x="30" y="40" width="54" height="18"/><rect x="42" y="28" width="30" height="14"/><rect x="210" y="70" width="60" height="18"/></g>`;
+ out+=`<g class="bob">${grid(top)}`;
+ for(const m of ['happy','hyped','shocked']) out+=`<g class="m m-${m}">${grid([...top.map(()=>'............'),...faces[m],...body[m]])}</g>`;
+ out+=`</g><g class="m m-hyped" font-family="Bebas Neue,Impact" font-size="30" fill="#ffd34d" text-anchor="middle"><text x="150" y="40">LEVEL UP!</text></g><g class="m m-shocked" font-family="Bebas Neue,Impact" font-size="30" fill="#ff5d6c" text-anchor="middle"><text x="150" y="40">-60% HP</text></g>`;
+ document.getElementById('pix').innerHTML=out;
+})();
 document.querySelectorAll('.moods button').forEach(b=>b.addEventListener('click',()=>{
   root.dataset.mood=b.dataset.m;document.querySelectorAll('.moods button').forEach(x=>x.setAttribute('aria-pressed',x===b))}));
 </script>
