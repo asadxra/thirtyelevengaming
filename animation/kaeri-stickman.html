@@ -1,0 +1,85 @@
+<title>Kaeri Stickman</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600&display=swap">
+<style>
+/* Layout: white sketch-panel cards in a row, ink outlines, one expression toggle */
+:root{--bg:#f3efe8;--ink:#141414;--muted:#4a4742;--red:#d62f2f;--line:#ddd6cb;
+--display:'Bebas Neue',Impact,sans-serif;--body:'Inter',system-ui,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17161a;--muted:#b4afa8;--line:#34313a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#17161a;--muted:#b4afa8;--line:#34313a;color-scheme:dark}
+body{background:var(--bg);font-family:var(--body)}
+.wrap{max-width:1200px;margin:0 auto;padding-block:36px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:20px;color:var(--muted)}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(44px,8vw,80px);margin:0;line-height:.9;color:var(--red)}
+.lede{margin:8px 0 0;max-width:62ch}
+.moods{display:flex;gap:8px;flex-wrap:wrap}
+.moods button{font:600 14px var(--body);background:transparent;color:inherit;border:2px solid var(--line);border-radius:99px;padding:8px 16px;cursor:pointer}
+.moods button[aria-pressed=true]{background:var(--red);color:#fff;border-color:var(--red)}
+.moods button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}
+.card{background:#fff;border:3px solid var(--ink);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.card svg{width:100%;aspect-ratio:3/4;display:block}
+.info{padding:10px 14px 16px;border-top:3px solid var(--ink);display:flex;flex-direction:column;gap:4px;color:var(--ink)}
+.info b{font-family:var(--display);font-weight:400;font-size:24px}
+.info b small{color:var(--red);font-size:16px;margin-right:6px}
+.info p{margin:0;font-size:13px;line-height:1.45;color:#4a4742}
+.bob{animation:bob 1.8s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 100%}
+.blink{animation:blink 4s infinite;transform-box:fill-box;transform-origin:center}
+@keyframes bob{50%{transform:translateY(-6px)}}
+@keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+[data-mood=hyped] .bob{animation-duration:.55s}
+.m{display:none}
+[data-mood=serious] .m-serious,[data-mood=happy] .m-happy,[data-mood=hyped] .m-hyped,[data-mood=shocked] .m-shocked{display:inline}
+@media (prefers-reduced-motion:reduce){.bob,.blink{animation:none}}
+</style>
+<div class="wrap" id="root" data-mood="happy">
+<header><h1>KAERI · STICKMAN</h1>
+<p class="lede">Five stick-figure takes on Kaeri, from the simplest possible line drawing to one with a bit of costume. All five keep a touch of red to tie back to the hoodie. The buttons change every face and pose at once.</p></header>
+<div class="moods" role="group" aria-label="Expression">
+<button data-m="serious" aria-pressed="false">Serious</button><button data-m="happy" aria-pressed="true">Happy</button><button data-m="hyped" aria-pressed="false">Hyped</button><button data-m="shocked" aria-pressed="false">Shocked</button></div>
+<div class="grid" id="g"></div>
+</div>
+<script>
+const M=(m,s)=>`<g class="m m-${m}">${s}</g>`;
+/* o: ink, w (line width), r (head radius), headFill, eye (eye color), extras */
+function stick(o){
+ const k=o.ink,w=o.w,r=o.r,hx=150,hy=110,neck=hy+r,hip=neck+95,sh=neck+22;
+ const L=(d,c=k,ww=w)=>`<path d="${d}" stroke="${c}" stroke-width="${ww}" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`;
+ const e=o.eye||k;
+ const arms=M('serious',L(`M${hx} ${sh}l-34 50M${hx} ${sh}l34 50`))+M('happy',L(`M${hx} ${sh}l-38 40l-6 -14M${hx} ${sh}l38 40l6 -14`))+
+  M('hyped',L(`M${hx} ${sh}l-58 -22l-14 -40M${hx} ${sh}l58 -22l14 -40`))+M('shocked',L(`M${hx} ${sh}l-36 -8l-2 -40M${hx} ${sh}l36 -8l2 -40`));
+ const legs=M('serious',L(`M${hx} ${hip}l-24 80M${hx} ${hip}l24 80`))+M('happy',L(`M${hx} ${hip}l-24 80M${hx} ${hip}l24 80`))+
+  M('hyped',L(`M${hx} ${hip}l-34 60l-10 14M${hx} ${hip}l34 60l10 14`))+M('shocked',L(`M${hx} ${hip}l-14 80M${hx} ${hip}l14 80`));
+ const fs=r/40;
+ const face=M('serious',`<g class="blink"><circle cx="${hx-14*fs}" cy="${hy}" r="${4.5*fs}" fill="${e}"/><circle cx="${hx+14*fs}" cy="${hy}" r="${4.5*fs}" fill="${e}"/></g>`+L(`M${hx+6*fs} ${hy-14*fs}l16 ${-6*fs}`,e,4)+L(`M${hx-10*fs} ${hy+18*fs}h${20*fs}`,e,4))+
+  M('happy',`<g class="blink"><circle cx="${hx-14*fs}" cy="${hy}" r="${4.5*fs}" fill="${e}"/><circle cx="${hx+14*fs}" cy="${hy}" r="${4.5*fs}" fill="${e}"/></g>`+L(`M${hx-14*fs} ${hy+14*fs}q${14*fs} ${12*fs} ${28*fs} 0`,e,4))+
+  M('hyped',L(`M${hx-22*fs} ${hy+2}q8 -12 16 0M${hx+6*fs} ${hy+2}q8 -12 16 0`,e,4)+`<path d="M${hx-16*fs} ${hy+12*fs}q${16*fs} ${24*fs} ${32*fs} 0z" fill="${e}"/>`)+
+  M('shocked',`<circle cx="${hx-14*fs}" cy="${hy-2}" r="${9*fs}" fill="#fff" stroke="${e}" stroke-width="3"/><circle cx="${hx+14*fs}" cy="${hy-2}" r="${9*fs}" fill="#fff" stroke="${e}" stroke-width="3"/><circle cx="${hx-14*fs}" cy="${hy-2}" r="${2.5*fs}" fill="${e}"/><circle cx="${hx+14*fs}" cy="${hy-2}" r="${2.5*fs}" fill="${e}"/><ellipse cx="${hx}" cy="${hy+20*fs}" rx="${6*fs}" ry="${8*fs}" fill="${e}"/>`);
+ return `<svg viewBox="0 0 300 400"><rect width="300" height="400" fill="${o.bg||'#fff'}"/>${o.back||''}
+ <g class="bob">${legs}${L(`M${hx} ${neck}V${hip}`)}${o.body||''}${arms}${o.behind||''}
+ <circle cx="${hx}" cy="${hy}" r="${r}" fill="${o.headFill||'#fff'}" stroke="${k}" stroke-width="${w}"/>${face}${o.head||''}</g>
+ ${M('hyped',o.hypedFx||'')}${M('shocked',o.shockFx||'')}
+ <ellipse cx="150" cy="378" rx="50" ry="5" fill="#000" opacity=".12"/></svg>`;
+}
+const up=`<g fill="#2fb36b"><path d="M236 70l14-18l14 18h-8v20h-12v-20z"/></g>`, down=`<g fill="#d62f2f"><path d="M236 92l14 18l14-18h-8v-20h-12v20z"/></g>`;
+const V=[
+ ["1","Pure Line","The simplest possible stick figure: thin black lines with one red detail, the scarf. Fastest to animate and very readable.",
+  {ink:'#141414',w:5,r:38,head:`<path d="M126 146q24 10 48 0l-4 10q-20 8-40 0z" fill="#d62f2f"/><path d="M170 152l14 26l-12 2z" fill="#d62f2f"/>`,hypedFx:up,shockFx:down}],
+ ["2","Red Hood Stick","A stick body with the red hood from your last pick wrapped around a round head. The bridge between the two styles.",
+  {ink:'#141414',w:6,r:40,behind:`<path d="M150 58c40 0 60 34 58 64c-2 28-18 44-36 48h-44c-18-4-34-20-36-48c-2-30 18-64 58-64z" fill="#d62f2f" stroke="#141414" stroke-width="6"/>`,
+   body:`<path d="M150 150l-8 10M150 150l8 10" stroke="#141414" stroke-width="3"/>`,hypedFx:up,shockFx:down}],
+ ["3","Thick Marker","Chunky rounded strokes and a big head, so expressions read even on a tiny phone screen. Red sneakers.",
+  {ink:'#141414',w:12,r:50,headFill:'#fff',
+   body:`<g class="m m-serious m-happy"><rect x="110" y="332" width="30" height="14" rx="7" fill="#d62f2f" stroke="#141414" stroke-width="4"/><rect x="160" y="332" width="30" height="14" rx="7" fill="#d62f2f" stroke="#141414" stroke-width="4"/></g>`,hypedFx:up,shockFx:down}],
+ ["4","Shadow Stick","A solid black head with white eyes and a red headband tail that flaps. Mysterious and very cool in silhouette.",
+  {ink:'#141414',w:7,r:40,headFill:'#141414',eye:'#ffffff',
+   head:`<rect x="110" y="88" width="80" height="12" fill="#d62f2f"/><path d="M190 92q30-6 44 8q-20-2-30 10q14-16-14-12z" fill="#d62f2f"/>`,
+   back:`<rect width="300" height="400" fill="#f6f1e7"/>`,hypedFx:up,shockFx:down}],
+ ["5","Trader Stick","A stickman in business mode: red tie, headset mic and a phone in the pocket. Looks like he works the trading floor.",
+  {ink:'#141414',w:5,r:38,
+   body:`<path d="M150 150l-7 6l7 50l7-50z" fill="#d62f2f" stroke="#141414" stroke-width="3"/><rect x="156" y="200" width="16" height="26" rx="3" fill="#2b2b2b"/>`,
+   head:`<path d="M112 104q0-46 38-46q38 0 38 46" stroke="#141414" stroke-width="5" fill="none"/><rect x="104" y="96" width="14" height="24" rx="6" fill="#141414"/><path d="M110 120q4 18 26 18" stroke="#141414" stroke-width="3" fill="none"/><circle cx="138" cy="138" r="4" fill="#d62f2f"/>`,hypedFx:up,shockFx:down}],
+];
+document.getElementById('g').innerHTML=V.map(([n,name,desc,o])=>`<article class="card">${stick(o)}<div class="info"><b><small>${n}</small>${name}</b><p>${desc}</p></div></article>`).join('');
+const root=document.getElementById('root');
+document.querySelectorAll('.moods button').forEach(b=>b.addEventListener('click',()=>{root.dataset.mood=b.dataset.m;document.querySelectorAll('.moods button').forEach(x=>x.setAttribute('aria-pressed',x===b))}));
+</script>
