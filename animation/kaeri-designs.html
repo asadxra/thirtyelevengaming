@@ -1,0 +1,161 @@
+<title>Kaeri Character Lineup</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600&display=swap">
+<style>
+/* Layout: casting-wall grid, one animated stage card per style, a shared mood toggle on top */
+:root{--bg:#10131f;--card:#181c2c;--line:#2a3048;--fg:#eef0f7;--muted:#9aa1bb;--gold:#ffd34d;--green:#3ddc84;--red:#ff5d6c;
+--display:'Bebas Neue',Impact,sans-serif;--body:'Inter',system-ui,sans-serif;color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body)}
+.wrap{max-width:1200px;margin:0 auto;padding-block:36px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:24px}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(44px,8vw,80px);margin:0;line-height:.9}
+h1 span{color:var(--gold)}
+.lede{color:var(--muted);margin:8px 0 0;max-width:60ch}
+.moods{display:flex;gap:8px;flex-wrap:wrap}
+.moods button{font:600 14px var(--body);background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:99px;padding:8px 16px;cursor:pointer}
+.moods button[aria-pressed=true]{background:var(--gold);color:#11141f;border-color:var(--gold)}
+.moods button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.card svg{width:100%;aspect-ratio:3/4;display:block}
+.info{padding:12px 14px 16px;display:flex;flex-direction:column;gap:4px}
+.info b{font-family:var(--display);font-weight:400;font-size:26px;letter-spacing:.02em}
+.info b small{color:var(--muted);font-size:16px;margin-right:6px}
+.info p{margin:0;color:var(--muted);font-size:13px;line-height:1.45}
+.bob{animation:bob 1.6s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 100%}
+.blink{animation:blink 4s infinite;transform-box:fill-box;transform-origin:center}
+@keyframes bob{50%{transform:translateY(-8px) scaleY(1.02)}}
+@keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+[data-mood=hyped] .bob{animation-duration:.6s}
+.m{display:none}
+[data-mood=happy] .m-happy,[data-mood=hyped] .m-hyped,[data-mood=shocked] .m-shocked{display:inline}
+@media (prefers-reduced-motion:reduce){.bob,.blink{animation:none}}
+</style>
+
+<div class="wrap" id="root" data-mood="happy">
+<header>
+  <h1>MEET <span>KAERI</span></h1>
+  <p class="lede">Five styles for the same new trader. They all move, and the buttons switch every character's expression at once, so you can see how each style handles emotion. Pick one, or mix two.</p>
+</header>
+<div class="moods" role="group" aria-label="Expression">
+  <button data-m="happy" aria-pressed="true">Happy</button>
+  <button data-m="hyped" aria-pressed="false">Hyped (first win)</button>
+  <button data-m="shocked" aria-pressed="false">Shocked (red candle)</button>
+</div>
+<div class="grid">
+
+<!-- 1 FLAT ROUND -->
+<article class="card"><svg viewBox="0 0 300 400" role="img" aria-label="Flat round style">
+<rect width="300" height="400" fill="#1d2440"/><circle cx="150" cy="200" r="120" fill="#26305a"/>
+<g class="bob">
+ <g stroke="#6fd8c0" stroke-width="14" stroke-linecap="round" fill="none"><path d="M150 230v80M150 310l-20 60M150 310l20 60"/>
+  <path class="m m-happy" d="M150 250l-35 40M150 250l35 40"/><path class="m m-hyped" d="M150 250l-40-45M150 250l40-45"/><path class="m m-shocked" d="M150 250l-30 20l10 -40M150 250l30 20l-10 -40"/></g>
+ <rect x="118" y="215" width="64" height="55" rx="14" fill="#3a4580"/>
+ <circle cx="150" cy="160" r="62" fill="#6fd8c0"/>
+ <g class="blink"><g class="m m-happy"><circle cx="128" cy="152" r="7" fill="#11141f"/><circle cx="172" cy="152" r="7" fill="#11141f"/></g></g>
+ <g class="m m-hyped" fill="#11141f" font-family="Bebas Neue,Impact" font-size="34" text-anchor="middle"><text x="128" y="164">$</text><text x="172" y="164">$</text></g>
+ <g class="m m-shocked"><circle cx="128" cy="150" r="13" fill="#fff" stroke="#11141f" stroke-width="4"/><circle cx="172" cy="150" r="13" fill="#fff" stroke="#11141f" stroke-width="4"/><circle cx="128" cy="150" r="4" fill="#11141f"/><circle cx="172" cy="150" r="4" fill="#11141f"/></g>
+ <path class="m m-happy" d="M130 180q20 16 40 0" stroke="#11141f" stroke-width="5" fill="none" stroke-linecap="round"/>
+ <path class="m m-hyped" d="M126 176q24 30 48 0z" fill="#11141f"/>
+ <ellipse class="m m-shocked" cx="150" cy="186" rx="9" ry="13" fill="#11141f"/>
+</g><ellipse cx="150" cy="372" rx="45" ry="6" fill="#000" opacity=".3"/></svg>
+<div class="info"><b><small>1</small>Flat Round</b><p>Closest to the reference video. Fastest to animate and stays clean at phone size.</p></div></article>
+
+<!-- 2 CHIBI ANIME -->
+<article class="card"><svg viewBox="0 0 300 400" role="img" aria-label="Chibi anime style">
+<defs><linearGradient id="a2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2b1d4f"/><stop offset="1" stop-color="#0f1a33"/></linearGradient></defs>
+<rect width="300" height="400" fill="url(#a2)"/>
+<polyline points="30,330 70,300 100,315 140,260 180,280 220,210 270,190" fill="none" stroke="#3ddc84" stroke-width="4" opacity=".35"/>
+<g class="bob">
+ <rect x="120" y="270" width="22" height="70" rx="10" fill="#2b2f45"/><rect x="158" y="270" width="22" height="70" rx="10" fill="#2b2f45"/>
+ <rect x="112" y="335" width="36" height="16" rx="8" fill="#fff"/><rect x="152" y="335" width="36" height="16" rx="8" fill="#fff"/>
+ <path d="M105 210q45-20 90 0v75h-90z" fill="#e5484d"/><path d="M140 205h20v80h-20z" fill="#11141f" opacity=".25"/>
+ <g class="m m-happy"><rect x="84" y="215" width="22" height="60" rx="11" fill="#e5484d"/><rect x="194" y="215" width="22" height="60" rx="11" fill="#e5484d"/></g>
+ <g class="m m-hyped"><rect x="80" y="160" width="22" height="60" rx="11" fill="#e5484d" transform="rotate(-25 91 215)"/><rect x="198" y="160" width="22" height="60" rx="11" fill="#e5484d" transform="rotate(25 209 215)"/></g>
+ <g class="m m-shocked"><rect x="95" y="160" width="22" height="58" rx="11" fill="#e5484d" transform="rotate(-10 106 215)"/><rect x="183" y="160" width="22" height="58" rx="11" fill="#e5484d" transform="rotate(10 194 215)"/></g>
+ <ellipse cx="150" cy="135" rx="78" ry="74" fill="#ffdcc2"/>
+ <path d="M68 130q-4-80 82-82q86 2 82 82l-14-30l-10 22l-14-38l-16 26l-14-34l-14 30l-14-28l-12 34l-12-24l-12 30z" fill="#1b1e33"/>
+ <path d="M150 48l14 40l-10-6z" fill="#6fd8c0"/>
+ <g class="m m-happy blink"><ellipse cx="122" cy="145" rx="13" ry="18" fill="#2d6cdf"/><ellipse cx="178" cy="145" rx="13" ry="18" fill="#2d6cdf"/><circle cx="126" cy="139" r="5" fill="#fff"/><circle cx="182" cy="139" r="5" fill="#fff"/></g>
+ <g class="m m-hyped"><path d="M106 140l16 8l-16 8M194 140l-16 8l16 8" stroke="#11141f" stroke-width="5" fill="none" stroke-linejoin="round"/><g fill="#ffd34d"><path d="M70 90l5 10l10 2l-8 6l2 10l-9-5l-9 5l2-10l-8-6l10-2z"/><path d="M228 84l4 8l8 2l-6 5l2 8l-8-4l-7 4l2-8l-6-5l8-2z"/></g></g>
+ <g class="m m-shocked"><circle cx="122" cy="145" r="15" fill="#fff" stroke="#11141f" stroke-width="3"/><circle cx="178" cy="145" r="15" fill="#fff" stroke="#11141f" stroke-width="3"/><circle cx="122" cy="145" r="3" fill="#11141f"/><circle cx="178" cy="145" r="3" fill="#11141f"/><path d="M90 110v-10M210 110v-10" stroke="#9fd3ff" stroke-width="6" stroke-linecap="round"/><path d="M108 120h-16v40" stroke="#7a8cff" stroke-width="3" opacity=".6"/></g>
+ <ellipse cx="108" cy="168" rx="10" ry="6" fill="#ff9aa8" opacity=".6"/><ellipse cx="192" cy="168" rx="10" ry="6" fill="#ff9aa8" opacity=".6"/>
+ <path class="m m-happy" d="M140 178q10 8 20 0" stroke="#11141f" stroke-width="4" fill="none" stroke-linecap="round"/>
+ <path class="m m-hyped" d="M134 172q16 26 32 0z" fill="#8a1f2b"/>
+ <path class="m m-shocked" d="M140 182q10-10 20 0" stroke="#11141f" stroke-width="4" fill="none" stroke-linecap="round"/>
+</g></svg>
+<div class="info"><b><small>2</small>Chibi Anime</b><p>Big head, sparkly eyes, spiky hair with a teal streak. Very expressive and popular with gaming audiences.</p></div></article>
+
+<!-- 3 RUBBER HOSE -->
+<article class="card"><svg viewBox="0 0 300 400" role="img" aria-label="Retro rubber hose style">
+<rect width="300" height="400" fill="#efe3c8"/><circle cx="150" cy="190" r="125" fill="#e2d2ae"/>
+<g class="bob">
+ <path d="M135 275q-10 40 -30 70M165 275q10 40 30 70" stroke="#1c1a17" stroke-width="10" fill="none" stroke-linecap="round"/>
+ <ellipse cx="98" cy="350" rx="26" ry="13" fill="#c0392b" stroke="#1c1a17" stroke-width="4"/><ellipse cx="202" cy="350" rx="26" ry="13" fill="#c0392b" stroke="#1c1a17" stroke-width="4"/>
+ <path d="M115 200q35-15 70 0l8 80q-43 15-86 0z" fill="#1c1a17"/><circle cx="150" cy="235" r="9" fill="#d9a520"/>
+ <g class="m m-happy" stroke="#1c1a17" stroke-width="9" fill="none" stroke-linecap="round"><path d="M118 215q-40 20 -36 60"/><path d="M182 215q40 20 36 60"/></g>
+ <g class="m m-hyped" stroke="#1c1a17" stroke-width="9" fill="none" stroke-linecap="round"><path d="M118 215q-40-20 -40-70"/><path d="M182 215q40-20 40-70"/></g>
+ <g class="m m-shocked" stroke="#1c1a17" stroke-width="9" fill="none" stroke-linecap="round"><path d="M118 215q-30-30 -20-75"/><path d="M182 215q30-30 20-75"/></g>
+ <g class="m m-happy" fill="#fff" stroke="#1c1a17" stroke-width="4"><circle cx="82" cy="280" r="15"/><circle cx="218" cy="280" r="15"/></g>
+ <g class="m m-hyped" fill="#fff" stroke="#1c1a17" stroke-width="4"><circle cx="78" cy="140" r="15"/><circle cx="222" cy="140" r="15"/></g>
+ <g class="m m-shocked" fill="#fff" stroke="#1c1a17" stroke-width="4"><circle cx="98" cy="135" r="15"/><circle cx="202" cy="135" r="15"/></g>
+ <circle cx="150" cy="135" r="62" fill="#f2d6b3" stroke="#1c1a17" stroke-width="5"/><path d="M92 120q-4-40 30-50q-10 20 6 22q4-26 34-24q-8 16 10 20q30 0 36 30q-20-14-58-10q-38-2-58 12z" fill="#1c1a17"/>
+ <g class="m m-happy m-hyped blink"><ellipse cx="135" cy="125" rx="11" ry="20" fill="#fff" stroke="#1c1a17" stroke-width="3"/><ellipse cx="165" cy="125" rx="11" ry="20" fill="#fff" stroke="#1c1a17" stroke-width="3"/><path d="M130 128h10v10z M160 128h10v10z" fill="#1c1a17"/><ellipse cx="135" cy="132" rx="5" ry="9" fill="#1c1a17"/><ellipse cx="165" cy="132" rx="5" ry="9" fill="#1c1a17"/></g>
+ <g class="m m-shocked"><ellipse cx="135" cy="120" rx="13" ry="24" fill="#fff" stroke="#1c1a17" stroke-width="3"/><ellipse cx="165" cy="120" rx="13" ry="24" fill="#fff" stroke="#1c1a17" stroke-width="3"/><circle cx="135" cy="122" r="3" fill="#1c1a17"/><circle cx="165" cy="122" r="3" fill="#1c1a17"/></g>
+ <ellipse cx="150" cy="158" rx="10" ry="7" fill="#1c1a17"/>
+ <path class="m m-happy" d="M128 172q22 18 44 0" stroke="#1c1a17" stroke-width="4" fill="none" stroke-linecap="round"/>
+ <path class="m m-hyped" d="M124 168q26 34 52 0z" fill="#8b1e1e" stroke="#1c1a17" stroke-width="3"/>
+ <ellipse class="m m-shocked" cx="150" cy="182" rx="10" ry="12" fill="#8b1e1e" stroke="#1c1a17" stroke-width="3"/>
+ <path d="M105 95q45-35 90 0l-10 5q-35-22-70 0z" fill="#d9a520" stroke="#1c1a17" stroke-width="3"/>
+</g></svg>
+<div class="info"><b><small>3</small>Retro Rubber Hose</b><p>A 1930s cartoon feel: noodle arms, pie-cut eyes, gloves and a gold cap. Bouncy and has a vintage charm.</p></div></article>
+
+<!-- 4 BLOCKY -->
+<article class="card"><svg viewBox="0 0 300 400" role="img" aria-label="Blocky geometric style">
+<rect width="300" height="400" fill="#0d2b2a"/>
+<g fill="#3ddc84" opacity=".18"><rect x="30" y="250" width="16" height="60"/><rect x="56" y="220" width="16" height="70"/><rect x="232" y="180" width="16" height="80"/><rect x="258" y="150" width="16" height="90"/></g>
+<g class="bob">
+ <rect x="122" y="280" width="22" height="70" fill="#1a1a2e"/><rect x="156" y="280" width="22" height="70" fill="#1a1a2e"/>
+ <rect x="116" y="345" width="32" height="14" fill="#ffd34d"/><rect x="152" y="345" width="32" height="14" fill="#ffd34d"/>
+ <rect x="108" y="200" width="84" height="88" rx="6" fill="#ff7a45"/><rect x="108" y="240" width="84" height="10" fill="#e0602f"/>
+ <g class="m m-happy" fill="#ff7a45"><rect x="86" y="205" width="20" height="70" rx="4"/><rect x="194" y="205" width="20" height="70" rx="4"/></g>
+ <g class="m m-hyped" fill="#ff7a45"><rect x="86" y="140" width="20" height="70" rx="4"/><rect x="194" y="140" width="20" height="70" rx="4"/></g>
+ <g class="m m-shocked" fill="#ff7a45"><rect x="70" y="190" width="70" height="20" rx="4" transform="rotate(-30 105 200)"/><rect x="160" y="190" width="70" height="20" rx="4" transform="rotate(30 195 200)"/></g>
+ <rect x="96" y="80" width="108" height="112" rx="10" fill="#f6c89f"/>
+ <rect x="90" y="66" width="120" height="34" rx="6" fill="#2b2b40"/><rect x="180" y="58" width="36" height="18" fill="#6fd8c0"/>
+ <g class="m m-happy blink" fill="#11141f"><rect x="118" y="120" width="16" height="16"/><rect x="166" y="120" width="16" height="16"/></g>
+ <g class="m m-hyped" fill="#3ddc84"><path d="M118 120h16v6h-10v4h10v12h-16v-6h10v-4h-10z"/><path d="M166 120h16v6h-10v4h10v12h-16v-6h10v-4h-10z"/></g>
+ <g class="m m-shocked"><rect x="114" y="114" width="24" height="24" fill="#fff" stroke="#11141f" stroke-width="4"/><rect x="162" y="114" width="24" height="24" fill="#fff" stroke="#11141f" stroke-width="4"/><rect x="123" y="123" width="6" height="6" fill="#11141f"/><rect x="171" y="123" width="6" height="6" fill="#11141f"/></g>
+ <rect class="m m-happy" x="136" y="160" width="28" height="8" fill="#11141f"/>
+ <rect class="m m-hyped" x="130" y="156" width="40" height="18" fill="#11141f"/>
+ <rect class="m m-shocked" x="142" y="156" width="16" height="20" fill="#11141f"/>
+</g></svg>
+<div class="info"><b><small>4</small>Blocky Geometric</b><p>Square shapes and pixel-style eyes. Fits a gaming brand and is easy to keep consistent across episodes.</p></div></article>
+
+<!-- 5 SOFT BLOB -->
+<article class="card"><svg viewBox="0 0 300 400" role="img" aria-label="Soft blob style">
+<defs><radialGradient id="b5" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#ffd1f0"/><stop offset="1" stop-color="#c77dff"/></radialGradient></defs>
+<rect width="300" height="400" fill="#1a1530"/><circle cx="70" cy="80" r="3" fill="#fff" opacity=".5"/><circle cx="240" cy="60" r="2" fill="#fff" opacity=".5"/><circle cx="260" cy="140" r="3" fill="#fff" opacity=".4"/>
+<g class="bob">
+ <path d="M70 330q-10-170 80-200q90 30 80 200q-80 20-160 0z" fill="url(#b5)"/>
+ <path d="M70 300q80 30 160 0v30q-80 20-160 0z" fill="#3a2a5e"/>
+ <path d="M150 130q-20-40 10-60q-5 30 15 40" fill="#c77dff"/>
+ <g class="m m-happy"><ellipse cx="62" cy="270" rx="14" ry="20" fill="#c77dff"/><ellipse cx="238" cy="270" rx="14" ry="20" fill="#c77dff"/></g>
+ <g class="m m-hyped"><ellipse cx="58" cy="200" rx="14" ry="22" fill="#c77dff" transform="rotate(-30 58 200)"/><ellipse cx="242" cy="200" rx="14" ry="22" fill="#c77dff" transform="rotate(30 242 200)"/></g>
+ <g class="m m-shocked"><ellipse cx="88" cy="215" rx="14" ry="20" fill="#c77dff"/><ellipse cx="212" cy="215" rx="14" ry="20" fill="#c77dff"/></g>
+ <g class="m m-happy blink"><ellipse cx="125" cy="210" rx="10" ry="14" fill="#1a1530"/><ellipse cx="175" cy="210" rx="10" ry="14" fill="#1a1530"/><circle cx="128" cy="205" r="4" fill="#fff"/><circle cx="178" cy="205" r="4" fill="#fff"/></g>
+ <g class="m m-hyped" stroke="#1a1530" stroke-width="6" fill="none" stroke-linecap="round"><path d="M112 212q13-16 26 0M162 212q13-16 26 0"/></g>
+ <g class="m m-shocked"><circle cx="125" cy="205" r="18" fill="#fff"/><circle cx="175" cy="205" r="18" fill="#fff"/><circle cx="125" cy="208" r="6" fill="#1a1530"/><circle cx="175" cy="208" r="6" fill="#1a1530"/><path d="M210 160q8 14 0 20q-8-6 0-20z" fill="#7fd6ff"/></g>
+ <ellipse cx="105" cy="238" rx="12" ry="7" fill="#ff6fb5" opacity=".6"/><ellipse cx="195" cy="238" rx="12" ry="7" fill="#ff6fb5" opacity=".6"/>
+ <path class="m m-happy" d="M140 240q10 10 20 0" stroke="#1a1530" stroke-width="5" fill="none" stroke-linecap="round"/>
+ <path class="m m-hyped" d="M132 234q18 30 36 0z" fill="#1a1530"/>
+ <path class="m m-shocked" d="M138 250q12-10 24 0" stroke="#1a1530" stroke-width="5" fill="none" stroke-linecap="round"/>
+</g><ellipse cx="150" cy="345" rx="80" ry="8" fill="#000" opacity=".35"/></svg>
+<div class="info"><b><small>5</small>Soft Blob</b><p>A squishy, cute mascot with no limbs to animate. Easy to make into stickers and merch, with a calmer, cozy vibe.</p></div></article>
+
+</div>
+</div>
+<script>
+const root=document.getElementById('root');
+document.querySelectorAll('.moods button').forEach(b=>b.addEventListener('click',()=>{
+  root.dataset.mood=b.dataset.m;document.querySelectorAll('.moods button').forEach(x=>x.setAttribute('aria-pressed',x===b))}));
+</script>
